@@ -1,0 +1,19 @@
+<template>
+	<ul class="service-types">
+		<li v-for="(args, name) in services" :key="name">{{ name.toUpperCase() }}</li>
+	</ul>
+</template>
+
+<script>
+export default {
+	name: 'SupportedServiceTypes',
+	props: {
+		version: String,
+		services: Object
+	}
+}
+</script>
+
+<style scoped>
+
+</style>
