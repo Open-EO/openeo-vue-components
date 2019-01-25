@@ -1,9 +1,10 @@
 <template>
-	<div class="styled-description" v-html="markup(description)"></div>
+	<div class="vue-component styled-description" v-html="markup(description)"></div>
 </template>
 
 <script>
 import commonmark from 'commonmark';
+import './base.css';
 
 export default {
 	name: 'Description',
@@ -28,22 +29,22 @@ export default {
 </script>
 
 <style>
-.styled-description {
+.vue-component.styled-description {
 	line-height: 1.25em;
 }
-.styled-description pre {
+.vue-component.styled-description pre {
 	background-color: #eee;
 	width: 100%;
 	border: 1px solid #ccc;
 	max-height: 15em;
 	overflow-y: auto;
 }
-.styled-description pre code {
+.vue-component.styled-description pre code {
 	background-color: transparent; 
 	display: block;
 	margin: 0.5em;
 }
-.styled-description code {
+.vue-component.styled-description code {
 	color: maroon;
 	display: inline-block;
 	padding: 0 0.1em;

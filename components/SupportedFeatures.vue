@@ -1,5 +1,5 @@
 <template>
-	<ul class="features">
+	<ul class="vue-component features">
 		<li v-for="(status, functionality) in functionalities" :key="functionality"><span v-text="getIcon(status)"></span> {{functionality}}</li>
 	</ul>
 </template>
@@ -68,6 +68,8 @@ const FUNCTIONALITIES_0_3 = {
     ]
 };
 
+import './base.css';
+
 export default {
 	name: 'SupportedFeatures',
 	props: {
@@ -127,10 +129,10 @@ export default {
 </script>
 
 <style scoped>
-ul {
+.features {
     padding: 0;
 }
-li {
+.features li {
     list-style-type: none;
 }
 </style>

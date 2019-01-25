@@ -1,9 +1,9 @@
 <template>
-	<div class="process-example">
+	<div class="vue-component process-example">
 		<h4>{{ title }}</h4>
 
 		<div class="content">
-			<Description v-if="example.description" :description="example.description" />
+			<Description v-if="example.description" :description="example.description" :preprocessor="processReferenceParser" />
 
 			<div class="process-graph" v-if="example.process_graph">
 				<Description :description="renderedGraph()" />
@@ -18,6 +18,7 @@
 <script>
 import Description from './Description.vue';
 import Utils from '../utils.js';
+import './base.css';
 
 export default {
 	name: 'ProcessExample',
@@ -25,7 +26,8 @@ export default {
 		id: Number,
 		example: Object,
 		processId: String,
-		processParameterOrder: Array
+		processParameterOrder: Array,
+		processReferenceParser: Function
 	},
 	components: {
 		Description
@@ -64,15 +66,6 @@ export default {
 	}
 }
 </script>
-
-<style>
-.process-example .param-name, .process-name {
-	color: #369;
-}
-.process-example .argument, .return-value {
-	color: #936;
-}
-</style>
 
 <style scoped>
 .content {

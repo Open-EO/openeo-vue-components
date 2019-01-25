@@ -1,0 +1,60 @@
+/* Globals */
+.vue-component h2 {
+
+}
+
+.vue-component h3 {
+	margin: 1.5em 0 0.75em 0;
+	padding: 0.25em 0 0.25em 0;
+	border-bottom: 1px dotted #ccc;
+}
+
+/* Comma separated list */
+.vue-component .comma-separated-list {
+	display: inline;
+	list-style: none;
+	padding: 0;
+}
+.vue-component .comma-separated-list li {
+	display: inline;
+	padding: 0;
+}
+.vue-component .comma-separated-list li:after {
+	content: ", ";
+}
+.vue-component .comma-separated-list li:last-child:after {
+	content: "";
+}
+
+/* The required star */
+.vue-component .required {
+	color: red;
+	font-weight: bold;
+}
+
+/* Message blocks (Notices, errors, warnings, ...) */
+.vue-component.message-block {
+	margin: 1em 0;
+	padding: 0.5em;
+}
+.vue-component.message-block strong {
+	display: block;
+	margin-bottom: 0.5em;
+}
+.vue-component.message-block p {
+	margin: 0;
+}
+
+/* Styling process signatures (incl. examples) */
+.vue-component .param-name, .process-name {
+	color: #369;
+}
+.vue-component .argument, .return-value {
+	color: #936;
+}
+.vue-component .data-type {
+	color: #693;
+}
+.vue-component .optional {
+	font-weight: bold;
+}

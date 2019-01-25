@@ -1,10 +1,12 @@
 <template>
-	<p class="billing-plans">
+	<p class="vue-component billing-plans">
 		No billing information available (yet).
 	</p>
 </template>
 
 <script>
+import './base.css';
+
 export default {
 	name: 'BillingPlans',
 	props: {
@@ -16,7 +18,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="json-schema" v-if="typeof schema === 'object' && schema !== null && nestingLevel < 100">
+	<div class="vue-component json-schema" v-if="typeof schema === 'object' && schema !== null && nestingLevel < 100">
 		<template v-if="visible">
 			<div v-if="schema.type == 'object' && typeof schema.properties =='object'" class="schemaObjectElement">
 				<table class="object-properties">
@@ -70,6 +70,7 @@
 <script>
 import Description from './Description.vue';
 import Utils from '../utils.js';
+import './base.css';
 
 export default {
 	name: 'JsonSchema',
@@ -142,10 +143,6 @@ export default {
 </script>
 
 <style scoped>
-.required {
-	color: red;
-	font-weight: bold;
-}
 .json-schema {
 	border-left: 7px solid #ccc;
 	border-bottom: 1px dotted #ccc;
@@ -193,20 +190,5 @@ export default {
 }
 .object-properties th {
 	padding-top: 1.5em;
-}
-.comma-separated-list {
-  display: inline;
-  list-style: none;
-  padding: 0;
-}
-.comma-separated-list li {
-  display: inline;
-  padding: 0;
-}
-.comma-separated-list li:after {
-  content: ", ";
-}
-.comma-separated-list li:last-child:after {
-    content: "";
 }
 </style>

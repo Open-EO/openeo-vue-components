@@ -1,5 +1,5 @@
 <template>
-	<article class="process">
+	<article class="vue-component process">
 
 		<a class="anchor" :name="process.id"></a>
 		<h2>{{ process.id }}</h2>
@@ -36,7 +36,7 @@
 			<section class="description" v-if="process.description">
 				<h3>Description</h3>
 				<code class="signature" v-html="signature()"></code>
-				<Description :description="process.description" />
+				<Description :description="process.description" :preprocessor="processReferenceParser" />
 				<DeprecationNotice v-if="process.deprecated === true" entity="process" />
 				<ExperimentalNotice v-if="process.experimental === true" entity="process" />
 			</section>
@@ -49,7 +49,7 @@
 						<strong class="required" v-if="param.required === true" title="required">*</strong>
 					</h4>
 					<div class="details">
-						<Description v-if="param.description" :description="param.description" />
+						<Description v-if="param.description" :description="param.description" :preprocessor="processReferenceParser" />
 						<DeprecationNotice v-if="param.deprecated === true" entity="parameter" />
 						<ExperimentalNotice v-if="param.experimental === true" entity="parameter" />
 						<p class="media-type" v-if="param.media_type"><strong>Media type: </strong>{{ param.media_type }}</p>
@@ -63,7 +63,7 @@
 
 			<section class="returns">
 				<h3>Return Value</h3>
-				<Description v-if="process.returns.description" :description="process.returns.description" />
+				<Description v-if="process.returns.description" :description="process.returns.description" :preprocessor="processReferenceParser" />
 				<p class="media-type" v-if="process.returns.media_type"><strong>Media (MIME) type: </strong>{{ process.returns.media_type }}</p>
 				<div class="json-schema-container" v-if="process.returns.schema">
 					<JsonSchema :schema="process.returns.schema" />
@@ -77,7 +77,7 @@
 						<code>{{ name }}</code>
 						<span class="http-code" v-if="exception.http"> — HTTP {{ exception.http }}</span>
 						<span class="error-code" v-if="exception.code"> — {{ exception.code }}</span>
-						<Description v-if="exception.description" :description="exception.description" />
+						<Description v-if="exception.description" :description="exception.description" :preprocessor="processReferenceParser" />
 						<div v-if="exception.message" class="message">Message: <em>{{ exception.message }}</em></div>
 					</li>
 				</ul>
@@ -85,7 +85,7 @@
 
 			<section class="examples" v-if="process.examples">
 				<h3>Examples</h3>
-				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameterOrder="process.parameter_order" />
+				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameterOrder="process.parameter_order" :processReferenceParser="processReferenceParser" />
 			</section>
 
 			<section class="links" v-if="process.links">
@@ -108,6 +108,8 @@ import ExperimentalNotice from './ExperimentalNotice.vue';
 import ProcessExample from './ProcessExample.vue';
 import LinkList from './LinkList.vue';
 import Utils from '../utils.js';
+import { MigrateProcesses } from '@openeo/js-commons';
+import './base.css';
 
 export default {
 	name: 'Process',
@@ -122,7 +124,7 @@ export default {
 	props: {
 		version: {
 			type: String,
-			default: '0.4.0'
+			default: null
 		},
 		processData: Object,
 		provideDownload: {
@@ -132,7 +134,8 @@ export default {
 		initiallyCollapsed: {
 			type: Boolean,
 			default: false
-		}
+		},
+		processReferenceBuilder: Function
 	},
 	data() {
 		return {
@@ -141,14 +144,11 @@ export default {
 	},
 	computed: {
 		process() {
-			var process = Object.assign({}, this.processData);
+			var process = MigrateProcesses.convertProcessToLatestSpec(this.processData, this.version);
 
 			// Fill parameter order
 			if (!Array.isArray(process.parameter_order)) {
-				process.parameter_order = [];
-				for(var key in process.parameters) {
-					process.parameter_order.push(key);
-				}
+				process.parameter_order = Object.keys(process.parameters);
 			}
 
 			// Make parameters and parameter_order consistent
@@ -187,7 +187,7 @@ export default {
 				var req = (p.required ? '' : '?');
 				var pStr;
 				if (html) {
-					pStr = '<span class="required">' + req + '</span><span class="data-type">' + Utils.htmlentities(pType) + '</span> <span class="param-name">' + p.name + "</span>";
+					pStr = '<span class="optional">' + req + '</span><span class="data-type">' + Utils.htmlentities(pType) + '</span> <span class="param-name">' + p.name + "</span>";
 				}
 				else {
 					pStr = req + pType + " " + p.name;
@@ -212,20 +212,20 @@ export default {
 			downloadAnchorNode.click();
 			downloadAnchorNode.remove();
 		},
+		processReferenceParser(text) {
+			if (typeof this.processReferenceBuilder !== 'function') {
+				return text;
+			}
+			// Parse our extension to CommonMark, which allows linking to other processes with ``process()``
+			return text.replace(/(^|[^\w`])``(\w+)\(\)``(?![\w`])/g, (_, prefix, pid) => {
+				return prefix + this.processReferenceBuilder(pid);
+			});
+		}
 	}
 }
 </script>
 
 <style scoped>
-.required {
-	color: red;
-	font-weight: bold;
-}
-.process h3 {
-	margin: 1.5em 0 0.75em 0;
-	padding: 0.25em 0 0.25em 0;
-	border-bottom: 1px dotted #ccc;
-}
 .process-bar {
 	display: flex;
 	align-items: baseline;
@@ -247,6 +247,7 @@ export default {
 	display: inline-block;
 	font-size: 0.8em;
 	margin: 0 0.5em 0.5em 0;
+	padding: 0.3em 0.5em;
 	line-height: 1;
 	text-align: center;
 	white-space: nowrap;
@@ -257,19 +258,18 @@ export default {
 }
 .categories .category {
 	background-color: #6c757d;
-	padding: 0.3em 0.5em;
 }
 .actions .action {
 	background-color: chocolate;
 }
 .categories .category a, .actions .action a {
+	margin: -0.3em -0.5em;
 	padding: 0.3em 0.5em;
 	color: #fff;
 	display: block;
 }
 .categories .category a:hover, .actions .action a:hover {
 	color: #fff;
-	display: block;
 }
 strong.deprecated {
 	color: red;
@@ -293,17 +293,8 @@ strong.experimental {
 	margin: 0.5em 0;
 	font-size: 0.8em;
 }
-</style>
-
-<style>
 .process .signature {
 	display: block;
 	margin: 1em 0;
-}
-.process .signature .data-type {
-	color: #693;
-}
-.process .signature .process-name, .process .signature .param-name {
-	color: #369;
 }
 </style>

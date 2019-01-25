@@ -1,54 +1,5 @@
 var Utils = {
 
-    convertProcessToLatestSpec: function(originalProcess, version = '') {
-        var process = Object.assign({}, originalProcess);
-        // convert v0.3 processes to v0.4 format
-        if (version.substr(0,3) === '0.3' || typeof process.id === 'undefined') {
-            // name => id
-            process.id = process.name;
-            delete process.name;
-            // mime_type => media_type
-            if (typeof process.parameters === 'object') {
-                for(var key in process.parameters) {
-                    var param = process.parameters[key];
-                    if (typeof param.mime_type !== 'undefined') {
-                        param.media_type = param.mime_type;
-                        delete param.mime_type;
-                    }
-                }
-            }
-            if (typeof process.returns.mime_type !== 'undefined') {
-                process.returns.media_type = process.returns.mime_type;
-                delete process.returns.mime_type;
-            }
-            // exception object
-            if (process.exceptions) {
-                for(var key in process.exceptions) {
-                    if (typeof process.exceptions[key].message === 'undefined') {
-                        process.exceptions[key].message = process.exceptions[key].description;
-                    }
-                }
-            }
-            // examples object
-            if (process.examples) {
-                var examples = [];
-                for(var key in process.examples) {
-                    var old = process.examples[key];
-                    var example = {
-                        title: old.summary || key,
-                        description: old.description
-                    };
-                    if (old.process_graph) {
-                        example.process_graph = old.process_graph;
-                    }
-                    examples.push(example);
-                }
-                process.examples = examples;
-            }
-        }
-        return process;
-    },
-
     dataType: function(schema, short = false, level = 0, type = undefined) {
         if (this.isAnyType(schema)) {
             type = 'any';

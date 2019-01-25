@@ -1,10 +1,10 @@
 <template>
-	<div class="capabilities">
+	<div class="vue-component capabilities">
 		<h2 v-if="capabilities.title">{{ capabilities.title }}</h2>
-		<p>
+		<section class="base-data">
 			<strong>URL:</strong> {{ url }}<br />
 			<strong>openEO-Version:</strong> {{ capabilities.version }}
-		</p>
+		</section>
 		<Description v-if="capabilities.description" :description="capabilities.description" />
 		<h3>Supported functionalities</h3>
 		<SupportedFeatures :version="capabilities.version" :endpoints="capabilities.endpoints" />
@@ -17,6 +17,7 @@
 import BillingPlans from './BillingPlans.vue';
 import Description from './Description.vue';
 import SupportedFeatures from './SupportedFeatures.vue';
+import './base.css';
 
 export default {
 	name: 'Capabilities',
@@ -31,7 +32,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-
-</style>
