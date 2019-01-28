@@ -73,13 +73,31 @@
 
 			<section class="properties" v-if="collection.properties">
 				<h3>Additional information</h3>
-                <dl v-for="(value, key) in collection.properties" :key="key" :set="formattedValue = formatStacValue(value, key)">
-                    <dt>{{ formatStacKey(key) }}</dt>
-                    <dd>
+				<div class="tabular" v-for="(value, key) in collection.properties" :key="key" :set="formattedValue = formatStacValue(value, key)">
+					<label>{{ formatStacKey(key) }}:</label>
+					<div class="value">
+<!--						<table v-if="key === 'eo:bands'" class="band-table">
+							<tr>
+								<th>Name</th>
+								<th>Common Name</th>
+								<th title="Ground Sample Distance">GSD</th>
+								<th>Accuracy</th>
+								<th title="Center wavelength">Wavelength</th>
+								<th title="Full With Half Max">FWHM</th>
+							</tr>
+							<tr v-for="(band, bandname) in value" :key="bandname">
+								<td><strong>{{ bandname }}</strong></td>
+								<td>{{ band.common_name }}</td>
+								<td>{{ formatStacValue(band.gsd, "eo:bands.gsd") }}</td>
+								<td>{{ formatStacValue(band.accuracy, "eo:bands.accuracy") }}</td>
+								<td>{{ formatStacValue(band.center_wavelength, "eo:bands.center_wavelength") || band['gee:wavelength'] }}</td>
+								<td>{{ band.full_width_half_max }}</td>
+							</tr>
+						</table> -->
 						<ObjectTree v-if="typeof formattedValue === 'object'" :data="value" />
 						<template v-else>{{ formattedValue }}</template>
-					</dd>
-                </dl>
+					</div>
+				</div>
 			</section>
 
 			<section class="links" v-if="filteredLinks.length > 0">
@@ -125,6 +143,18 @@ const STAC_FIELDS = {
 	},
 	"eo:bands": {
 		label: "Bands"
+	},
+	"eo:bands.gsd": {
+		label: "GSD",
+		suffix: "m"
+	},
+	"eo:bands.accuracy": {
+		label: "Accuracy",
+		suffix: "m"
+	},
+	"eo:bands.center_wavelength": {
+		label: "Center Wavelength",
+		suffix: "μm"
 	},
 	"eo:epsg": {
 		label: "EPSG code"
@@ -210,6 +240,18 @@ const STAC_FIELDS = {
 	},
 	"sci:publications": {
 		label: "Related publications"
+	},
+	"gee:type": {
+		label: "Earth Engine Data Type"
+	},
+	"gee:asset_schema": {
+		label: "Earth Engine Image Properties"
+	},
+	"gee:cadence": {
+		label: "Cadence"
+	},
+	"gee:revisit_interval": {
+		label: "Revisit interval"
 	}
 };
 
@@ -296,7 +338,7 @@ export default {
 					isScalarArray = true;
 					for(var i in value) {
 						if (typeof value[i] === 'object') {
-							isArray = false;
+							isScalarArray = false;
 							break;
 						}
 					}
@@ -340,32 +382,7 @@ export default {
 
 <style scoped>
 .badges {
-	margin: 0 0 0.75em 0;
-	padding: 0;
-	list-style-type: none;
-	display: inline-block;
-}
-.badges .badge {
-	display: inline-block;
-	font-size: 0.8em;
-	margin: 0 0.5em 0.5em 0;
-	padding: 0.3em 0.5em;
-	line-height: 1;
-	text-align: center;
-	white-space: nowrap;
-	text-transform: uppercase;
-	vertical-align: baseline;
-	border-radius: 3px;
-	color: #fff;
-}
-.badges .badge a {
-	margin: -0.3em -0.5em;
-	padding: 0.3em 0.5em;
-	color: #fff;
-	display: block;
-}
-.badges .badge a:hover {
-	color: #fff;
+	margin-bottom: 0.75em;
 }
 .badges .license {
 	background-color: maroon;
@@ -375,5 +392,14 @@ export default {
 }
 .provider-role {
 	text-transform: capitalize;
+}
+.band-table {
+	width: 100%;
+}
+.tabular {
+	margin: 0.75em 0;
+}
+.tabular .value ul {
+	padding-left: 20px;
 }
 </style>

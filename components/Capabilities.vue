@@ -2,8 +2,8 @@
 	<div class="vue-component capabilities">
 		<h2 v-if="capabilities.title">{{ capabilities.title }}</h2>
 		<section class="base-data">
-			<strong>URL:</strong> {{ url }}<br />
-			<strong>openEO-Version:</strong> {{ capabilities.version }}
+			<div class="tabular"><label>URL:</label><span class="value">{{ url }}</span></div>
+			<div class="tabular"><label>openEO-Version:</label><span class="value">{{ capabilities.version }}</span></div>
 		</section>
 		<Description v-if="capabilities.description" :description="capabilities.description" />
 		<h3>Supported functionalities</h3>

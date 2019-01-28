@@ -8,11 +8,11 @@
 
 		<div class="summary" v-if="process.summary || process.deprecated || process.experimental || process.categories">
 			<div class="process-bar">
-				<ul class="categories" v-if="process.categories">
-					<li class="category" v-for="(value, key) in process.categories" :key="key" v-text="formatCategory(value)"></li>
+				<ul class="badges categories" v-if="process.categories">
+					<li class="badge category" v-for="(value, key) in process.categories" :key="key" v-text="formatCategory(value)"></li>
 				</ul>
-				<ul class="actions" v-if="provideDownload">
-					<li class="action download"><a @click="download(process)">Download JSON</a></li>
+				<ul class="badges actions" v-if="provideDownload">
+					<li class="badge action download"><a @click="download(process)">Download JSON</a></li>
 				</ul>
 			</div>
 			<summary>
@@ -230,11 +230,8 @@ export default {
 	display: flex;
 	align-items: baseline;
 }
-.categories, .actions {
-	margin: 0 0 0.75em 0;
-	padding: 0;
-	list-style-type: none;
-	display: inline-block;
+.badges {
+	margin-bottom: 0.75em;
 }
 .categories {
 	flex: 3;
@@ -243,33 +240,8 @@ export default {
 	flex: 1;
 	text-align: right;
 }
-.categories .category, .actions .action {
-	display: inline-block;
-	font-size: 0.8em;
-	margin: 0 0.5em 0.5em 0;
-	padding: 0.3em 0.5em;
-	line-height: 1;
-	text-align: center;
-	white-space: nowrap;
-	text-transform: uppercase;
-	vertical-align: baseline;
-	border-radius: 3px;
-	color: #fff;
-}
-.categories .category {
-	background-color: #6c757d;
-}
 .actions .action {
 	background-color: chocolate;
-}
-.categories .category a, .actions .action a {
-	margin: -0.3em -0.5em;
-	padding: 0.3em 0.5em;
-	color: #fff;
-	display: block;
-}
-.categories .category a:hover, .actions .action a:hover {
-	color: #fff;
 }
 strong.deprecated {
 	color: red;
