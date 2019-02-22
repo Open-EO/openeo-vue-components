@@ -51,7 +51,7 @@ var Utils = {
 
     htmlentities: function(str) {
         if (typeof str === 'string') {
-            return str.replace('<',"&lt;").replace('>',"&gt;");
+            return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         }
         else {
             return str;

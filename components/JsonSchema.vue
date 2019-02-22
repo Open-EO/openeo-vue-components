@@ -1,18 +1,18 @@
 <template>
 	<div class="vue-component json-schema" v-if="typeof schema === 'object' && schema !== null && nestingLevel < 100">
 		<template v-if="visible">
-			<div v-if="schema.type == 'object' && typeof schema.properties =='object'" class="schemaObjectElement">
+			<div v-if="showRow('object')" class="schemaObjectElement">
 				<div v-if="filteredObjectSchema !== null" class="inline-schema-attrs">
 					<JsonSchema :schema="filteredObjectSchema" :nestingLevel="nestingLevel+1" />
 				</div>
 				<table class="object-properties">
 					<tr>
 						<th colspan="2" class="object-prop-heading">
-							<template v-if="typeof schema.format === 'string' && schema.format == 'callback'">Callback parameters:</template>
+							<template v-if="schema.parameters">Callback parameters:</template>
 							<template v-else>Object Properties:</template>
 						</th>
 					</tr>
-					<tr v-for="(val, key) in schema.properties" :key="key">
+					<tr v-for="(val, key) in (schema.properties || schema.parameters)" :key="key">
 						<td class="propKey">
 							{{ key }}
 							<strong class="required" v-if="schema.required && schema.required.indexOf(key) !== -1" title="required">*</strong>
@@ -100,7 +100,7 @@ export default {
 		filteredObjectSchema() {
 			var filtered = null;
 			for(var key in this.schema) {
-				if (key == 'required' || key == 'properties') {
+				if (key == 'required' || key == 'properties' || key == 'parameters') {
 					continue;
 				}
 				if (filtered === null) {
@@ -168,7 +168,10 @@ export default {
 			return Utils.dataType(schema);
 		},
 		showRow(key) {
-			if (key == 'title' || key == 'description') {
+			if (key == 'object') {
+				return (this.schema.type == 'object' && (typeof this.schema.properties == 'object' || typeof this.schema.parameters == 'object'));
+			}
+			else if (key == 'title' || key == 'description') {
 				return false;
 			}
 			else if (key == 'format' && typeof this.schema.type === 'string' && ['object', 'array'].includes(this.schema.type.toLowerCase())) {
