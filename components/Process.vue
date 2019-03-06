@@ -6,7 +6,7 @@
 
 		<slot name="process-before-summary"></slot>
 
-		<div class="summary" v-if="process.summary || process.deprecated || process.experimental || process.categories">
+		<template v-if="provideDownload || process.categories">
 			<div class="process-bar">
 				<ul class="badges categories" v-if="process.categories">
 					<li class="badge category" v-for="(value, key) in process.categories" :key="key" v-text="formatCategory(value)"></li>
@@ -15,6 +15,9 @@
 					<li class="badge action download"><a @click="download(process)">Download JSON</a></li>
 				</ul>
 			</div>
+		</template>
+
+		<template v-if="process.summary || process.deprecated || process.experimental">
 			<summary>
 				{{ process.summary }}
 				<template v-if="process.deprecated === true || process.experimental === true">
@@ -23,7 +26,7 @@
 					<strong class="experimental" v-if="process.experimental === true">experimental</strong>
 				</template>
 			</summary>
-		</div>
+		</template>
 
 		<slot name="process-after-summary"></slot>
 

@@ -22,7 +22,7 @@ Visualizes a collection following the STAC-based collection description.
 **Properties:**
 
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
-- `collection` (object): A single STAC-based collection object as defined by the openEO API.
+- `collectionData` (object): A single STAC-based collection object as defined by the openEO API.
 - `initiallyCollapsed` (boolean): Allow collapsing/expanding the details and collapse the details by default (defaults to `false`).
 
 **Slots:**
@@ -64,7 +64,7 @@ Note: `ProcessExample` is not meant to be used separately.
 **Properties:**
 
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
-- `process` (object): Process specification as defined by the openEO API.
+- `processData` (object): Process specification as defined by the openEO API.
 - `provideDownload` (boolean): Provide a link to download the JSON file (defaults to `true`).
 - `initiallyCollapsed` (boolean): Allow collapsing/expanding the details and collapse the details by default (defaults to `false`).
 - `processReferenceBuilder` (function): A function that generates a link to a process by its process identifier.
