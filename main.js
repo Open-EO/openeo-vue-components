@@ -13,7 +13,7 @@ import SupportedServiceTypes from './components/SupportedServiceTypes.vue';
 import SupportedFeatures from './components/SupportedFeatures.vue';
 import Utils from './utils.js';
 
-export default {
+export {
 	BillingPlans,
 	Capabilities,
 	Collection,

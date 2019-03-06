@@ -19,7 +19,7 @@
   "scripts": {
     "build": "vue-cli-service build --target lib --name openeo-vue main.js"
   },
-  "main": "dist/main.js",
+  "main": "main.js",
   "files": [
     "assets/*.js",
     "assets/*.css",
