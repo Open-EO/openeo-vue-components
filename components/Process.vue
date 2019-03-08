@@ -12,7 +12,7 @@
 					<li class="badge category" v-for="(value, key) in process.categories" :key="key" v-text="formatCategory(value)"></li>
 				</ul>
 				<ul class="badges actions" v-if="provideDownload">
-					<li class="badge action download"><a @click="download(process)">Download JSON</a></li>
+					<li class="badge action download"><a class="badge-fill" @click="download(process)">Download JSON</a></li>
 				</ul>
 			</div>
 		</template>

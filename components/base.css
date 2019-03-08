@@ -74,19 +74,23 @@
 	font-size: 0.75em;
 }
 .vue-component .badges .badge a {
+	color: #fff;
+	border-bottom: 1px dotted #fff;
+	text-decoration: none;
+}
+.vue-component .badges .badge a.badge-fill {
 	margin: -0.35em -0.5em;
 	padding: 0.35em 0.5em;
-	color: #fff;
-	text-decoration: none;
 	display: block;
+	border-bottom: 0px;
 }
-.vue-component .badges.small .badge a {
+.vue-component .badges.small .badge a.badge-fill {
 	margin: -0.2em -0.3em;
 	padding: 0.2em 0.3em;
 }
 .vue-component .badges .badge a:hover {
 	color: #fff;
-	text-decoration: underline;
+	border-bottom-style: solid;
 }
 
 /* Table like lists */

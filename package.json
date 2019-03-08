@@ -29,7 +29,8 @@
   ],
   "dependencies": {
     "@openeo/js-commons": "^0.3.0",
-    "commonmark": "^0.28.1"
+    "commonmark": "^0.28.1",
+    "spdx-expression-parse": "^3.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",

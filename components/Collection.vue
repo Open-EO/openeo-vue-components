@@ -8,12 +8,10 @@
 		<div class="summary" v-if="collection.title">
 			<div class="collection-bar">
 				<ul class="badges">
-					<!-- Add badges for license and version -->
 					<li class="badge license">
-						<a v-if="licenseUrl" :href="licenseUrl" target="_blank">
-							License: {{ collection.license }}
-						</a>
-						<template v-else>License: {{ collection.license }}</template>
+						License: 
+						<a v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
+						<span v-else v-html="parseLicense(collection.license)"></span>
 					</li>
 					<li class="badge version" v-if=" collection.version">Version: {{ collection.version }}</li>
 				</ul>
@@ -117,6 +115,8 @@ import Description from './Description.vue';
 import LinkList from './LinkList.vue';
 import ObjectTree from './ObjectTree.vue';
 import { MigrateCollections } from '@openeo/js-commons';
+import spdxParser from 'spdx-expression-parse';
+import Utils from '../utils.js';
 import './base.css';
 
 const STAC_FIELDS = {
@@ -305,6 +305,34 @@ export default {
 	methods: {
 		toggle() {
 			this.collapsed = !this.collapsed;
+		},
+		// Inspired from https://github.com/jslicense/spdx-to-html.js
+		parseLicense(license) {
+			try {
+				var parsed;
+				if (typeof license === 'string') {
+					parsed = spdxParser(license);
+				}
+				else {
+					parsed = license;
+				}
+				if (parsed.license && parsed.license.indexOf('LicenseRef') === -1) {
+					return (
+						'<a href="https://spdx.org/licenses/' + Utils.htmlentities(parsed.license) + '.html" target="_blank">' +
+						Utils.htmlentities(parsed.license) +
+						'</a>' +
+						(parsed.plus ? ' or newer' : '') +
+						(parsed.exception ? ' with ' + Utils.htmlentities(parsed.exception) : '')
+					);
+				}
+				else if (parsed.left && parsed.conjunction && parsed.right) {
+					var left = this.parseLicense(parsed.left);
+					var right = this.parseLicense(parsed.right);
+					return left + ' ' + parsed.conjunction + ' ' + right;
+				}
+			} catch (e) {}
+
+			return Utils.htmlentities(license);
 		},
 		formatTemporalExtent(extent) {
 			if (extent[0] == extent[1]) {
