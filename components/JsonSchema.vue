@@ -52,6 +52,7 @@
 							</ul>
 							<code v-else-if="key == 'examples' && Array.isArray(val) && val.length === 1">{{ val[0] }}</code>
 							<Description v-else-if="key == 'description'" :description="val" />
+							<em v-else-if="key == 'default' && val === ''">Empty string</em>
 							<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
 							<code v-else-if="key == 'pattern'">{{ val }}</code>
 							<JsonSchema v-else-if="typeof val === 'object'" :schema="val" :initShown="false" :nestingLevel="nestingLevel+1" />
@@ -171,11 +172,7 @@ export default {
 			if (key == 'object') {
 				return (this.schema.type == 'object' && (typeof this.schema.properties == 'object' || typeof this.schema.parameters == 'object'));
 			}
-			else if (key == 'title' || key == 'description') {
-				return false;
-			}
-			else if (key == 'format' && typeof this.schema.type === 'string' && ['object', 'array'].includes(this.schema.type.toLowerCase())) {
-				// If format has been added to the type, don't show again
+			else if (key == 'title' || key == 'description' || key == 'format') {
 				return false;
 			}
 			else if (key == 'items' && Object.keys(this.schema.items).length === 1 && typeof this.schema.items.type !== 'undefined') {

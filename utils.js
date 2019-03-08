@@ -26,7 +26,7 @@ var Utils = {
             return types.join(short ? '|' : ', ');
         }
         else if (typeof type === 'string' && type.toLowerCase() === 'array' && typeof schema.items === 'object' && typeof schema.items.type !== 'undefined') {
-            var arrType = "array<"+this.dataType(schema.items, short, level+1)+">";
+            var arrType = "array<"+this.dataType(schema.items, true, level+1)+">";
             if (typeof schema.format === 'string') {
                 if (level == 0) {
                     return schema.format + (short ? ":" + arrType : " ("+arrType+")");
@@ -39,8 +39,8 @@ var Utils = {
                 return arrType;
             }
         }
-        else if (typeof type === 'string' && type.toLowerCase() === 'object' && typeof schema.format === 'string') {
-            return schema.format + (short ? ":object" : " (object)");
+        else if (typeof type === 'string' && typeof schema.format === 'string') {
+            return schema.format + (short ? ":" + type : " ("+type+")");
         }
         return type;
     },
