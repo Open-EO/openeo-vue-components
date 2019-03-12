@@ -3,7 +3,7 @@
 	<em v-else-if="collapsed">... (<a @click="toggle()">show all {{ data.length }} entries</a>)</em>
 	<ul v-else>
 		<li v-for="(value, key) in data" :key="key">
-			<template v-if="shouldShowKey"><em>{{ prettifyKey(key) }}</em>: </template>
+			<template v-if="shouldShowKey"><em>{{ Utils.prettifyString(key) }}</em>: </template>
 			<ObjectTree v-if="showObjectTree(value)" :data="value"></ObjectTree>
 			<template v-else>{{ value }}</template>
 		</li>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import Utils from '../utils.js';
+
 export default {
     name: 'ObjectTree',
 	props: ['data'],
@@ -40,19 +42,7 @@ export default {
 		},
 		showObjectTree(value) {
 			return (typeof value === 'object') && !this.collapsed;
-		},
-        prettifyKey(key) {
-            if(this.$utils.isNumeric(key)) {
-                return key;
-            } else {
-				// Camelcase converter
-				key = key.replace(/([a-z])([A-Z])/g, '$1 $2')
-				// Kebab case converter
-				key = key.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
-				// Uppercase the first letter in the first word
-                return key.charAt(0).toUpperCase() + key.substr(1);
-            }
-        }
+		}
     }
 };
 </script>

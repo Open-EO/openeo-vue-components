@@ -69,30 +69,26 @@
                 </ol>
 			</section>
 
-			<section class="properties" v-if="collection.properties">
+			<section class="properties" v-if="Object.keys(collection.properties).length > 0">
 				<h3>Additional information</h3>
 				<div class="tabular" v-for="(value, key) in collection.properties" :key="key" :set="formattedValue = formatStacValue(value, key)">
 					<label>{{ formatStacKey(key) }}:</label>
-					<div class="value">
-<!--						<table v-if="key === 'eo:bands'" class="band-table">
-							<tr>
-								<th>Name</th>
-								<th>Common Name</th>
-								<th title="Ground Sample Distance">GSD</th>
-								<th>Accuracy</th>
-								<th title="Center wavelength">Wavelength</th>
-								<th title="Full With Half Max">FWHM</th>
-							</tr>
-							<tr v-for="(band, bandname) in value" :key="bandname">
-								<td><strong>{{ bandname }}</strong></td>
-								<td>{{ band.common_name }}</td>
-								<td>{{ formatStacValue(band.gsd, "eo:bands.gsd") }}</td>
-								<td>{{ formatStacValue(band.accuracy, "eo:bands.accuracy") }}</td>
-								<td>{{ formatStacValue(band.center_wavelength, "eo:bands.center_wavelength") || band['gee:wavelength'] }}</td>
-								<td>{{ band.full_width_half_max }}</td>
-							</tr>
-						</table> -->
-						<ObjectTree v-if="typeof formattedValue === 'object'" :data="value" />
+					<div class="value" :set="tableKeys = isTable(value)">
+						<table v-if="tableKeys" class="table">
+							<thead>
+								<tr>
+									<th v-if="!Array.isArray(value)">&nbsp;</th>
+									<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(band, bandname) in value" :key="bandname">
+									<th v-if="!Array.isArray(value)">{{ bandname }}</th>
+									<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(band[key], key) }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ObjectTree v-else-if="typeof formattedValue === 'object'" :data="value" />
 						<template v-else>{{ formattedValue }}</template>
 					</div>
 				</div>
@@ -355,9 +351,15 @@ export default {
 			if (typeof STAC_FIELDS[key] === 'object') {
 				return STAC_FIELDS[key].label;
 			}
-			return key;
+			else if (key.indexOf(':') !== -1) {
+				key = key.substr(key.indexOf(':')+1);
+			}
+			return Utils.prettifyString(key);
 		},
 		formatStacValue(value, key) {
+			if (typeof value === 'undefined') {
+				return '';
+			}
 			if (typeof STAC_FIELDS[key] === 'object') {
 				var info = STAC_FIELDS[key];
 
@@ -403,6 +405,10 @@ export default {
 				}
 			}
 			return value;
+		},
+
+		isTable(value) {
+			return Utils.isTableLike(value);
 		}
 	}
 }
@@ -421,8 +427,11 @@ export default {
 .provider-role {
 	text-transform: capitalize;
 }
-.band-table {
+.table {
 	width: 100%;
+}
+.table tbody th {
+	text-align: left;
 }
 .tabular {
 	margin: 0.75em 0;

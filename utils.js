@@ -56,7 +56,67 @@ var Utils = {
         else {
             return str;
         }
-	}
+    },
+    
+    countObjectKeys(data) {
+        var count = {};
+        for(var i in data) {
+            var obj = data[i];
+            if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
+                return null;
+            }
+            for(var key in obj) {
+                if (typeof count[key] === 'undefined') {
+                    count[key] = 1;
+                }
+                else {
+                    count[key]++;
+                }
+            }
+        }
+        return count;
+    },
+
+    isTableLike(data) {
+        if (typeof data !== 'object' || data === null) {
+            return false;
+        }
+
+        var countedKeys = this.countObjectKeys(data);
+        if (countedKeys !== null) {
+            var num = 0;
+            var sum = 0;
+            for (var i in countedKeys) {
+                num++;
+                sum += countedKeys[i];
+            }
+            var avg = sum / num;
+            var dataSize = Array.isArray(dataSize) ? data.length : Object.keys(data).length;
+
+            if (avg > dataSize/2) {
+                return Object.keys(countedKeys);
+            }
+        }
+
+        return false;
+    },
+
+	isNumeric(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+    },
+
+    prettifyString(s) {
+        if(Utils.isNumeric(s)) {
+            return s;
+        } else {
+            // Camelcase converter
+            s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
+            // Kebab case converter
+            s = s.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
+            // Uppercase the first letter in the first word
+            return s.charAt(0).toUpperCase() + s.substr(1);
+        }
+    }
 
 };
 
