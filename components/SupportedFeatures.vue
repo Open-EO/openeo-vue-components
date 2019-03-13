@@ -75,7 +75,13 @@ export default {
 	props: {
 		version: String,
 		endpoints: Array
-	},
+    },
+    data() {
+        return {
+            featureCount: Object.keys(FUNCTIONALITIES_0_3).length,
+            supportedFeatureCount: 0
+        };
+    },
 	computed: {
 		functionalities() {
             var supportedEndpoints = [];
@@ -99,6 +105,7 @@ export default {
                     // No unsupported endpoints => fully supported
                     case 0:
                         status[key] = 2;
+                        this.supportedFeatureCount++;
                         break;
                     // All endpoints are unsupported
                     case requiredEndpoints.length:
@@ -123,6 +130,12 @@ export default {
                 default:
                     return '❌';
             }
+        },
+        getFeatureCount() {
+            return this.featureCount;
+        },
+        getSupportedFeatureCount() {
+            return this.supportedFeatureCount;
         }
     }
 }

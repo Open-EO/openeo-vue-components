@@ -1,8 +1,10 @@
 <template>
-	<article class="vue-component process">
+	<article class="vue-component process"><div :class="{collapsible: initiallyCollapsed, expanded: !collapsed}">
 
 		<a class="anchor" :name="process.id"></a>
-		<h2>{{ process.id }}</h2>
+		<h2 @click="toggle()">
+			<span class="toggle">❯</span>{{ process.id }}
+		</h2>
 
 		<slot name="process-before-summary"></slot>
 
@@ -29,8 +31,6 @@
 		</template>
 
 		<slot name="process-after-summary"></slot>
-
-		<button v-if="initiallyCollapsed" class="show-more-button" @click="toggle()">Show {{collapsed ? 'more' : 'less'}}</button>
 
 		<div v-if="!collapsed">
 
@@ -100,7 +100,7 @@
 
 		</div>
 
-	</article>
+	</div></article>
 </template>
 
 <script>
@@ -173,11 +173,15 @@ export default {
 		}
 	},
 	beforeMount() {
-		this.collapsed = this.initiallyCollapsed;
+		if (this.initiallyCollapsed) {
+			this.collapsed = !this.collapsed;
+		}
 	},
 	methods: {
 		toggle() {
-			this.collapsed = !this.collapsed;
+			if (this.initiallyCollapsed) {
+				this.collapsed = !this.collapsed;
+			}
 		},
 		formatCategory(name) {
 			return name.replace('_', ' ');

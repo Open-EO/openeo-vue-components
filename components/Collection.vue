@@ -1,27 +1,16 @@
 <template>
-	<article class="vue-component collection">
+	<article class="vue-component collection"><div :class="{collapsible: initiallyCollapsed, expanded: !collapsed}">
+
 		<a class="anchor" :name="collection.id"></a>
-		<h2>{{ collection.id }}</h2>
+		<h2 @click="toggle()">
+			<span class="toggle">❯</span>{{ collection.id }}
+		</h2>
 
 		<slot name="collection-before-summary"></slot>
 
-		<div class="summary" v-if="collection.title">
-			<div class="collection-bar">
-				<ul class="badges">
-					<li class="badge license">
-						License: 
-						<a v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
-						<span v-else v-html="parseLicense(collection.license)"></span>
-					</li>
-					<li class="badge version" v-if=" collection.version">Version: {{ collection.version }}</li>
-				</ul>
-			</div>
-			<summary>{{collection.title}}</summary>
-		</div>
+		<summary v-if="collection.title">{{collection.title}}</summary>
 
 		<slot name="collection-after-summary"></slot>
-
-		<button v-if="initiallyCollapsed" class="show-more-button" @click="toggle()">Show {{collapsed ? 'more' : 'less'}}</button>
 
 		<div v-if="!collapsed">
 
@@ -30,14 +19,28 @@
 			<section class="description" v-if="collection.description">
 				<h3>Description</h3>
 				<Description :description="collection.description"></Description>
-				<p v-if="collection.keywords"><strong>Keywords: </strong><ul class="comma-separated-list">
-					<li v-for="(keyword, i) in collection.keywords" :key="i">{{ keyword }}</li>
-				</ul></p>
+
+				<div v-if="collection.keywords">
+					<strong>Keywords:</strong>&nbsp;
+					<ul class="comma-separated-list">
+						<li v-for="(keyword, i) in collection.keywords" :key="i">{{ keyword }}</li>
+					</ul>
+				</div>
+			</section>
+
+			<section class="">
+				<h3>License</h3>
+				<a class="value" v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
+				<span class="value" v-else v-html="parseLicense(collection.license)"></span>
 			</section>
 
 			<section class="extent">
+				<h3>Temporal Extent</h3>
+				<slot name="collection-temporal-extent" :extent="collection.extent.temporal">
+					<p>{{ formatTemporalExtent(collection.extent.temporal) }}</p>
+				</slot>
+			
 				<h3>Spatial Extent</h3>
-
 				<slot name="collection-spatial-extent" :extent="collection.extent.spatial">
 					<ul>
 						<li>North: {{collection.extent.spatial[3]}}</li>
@@ -45,11 +48,6 @@
 						<li>East: {{collection.extent.spatial[2]}}</li>
 						<li>West: {{collection.extent.spatial[0]}}</li>
 					</ul>
-				</slot>
-
-				<h3>Temporal Extent</h3>
-				<slot name="collection-temporal-extent" :extent="collection.extent.temporal">
-					<p>{{ formatTemporalExtent(collection.extent.temporal) }}</p>
 				</slot>
 			</section>
 
@@ -71,6 +69,9 @@
 
 			<section class="properties" v-if="Object.keys(collection.properties).length > 0">
 				<h3>Additional information</h3>
+
+				<div class="tabular" v-if="collection.version"><label>Collection Version:</label> <span class="value">{{ collection.version }}</span></div>
+
 				<div class="tabular" v-for="(value, key) in collection.properties" :key="key" :set="formattedValue = formatStacValue(value, key)">
 					<label>{{ formatStacKey(key) }}:</label>
 					<div class="value" :set="tableKeys = isTable(value)">
@@ -103,7 +104,7 @@
 			
 		</div>
 
-	</article>
+	</div></article>
 </template>
 
 <script>
@@ -300,7 +301,9 @@ export default {
 	},
 	methods: {
 		toggle() {
-			this.collapsed = !this.collapsed;
+			if (this.initiallyCollapsed) {
+				this.collapsed = !this.collapsed;
+			}
 		},
 		// Inspired from https://github.com/jslicense/spdx-to-html.js
 		parseLicense(license) {
@@ -415,15 +418,6 @@ export default {
 </script>
 
 <style scoped>
-.badges {
-	margin-bottom: 0.75em;
-}
-.badges .license {
-	background-color: maroon;
-}
-.badges .version {
-	background-color: darkblue;
-}
 .provider-role {
 	text-transform: capitalize;
 }

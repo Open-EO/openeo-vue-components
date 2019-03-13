@@ -1,6 +1,8 @@
 <template>
 	<section class="vue-component billing-plans">
-		<strong>Currency:</strong> {{ billing.currency }}
+		<div class="billing-currency">
+			<strong>Currency:</strong> {{ billing.currency }}
+		</div>
 		<h4>Plans</h4>
 		<ul>
 			<li v-for="(plan, key) in billing.plans" :key="key">
