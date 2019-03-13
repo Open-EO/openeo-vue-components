@@ -23,7 +23,7 @@
 
 		<button v-if="initiallyCollapsed" class="show-more-button" @click="toggle()">Show {{collapsed ? 'more' : 'less'}}</button>
 
-		<div v-show="!collapsed">
+		<div v-if="!collapsed">
 
 			<slot name="collection-before-details"></slot>
 
