@@ -429,9 +429,18 @@ export default {
 }
 .table {
 	width: 100%;
+	border-collapse: collapse;
 }
-.table tbody th {
+.table th {
 	text-align: left;
+	background-color: #eee;
+}
+.table td, .table th {
+	border: 1px solid #ccc;
+	padding: 3px;
+}
+.table tr:hover {
+	background-color: #f9f9f9;
 }
 .tabular {
 	margin: 0.75em 0;
