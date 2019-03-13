@@ -1,6 +1,6 @@
 <template>
 	<ul class="vue-component service-types">
-		<li v-for="(args, name) in services" :key="name">{{ name.toUpperCase() }}</li>
+		<li v-for="(args, name) in services" :key="name">{{ name }}</li>
 	</ul>
 </template>
 

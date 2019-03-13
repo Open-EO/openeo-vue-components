@@ -1,8 +1,6 @@
 <template>
 	<section class="vue-component billing-plans">
-		<div class="tabular">
-			<label>Currency:</label><span class="value">{{ billing.currency }}</span>
-		</div>
+		<strong>Currency:</strong> {{ billing.currency }}
 		<h4>Plans</h4>
 		<ul>
 			<li v-for="(plan, key) in billing.plans" :key="key">
@@ -15,7 +13,7 @@
 					<li class="badge paid" v-if="billing.paid === true">paid</li>
 					<li class="badge free" v-else-if="billing.paid === false">free</li>
 				</ul>
-				<Description v-if="billing.description" :description="billing.description" />
+				<Description v-if="plan.description" :description="plan.description" />
 			</li>
 		</ul>
 	</section>

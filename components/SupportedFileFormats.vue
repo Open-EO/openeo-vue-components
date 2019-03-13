@@ -1,6 +1,6 @@
 <template>
 	<ul class="vue-component file-formats">
-		<li v-for="(args, name) in formats.formats" :key="name">{{ name.toUpperCase() }}</li>
+		<li v-for="(args, name) in formats.formats" :key="name">{{ name }}</li>
 	</ul>
 </template>
 
