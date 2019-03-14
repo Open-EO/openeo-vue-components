@@ -40,6 +40,7 @@ A simple text renderer, which supports CommonMark.
 **Properties:**
 - `description` (string): The text to show.
 - `preprocessor` (function): A function that further processes the text, before CommonMark is parsed.
+- `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
 
 ### `LinkList`
 A simple list of links.
@@ -98,7 +99,7 @@ Visualizes the supported functionalities of the back-end.
 **Properties:**
 
 - `version` (string): openEO version
-- `endpoints` (object): Supported endpoints as defined by the openEO API.
+- `endpoints` (object): Supported endpoints as defined by the openEO API.
 
 ## Utils
 Some utility methods used by the components, which could also be useful for other purposes:
