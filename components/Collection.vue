@@ -62,7 +62,7 @@
 								<li v-for="(role, r) in provider.roles" :key="r" class="provider-role">{{ role }}</li>
 							</ul>)
 						</template>
-						<Description v-if="provider.description" :description="provider.description" />
+						<Description v-if="provider.description" :description="provider.description" :compact="true" />
 					</li>
                 </ol>
 			</section>

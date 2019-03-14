@@ -15,7 +15,7 @@
 					<li class="badge paid" v-if="billing.paid === true">paid</li>
 					<li class="badge free" v-else-if="billing.paid === false">free</li>
 				</ul>
-				<Description v-if="plan.description" :description="plan.description" />
+				<Description v-if="plan.description" :description="plan.description" :compact="true" />
 			</li>
 		</ul>
 	</section>

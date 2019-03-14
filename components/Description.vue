@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-component styled-description" v-html="markup(description)"></div>
+	<div class="vue-component styled-description" :class="{compact: compact}" v-html="markup(description)"></div>
 </template>
 
 <script>
@@ -10,7 +10,11 @@ export default {
 	name: 'Description',
 	props: {
 		description: String,
-		preprocessor: Function
+		preprocessor: Function,
+		compact: {
+			type: Boolean,
+			default: false
+		}
 	},
 	methods: {
 		markup(text) {
@@ -32,12 +36,26 @@ export default {
 .vue-component.styled-description {
 	line-height: 1.25em;
 }
+.vue-component.styled-description.compact p {
+	margin: 0.5em 0;
+}
+.vue-component.styled-description.compact p:first-child {
+	margin-top: 0;
+}
+.vue-component.styled-description.compact p:last-child {
+	margin-bottom: 0;
+}
 .vue-component.styled-description pre {
 	background-color: #eee;
 	width: 100%;
 	border: 1px solid #ccc;
 	max-height: 15em;
 	overflow-y: auto;
+}
+.vue-component.styled-description.compact pre {
+	max-height: 7em;
+	width: auto;
+	max-width: 100%;
 }
 .vue-component.styled-description pre code {
 	background-color: transparent; 

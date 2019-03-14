@@ -80,7 +80,7 @@
 						<code>{{ name }}</code>
 						<span class="http-code" v-if="exception.http"> — HTTP {{ exception.http }}</span>
 						<span class="error-code" v-if="exception.code"> — {{ exception.code }}</span>
-						<Description v-if="exception.description" :description="exception.description" :preprocessor="processReferenceParser" />
+						<Description v-if="exception.description" :description="exception.description" :preprocessor="processReferenceParser" :compact="true" />
 						<div v-if="exception.message" class="message">Message: <em>{{ exception.message }}</em></div>
 					</li>
 				</ul>

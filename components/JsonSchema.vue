@@ -28,7 +28,7 @@
 					<td colspan="2"><strong>{{ schema.title }}</strong></td>
 				</tr>
 				<tr v-if="typeof schema.description == 'string'">
-					<td colspan="2"><Description :description="schema.description" /></td>
+					<td colspan="2"><Description :description="schema.description" :compact="true" /></td>
 				</tr>
 				<tr v-if="showAnyType()">
 					<td class="key">{{ formatKey('type') }}:</td>
@@ -51,7 +51,7 @@
 								<li v-for="(v, k) in val" :key="k"><code>{{ v }}</code></li>
 							</ul>
 							<code v-else-if="key == 'examples' && Array.isArray(val) && val.length === 1">{{ val[0] }}</code>
-							<Description v-else-if="key == 'description'" :description="val" />
+							<Description v-else-if="key == 'description'" :description="val" :compact="true" />
 							<em v-else-if="key == 'default' && val === ''">Empty string</em>
 							<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
 							<code v-else-if="key == 'pattern'">{{ val }}</code>
