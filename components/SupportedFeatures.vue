@@ -1,6 +1,8 @@
 <template>
 	<ul class="vue-component features">
-		<li v-for="(status, functionality) in functionalities" :key="functionality"><span v-text="getIcon(status)"></span> {{functionality}}</li>
+		<li v-for="(status, functionality) in functionalities" :key="functionality">
+            <span v-text="getIcon(status)" :class="{supported: status == 2, unsupported: status == 0, partial: status == 1}"></span> {{functionality}}
+        </li>
 	</ul>
 </template>
 
@@ -147,5 +149,14 @@ export default {
 }
 .features li {
     list-style-type: none;
+}
+.supported {
+    color: darkgreen;
+}
+.unsupported {
+    color: maroon;
+}
+.partial {
+    color: darkgoldenrod;
 }
 </style>
