@@ -3,7 +3,7 @@
 
 		<a class="anchor" :name="collection.id"></a>
 		<h2 @click="toggle()">
-			<span class="toggle">❯</span>{{ collection.id }}
+			<span class="toggle">▸</span>{{ collection.id }}
 		</h2>
 
 		<slot name="collection-before-summary"></slot>

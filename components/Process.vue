@@ -3,7 +3,7 @@
 
 		<a class="anchor" :name="process.id"></a>
 		<h2 @click="toggle()">
-			<span class="toggle">❯</span>{{ process.id }}
+			<span class="toggle">▸</span>{{ process.id }}
 		</h2>
 
 		<slot name="process-before-summary"></slot>
