@@ -11,7 +11,6 @@
 // A functionality is considered supported when ALL of the corresponding endpoints are supported.
 const FUNCTIONALITIES_0_3 = {
     'Basic functionality': [
-        'get /',
         'get /collections',
         'get /collections/{}',
         'get /processes',
