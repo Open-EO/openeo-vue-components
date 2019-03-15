@@ -55,7 +55,7 @@
 							<em v-else-if="key == 'default' && val === ''">Empty string</em>
 							<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
 							<code v-else-if="key == 'pattern'">{{ val }}</code>
-							<JsonSchema v-else-if="typeof val === 'object'" :schema="val" :initShown="false" :nestingLevel="nestingLevel+1" />
+							<JsonSchema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" />
 							<span v-else>{{ val }}</span>
 						</td>
 					</template>
@@ -86,19 +86,26 @@ export default {
 	},
 	data() {
 		return {
-			visible: this.initShown
+			visible: this.initShown,
+			filteredObjectSchema: null
 		};
-	},
-	watcher: {
-		initShown(newVal, oldVal) {
-			this.visible = newVal;
-		}
 	},
 	components: {
 		Description
 	},
-	computed: {
-		filteredObjectSchema() {
+	created() {
+        this.updateData();
+	},
+	watch: {
+		initShown(newVal, oldVal) {
+			this.visible = newVal;
+		},
+		schema() {
+			this.updateData();
+		}
+	},
+	methods: {
+		updateData() {
 			var filtered = null;
 			for(var key in this.schema) {
 				if (key == 'required' || key == 'properties' || key == 'parameters') {
@@ -109,10 +116,8 @@ export default {
 				}
 				filtered[key] = this.schema[key];
 			}
-			return filtered;
-		}
-	},
-	methods: {
+			this.filteredObjectSchema = filtered;
+		},
 		show() {
 			this.visible = true;
 		},

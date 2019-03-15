@@ -3,7 +3,7 @@
 	<em v-else-if="collapsed">... (<a @click="toggle()">show all {{ data.length }} entries</a>)</em>
 	<ul v-else>
 		<li v-for="(value, key) in data" :key="key">
-			<template v-if="shouldShowKey"><em>{{ Utils.prettifyString(key) }}</em>: </template>
+			<template v-if="shouldShowKey"><em>{{ prettifyKey(key) }}</em>: </template>
 			<ObjectTree v-if="showObjectTree(value)" :data="value"></ObjectTree>
 			<template v-else>{{ value }}</template>
 		</li>
@@ -37,6 +37,9 @@ export default {
 		},
 	},
     methods: {
+		prettifyKey(key) {
+			return Utils.prettifyString(key);
+		},
 		toggle() {
 			this.collapsed = !this.collapsed;
 		},

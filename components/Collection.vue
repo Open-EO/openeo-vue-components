@@ -272,34 +272,42 @@ export default {
 	},
 	data() {
 		return {
-			collapsed: false
+			collapsed: false,
+			collection: {},
+			licenseUrl: false,
+			filteredLinks: []
 		}
 	},
-	computed: {
-		collection() {
-			var data = MigrateCollections.convertCollectionToLatestSpec(this.collectionData, this.version);
-			if (!Array.isArray(data.links)) {
-				data.links = [];
-			}
-			return data;
+	watch: {
+		version() {
+			this.updateData();
 		},
-		licenseUrl() {
-			for (var i in this.collection.links) {
-				var link = this.collection.links[i];
-				if (link.rel === 'license' && link.href) {
-					return link.href;
-				}
-			}
-			return false;
-		},
-		filteredLinks() {
-			return this.collection.links.filter(l => typeof l.rel === 'undefined' || ['self', 'parent', 'root'].indexOf(l.rel) == -1);
+		collectionData() {
+			this.updateData();
 		}
+	},
+	created() {
+		this.updateData();
 	},
 	beforeMount() {
 		this.collapsed = this.initiallyCollapsed;
 	},
 	methods: {
+		updateData() {
+			var data = MigrateCollections.convertCollectionToLatestSpec(this.collectionData, this.version);
+			if (!Array.isArray(data.links)) {
+				data.links = [];
+			}
+			this.collection = data;
+
+			this.licenseUrl = false;
+			this.filteredLinks = data.links.filter(l => {
+				if (l.rel === 'license' && l.href) {
+					this.licenseUrl = l.href;
+				}
+				return (typeof l.rel === 'undefined' || ['self', 'parent', 'root', 'license'].indexOf(l.rel) == -1);
+			});
+		},
 		toggle() {
 			if (this.initiallyCollapsed) {
 				this.collapsed = !this.collapsed;

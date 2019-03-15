@@ -142,11 +142,28 @@ export default {
 	},
 	data() {
 		return {
-			collapsed: false
+			collapsed: false,
+			process: {}
 		}
 	},
-	computed: {
-		process() {
+	watch: {
+		version() {
+			this.updateData();
+		},
+		processData() {
+			this.updateData();
+		}
+	},
+	created() {
+		this.updateData();
+	},
+	beforeMount() {
+		if (this.initiallyCollapsed) {
+			this.collapsed = !this.collapsed;
+		}
+	},
+	methods: {
+		updateData() {
 			var process = MigrateProcesses.convertProcessToLatestSpec(this.processData, this.version);
 
 			// Fill parameter order
@@ -169,15 +186,8 @@ export default {
 			process.parameters = parameters;
 			process.parameter_order = order;
 
-			return process;
-		}
-	},
-	beforeMount() {
-		if (this.initiallyCollapsed) {
-			this.collapsed = !this.collapsed;
-		}
-	},
-	methods: {
+			this.process = process;
+		},
 		toggle() {
 			if (this.initiallyCollapsed) {
 				this.collapsed = !this.collapsed;

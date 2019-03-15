@@ -8,8 +8,10 @@
 		<Description v-if="capabilities.description" :description="capabilities.description" />
 		<h3>Supported functionalities</h3>
 		<SupportedFeatures :version="capabilities.version" :endpoints="capabilities.endpoints" />
-		<h3>Billing</h3>
-		<BillingPlans :version="capabilities.version" :billing="capabilities.billing" />
+		<template v-if="capabilities.billing">
+			<h3>Billing</h3>
+			<BillingPlans :version="capabilities.version" :billing="capabilities.billing" />
+		</template>
 	</div>
 </template>
 

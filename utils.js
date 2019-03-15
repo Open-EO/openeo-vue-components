@@ -110,12 +110,19 @@ var Utils = {
             return s;
         } else {
             // Camelcase converter
-            s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
+            s = s.replace(/([a-z])([A-Z])/g, '$1 $2');
             // Kebab case converter
             s = s.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
             // Uppercase the first letter in the first word
             return s.charAt(0).toUpperCase() + s.substr(1);
         }
+    },
+
+    prettifyAbbreviation(s) {
+        if (typeof s === 'string' && s.match(/[A-Z]+/) === null) {
+            return s.toUpperCase();
+        }
+        return s;
     }
 
 };
