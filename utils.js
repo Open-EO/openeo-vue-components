@@ -106,7 +106,7 @@ var Utils = {
     },
 
     prettifyString(s) {
-        if(Utils.isNumeric(s)) {
+        if(this.isNumeric(s)) {
             return s;
         } else {
             // Camelcase converter
