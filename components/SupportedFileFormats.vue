@@ -1,11 +1,12 @@
 <template>
 	<ul class="vue-component file-formats">
-		<li v-for="(args, name) in formats.formats" :key="name">{{ prettify(name) }}</li>
+		<li v-for="(args, name) in outputFormats" :key="name">{{ prettify(name) }}</li>
 	</ul>
 </template>
 
 <script>
 import Utils from '../utils.js';
+import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
@@ -14,7 +15,26 @@ export default {
 		version: String,
 		formats: Object
 	},
-  methods: {
+	data() {
+		return {
+			outputFormats: {}
+		};
+	},
+    created() {
+        this.updateData();
+    },
+    watch: {
+        formats() {
+            this.updateData();
+        },
+        version() {
+            this.updateData();
+        }
+    },
+	methods: {
+        updateData() {
+            this.outputFormats = MigrateCapabilities.convertOutputFormatsToLatestSpec(this.formats, this.version);
+        },
 		prettify(name) {
 			return Utils.prettifyAbbreviation(name);
 		}

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { FeatureList } from '@openeo/js-commons';
+import { FeatureList, MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
@@ -37,7 +37,8 @@ export default {
     methods: {
         updateData() {
             this.featureCount = FeatureList.getFeatureCount();
-            var report = FeatureList.getReport(this.endpoints, this.version);
+            var endpoints = MigrateCapabilities.convertEndpointsToLatestSpec(this.endpoints, this.version);
+            var report = FeatureList.getReport(endpoints, this.version);
             this.supportedFeatures = report.list;
             this.supportedFeatureCount = report.count;
         },
