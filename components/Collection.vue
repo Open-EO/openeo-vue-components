@@ -28,7 +28,7 @@
 				</div>
 			</section>
 
-			<section class="">
+			<section class="license">
 				<h3>License</h3>
 				<a class="value" v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
 				<span class="value" v-else v-html="parseLicense(collection.license)"></span>
