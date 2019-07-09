@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -28,13 +28,13 @@
     "utils.js"
   ],
   "dependencies": {
-    "@openeo/js-commons": "^0.3.4",
+    "@openeo/js-commons": "^0.4.0",
     "commonmark": "^0.28.1",
     "spdx-expression-parse": "^3.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
-    "@vue/cli-service": "^3.3.0",
+    "@vue/cli-service": "^3.9.0",
     "vue-template-compiler": "^2.5.22"
   },
   "peerDependencies": {

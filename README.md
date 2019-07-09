@@ -1,5 +1,8 @@
 # openeo-vue-components
+
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
+
+This library's version is **0.3.6** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
 
 ## Components
 
@@ -77,6 +80,14 @@ Note: `ProcessExample` is not meant to be used separately.
 - `process-before-details`
 - `process-after-details`
 
+### `SupportedFeatures`
+Visualizes the supported functionalities of the back-end.
+
+**Properties:**
+
+- `version` (string): openEO version
+- `endpoints` (object): Supported endpoints as defined by the openEO API.
+
 ### `SupportedFileFormats`
 Visualizes the supported output file formats of the back-end.
 
@@ -92,16 +103,3 @@ Visualizes the supported secondary web service types of the back-end.
 
 - `version` (string): openEO version
 - `services` (object): Supported service types as defined by the openEO API.
-
-### `SupportedFeatures`
-Visualizes the supported functionalities of the back-end.
-
-**Properties:**
-
-- `version` (string): openEO version
-- `endpoints` (object): Supported endpoints as defined by the openEO API.
-
-## Utils
-Some utility methods used by the components, which could also be useful for other purposes:
-
-- ToDo
