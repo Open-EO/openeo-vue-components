@@ -67,7 +67,7 @@
                 </ol>
 			</section>
 
-			<section class="properties" v-if="Object.keys(collection.properties).length > 0">
+			<section class="properties" v-if="hasProperties">
 				<h3>Additional information</h3>
 
 				<div class="tabular" v-if="collection.version"><label>Collection Version:</label> <span class="value">{{ collection.version }}</span></div>
@@ -276,6 +276,11 @@ export default {
 			collection: {},
 			licenseUrl: false,
 			filteredLinks: []
+		}
+	},
+	computed: {
+		hasProperties() {
+			return collection.properties && typeof collection.properties === 'object' && Object.keys(collection.properties).length > 0;
 		}
 	},
 	watch: {
