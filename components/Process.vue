@@ -164,7 +164,10 @@ export default {
 	},
 	methods: {
 		updateData() {
-			var process = MigrateProcesses.convertProcessToLatestSpec(this.processData, this.version);
+			// "Clone" object with the ugly JSON parse/stringify workaround so that the changes to the parameters below 
+			// are not applies to the original processData and therefore the download (in processes-docgen) delivers the original files!
+			var process = JSON.parse(JSON.stringify(this.processData));
+			process = MigrateProcesses.convertProcessToLatestSpec(process, this.version);
 
 			// Fill parameter order
 			if (!Array.isArray(process.parameter_order)) {
