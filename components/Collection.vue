@@ -31,7 +31,7 @@
 			<section class="license">
 				<h3>License</h3>
 				<a class="value" v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
-				<span class="value" v-else v-html="parseLicense(collection.license)"></span>
+				<span class="value" v-else>{{ collection.license }}</span>
 			</section>
 
 			<section class="extent">
@@ -112,7 +112,6 @@ import Description from './Description.vue';
 import LinkList from './LinkList.vue';
 import ObjectTree from './ObjectTree.vue';
 import { MigrateCollections } from '@openeo/js-commons';
-import spdxParser from 'spdx-expression-parse';
 import Utils from '../utils.js';
 import './base.css';
 
@@ -317,34 +316,6 @@ export default {
 			if (this.initiallyCollapsed) {
 				this.collapsed = !this.collapsed;
 			}
-		},
-		// Inspired from https://github.com/jslicense/spdx-to-html.js
-		parseLicense(license) {
-			try {
-				var parsed;
-				if (typeof license === 'string') {
-					parsed = spdxParser(license);
-				}
-				else {
-					parsed = license;
-				}
-				if (parsed.license && parsed.license.indexOf('LicenseRef') === -1) {
-					return (
-						'<a href="https://spdx.org/licenses/' + Utils.htmlentities(parsed.license) + '.html" target="_blank">' +
-						Utils.htmlentities(parsed.license) +
-						'</a>' +
-						(parsed.plus ? ' or newer' : '') +
-						(parsed.exception ? ' with ' + Utils.htmlentities(parsed.exception) : '')
-					);
-				}
-				else if (parsed.left && parsed.conjunction && parsed.right) {
-					var left = this.parseLicense(parsed.left);
-					var right = this.parseLicense(parsed.right);
-					return left + ' ' + parsed.conjunction + ' ' + right;
-				}
-			} catch (e) {}
-
-			return Utils.htmlentities(license);
 		},
 		formatTemporalExtent(extent) {
 			if (extent[0] == extent[1]) {
