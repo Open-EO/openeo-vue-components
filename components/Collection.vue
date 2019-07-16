@@ -67,32 +67,49 @@
                 </ol>
 			</section>
 
-			<section class="properties" v-if="hasProperties">
+			<section class="properties" v-if="hasAdditionalValues">
 				<h3>Additional information</h3>
 
 				<div class="tabular" v-if="collection.version"><label>Collection Version:</label> <span class="value">{{ collection.version }}</span></div>
 
-				<div class="tabular" v-for="(value, key) in collection.properties" :key="key" :set="formattedValue = formatStacValue(value, key)">
-					<label>{{ formatStacKey(key) }}:</label>
-					<div class="value" :set="tableKeys = isTable(value)">
-						<table v-if="tableKeys" class="table">
-							<thead>
-								<tr>
-									<th v-if="!Array.isArray(value)">&nbsp;</th>
-									<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="(band, bandname) in value" :key="bandname">
-									<th v-if="!Array.isArray(value)">{{ bandname }}</th>
-									<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(band[key], key) }}</td>
-								</tr>
-							</tbody>
-						</table>
-						<ObjectTree v-else-if="typeof formattedValue === 'object'" :data="value" />
-						<template v-else>{{ formattedValue }}</template>
+				<template v-if="hasProperties">
+					<div class="tabular" v-for="(value, field) in collection.properties" :key="field" :set="formattedValue = formatStacValue(value, field)">
+						<label>{{ formatStacKey(field) }}:</label>
+						<div class="value" :set="tableKeys = isTable(value)">
+							<table v-if="tableKeys" class="table">
+								<thead>
+									<tr>
+										<th v-if="!Array.isArray(value)">&nbsp;</th>
+										<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(row, rowname) in value" :key="rowname">
+										<th v-if="!Array.isArray(value)">{{ rowname }}</th>
+										<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(row[key], key, field) }}</td>
+									</tr>
+								</tbody>
+							</table>
+							<ObjectTree v-else-if="typeof formattedValue === 'object'" :data="value" />
+							<template v-else>{{ formattedValue }}</template>
+						</div>
 					</div>
-				</div>
+				</template>
+	
+				<template v-if="hasOtherProperties">
+					<div class="tabular" v-for="(value, field) in collection.other_properties" :key="field">
+						<label>{{ formatStacKey(field) }}:</label>
+						<div class="value">
+							<template v-if="value.values">
+								{{ formatValues(value.values, field) }}
+							</template>
+							<template v-else-if="value.extent">
+								{{ formatExtent(value.extent, field) }}
+							</template>
+						</div>
+					</div>
+				</template>
+
 			</section>
 
 			<section class="links" v-if="filteredLinks.length > 0">
@@ -111,7 +128,7 @@
 import Description from './Description.vue';
 import LinkList from './LinkList.vue';
 import ObjectTree from './ObjectTree.vue';
-import { MigrateCollections } from '@openeo/js-commons';
+import { MigrateCollections, Utils as CommonUtils } from '@openeo/js-commons';
 import Utils from '../utils.js';
 import './base.css';
 
@@ -248,6 +265,14 @@ const STAC_FIELDS = {
 	},
 	"gee:revisit_interval": {
 		label: "Revisit interval"
+	},
+	"cube:dimensions.extent": {
+		label: "Extent",
+		format: "Extent"
+	},
+	"cube:dimensions.values": {
+		label: "Values",
+		format: "CommaValues"
 	}
 };
 
@@ -279,7 +304,13 @@ export default {
 	},
 	computed: {
 		hasProperties() {
-			return collection.properties && typeof collection.properties === 'object' && Object.keys(collection.properties).length > 0;
+			return CommonUtils.isObject(this.collection.properties) && Object.keys(this.collection.properties).length > 0;
+		},
+		hasOtherProperties() {
+			return CommonUtils.isObject(this.collection.other_properties) && Object.keys(this.collection.other_properties).length > 0;
+		},
+		hasAdditionalValues() {
+			return collection.version || this.hasProperties || this.hasOtherProperties;
 		}
 	},
 	watch: {
@@ -312,6 +343,25 @@ export default {
 				return (typeof l.rel === 'undefined' || ['self', 'parent', 'root', 'license'].indexOf(l.rel) == -1);
 			});
 		},
+		formatExtent(extent, key = null) {
+			var v1 = key === null ? extent[0] : this.formatStacValue(extent[0], key);
+			var v2 = key === null ? extent[1] : this.formatStacValue(extent[1], key);
+			if (v1 === null) {
+				return "Until " + v2;
+			}
+			else if (v2 === null) {
+				return "From " + v1;
+			}
+			else {
+				return v1 + ' to ' + v2;
+			}
+		},
+		formatValues(values, key) {
+			return this.formatCommaValues(values.map(v => this.formatStacValue(v, key)));
+		},
+		formatCommaValues(values) {
+			return values.join(', ');
+		},
 		toggle() {
 			if (this.initiallyCollapsed) {
 				this.collapsed = !this.collapsed;
@@ -343,12 +393,20 @@ export default {
 			}
 			return Utils.prettifyString(key);
 		},
-		formatStacValue(value, key) {
+		formatStacValue(value, key, parentField = null) {
 			if (typeof value === 'undefined') {
 				return '';
 			}
-			if (typeof STAC_FIELDS[key] === 'object') {
-				var info = STAC_FIELDS[key];
+			var fieldName = parentField ? parentField + "." + key : key;
+			if (typeof STAC_FIELDS[fieldName] === 'object') {
+				var info = STAC_FIELDS[fieldName];
+
+				if (typeof info.format === 'function') {
+					return info.format(value, key);
+				}
+				else if (typeof this['format' + info.format] === 'function') {
+					return this['format' + info.format](value);
+				}
 
 				var isScalarArray = false;
 				if (Array.isArray(value)) {
@@ -364,13 +422,6 @@ export default {
 							value[i] = this.formatStacValue(value[i]);
 						}
 					}
-				}
-
-				if (typeof info.format === 'function') {
-					return info.format(value, key);
-				}
-				else if (typeof this['format' + info.format] === 'function') {
-					return this['format' + info.format](value);
 				}
 
 				if (value === 'null') {
