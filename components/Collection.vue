@@ -310,7 +310,7 @@ export default {
 			return CommonUtils.isObject(this.collection.other_properties) && Object.keys(this.collection.other_properties).length > 0;
 		},
 		hasAdditionalValues() {
-			return collection.version || this.hasProperties || this.hasOtherProperties;
+			return this.collection.version || this.hasProperties || this.hasOtherProperties;
 		}
 	},
 	watch: {
