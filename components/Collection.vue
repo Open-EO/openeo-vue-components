@@ -20,7 +20,7 @@
 				<h3>Description</h3>
 				<Description :description="collection.description"></Description>
 
-				<div v-if="collection.keywords">
+				<div v-if="hasElements(collection.keywords)">
 					<strong>Keywords:</strong>&nbsp;
 					<ul class="comma-separated-list">
 						<li v-for="(keyword, i) in collection.keywords" :key="i">{{ keyword }}</li>
@@ -57,7 +57,7 @@
 					<li v-for="(provider, key) in collection.providers" :key="key">
 						<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
 						<template v-else>{{ provider.name }}</template>
-						<template v-if="Array.isArray(provider.roles) && provider.roles.length > 0">
+						<template v-if="hasElements(provider.roles)">
 							(<ul class="comma-separated-list">
 								<li v-for="(role, r) in provider.roles" :key="r" class="provider-role">{{ role }}</li>
 							</ul>)
@@ -73,7 +73,7 @@
 				<div class="tabular" v-if="collection.version"><label>Collection Version:</label> <span class="value">{{ collection.version }}</span></div>
 
 				<template v-if="hasProperties">
-					<div class="tabular" v-for="(value, field) in collection.properties" :key="field" :set="formattedValue = formatStacValue(value, field)">
+					<div class="tabular" v-for="(value, field) in collection.properties" :key="'properties_' + field" :set="formattedValue = formatStacValue(value, field)">
 						<label>{{ formatStacKey(field) }}:</label>
 						<div class="value" :set="tableKeys = isTable(value)">
 							<table v-if="tableKeys" class="table">
@@ -97,15 +97,19 @@
 				</template>
 	
 				<template v-if="hasOtherProperties">
-					<div class="tabular" v-for="(value, field) in collection.other_properties" :key="field">
+					<div class="tabular" v-for="(value, field) in collection.other_properties" :key="'other_properties_' + field">
 						<label>{{ formatStacKey(field) }}:</label>
 						<div class="value">
 							<template v-if="value.values">
-								{{ formatValues(value.values, field) }}
+								<template v-if="hasElements(value.values)">
+									{{ formatValues(value.values, field) }}
+								</template>
+								<em v-else>None</em>
 							</template>
-							<template v-else-if="value.extent">
+							<template v-else-if="hasElements(value.extent)">
 								{{ formatExtent(value.extent, field) }}
 							</template>
+							<em v-else>N/A</em>
 						</div>
 					</div>
 				</template>
@@ -328,6 +332,9 @@ export default {
 		this.collapsed = this.initiallyCollapsed;
 	},
 	methods: {
+		hasElements(data) {
+			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
+		},
 		updateData() {
 			var data = MigrateCollections.convertCollectionToLatestSpec(this.collectionData, this.version);
 			if (!Array.isArray(data.links)) {
@@ -368,7 +375,10 @@ export default {
 			}
 		},
 		formatTemporalExtent(extent) {
-			if (extent[0] == extent[1]) {
+			if (!Array.isArray(extent) || extent.length < 2) {
+				return "N/A";
+			}
+			else if (extent[0] == extent[1]) {
 				return this.formatTimestamp(extent[0]);
 			}
 			else if (extent[0] === null) {
@@ -395,7 +405,7 @@ export default {
 		},
 		formatStacValue(value, key, parentField = null) {
 			if (typeof value === 'undefined') {
-				return '';
+				return 'N/A';
 			}
 			var fieldName = parentField ? parentField + "." + key : key;
 			if (typeof STAC_FIELDS[fieldName] === 'object') {
@@ -425,7 +435,7 @@ export default {
 				}
 
 				if (value === 'null') {
-					return "N/A";
+					return "None";
 				}
 				else if (value === true) {
 					return '✔️';

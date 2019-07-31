@@ -31,6 +31,11 @@ export default {
             this.updateData();
         }
     },
+	computed: {
+		hasServiceTypes() {
+			return this.serviceTypes && Object.keys(this.serviceTypes).length > 0;
+		}
+	},
 	methods: {
         updateData() {
             this.serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
@@ -41,3 +46,10 @@ export default {
 	}
 }
 </script>
+
+<style>
+ul.service-types:empty::after {
+	content: 'None';
+	font-style: italic;
+}
+</style>

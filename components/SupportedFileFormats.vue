@@ -30,7 +30,12 @@ export default {
         version() {
             this.updateData();
         }
-    },
+	},
+	computed: {
+		hasFormats() {
+			return this.outputFormats && Object.keys(this.outputFormats).length > 0;
+		}
+	},
 	methods: {
         updateData() {
             this.outputFormats = MigrateCapabilities.convertOutputFormatsToLatestSpec(this.formats, this.version);
@@ -41,3 +46,10 @@ export default {
 	}
 }
 </script>
+
+<style>
+ul.file-formats:empty::after {
+	content: 'None';
+	font-style: italic;
+}
+</style>

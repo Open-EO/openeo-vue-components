@@ -8,9 +8,9 @@
 
 		<slot name="process-before-summary"></slot>
 
-		<template v-if="provideDownload || process.categories">
+		<template v-if="provideDownload || hasElements(process.categories)">
 			<div class="process-bar">
-				<ul class="badges categories" v-if="process.categories">
+				<ul class="badges categories" v-if="hasElements(process.categories)">
 					<li class="badge category" v-for="(value, key) in process.categories" :key="key" v-text="formatCategory(value)"></li>
 				</ul>
 				<ul class="badges actions" v-if="provideDownload">
@@ -73,7 +73,7 @@
 				</div>
 			</section>
 
-			<section class="exceptions" v-if="process.exceptions">
+			<section class="exceptions" v-if="hasElements(process.exceptions)">
 				<h3>Errors/Exceptions</h3>
 				<ul>
 					<li class="exception" v-for="(exception, name) in process.exceptions" :key="name">
@@ -86,12 +86,12 @@
 				</ul>
 			</section>
 
-			<section class="examples" v-if="process.examples">
+			<section class="examples" v-if="hasElements(process.examples)">
 				<h3>Examples</h3>
 				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameterOrder="process.parameter_order" :processReferenceParser="processReferenceParser" />
 			</section>
 
-			<section class="links" v-if="process.links">
+			<section class="links" v-if="hasElements(process.links)">
 				<h3>See Also</h3>
 				<LinkList :links="process.links" />
 			</section>
@@ -154,6 +154,10 @@ export default {
 			this.updateData();
 		}
 	},
+	computed: {
+		hasCategories() {
+		}
+	},
 	created() {
 		this.updateData();
 	},
@@ -163,6 +167,9 @@ export default {
 		}
 	},
 	methods: {
+		hasElements(data) {
+			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
+		},
 		updateData() {
 			// "Clone" object with the ugly JSON parse/stringify workaround so that the changes to the parameters below 
 			// are not applies to the original processData and therefore the download (in processes-docgen) delivers the original files!
