@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **0.3.6** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
+This library's version is **0.3.10** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
 
 ## Components
 
