@@ -1,6 +1,6 @@
 <template>
 	<ul class="vue-component file-formats">
-		<li v-for="(args, name) in outputFormats" :key="name">{{ prettify(name) }}</li>
+		<li v-for="name in sortedFormats" :key="name">{{ prettify(name) }}</li>
 	</ul>
 </template>
 
@@ -32,8 +32,11 @@ export default {
         }
 	},
 	computed: {
-		hasFormats() {
-			return this.outputFormats && Object.keys(this.outputFormats).length > 0;
+		sortedFormats() {
+			if (this.formats && typeof this.formats === 'object') {
+				return Object.keys(this.formats).sort(Utils.compareStringCaseInsensitive);
+			}
+			return [];
 		}
 	},
 	methods: {

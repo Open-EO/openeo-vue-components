@@ -101,6 +101,10 @@ var Utils = {
         return false;
     },
 
+    compareStringCaseInsensitive(a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+    },
+
 	isNumeric(n) {
 		return !isNaN(parseFloat(n)) && isFinite(n);
     },

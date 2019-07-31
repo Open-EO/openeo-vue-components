@@ -1,6 +1,6 @@
 <template>
 	<ul class="vue-component service-types">
-		<li v-for="(args, name) in serviceTypes" :key="name">{{ prettify(name) }}</li>
+		<li v-for="name in sortedServiceTypes" :key="name">{{ prettify(name) }}</li>
 	</ul>
 </template>
 
@@ -32,8 +32,11 @@ export default {
         }
     },
 	computed: {
-		hasServiceTypes() {
-			return this.serviceTypes && Object.keys(this.serviceTypes).length > 0;
+		sortedServiceTypes() {
+			if (this.serviceTypes && typeof this.serviceTypes === 'object') {
+				return Object.keys(this.serviceTypes).sort(Utils.compareStringCaseInsensitive);
+			}
+			return [];
 		}
 	},
 	methods: {
