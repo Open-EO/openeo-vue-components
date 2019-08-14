@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **0.3.11** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
+This library's version is **0.4.0** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
 
 ## Components
 
@@ -133,6 +133,7 @@ Creates a tab interface.
 **Properties:**
 
 - `id` (string, required): A unique identifier for the tab container.
+- `pills` (boolean, default `false`): Switch between [normal boxed tabs and tabs with pills styling](https://www.w3schools.com/bootstrap/bootstrap_tabs_pills.asp).
 
 **Methods:**
 
@@ -175,10 +176,10 @@ window.addEventListener('resize', event => {
 - `id` (string, required): A unique identifier for the tab.
 - `name` (string, required): The title of the tab.
 - `icon` (string, default `null`): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. `null` to show no icon.
-- `selected` (boolean, default: `false`): A single tab of a group should be selected by default by setting this property to `true`.
-- `enabled` (boolean, default: `true`): Set to `false` to hide the tab completely from the user.
-- `closable` (boolean, default: `false`): Set to `true` to show a close symbol, which can be used to close/remove the tab.
-- `allowShow` (function, default: `null`): Asynchronous function that determines whether a tab can be shown. The function must `true` to allow switching the active tab. If `false` is returned, switching the tab is prevented. The tab to be shown is passed as parameter.
+- `selected` (boolean, default `false`): A single tab of a group should be selected by default by setting this property to `true`.
+- `enabled` (boolean, default `true`): Set to `false` to hide the tab completely from the user.
+- `closable` (boolean, default `false`): Set to `true` to show a close symbol, which can be used to close/remove the tab.
+- `allowShow` (function, default `null`): Asynchronous function that determines whether a tab can be shown. The function must `true` to allow switching the active tab. If `false` is returned, switching the tab is prevented. The tab to be shown is passed as parameter.
 
 **Slots:**
 
@@ -197,14 +198,14 @@ window.addEventListener('resize', event => {
 
 ```
 <template>
-	<Tabs id="viewerContent" ref="tabs">
-		<Tab id="tab1" name="Blog" icon="fa-blog" :selected="true">
-			This is the blog content.
+	<Tabs id="viewerContent">
+		<Tab id="news" name="News" icon="fa-newspaper" :selected="true">
+			Add the most recent news here.
 		</Tab>
-		<Tab id="tab2" name="Shop" icon="fa-shopping-cart">
-			Add the shop content here.
+		<Tab id="docs" name="Documentation" icon="fa-books">
+			Add the documentation here.
 		</Tab>
-		<Tab id="tab3" name="Contact" icon="fa-envelope">
+		<Tab id="contact" name="Contact" icon="fa-envelope">
 			Contact me at <a href="mailto:abc@mailprovider.com">abc@mailprovider.com</a>.
 		</Tab>
 	</Tabs>
@@ -224,7 +225,7 @@ export default {
 </script>
 ```
 
-##### Dynamically adding tabs.
+##### Dynamically adding tabs
 
 ```
 <template>

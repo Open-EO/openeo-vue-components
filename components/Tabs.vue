@@ -1,5 +1,5 @@
 <template>
-	<div :class="{tabs: true, hide: !hasEnabledTabs, hideNames: hideNames}" :id="id">
+	<div :class="{tabs: true, hide: !hasEnabledTabs, hideNames: hideNames, pills: pills, boxed: !pills}" :id="id">
 		<div class="tabsHeader" ref="tabsHeader">
 			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click="selectTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
 				<i v-if="tab.icon" :class="['fas', tab.icon]"></i>
@@ -29,6 +29,10 @@ export default {
 		id: {
 			type: String,
 			required: true
+		},
+		pills: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -159,17 +163,21 @@ export default {
 
 <style>
 .tabs {
-	border-radius: 3px;
-	border: 1px solid #aaa;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 }
-.tabsHeader {
+.tabs.boxed {
+	border-radius: 3px;
+	border: 1px solid #aaa;
+}
+.tabs .tabsHeader {
 	display: flex;
+}
+.tabs.boxed .tabsHeader {
 	background-color: #f9f9f9;
 }
-.tabsBody {
+.tabs .tabsBody {
 	flex-grow: 1;
 	overflow: auto;
 	height: 100%;
@@ -183,54 +191,75 @@ export default {
 .tabs.hideNames .tabHasIcon .tabName {
 	display: none;
 }
-.tabContent {
+.tabs.boxed .tabContent {
 	background-color: white;
 	border-top: 1px solid #ddd;
 	padding-top: 1px;
 	height: calc(100% - 2px);
 }
-.tabItem:first-of-type {
+.tabs.pills .tabContent {
+	height: 100%;
+}
+.tabs .tabContent.tabActive {
+	display: block;
+}
+
+.tabs .tabItem:first-of-type {
 	margin-left: 5px;
 }
-.tabItem {
+.tabs .tabItem {
 	background-color: transparent;
 	border: 0;
-	margin: 5px 5px 0px 0px;
 	padding: 5px 10px;
-	border: 1px solid #aaa;
-	border-bottom: 0;
-	border-radius: 5px 5px 0 0;
+	margin: 5px 5px 0px 0px;
 	white-space: nowrap;
-	color: #666;
-	background-color: #eee;
 	min-width: 5em;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	cursor: pointer;
+}
+.tabs.boxed .tabItem {
+	border: 1px solid #aaa;
+	border-bottom: 0;
+	border-radius: 5px 5px 0 0;
+	color: #666;
+	background-color: #eee;
+}
+.tabs.pills .tabItem {
+	border: 1px solid #000;
+	border-radius: 5px;
+	color: #000;
+	opacity: 0.6;
+}
+.tabs .tabItem:focus {
+	outline: none;
 }
 .tabs.hideNames .tabItem {
 	min-width: 3em;
 }
-.tabItem:hover .fas, .tabItem:hover .tabName {
+.tabs.boxed .tabItem:hover .fas, .tabs.boxed .tabItem:hover .tabName {
 	color: black;
 }
-.tabItem:focus {
-	outline: none;
+.tabs.pills .tabItem:hover {
+	opacity: 1;
 }
-.tabClose {
-	display: inline-block;
-	margin-left: 5px;
-}
-.tabClose:hover {
-	color: red;
-}
-div.tabActive {
-	display: block;
-}
-button.tabActive {
+.tabs.boxed .tabItem.tabActive {
 	background-color: white;
 	color: black;
 	padding-bottom: 6px;
 	margin-bottom: -1px;
 	z-index: 1;
+}
+.tabs.pills .tabItem.tabActive {
+	opacity: 1;
+	border-width: 2px;
+	padding: 4px 9px;
+}
+.tabs .tabItem .tabClose {
+	display: inline-block;
+	margin-left: 5px;
+}
+.tabs .tabItem .tabClose:hover {
+	color: red;
 }
 </style>
