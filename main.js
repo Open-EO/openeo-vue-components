@@ -3,6 +3,7 @@ import Capabilities from './components/Capabilities.vue';
 import Collection from './components/Collection.vue';
 import DeprecationNotice from './components/DeprecationNotice.vue';
 import Description from './components/Description.vue';
+import EventBus from './eventbus.js';
 import ExperimentalNotice from './components/ExperimentalNotice.vue';
 import JsonSchema from './components/JsonSchema.vue';
 import LinkList from './components/LinkList.vue';
@@ -11,6 +12,8 @@ import Process from './components/Process.vue';
 import SupportedFileFormats from './components/SupportedFileFormats.vue';
 import SupportedServiceTypes from './components/SupportedServiceTypes.vue';
 import SupportedFeatures from './components/SupportedFeatures.vue';
+import Tab from './components/Tab.vue';
+import Tabs from './components/Tabs.vue';
 import Utils from './utils.js';
 
 export {
@@ -19,6 +22,7 @@ export {
 	Collection,
 	DeprecationNotice,
 	Description,
+	EventBus,
 	ExperimentalNotice,
 	JsonSchema,
 	LinkList,
@@ -27,5 +31,7 @@ export {
 	SupportedFileFormats,
 	SupportedServiceTypes,
 	SupportedFeatures,
+	Tab,
+	Tabs,
 	Utils
 };
