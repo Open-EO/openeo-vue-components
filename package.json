@@ -39,7 +39,7 @@
     "vue-template-compiler": "^2.5.22"
   },
   "peerDependencies": {
-    "vue": "^2.5.22"
+    "vue": "^2.6.0"
   },
   "browserslist": [
     "> 3%",

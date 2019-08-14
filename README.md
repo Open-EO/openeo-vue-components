@@ -136,7 +136,7 @@ Creates a tab interface.
 
 **Methods:**
 
-- `addTab(name, icon = null, additionalData = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null)` - Adds a new dynamic tab programattically, which is enabled by default.
+- `addTab(name, icon = null, additionalData = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null)` - Adds a new dynamic tab programatically, which is enabled by default.
 	- `name` (string): The title of the tab.
 	- `icon` (string): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. `null` to show no icon.
 	- `additionalData` (any): Additional data that is passed to the tab.
@@ -155,8 +155,8 @@ Creates a tab interface.
 **Slots:**
 
 - `default` - Place for `Tab` components to be added by default. Must only contain children of type `Tab` which contain the content for each of the tabs. The variable `tabs` holds a reference to the `Tabs` component.
-- `dynamic` - Default content for a dynamic tabs. The variable `tabs` holds a reference to the `Tabs` component.
-- The content for each dynamic tab that is added programattically via the `addTab` method can also be filled with a slot that has the id of the tab (see example below). If no content is specified by id, the content of the `dynamic` slot is used. The variable `tabs` holds a reference to the `Tabs` component. 
+- `dynamic` - Default content for dynamic tabs. The variable `tab` holds an object with the properties of the tab set with the `addTab` method.
+- The content for each dynamic tab that is added programattically via the `addTab` method can also be filled with a slot that has the id of the tab (see example below). Otherwise the content of the `dynamic` slot is used. The variable `tab` holds an object with the properties of the tab set with the `addTab` method.
 
 **Notes:**
 
@@ -229,21 +229,21 @@ export default {
 ```
 <template>
 	<Tabs id="viewerContent" ref="tabs">
-		<template v-slot:default>
+		<template #default>
 			<!-- The content for map tab that is added directly when the component is instantiated. -->
 			<Tab id="mapView" name="Map" icon="fa-map" :selected="true">
-				<template v-slot:default="{ tab }">
+				<template #default="{ tab }">
 					<MapViewer id="mapCanvas" ref="mapViewer" :show="tab.active" />
 				</template>
 			</Tab>
 		</template>
-		<template v-slot:imageView>
+		<template #imageView="{ tab }">
 			<!-- The content for the dynmaic tab with the id 'imageView' -->
-			<ImageViewer ref="dataViewer" />
+			<ImageViewer :data="tab.data" />
 		</template>
-		<template v-slot:dynamic>
+		<template #dynamic="{ tab }">
 			<!-- The default content for all other dynamic tabs -->
-			<DataViewer ref="imageViewer" />
+			<DataViewer :data="tab.data" />
 		</template>
 	</Tabs>
 </template>
