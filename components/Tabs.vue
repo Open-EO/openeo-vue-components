@@ -57,7 +57,7 @@ export default {
 		}
 	},
 	methods: {
-		addTab(name, icon = null, additionalData = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null) {
+		addTab(name, icon = null, data = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null) {
 			if (!id) {
 				id = this.id + "_tab_" + this.tabIdCounter++;
 			}
@@ -65,7 +65,7 @@ export default {
 				id: id,
 				name: name,
 				icon: icon,
-				additionalData: additionalData,
+				data: data,
 				selected: selected,
 				enabled: true,
 				closable: closable,
