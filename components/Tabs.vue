@@ -49,8 +49,8 @@ export default {
 			this.resetActiveTab();
 		}
 
-		EventBus.$on('windowResized', this.onResize);
-		this.$nextTick(this.onResize);
+		EventBus.$on('windowResized', this.adjustSizes);
+		this.$nextTick(this.adjustSizes);
 	},
 	computed: {
 		hasEnabledTabs() {
@@ -76,7 +76,10 @@ export default {
 				allowShow: allowShow
 			});
 			if (selected) {
-				this.$nextTick(() => this.selectTab(id));
+				this.$nextTick(() => {
+					this.selectTab(id);
+					this.adjustSizes();
+				});
 			}
 		},
 		onDynamic(tab, evt) {
@@ -92,9 +95,19 @@ export default {
 			}
 			return true;
 		},
-		onResize() {
-			var tabsHeaderWidth = this.$refs.tabsHeader.getBoundingClientRect().width;
-			this.hideNames = tabsHeaderWidth < this.tabs.length * 85;
+		adjustSizes() {
+			if (!this.$refs.tabsHeader) {
+				return;
+			}
+			this.hideNames = this.$refs.tabsHeader.getBoundingClientRect().width < this.tabs.length * 85;
+			this.$nextTick(() => {
+				if (!this.$refs.tabsHeader) {
+					return;
+				}
+				var overflows = this.$refs.tabsHeader.scrollWidth > this.$refs.tabsHeader.parentNode.getBoundingClientRect().width;
+				this.$refs.tabsHeader.style.overflowX = overflows ? "auto" : "visible";
+				this.$refs.tabsHeader.style.overflowY = overflows ? "hidden" : "visible";
+			});
 		},
 		getTab(id) {
 			for (let i in this.tabs) {
@@ -148,6 +161,7 @@ export default {
 				}
 				tab.close();
 				this.resetActiveTab();
+				this.adjustSizes();
 			}
 		},
 		resetActiveTab(force = false) {
@@ -174,6 +188,9 @@ export default {
 }
 .tabs .tabsHeader {
 	display: flex;
+}
+.tabs.boxed .tabsHeader {
+	padding-left: 5px;
 }
 .tabs.boxed .tabsHeader {
 	background-color: #f9f9f9;
@@ -235,9 +252,6 @@ export default {
 	color: #666;
 	background-color: #eee;
 }
-.tabs.boxed .tabItem:first-of-type {
-	margin-left: 5px;
-}
 .tabs.pills .tabItem {
 	border: 1px solid #000;
 	border-radius: 5px;
@@ -248,7 +262,7 @@ export default {
 	outline: none;
 }
 .tabs.hideNames .tabItem {
-	min-width: 3em;
+	min-width: auto;
 }
 .tabs.boxed .tabItem:hover .fas, .tabs.boxed .tabItem:hover .tabName {
 	color: black;
