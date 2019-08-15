@@ -185,7 +185,7 @@ export default {
 .tabs.hide {
 	display: none;
 }
-.tabs .tabName {
+.tabs .tabHasIcon .tabName {
 	margin-left: 0.25em;
 }
 .tabs.hideNames .tabHasIcon .tabName {
@@ -217,6 +217,9 @@ export default {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	cursor: pointer;
+}
+.tabs .tabItem::-moz-focus-inner {
+	border: 0;
 }
 .tabs.boxed .tabItem {
 	border: 1px solid #aaa;
