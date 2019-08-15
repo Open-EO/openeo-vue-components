@@ -29,7 +29,7 @@
     "utils.js"
   ],
   "dependencies": {
-    "@openeo/js-commons": "^0.4.4",
+    "@openeo/js-commons": "^0.4.5",
     "commonmark": "^0.28.1"
   },
   "devDependencies": {
