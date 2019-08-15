@@ -2,7 +2,7 @@
 	<div :class="{tabs: true, hide: !hasEnabledTabs, hideNames: hideNames, pills: pills, boxed: !pills}" :id="id">
 		<div class="tabsHeader" ref="tabsHeader">
 			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click="selectTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
-				<i v-if="tab.icon" :class="['fas', tab.icon]"></i>
+				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
 				<span class="tabName">{{ tab.name }}</span>
 				<span class="tabClose" @click.prevent.stop="closeTab(tab)" v-if="tab.closable"><i class="far fa-times-circle"></i></span>
 			</button>
@@ -94,7 +94,7 @@ export default {
 		},
 		onResize() {
 			var tabsHeaderWidth = this.$refs.tabsHeader.getBoundingClientRect().width;
-			this.hideNames = tabsHeaderWidth < this.tabs.length * 75;
+			this.hideNames = tabsHeaderWidth < this.tabs.length * 85;
 		},
 		getTab(id) {
 			for (let i in this.tabs) {
@@ -186,8 +186,18 @@ export default {
 .tabs.hide {
 	display: none;
 }
+.tabs .tabName, .tabs .tabIcon, .tabs .tabClose {
+	display: inline-block;
+	vertical-align: middle;
+}
+.tabs .tabName {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	min-width: 2em;
+	flex-grow: 1;
+}
 .tabs .tabHasIcon .tabName {
-	margin-left: 0.25em;
+	margin-left: 5px;
 }
 .tabs.hideNames .tabHasIcon .tabName {
 	display: none;
@@ -206,14 +216,13 @@ export default {
 }
 
 .tabs .tabItem {
+	display: flex;
 	background-color: transparent;
 	border: 0;
 	padding: 5px 10px;
 	margin: 5px 5px 0px 0px;
-	white-space: nowrap;
 	min-width: 5em;
-	text-overflow: ellipsis;
-	overflow: hidden;
+	white-space: nowrap;
 	cursor: pointer;
 }
 .tabs .tabItem::-moz-focus-inner {
