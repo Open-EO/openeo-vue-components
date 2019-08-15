@@ -37,6 +37,7 @@ export default {
 	},
 	data() {
 		return {
+			tabIdCounter: 0,
 			tabs: [],
 			dynamicTabs: [],
 			hideNames: false
