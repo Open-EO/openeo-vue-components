@@ -204,9 +204,6 @@ export default {
 	display: block;
 }
 
-.tabs .tabItem:first-of-type {
-	margin-left: 5px;
-}
 .tabs .tabItem {
 	background-color: transparent;
 	border: 0;
@@ -227,6 +224,9 @@ export default {
 	border-radius: 5px 5px 0 0;
 	color: #666;
 	background-color: #eee;
+}
+.tabs.boxed .tabItem:first-of-type {
+	margin-left: 5px;
 }
 .tabs.pills .tabItem {
 	border: 1px solid #000;
