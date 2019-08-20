@@ -6,6 +6,8 @@ This library's version is **0.4.1** and supports **openEO API versions 0.3.x and
 
 ## Components
 
+Note: Methods, properties and slots not listed here are not meant to be used as public and stable API.
+
 ### `BillingPlans`
 
 Visualizes the billing information of the back-end.
@@ -112,6 +114,11 @@ Visualizes the supported output file formats of the back-end.
 
 - `version` (string): openEO version
 - `formats` (object): Supported output formats as defined by the openEO API.
+
+**Methods:**
+
+- `getFeatureCount()` - Get the number of supported and unsupported features that are shown by the component.
+- `getSupportedFeatureCount()` - Get the number of supported features by the back-end.
 
 
 ### `SupportedServiceTypes`
