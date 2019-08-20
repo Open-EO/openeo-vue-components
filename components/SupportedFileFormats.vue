@@ -33,8 +33,8 @@ export default {
 	},
 	computed: {
 		sortedFormats() {
-			if (this.formats && typeof this.formats === 'object') {
-				return Object.keys(this.formats).sort(Utils.compareStringCaseInsensitive);
+			if (this.outputFormats && typeof this.outputFormats === 'object') {
+				return Object.keys(this.outputFormats).sort(Utils.compareStringCaseInsensitive);
 			}
 			return [];
 		}
