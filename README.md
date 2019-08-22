@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **0.4.1** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
+This library's version is **0.4.2** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
 
 ## Components
 
@@ -53,6 +53,18 @@ A simple text renderer, which supports CommonMark.
 - `description` (string): The text to show.
 - `preprocessor` (function): A function that further processes the text, before CommonMark is parsed.
 - `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
+
+
+### `EventBusMixin`
+
+A Mixin for components to manage EventBus listeners across the lifecycle of your components.
+
+After importing the Mixin, include it in your component by adding `mixins: [EventBusMixin],`. This components helps to keep track of events over the lifecycle of components. It removes all event listeners after the listening component has been destroyed. This ensures that no old listeners are called and produce errors due to missing data. The Mixin also ensures that listeners are not added twice.
+
+**Methods:**
+
+- `listen(eventName, callback)` - Adds a listener for an event with the specified name. Replaces existing listeners with the same name in the component.
+- `emit(eventName, ...args)` - Emits an event with the specified name and arguments.
 
 
 ### `LinkList`
@@ -194,9 +206,9 @@ window.addEventListener('resize', event => {
 
 **Events:**
 
-- `@show` - Fired when the tab is about to be shown. The tab is passed as parameter to the listener.
-- `@hide` - Fired when the tab is about to be hidden. The tab is passed as parameter to the listener.
-- `@close` - Fired when the tab is about to be closed. The tab is passed as parameter to the listener.
+- `@show` - Fired when the tab is shown. The tab is passed as parameter to the listener.
+- `@hide` - Fired when the tab was hidden. The tab is passed as parameter to the listener.
+- `@close` - Fired when the tab has been closed. The tab is passed as parameter to the listener.
 
 
 #### Examples

@@ -39,6 +39,7 @@ export default {
 		return {
 			tabIdCounter: 0,
 			tabs: [],
+			activeTab: null,
 			dynamicTabs: [],
 			hideNames: false
 		};
@@ -118,34 +119,32 @@ export default {
 			return null;
 		},
 		getActiveTab() {
-			for (let i in this.tabs) {
-				if (this.tabs[i].active) {
-					return this.tabs[i];
-				}
-			}
-			return null;
+			return this.activeTab;
 		},
 		getActiveTabId() {
-			var tab = this.getActiveTab();
-			if (tab !== null) {
-				return tab.id;
+			if (this.activeTab !== null) {
+				return this.activeTab.id;
 			}
-			return null;
+			else {
+				return null;
+			}
 		},
 		async selectTab(selectedTab) {
-			var activeTab = this.getActiveTab();
 			if (typeof selectedTab === "string") {
 				selectedTab = this.getTab(selectedTab); // Get tab by id
 			}
-			if (activeTab === selectedTab) {
+			if (this.activeTab === selectedTab || !selectedTab) {
 				return;
 			}
-			if (!selectedTab || typeof selectedTab.show !== 'function') {
-				console.warn("Invalid tab", selectedTab);
-				return;
-			}
-			if (await selectedTab.show() && activeTab !== null) {
-				activeTab.hide();
+			if (await selectedTab.canShow()) {
+				if (this.activeTab !== null) {
+					this.activeTab.active = false;
+					this.activeTab.$emit('hide', this.activeTab);
+				}
+				this.activeTab = selectedTab;
+				this.activeTab.active = true;
+				// Make sure the component is really shown by using nextTick...
+				this.$nextTick(() => this.activeTab.$emit('show', this.activeTab));
 			}
 		},
 		closeTab(tab) {
@@ -159,7 +158,10 @@ export default {
 				if (index2 !== -1) {
 					this.dynamicTabs.splice(index2, 1);
 				}
-				tab.close();
+				if (tab === this.activeTab) {
+					this.activeTab = null;
+				}
+				tab.$emit('close', tab);
 				this.resetActiveTab();
 				this.adjustSizes();
 			}

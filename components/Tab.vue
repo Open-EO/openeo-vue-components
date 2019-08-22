@@ -43,40 +43,22 @@ export default {
 			active: false
 		};
 	},
-	watch: {
-		active(newValue) {
-			// Make sure the component is really shown by using nextTick...
-			if (newValue) {
-				this.$nextTick(() => this.$emit('show', this));
-			}
-			else {
-				this.$nextTick(() => this.$emit('hide', this));
-			}
-		}
-	},
 	mounted() {
-		if (this.selected) {
-			this.show();
-		}
-		else {
-			this.active = false;
-		}
+		this.active = this.selected;
+		this.$on('hide', () => this.active = false);
+		this.$on('show', () => this.active = true);
 	},
 	methods: {
-		async show() {
+		async canShow() {
 			if (this.active) {
 				return true;
 			}
-			if (typeof this.allowShow !== 'function' || await this.allowShow(this)) {
-				this.active = true;
+			else if (typeof this.allowShow !== 'function' || await this.allowShow(this)) {
+				return true;
 			}
-			return this.active;
-		},
-		hide() {
-			this.active = false;
-		},
-		close() {
-			this.$emit('close', this);
+			else {
+				return false;
+			}
 		}
 	}
 }

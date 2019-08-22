@@ -4,6 +4,7 @@ import Collection from './components/Collection.vue';
 import DeprecationNotice from './components/DeprecationNotice.vue';
 import Description from './components/Description.vue';
 import EventBus from './eventbus.js';
+import EventBusMixin from './components/EventBusMixin.vue';
 import ExperimentalNotice from './components/ExperimentalNotice.vue';
 import JsonSchema from './components/JsonSchema.vue';
 import LinkList from './components/LinkList.vue';
@@ -23,6 +24,7 @@ export {
 	DeprecationNotice,
 	Description,
 	EventBus,
+	EventBusMixin,
 	ExperimentalNotice,
 	JsonSchema,
 	LinkList,
