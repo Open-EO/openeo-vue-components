@@ -5,7 +5,7 @@
 				<template v-if="link.title">{{ link.title }}</template>
 				<template v-else>{{ link.href }}</template>
 			</a>
-			<span class="relation" v-if="link.rel"> ({{ link.rel }})</span>
+			<span class="relation" v-if="!link.title && link.rel"> ({{ link.rel }})</span>
 		</li>
 	</ul>
 </template>
