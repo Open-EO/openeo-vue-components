@@ -191,10 +191,10 @@ export default {
 .tabs .tabsHeader {
 	display: flex;
 }
-.tabs.boxed .tabsHeader {
+.tabs.boxed > .tabsHeader {
 	padding-left: 5px;
 }
-.tabs.boxed .tabsHeader {
+.tabs.boxed > .tabsHeader {
 	background-color: #f9f9f9;
 }
 .tabs .tabsBody {
@@ -221,13 +221,13 @@ export default {
 .tabs.hideNames .tabHasIcon .tabName {
 	display: none;
 }
-.tabs.boxed .tabContent {
+.tabs.boxed > .tabsBody > .tabContent {
 	background-color: white;
 	border-top: 1px solid #ddd;
 	padding-top: 1px;
 	height: calc(100% - 2px);
 }
-.tabs.pills .tabContent {
+.tabs.pills > .tabsBody > .tabContent {
 	height: 100%;
 }
 .tabs .tabContent.tabActive {
@@ -247,14 +247,14 @@ export default {
 .tabs .tabItem::-moz-focus-inner {
 	border: 0;
 }
-.tabs.boxed .tabItem {
+.tabs.boxed > .tabsHeader > .tabItem {
 	border: 1px solid #aaa;
 	border-bottom: 0;
 	border-radius: 5px 5px 0 0;
 	color: #666;
 	background-color: #eee;
 }
-.tabs.pills .tabItem {
+.tabs.pills > .tabsHeader > .tabItem {
 	border: 1px solid #000;
 	border-radius: 5px;
 	color: #000;
@@ -266,20 +266,20 @@ export default {
 .tabs.hideNames .tabItem {
 	min-width: auto;
 }
-.tabs.boxed .tabItem:hover .fas, .tabs.boxed .tabItem:hover .tabName {
+.tabs.boxed > .tabsHeader > .tabItem:hover .fas, .tabs.boxed > .tabsHeader > .tabItem:hover .tabName {
 	color: black;
 }
-.tabs.pills .tabItem:hover {
+.tabs.pills > .tabsHeader > .tabItem:hover {
 	opacity: 1;
 }
-.tabs.boxed .tabItem.tabActive {
+.tabs.boxed > .tabsHeader > .tabItem.tabActive {
 	background-color: white;
 	color: black;
 	padding-bottom: 6px;
 	margin-bottom: -1px;
 	z-index: 1;
 }
-.tabs.pills .tabItem.tabActive {
+.tabs.pills > .tabsHeader > .tabItem.tabActive {
 	opacity: 1;
 	border-width: 2px;
 	padding: 4px 9px;
