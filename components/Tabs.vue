@@ -1,10 +1,10 @@
 <template>
-	<div :class="{tabs: true, hide: !hasEnabledTabs, hideNames: hideNames, pills: pills, boxed: !pills}" :id="id">
+	<div :class="{tabs: true, hide: !hasEnabledTabs, spaceLimited: spaceLimited, pills: pills, boxed: !pills}" :id="id">
 		<div class="tabsHeader" ref="tabsHeader">
-			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click="selectTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
+			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
 				<span class="tabName">{{ tab.name }}</span>
-				<span class="tabClose" @click.prevent.stop="closeTab(tab)" v-if="tab.closable"><i class="far fa-times-circle"></i></span>
+				<span class="tabClose" v-if="tab.closable" title="Close" @click.prevent.stop="closeTab(tab)"><i class="far fa-times-circle"></i></span>
 			</button>
 		</div>
 		<div class="tabsBody">
@@ -41,7 +41,7 @@ export default {
 			tabs: [],
 			activeTab: null,
 			dynamicTabs: [],
-			hideNames: false
+			spaceLimited: false
 		};
 	},
 	mounted() {
@@ -56,6 +56,11 @@ export default {
 	computed: {
 		hasEnabledTabs() {
 			return this.tabs.filter(t => t.enabled).length > 0;
+		}
+	},
+	watch: {
+		activeTab() {
+			this.adjustSizes();
 		}
 	},
 	methods: {
@@ -85,13 +90,13 @@ export default {
 		},
 		onDynamic(tab, evt) {
 			var index = this.tabs.findIndex(t => t.id === tab.id);
-			if (typeof tab[evt] === 'function' && index === -1) {
+			if (typeof tab[evt] === 'function' && index !== -1) {
 				tab[evt](this.tabs[index]);
 			}
 		},
 		async onDynamicAllowShow(tab) {
 			var index = this.tabs.findIndex(t => t.id === tab.id);
-			if (typeof tab.allowShow === 'function' && index === -1) {
+			if (typeof tab.allowShow === 'function' && index !== -1) {
 				return await tab.allowShow(this.tabs[index]);
 			}
 			return true;
@@ -100,7 +105,8 @@ export default {
 			if (!this.$refs.tabsHeader) {
 				return;
 			}
-			this.hideNames = this.$refs.tabsHeader.getBoundingClientRect().width < this.tabs.length * 85;
+
+			this.spaceLimited = this.$refs.tabsHeader.getBoundingClientRect().width < this.tabs.length * 96; // 96 = 6em = 6*16
 			this.$nextTick(() => {
 				if (!this.$refs.tabsHeader) {
 					return;
@@ -148,6 +154,9 @@ export default {
 			}
 		},
 		closeTab(tab) {
+			if (!tab.closable) {
+				return;
+			}
 			if (typeof tab === "string") {
 				tab = this.getTab(tab); // Get tab by id
 			}
@@ -218,7 +227,10 @@ export default {
 .tabs .tabHasIcon .tabName {
 	margin-left: 5px;
 }
-.tabs.hideNames .tabHasIcon .tabName {
+.tabs.spaceLimited .tabHasIcon:not(.tabActive) .tabName {
+	display: none;
+}
+.tabs.spaceLimited .tabItem:not(.tabActive) .tabClose {
 	display: none;
 }
 .tabs.boxed > .tabsBody > .tabContent {
@@ -240,7 +252,7 @@ export default {
 	border: 0;
 	padding: 5px 10px;
 	margin: 5px 5px 0px 0px;
-	min-width: 5em;
+	min-width: 6em;
 	white-space: nowrap;
 	cursor: pointer;
 }
@@ -263,7 +275,7 @@ export default {
 .tabs .tabItem:focus {
 	outline: none;
 }
-.tabs.hideNames .tabItem {
+.tabs.spaceLimited .tabItem {
 	min-width: auto;
 }
 .tabs.boxed > .tabsHeader > .tabItem:hover .fas, .tabs.boxed > .tabsHeader > .tabItem:hover .tabName {
