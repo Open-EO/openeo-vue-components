@@ -8,7 +8,7 @@
 				<table class="object-properties">
 					<tr>
 						<th colspan="2" class="object-prop-heading">
-							<template v-if="schema.parameters">Callback parameters:</template>
+							<template v-if="schema.parameters">Process Graph Parameters:</template>
 							<template v-else>Object Properties:</template>
 						</th>
 					</tr>
@@ -30,16 +30,26 @@
 				<tr v-if="typeof schema.description == 'string'">
 					<td colspan="2"><Description :description="schema.description" :compact="true" /></td>
 				</tr>
-				<tr v-if="showAnyType()">
+				<tr v-if="showAnyType">
 					<td class="key">{{ formatKey('type') }}:</td>
 					<td class="value data-type">any</td>
 				</tr>
+				<template v-else-if="Array.isArray(schema.anyOf) || Array.isArray(schema.oneOf)">
+					<tr>
+						<th colspan="2" class="data-types-heading">Data Types:</th>
+					</tr>
+					<tr>
+						<td colspan="2" class="schema-container data-types-container">
+							<JsonSchema v-for="(v, k) in schema.anyOf.concat(schema.oneOf)" :key="k" :schema="v" :nestingLevel="nestingLevel+1" />
+						</td>
+					</tr>
+				</template>
 				<tr v-for="(val, key) in schema" :key="key">
 					<template v-if="showRow(key)">
 						<td class="key">{{ formatKey(key) }}:</td>
 						<td class="value">
 							<span v-if="key == 'type'" class="data-type">{{ formatType() }}</span>
-							<div v-else-if="(key == 'oneOf' || key == 'anyOf' || key == 'allOf') && Array.isArray(val)" class="schema-container">
+							<div v-else-if="key == 'allOf' && Array.isArray(val)" class="schema-container">
 								<JsonSchema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" />
 							</div>
 							<span v-else-if="key != 'default' && key != 'examples' && val === true" title="true">✓ Yes</span>
@@ -95,6 +105,11 @@ export default {
 	},
 	created() {
         this.updateData();
+	},
+	computed: {
+		showAnyType() {
+			return Utils.isAnyType(this.schema);
+		}
 	},
 	watch: {
 		initShown(newVal, oldVal) {
@@ -156,9 +171,14 @@ export default {
 				case 'type':
 					key = 'Data type';
 					break;
-				case 'oneOf':
-				case 'anyOf':
-					key = 'Data types';
+				case 'allOf':
+					key = 'Composite data type';
+					break;
+				case 'contentMediaType':
+					key = 'Media Type';
+					break;
+				case 'contentEncoding':
+					key = 'Encoding';
 					break;
 				default:
 					if (key.length > 1) {
@@ -177,7 +197,7 @@ export default {
 			if (key == 'object') {
 				return (this.schema.type == 'object' && (typeof this.schema.properties == 'object' || typeof this.schema.parameters == 'object'));
 			}
-			else if (key == 'title' || key == 'description' || key == 'format') {
+			else if (key == 'title' || key == 'description' || key == 'subtype' || key == 'format' || key == 'anyOf' || key == 'oneOf') {
 				return false;
 			}
 			else if (key == 'items' && Object.keys(this.schema.items).length === 1 && typeof this.schema.items.type !== 'undefined') {
@@ -186,9 +206,6 @@ export default {
 			}
 
 			return true;
-		},
-		showAnyType() {
-			return Utils.isAnyType(this.schema);
 		}
 	}
 }
@@ -200,6 +217,11 @@ export default {
 	border-bottom: 1px dotted #ccc;
 	padding: 0.25%;
 	width: 99%;
+}
+.data-types-container > .json-schema {
+	border-left: 1px solid #ccc;
+	border-bottom: 1px dotted #ccc;
+	margin-top: 0.5em;
 }
 .json-schema td {
 	padding: 0.25em;
@@ -225,8 +247,8 @@ export default {
 .inline-schema-attrs .json-schema {
 	background-color: transparent;
 }
-.object-prop-heading {
-	padding: 0.5em;
+.object-prop-heading, .data-types-heading {
+	padding: 0.5em 0em;
 	text-align: left;
 }
 .object-properties .propKey {

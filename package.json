@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "0.4.3",
+  "version": "0.5.0-alpha.1",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -29,8 +29,8 @@
     "utils.js"
   ],
   "dependencies": {
-    "@openeo/js-commons": "^0.4.7",
-    "commonmark": "^0.28.1"
+    "@openeo/js-commons": "^0.5.0-alpha.1",
+    "commonmark": "^0.29.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.9.2",

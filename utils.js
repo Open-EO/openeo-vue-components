@@ -7,11 +7,17 @@ var Utils = {
         if (typeof type === 'undefined') {
             type = schema.type;
         }
-        if (typeof schema === 'object' && (typeof schema.oneOf !== 'undefined' || typeof schema.allOf !== 'undefined' || typeof schema.anyOf !== 'undefined')) {
+        if (typeof schema === 'object' && (Array.isArray(schema) || typeof schema.oneOf !== 'undefined' || typeof schema.anyOf !== 'undefined')) {
             if (short) {
                 return 'mixed';
             }
-            var choice = schema.oneOf || schema.allOf || schema.anyOf;
+            var choice;
+            if (Array.isArray(schema)) {
+                choice = schema;
+            }
+            else {
+                choice = schema.oneOf || schema.anyOf;
+            }
             var types = [];
             for(var i in choice) {
                 types.push(this.dataType(choice[i], short, level));
@@ -27,26 +33,26 @@ var Utils = {
         }
         else if (typeof type === 'string' && type.toLowerCase() === 'array' && typeof schema.items === 'object' && typeof schema.items.type !== 'undefined') {
             var arrType = "array<"+this.dataType(schema.items, true, level+1)+">";
-            if (typeof schema.format === 'string') {
+            if (typeof schema.subtype === 'string') {
                 if (level == 0) {
-                    return schema.format + (short ? ":" + arrType : " ("+arrType+")");
+                    return schema.subtype + (short ? ":" + arrType : " ("+arrType+")");
                 }
                 else {
-                    return schema.format;
+                    return schema.subtype;
                 }
             }
             else {
                 return arrType;
             }
         }
-        else if (typeof type === 'string' && typeof schema.format === 'string') {
-            return schema.format + (short ? ":" + type : " ("+type+")");
+        else if (typeof type === 'string' && typeof schema.subtype === 'string') {
+            return schema.subtype + (short ? ":" + type : " ("+type+")");
         }
         return type;
     },
 
     isAnyType: function(schema) {
-		return (typeof schema !== 'object' || (typeof schema.type === 'undefined' && typeof schema.oneOf === 'undefined' && typeof schema.allOf === 'undefined' && typeof schema.anyOf === 'undefined'));
+		return (typeof schema !== 'object' || Array.isArray(schema) || (typeof schema.type === 'undefined' && typeof schema.oneOf === 'undefined' && typeof schema.allOf === 'undefined' && typeof schema.anyOf === 'undefined'));
     },
 
     htmlentities: function(str) {

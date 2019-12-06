@@ -38,7 +38,7 @@
 
 			<section class="description" v-if="process.description">
 				<h3>Description</h3>
-				<code class="signature" v-html="signature()"></code>
+				<code class="signature" v-html="signature"></code>
 				<Description :description="process.description" :preprocessor="processReferenceParser" />
 				<DeprecationNotice v-if="process.deprecated === true" entity="process" />
 				<ExperimentalNotice v-if="process.experimental === true" entity="process" />
@@ -55,7 +55,6 @@
 						<Description v-if="param.description" :description="param.description" :preprocessor="processReferenceParser" />
 						<DeprecationNotice v-if="param.deprecated === true" entity="parameter" />
 						<ExperimentalNotice v-if="param.experimental === true" entity="parameter" />
-						<p class="media-type" v-if="param.media_type"><strong>Media type: </strong>{{ param.media_type }}</p>
 						<div class="json-schema-container" v-if="param.schema">
 							<JsonSchema :schema="param.schema" />
 						</div>
@@ -67,7 +66,6 @@
 			<section class="returns">
 				<h3>Return Value</h3>
 				<Description v-if="process.returns.description" :description="process.returns.description" :preprocessor="processReferenceParser" />
-				<p class="media-type" v-if="process.returns.media_type"><strong>Media (MIME) type: </strong>{{ process.returns.media_type }}</p>
 				<div class="json-schema-container" v-if="process.returns.schema">
 					<JsonSchema :schema="process.returns.schema" />
 				</div>
@@ -155,7 +153,29 @@ export default {
 		}
 	},
 	computed: {
-		hasCategories() {
+		signature(html = true) {
+			var params = [];
+			for(var i in this.process.parameters) {
+				var p = this.process.parameters[i];
+				var pType = Utils.dataType(p.schema, true);
+				var req = (p.required ? '' : '?');
+				var pStr;
+				if (html) {
+					pStr = '<span class="optional">' + req + '</span><span class="data-type">' + Utils.htmlentities(pType) + '</span> <span class="param-name">' + p.name + "</span>";
+				}
+				else {
+					pStr = req + pType + " " + p.name;
+				}
+				params.push(pStr);
+			}
+			var returns = Utils.dataType(this.process.returns.schema, true);
+			var paramStr = "(" + params.join(", ") + ") : ";
+			if (html) {
+				return '<span class="process-name">' + this.process.id + '</span>' + paramStr + '<span class="data-type">' + Utils.htmlentities(returns) + "</span>";
+			}
+			else {
+				return this.process.id + paramStr + returns;
+			}
 		}
 	},
 	created() {
@@ -189,12 +209,29 @@ export default {
 				if (typeof process.parameters[name] === 'object') {
 					var parameter = process.parameters[name];
 					parameter.name = name;
+					if (Array.isArray(parameter.schema)) {
+						parameter.schema = {
+							anyOf: parameter.schema
+						};
+					}
+					if (typeof parameter.default !== 'undefined') {
+						parameter.schema.default = parameter.default;
+					}
 					parameters.push(parameter);
 					order.push(name);
 				}
 			}
 			process.parameters = parameters;
 			process.parameter_order = order;
+
+			if (Array.isArray(process.returns.schema)) {
+				process.returns.schema = {
+					anyOf: process.returns.schema
+				};
+			}
+			if (typeof process.returns.default !== 'undefined') {
+				process.returns.schema.default = process.returns.default;
+			}
 
 			this.process = process;
 		},
@@ -205,30 +242,6 @@ export default {
 		},
 		formatCategory(name) {
 			return name.replace('_', ' ');
-		},
-		signature: function(html = true) {
-			var params = [];
-			for(var i in this.process.parameters) {
-				var p = this.process.parameters[i];
-				var pType = Utils.dataType(p.schema, true);
-				var req = (p.required ? '' : '?');
-				var pStr;
-				if (html) {
-					pStr = '<span class="optional">' + req + '</span><span class="data-type">' + Utils.htmlentities(pType) + '</span> <span class="param-name">' + p.name + "</span>";
-				}
-				else {
-					pStr = req + pType + " " + p.name;
-				}
-				params.push(pStr);
-			}
-			var returns = Utils.dataType(this.process.returns.schema, true);
-			var paramStr = "(" + params.join(", ") + ") : ";
-			if (html) {
-				return '<span class="process-name">' + this.process.id + '</span>' + paramStr + '<span class="data-type">' + Utils.htmlentities(returns) + "</span>";
-			}
-			else {
-				return this.process.id + paramStr + returns;
-			}
 		},
 		download() {
 			var dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.processData, null, 2));
