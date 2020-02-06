@@ -1,10 +1,13 @@
 <template>
 	<section class="vue-component billing-plans">
-		<div class="billing-currency" v-if="currency">
-			<strong>Currency:</strong> {{ currency }}
+		<div class="billing-currency">
+			<template  v-if="currency !== null">
+				<strong>Currency:</strong> {{ currency }}
+			</template>
+			<template v-else>No billing information provided.</template>
 		</div>
 		<h4>Plans</h4>
-		<ul v-if="plans.length">
+		<ul v-if="currency !== null && plans.length">
 			<li v-for="(plan, key) in plans" :key="key">
 				<strong class="plan-name">
 					<a v-if="plan.url" :href="plan.url" target="_blank">{{ plan.name }}</a>
@@ -23,17 +26,18 @@
 </template>
 
 <script>
+import BaseMixin from './BaseMixin.vue';
 import Description from './Description.vue';
 import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'BillingPlans',
+	mixins: [BaseMixin],
 	components: {
 		Description
 	},
 	props: {
-		version: String,
 		billing: Object
 	},
 	data() {
@@ -43,14 +47,8 @@ export default {
 			plans: []
 		};
 	},
-    created() {
-        this.updateData();
-    },
     watch: {
         billing() {
-            this.updateData();
-        },
-        version() {
             this.updateData();
         }
     },

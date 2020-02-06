@@ -18,7 +18,10 @@
 
 			<section class="description" v-if="collection.description">
 				<h3>Description</h3>
+
 				<Description :description="collection.description"></Description>
+
+				<DeprecationNotice v-if="collection.deprecated" entity="collection" />
 
 				<div v-if="hasElements(collection.keywords)">
 					<strong>Keywords:</strong>&nbsp;
@@ -36,17 +39,17 @@
 
 			<section class="extent">
 				<h3>Temporal Extent</h3>
-				<slot name="collection-temporal-extent" :extent="collection.extent.temporal">
-					<p>{{ formatTemporalExtent(collection.extent.temporal) }}</p>
+				<slot name="collection-temporal-extent" :extent="collection.extent.temporal.interval[0]"> <!-- ToDo: Make this fail safe -->
+					<p>{{ formatTemporalExtent(collection.extent.temporal.interval[0]) }}</p>
 				</slot>
 			
 				<h3>Spatial Extent</h3>
-				<slot name="collection-spatial-extent" :extent="collection.extent.spatial">
+				<slot name="collection-spatial-extent" :extent="collection.extent.spatial.bbox[0]"> <!-- ToDo: Make this fail safe -->
 					<ul>
-						<li>North: {{collection.extent.spatial[3]}}</li>
-						<li>South: {{collection.extent.spatial[1]}}</li>
-						<li>East: {{collection.extent.spatial[2]}}</li>
-						<li>West: {{collection.extent.spatial[0]}}</li>
+						<li>North: {{collection.extent.spatial.bbox[0][3]}}</li>
+						<li>South: {{collection.extent.spatial.bbox[0][1]}}</li>
+						<li>East: {{collection.extent.spatial.bbox[0][2]}}</li>
+						<li>West: {{collection.extent.spatial.bbox[0][0]}}</li>
 					</ul>
 				</slot>
 			</section>
@@ -67,58 +70,52 @@
                 </ol>
 			</section>
 
-			<section class="properties" v-if="hasAdditionalValues">
+			<section class="providers" v-if="collection['cube:dimensions']">
+				<h3>Data Cube Dimensions</h3>
+				<table class="table" :set="tableKeys = isTable(collection['cube:dimensions'])">
+					<thead>
+						<tr>
+							<th>&nbsp;</th>
+							<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(row, rowname) in collection['cube:dimensions']" :key="rowname">
+							<th>{{ rowname }}</th>
+							<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(row[key], key, 'cube:dimensions') }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section class="summaries" v-if="hasSummaries">
 				<h3>Additional information</h3>
-
-				<div class="tabular" v-if="collection.version"><label>Collection Version:</label> <span class="value">{{ collection.version }}</span></div>
-
-				<template v-if="hasProperties">
-					<div class="tabular" v-for="(value, field) in collection.properties" :key="'properties_' + field" :set="formattedValue = formatStacValue(value, field)">
-						<label>{{ formatStacKey(field) }}:</label>
-						<div class="value" :set="tableKeys = isTable(value)">
-							<table v-if="tableKeys" class="table">
-								<thead>
-									<tr>
-										<th v-if="!Array.isArray(value)">&nbsp;</th>
-										<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="(row, rowname) in value" :key="rowname">
-										<th v-if="!Array.isArray(value)">{{ rowname }}</th>
-										<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(row[key], key, field) }}</td>
-									</tr>
-								</tbody>
-							</table>
-							<ObjectTree v-else-if="typeof formattedValue === 'object'" :data="value" />
-							<template v-else>{{ formattedValue }}</template>
-						</div>
+				<div class="tabular" v-for="(value, field) in collection.summaries" :key="'summary_' + field">
+					<label>{{ formatStacKey(field) }}:</label>
+					<div class="value" :set="tableKeys = isTable(value)"  :set2="formattedValue = formatStacValue(value, field)">
+						<table v-if="tableKeys" class="table">
+							<thead>
+								<tr>
+									<th v-if="!Array.isArray(value)">&nbsp;</th>
+									<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(row, rowname) in value" :key="rowname">
+									<th v-if="!Array.isArray(value)">{{ rowname }}</th>
+									<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(row[key], key, field) }}</td>
+								</tr>
+							</tbody>
+						</table>
+						<ObjectTree v-else-if="typeof value === 'object'" :data="value" />
+						<template v-else>{{ formattedValue }}</template>
 					</div>
-				</template>
-	
-				<template v-if="hasOtherProperties">
-					<div class="tabular" v-for="(value, field) in collection.other_properties" :key="'other_properties_' + field">
-						<label>{{ formatStacKey(field) }}:</label>
-						<div class="value">
-							<template v-if="value.values">
-								<template v-if="hasElements(value.values)">
-									{{ formatValues(value.values, field) }}
-								</template>
-								<em v-else>None</em>
-							</template>
-							<template v-else-if="hasElements(value.extent)">
-								{{ formatExtent(value.extent, field) }}
-							</template>
-							<em v-else>N/A</em>
-						</div>
-					</div>
-				</template>
+				</div>
 
 			</section>
 
-			<section class="links" v-if="filteredLinks.length > 0">
-				<h3>See Also</h3>
-				<LinkList :links="filteredLinks" />
+			<section class="links">
+				<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license']" />
 			</section>
 
 			<slot name="collection-after-details"></slot>
@@ -129,6 +126,8 @@
 </template>
 
 <script>
+import BaseMixin from './BaseMixin.vue';
+import DeprecationNotice from './DeprecationNotice.vue';
 import Description from './Description.vue';
 import LinkList from './LinkList.vue';
 import ObjectTree from './ObjectTree.vue';
@@ -137,11 +136,14 @@ import Utils from '../utils.js';
 import './base.css';
 
 const STAC_FIELDS = {
-	"dtr:start_datetime": {
+	"version": {
+		label: "Collection Version"
+	},
+	"start_datetime": {
 		label: "Start date",
 		format: "Timestamp"
 	},
-	"dtr:end_datetime": {
+	"end_datetime": {
 		label: "End date",
 		format: "Timestamp"
 	},
@@ -149,14 +151,14 @@ const STAC_FIELDS = {
 		label: "Ground sample distance",
 		suffix: "m"
 	},
-	"eo:platform": {
-		label: "Platform"
+	"platform": {
+		label: "Platforms"
 	},
-	"eo:constellation": {
-		label: "Constellation"
+	"constellation": {
+		label: "Constellations"
 	},
-	"eo:instrument": {
-		label: "Instrument / Sensor"
+	"instruments": {
+		label: "Instruments / Sensors"
 	},
 	"eo:bands": {
 		label: "Bands"
@@ -195,15 +197,6 @@ const STAC_FIELDS = {
 	"eo:sun_elevation": {
 		label: "Sun elevation",
 		suffix: "º"
-	},
-	"sar:platform": {
-		label: "Platform"
-	},
-	"sar:constellation": {
-		label: "Constellation"
-	},
-	"sar:instrument": {
-		label: "Instrument / Sensor"
 	},
 	"sar:instrument_mode": {
 		label: "Instrument mode"
@@ -282,16 +275,14 @@ const STAC_FIELDS = {
 
 export default {
 	name: 'Collection',
+	mixins: [BaseMixin],
 	components: {
 		Description,
+		DeprecationNotice,
 		LinkList,
 		ObjectTree
 	},
 	props: {
-		version: {
-			type: String,
-			default: null
-		},
 		collectionData: Object,
 		initiallyCollapsed: {
 			type: Boolean,
@@ -302,31 +293,18 @@ export default {
 		return {
 			collapsed: false,
 			collection: {},
-			licenseUrl: false,
-			filteredLinks: []
+			licenseUrl: false
 		}
 	},
 	computed: {
-		hasProperties() {
-			return CommonUtils.isObject(this.collection.properties) && Object.keys(this.collection.properties).length > 0;
-		},
-		hasOtherProperties() {
-			return CommonUtils.isObject(this.collection.other_properties) && Object.keys(this.collection.other_properties).length > 0;
-		},
-		hasAdditionalValues() {
-			return this.collection.version || this.hasProperties || this.hasOtherProperties;
+		hasSummaries() {
+			return CommonUtils.isObject(this.collection.summaries) && Object.keys(this.collection.summaries).length > 0;
 		}
 	},
 	watch: {
-		version() {
-			this.updateData();
-		},
 		collectionData() {
 			this.updateData();
 		}
-	},
-	created() {
-		this.updateData();
 	},
 	beforeMount() {
 		this.collapsed = this.initiallyCollapsed;
@@ -337,18 +315,30 @@ export default {
 		},
 		updateData() {
 			var data = MigrateCollections.convertCollectionToLatestSpec(this.collectionData, this.version);
-			if (!Array.isArray(data.links)) {
-				data.links = [];
+
+			for(var key in data) {
+				// Move all custom top-level fields to summaries for easier visualization
+				if (key === 'version' || (key !== 'cube:dimensions' && key.includes(':'))) {
+					data.summaries[key] = [data[key]];
+				}
 			}
+
+			for(var key in data.summaries) {
+				let val = data.summaries[key];
+				if (Array.isArray(val) && val.length === 1) {
+					data.summaries[key] = val[0];
+				}
+			}
+
 			this.collection = data;
 
 			this.licenseUrl = false;
-			this.filteredLinks = data.links.filter(l => {
-				if (l.rel === 'license' && l.href) {
+			for(let link in data.links) {
+				if (link.rel === 'license' && link.href) {
 					this.licenseUrl = l.href;
+					break;
 				}
-				return (typeof l.rel === 'undefined' || ['self', 'parent', 'root', 'license'].indexOf(l.rel) == -1);
-			});
+			}
 		},
 		formatExtent(extent, key = null) {
 			var v1 = key === null ? extent[0] : this.formatStacValue(extent[0], key);
@@ -407,6 +397,11 @@ export default {
 			if (typeof value === 'undefined') {
 				return 'N/A';
 			}
+
+			if (CommonUtils.isObject(value) && typeof value.min !== 'undefined' && typeof value.max !== 'undefined') {
+				return this.formatExtent([value.min, value.max], key);
+			}
+
 			var fieldName = parentField ? parentField + "." + key : key;
 			if (typeof STAC_FIELDS[fieldName] === 'object') {
 				var info = STAC_FIELDS[fieldName];

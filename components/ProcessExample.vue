@@ -26,7 +26,7 @@ export default {
 		id: Number,
 		example: Object,
 		processId: String,
-		processParameterOrder: Array,
+		processParameters: Array,
 		processReferenceParser: Function
 	},
 	components: {
@@ -50,11 +50,11 @@ export default {
 		},
 		renderedArguments() {
 			var params = [];
-			for(var i in this.processParameterOrder) {
-				var name = this.processParameterOrder[i];
-				if (typeof this.example.arguments[name] !== 'undefined') {
-					var arg = this.example.arguments[name];
-					params.push('<span class="param-name">' + name + '</span> = <span class="argument">' + JSON.stringify(arg) + '</span>');
+			for(var i in this.processParameters) {
+				var param = this.processParameters[i];
+				if (typeof this.example.arguments[param.name] !== 'undefined') {
+					var arg = this.example.arguments[param.name];
+					params.push('<span class="param-name">' + param.name + '</span> = <span class="argument">' + JSON.stringify(arg) + '</span>');
 				}
 			}
 			var returns = "";

@@ -22,10 +22,10 @@
 		<template v-if="process.summary || process.deprecated || process.experimental">
 			<summary>
 				{{ process.summary }}
-				<template v-if="process.deprecated === true || process.experimental === true">
+				<template v-if="process.deprecated || process.experimental">
 					<template v-if="process.summary"> — </template>
-					<strong class="deprecated" v-if="process.deprecated === true">deprecated</strong>
-					<strong class="experimental" v-if="process.experimental === true">experimental</strong>
+					<strong class="deprecated" v-if="process.deprecated">deprecated</strong>
+					<strong class="experimental" v-if="process.experimental">experimental</strong>
 				</template>
 			</summary>
 		</template>
@@ -40,26 +40,13 @@
 				<h3>Description</h3>
 				<code class="signature" v-html="signature"></code>
 				<Description :description="process.description" :preprocessor="processReferenceParser" />
-				<DeprecationNotice v-if="process.deprecated === true" entity="process" />
-				<ExperimentalNotice v-if="process.experimental === true" entity="process" />
+				<DeprecationNotice v-if="process.deprecated" entity="process" />
+				<ExperimentalNotice v-if="process.experimental" entity="process" />
 			</section>
 
 			<section class="parameters">
 				<h3>Parameters</h3>
-				<div v-for="(param, i) in process.parameters" :key="i">
-					<h4>
-						<code>{{ param.name }}</code>
-						<strong class="required" v-if="param.required === true" title="required">*</strong>
-					</h4>
-					<div class="details">
-						<Description v-if="param.description" :description="param.description" :preprocessor="processReferenceParser" />
-						<DeprecationNotice v-if="param.deprecated === true" entity="parameter" />
-						<ExperimentalNotice v-if="param.experimental === true" entity="parameter" />
-						<div class="json-schema-container" v-if="param.schema">
-							<JsonSchema :schema="param.schema" />
-						</div>
-					</div>
-				</div>
+				<ProcessParameter v-for="(param, i) in process.parameters" :key="i" :parameter="param" :processReferenceParser="processReferenceParser" />
 				<p v-if="process.parameters.length === 0">This process has no parameters.</p>
 			</section>
 
@@ -86,12 +73,12 @@
 
 			<section class="examples" v-if="hasElements(process.examples)">
 				<h3>Examples</h3>
-				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameterOrder="process.parameter_order" :processReferenceParser="processReferenceParser" />
+				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="process.parameters" :processReferenceParser="processReferenceParser" />
 			</section>
 
 			<section class="links" v-if="hasElements(process.links)">
 				<h3>See Also</h3>
-				<LinkList :links="process.links" />
+				<LinkList :links="process.links" heading="See Also" headingTag="h3" />
 			</section>
 
 			<slot name="process-after-details"></slot>
@@ -102,31 +89,31 @@
 </template>
 
 <script>
-import JsonSchema from './JsonSchema.vue';
+import BaseMixin from './BaseMixin.vue';
 import DeprecationNotice from './DeprecationNotice.vue';
 import Description from './Description.vue';
 import ExperimentalNotice from './ExperimentalNotice.vue';
-import ProcessExample from './ProcessExample.vue';
+import JsonSchema from './JsonSchema.vue';
 import LinkList from './LinkList.vue';
+import ProcessExample from './ProcessExample.vue';
+import ProcessParameter from './ProcessParameter.vue';
 import Utils from '../utils.js';
 import { MigrateProcesses } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'Process',
+	mixins: [BaseMixin],
 	components: {
 		JsonSchema,
 		DeprecationNotice,
 		Description,
 		ExperimentalNotice,
 		ProcessExample,
+		ProcessParameter,
 		LinkList
 	},
 	props: {
-		version: {
-			type: String,
-			default: null
-		},
 		processData: Object,
 		provideDownload: {
 			type: Boolean,
@@ -145,9 +132,6 @@ export default {
 		}
 	},
 	watch: {
-		version() {
-			this.updateData();
-		},
 		processData() {
 			this.updateData();
 		}
@@ -158,7 +142,7 @@ export default {
 			for(var i in this.process.parameters) {
 				var p = this.process.parameters[i];
 				var pType = Utils.dataType(p.schema, true);
-				var req = (p.required ? '' : '?');
+				var req = p.optional ? '?' : '';
 				var pStr;
 				if (html) {
 					pStr = '<span class="optional">' + req + '</span><span class="data-type">' + Utils.htmlentities(pType) + '</span> <span class="param-name">' + p.name + "</span>";
@@ -178,9 +162,6 @@ export default {
 			}
 		}
 	},
-	created() {
-		this.updateData();
-	},
 	beforeMount() {
 		if (this.initiallyCollapsed) {
 			this.collapsed = !this.collapsed;
@@ -191,49 +172,7 @@ export default {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
 		},
 		updateData() {
-			// "Clone" object with the ugly JSON parse/stringify workaround so that the changes to the parameters below 
-			// are not applies to the original processData and therefore the download (in processes-docgen) delivers the original files!
-			var process = JSON.parse(JSON.stringify(this.processData));
-			process = MigrateProcesses.convertProcessToLatestSpec(process, this.version);
-
-			// Fill parameter order
-			if (!Array.isArray(process.parameter_order)) {
-				process.parameter_order = Object.keys(process.parameters);
-			}
-
-			// Make parameters and parameter_order consistent
-			var parameters = [];
-			var order = [];
-			for(var i in process.parameter_order) {
-				var name = process.parameter_order[i];
-				if (typeof process.parameters[name] === 'object') {
-					var parameter = process.parameters[name];
-					parameter.name = name;
-					if (Array.isArray(parameter.schema)) {
-						parameter.schema = {
-							anyOf: parameter.schema
-						};
-					}
-					if (typeof parameter.default !== 'undefined') {
-						parameter.schema.default = parameter.default;
-					}
-					parameters.push(parameter);
-					order.push(name);
-				}
-			}
-			process.parameters = parameters;
-			process.parameter_order = order;
-
-			if (Array.isArray(process.returns.schema)) {
-				process.returns.schema = {
-					anyOf: process.returns.schema
-				};
-			}
-			if (typeof process.returns.default !== 'undefined') {
-				process.returns.schema.default = process.returns.default;
-			}
-
-			this.process = process;
+			this.process = MigrateProcesses.convertProcessToLatestSpec(this.processData, this.version);
 		},
 		toggle() {
 			if (this.initiallyCollapsed) {
@@ -288,9 +227,6 @@ strong.deprecated {
 }
 strong.experimental {
 	color: blueviolet;
-}
-.parameters .details {
-	margin-left: 1.5em;
 }
 .exception {
 	margin-top: 0.5em;

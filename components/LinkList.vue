@@ -1,22 +1,48 @@
 <template>
-	<ul class="vue-component link-list">
-		<li v-for="(link, key) in links" :key="key">
-			<a :href="link.href" target="_blank" :rel="link.rel">
-				<template v-if="link.title">{{ link.title }}</template>
-				<template v-else>{{ link.href }}</template>
-			</a>
-			<span class="relation" v-if="!link.title && link.rel"> ({{ link.rel }})</span>
-		</li>
-	</ul>
+	<div class="vue-component link-list" v-if="friendlyLinks.length > 0">
+		<component v-if="heading" :is="headingTag">{{ heading }}</component>
+		<ul>
+			<li v-for="(link, key) in friendlyLinks" :key="key">
+				<a :href="link.href" target="_blank" :rel="link.rel">{{ link.title }}</a>
+				<span class="relation" v-if="showRel && link.rel"> ({{ link.rel }})</span>
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script>
 import './base.css';
+import Utils from '../utils';
 
 export default {
 	name: 'LinkList',
 	props: {
-		links: Array
+		links: Array,
+		sort: {
+			type: Boolean,
+			default: true
+		},
+		heading: {
+			type: String,
+			default: null
+		},
+		headingTag: {
+			type: String,
+			default: 'strong'
+		},
+		ignoreRel: {
+			type: Array,
+			default: () => ['self']
+		},
+		showRel: {
+			type: Boolean,
+			default: false
+		}
+	},
+	computed: {
+		friendlyLinks() {
+			return Utils.friendlyLinks(this.links, this.sort, this.ignoreRel);
+		}
 	}
 }
 </script>

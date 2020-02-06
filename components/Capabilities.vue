@@ -4,34 +4,63 @@
 		<section class="base-data">
 			<div class="tabular"><label>URL:</label><span class="value">{{ url }}</span></div>
 			<div class="tabular"><label>openEO-Version:</label><span class="value">{{ version }}</span></div>
+			<div class="tabular"><label>Production:</label><span class="value">
+				<template v-if="document.production">✔️</template>
+				<template v-else>❌</template>
+			</span></div>
 		</section>
 		<Description v-if="document.description" :description="document.description" />
 		<h3>Supported functionalities</h3>
-		<SupportedFeatures :version="document.version" :endpoints="document.endpoints" />
+		<SupportedFeatures :endpoints="document.endpoints" />
 		<template v-if="document.billing">
 			<h3>Billing</h3>
-			<BillingPlans :version="document.version" :billing="document.billing" />
+			<BillingPlans :billing="document.billing" />
+		</template>	
+		<template v-if="showServiceTypes">
+			<h3>Secondary web services</h3>
+			<SupportedServiceTypes :version="version" :services="serviceTypes" />
 		</template>
+		<template v-if="showFileFormats">
+			<h3>File formats for Import</h3>
+			<SupportedFileFormats :version="version" :formats="fileFormats" :showInput="true" />
+			<h3>File formats for Export</h3>
+			<SupportedFileFormats :version="version" :formats="fileFormats" :showOutput="true" />
+		</template>
+		<LinkList :links="document.links" :billing="document.billing" heading="More information" headingTag="h3" />
 	</div>
 </template>
 
 <script>
 import BillingPlans from './BillingPlans.vue';
 import Description from './Description.vue';
+import LinkList from './LinkList.vue';
 import SupportedFeatures from './SupportedFeatures.vue';
-import { MigrateCapabilities } from '@openeo/js-commons';
+import SupportedFileFormats from './SupportedFileFormats.vue';
+import SupportedServiceTypes from './SupportedServiceTypes.vue';
+import { MigrateCapabilities, Utils as CommonUtils } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'Capabilities',
 	props: {
 		capabilities: Object,
-		url: String
+		url: String,
+		serviceTypes: {
+			type: Object,
+			default: null
+		},
+		fileFormats: {
+			type: Object,
+			default: null
+		}
 	},
 	components: {
 		BillingPlans,
 		Description,
-		SupportedFeatures
+		LinkList,
+		SupportedFeatures,
+		SupportedFileFormats,
+		SupportedServiceTypes
 	},
 	data() {
 		return {
@@ -40,6 +69,12 @@ export default {
 		};
 	},
 	computed: {
+		showServiceTypes() {
+			return CommonUtils.isObject(this.serviceTypes);
+		},
+		showFileFormats() {
+			return CommonUtils.isObject(this.fileFormats);
+		},
 		hostName() {
 			var url = new URL(this.url);
 			return url.hostname;
@@ -49,9 +84,6 @@ export default {
         this.updateData();
     },
     watch: {
-        services() {
-            this.updateData();
-        },
         version() {
             this.updateData();
         }
@@ -59,7 +91,7 @@ export default {
 	methods: {
         updateData() {
             this.version = MigrateCapabilities.guessApiVersion(this.capabilities);
-            this.document = MigrateCapabilities.convertCapabilitiesToLatestSpec(this.capabilities, this.version, null);
+            this.document = MigrateCapabilities.convertCapabilitiesToLatestSpec(this.capabilities, this.version, false, true);
         }
 	}
 }

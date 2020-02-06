@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **0.4.2** and supports **openEO API versions 0.3.x and 0.4.x**. Legacy versions are available as releases.
+This library's version is **1.0.0-beta.1** and supports **openEO API versions 0.4.x and 1.0.x**. Legacy versions are available as releases.
 
 ## Components
 
@@ -23,6 +23,9 @@ Visualizes all the server information of the back-end. Shows the title, descript
 
 **Properties:**
 - `capabilities` (object): Capabilities response as defined by the openEO API.
+- `url` (string): URL to the API
+- `serviceTypes` (object): If given, shows the supported web service types.
+- `fileFormats` (object): If given, shows the supported file formats (input and output).
 
 
 ### `Collection`
@@ -74,6 +77,11 @@ A simple list of links.
 **Properties:**
 
 - `links` (array\<object>): An array of objects, each describing a link as defined by the openEO API.
+- `sort` (boolean): Sort the links by title. Defaults to `true`.
+- `heading` (string): If given, a heading is shown above the list. Defaults to `null` (no heading shown).
+- `headingTag` (string): HTML Tag to put the heading into. Defaults to `strong`.
+- `ignoreRel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
+- `showRel`: (boolean): Shows/Hides the `rel` types. Defaults to `false`.
 
 
 ### `ObjectTree`
@@ -117,6 +125,12 @@ Visualizes the supported functionalities of the back-end.
 - `version` (string): openEO version
 - `endpoints` (object): Supported endpoints as defined by the openEO API.
 
+**Methods:**
+
+- `getFeatures()` - Get a list of features (i.e. the categories).
+- `getFeatureCount()` - Get the number of supported and unsupported features that are shown by the component.
+- `getSupportedFeatureCount()` - Get the number of supported features by the back-end.
+
 
 ### `SupportedFileFormats`
 
@@ -126,11 +140,10 @@ Visualizes the supported output file formats of the back-end.
 
 - `version` (string): openEO version
 - `formats` (object): Supported output formats as defined by the openEO API.
+- `showInput` (boolean): Show the input file formats. Defaults to `false`.
+- `showOutput` (boolean): Show the output file formats. Defaults to `false`.
 
-**Methods:**
-
-- `getFeatureCount()` - Get the number of supported and unsupported features that are shown by the component.
-- `getSupportedFeatureCount()` - Get the number of supported features by the back-end.
+One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list with distinct values will be shown.
 
 
 ### `SupportedServiceTypes`
@@ -317,8 +330,12 @@ A very simple Event handler, which you can emit and receive messages with. Use t
 * `$once` - see https://vuejs.org/v2/api/#vm-once
 * `$off` - see https://vuejs.org/v2/api/#vm-off
 
-### Utils
+### `FeatureList`
 
-* `htmlentities(str) : str` - Replace `"`, `'`, `<` and `>` in strings with HTML entities.
-* `isNumeric(val) : bool` - Returns whether a string or number is numeric and finite.
+A list of categorized features with their corresponding endpoints as used by the components `SupportedFeatures`.
+
+### `Utils`
+
+* `htmlentities(str) : str` - Replace `"`, `'`, `<` and `>` characters in strings with HTML entities.
+* `htmlentities_decode(str) : str` - Replace the HTML entities for `"`, `'`, `<` and `>` with their respective characters.
 * and other functions not meant for public use.

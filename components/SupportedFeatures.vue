@@ -1,46 +1,82 @@
 <template>
 	<ul class="vue-component features">
 		<li v-for="(status, feature) in supportedFeatures" :key="feature">
-            <span v-text="getIcon(status)" :class="{supported: status == 2, unsupported: status == 0, partial: status == 1}"></span> {{ feature }}
+            <span v-text="status.icon" :class="status.className"></span> {{ feature }}
         </li>
 	</ul>
 </template>
 
 <script>
-import { FeatureList, MigrateCapabilities } from '@openeo/js-commons';
+import BaseMixin from './BaseMixin.vue';
+import FeatureList from '../featurelist';
+import { MigrateCapabilities, Versions } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'SupportedFeatures',
+	mixins: [BaseMixin],
 	props: {
-		version: String,
 		endpoints: Array
     },
     data() {
         return {
-            featureCount: 0,
-            supportedFeatures: null,
+            supportedFeatures: {},
             supportedFeatureCount: 0
         };
     },
-    created() {
-        this.updateData();
-    },
     watch: {
         endpoints() {
-            this.updateData();
-        },
-        version() {
             this.updateData();
         }
     },
     methods: {
         updateData() {
-            this.featureCount = FeatureList.getFeatureCount();
-            var endpoints = MigrateCapabilities.convertEndpointsToLatestSpec(this.endpoints, this.version);
-            var report = FeatureList.getReport(endpoints, this.version);
-            this.supportedFeatures = report.list;
-            this.supportedFeatureCount = report.count;
+            // Migrate endpoints to latest version (also update paths)
+            let migratedEndpoints = MigrateCapabilities.convertEndpointsToLatestSpec(this.endpoints, this.version, true);
+            
+            // Flatten list of supported endpoints
+            let supportedEndpointList = [];
+            for(let endpoint of migratedEndpoints) {
+                for(let method of endpoint.methods) {
+                    let request = method + ' ' + endpoint.path;
+                    supportedEndpointList.push(request.toLowerCase());
+                }
+            }
+
+            // Reset variables
+            this.supportedFeatureCount = 0;
+            this.supportedFeatures = {};
+    
+            // Create report
+            for(let feature in FeatureList.features) {
+                let requiredEndpoints = FeatureList.features[feature];
+                // Get a list of unsupported, but required endpoints
+                let unsupported = requiredEndpoints.filter(requiredEndpoint => !supportedEndpointList.includes(requiredEndpoint));
+                let icon;
+                let className;
+                switch(unsupported.length) {
+                    case 0:
+                        // No unsupported endpoints => fully supported
+                        this.supportedFeatureCount++;
+                        icon = '✔️';
+                        className = 'supported'
+                        break;
+                    case requiredEndpoints.length:
+                        // All endpoints are unsupported
+                        icon = '❌';
+                        className = 'unsupported'
+                        break;
+                    default:
+                        // Some endpoints are supported => partially supported
+                        icon = '⚠️';
+                        className = 'partial'
+                }
+                this.supportedFeatures[feature] = {
+                    icon: icon,
+                    className: className,
+                    missingEndpoints: unsupported
+                }
+            }
         },
         getIcon(status) {
             switch(status) {
@@ -52,15 +88,20 @@ export default {
                     return '❌';
             }
         },
-        getSupportedFeatures() {
-            return this.supportedFeatures;
+    
+        getFeatures() {
+            return Object.keys(FeatureList.features);
         },
         getFeatureCount() {
-            return this.featureCount;
+            return this.getFeatures().length;
+        },
+        getSupportedFeatures() {
+            return this.supportedFeatures;
         },
         getSupportedFeatureCount() {
             return this.supportedFeatureCount;
         }
+
     }
 }
 </script>

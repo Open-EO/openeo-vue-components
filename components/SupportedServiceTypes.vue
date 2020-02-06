@@ -1,51 +1,38 @@
 <template>
 	<ul class="vue-component service-types">
-		<li v-for="name in sortedServiceTypes" :key="name">{{ prettify(name) }}</li>
+		<li v-for="name in serviceTypeNames" :key="name">{{ name }}</li>
 	</ul>
 </template>
 
 <script>
+import BaseMixin from './BaseMixin.vue';
 import Utils from '../utils.js';
 import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'SupportedServiceTypes',
+	mixins: [BaseMixin],
 	props: {
-		version: String,
 		services: Object
 	},
 	data() {
 		return {
-			serviceTypes: {}
+			serviceTypeNames: []
 		};
 	},
-    created() {
-        this.updateData();
-    },
     watch: {
         services() {
             this.updateData();
-        },
-        version() {
-            this.updateData();
         }
     },
-	computed: {
-		sortedServiceTypes() {
-			if (this.serviceTypes && typeof this.serviceTypes === 'object') {
-				return Object.keys(this.serviceTypes).sort(Utils.compareStringCaseInsensitive);
-			}
-			return [];
-		}
-	},
 	methods: {
         updateData() {
-            this.serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
-        },
-		prettify(name) {
-			return Utils.prettifyAbbreviation(name);
-		}
+			let serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
+			this.serviceTypeNames = Object.keys(serviceTypes)
+					.map(f => Utils.prettifyAbbreviation(f))
+					.sort(Utils.compareStringCaseInsensitive);
+        }
 	}
 }
 </script>
