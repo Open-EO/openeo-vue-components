@@ -77,7 +77,6 @@
 			</section>
 
 			<section class="links" v-if="hasElements(process.links)">
-				<h3>See Also</h3>
 				<LinkList :links="process.links" heading="See Also" headingTag="h3" />
 			</section>
 
@@ -138,12 +137,12 @@ export default {
 	},
 	computed: {
 		signature(html = true) {
-			var params = [];
-			for(var i in this.process.parameters) {
-				var p = this.process.parameters[i];
-				var pType = Utils.dataType(p.schema, true);
-				var req = p.optional ? '?' : '';
-				var pStr;
+			let params = [];
+			for(let i in this.process.parameters) {
+				let p = this.process.parameters[i];
+				let pType = Utils.dataType(p.schema, true);
+				let req = p.optional ? '?' : '';
+				let pStr;
 				if (html) {
 					pStr = '<span class="optional">' + req + '</span><span class="data-type">' + Utils.htmlentities(pType) + '</span> <span class="param-name">' + p.name + "</span>";
 				}
@@ -152,8 +151,8 @@ export default {
 				}
 				params.push(pStr);
 			}
-			var returns = Utils.dataType(this.process.returns.schema, true);
-			var paramStr = "(" + params.join(", ") + ") : ";
+			let returns = Utils.dataType(this.process.returns.schema, true);
+			let paramStr = "(" + params.join(", ") + ") : ";
 			if (html) {
 				return '<span class="process-name">' + this.process.id + '</span>' + paramStr + '<span class="data-type">' + Utils.htmlentities(returns) + "</span>";
 			}
@@ -183,8 +182,8 @@ export default {
 			return name.replace('_', ' ');
 		},
 		download() {
-			var dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.processData, null, 2));
-			var downloadAnchorNode = document.createElement('a');
+			let dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.processData, null, 2));
+			let downloadAnchorNode = document.createElement('a');
 			downloadAnchorNode.setAttribute("href", dataStr);
 			downloadAnchorNode.setAttribute("download", this.process.id + ".json");
 			document.body.appendChild(downloadAnchorNode);
