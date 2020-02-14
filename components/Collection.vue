@@ -37,21 +37,27 @@
 				<span class="value" v-else>{{ collection.license }}</span>
 			</section>
 
-			<section class="extent">
-				<h3>Temporal Extent</h3>
-				<slot name="collection-temporal-extent" :extent="collection.extent.temporal.interval[0]"> <!-- ToDo: Make this fail safe -->
-					<p>{{ formatTemporalExtent(collection.extent.temporal.interval[0]) }}</p>
-				</slot>
+			<section class="extent" v-if="temporalInterval || boundingBox">
+				<template v-if="temporalInterval">
+					<h3>Temporal Extent</h3>
+					<slot name="collection-temporal-extent" :extent="temporalInterval">
+						<p>{{ formatTemporalExtent(temporalInterval) }}</p>
+					</slot>
+				</template>
 			
+				<template v-if="boundingBox">
 				<h3>Spatial Extent</h3>
-				<slot name="collection-spatial-extent" :extent="collection.extent.spatial.bbox[0]"> <!-- ToDo: Make this fail safe -->
-					<ul>
-						<li>North: {{collection.extent.spatial.bbox[0][3]}}</li>
-						<li>South: {{collection.extent.spatial.bbox[0][1]}}</li>
-						<li>East: {{collection.extent.spatial.bbox[0][2]}}</li>
-						<li>West: {{collection.extent.spatial.bbox[0][0]}}</li>
-					</ul>
-				</slot>
+					<slot name="collection-spatial-extent" :extent="boundingBox">
+						<div id="map" ref="mapContainer">
+							<ul v-if="!map">
+								<li>North: {{boundingBox[3]}}</li>
+								<li>South: {{boundingBox[1]}}</li>
+								<li>East: {{boundingBox[2]}}</li>
+								<li>West: {{boundingBox[0]}}</li>
+							</ul>
+						</div>
+					</slot>
+				</template>
 			</section>
 
 			<section class="providers" v-if="collection.providers">
@@ -70,19 +76,19 @@
                 </ol>
 			</section>
 
-			<section class="providers" v-if="collection['cube:dimensions']">
+			<section class="providers" v-if="hasDimensions">
 				<h3>Data Cube Dimensions</h3>
-				<table class="table" :set="tableKeys = isTable(collection['cube:dimensions'])">
+				<table class="table">
 					<thead>
 						<tr>
 							<th>&nbsp;</th>
-							<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
+							<th v-for="(key, i) in cubeHeader" :key="i">{{ formatStacKey(key) }}</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="(row, rowname) in collection['cube:dimensions']" :key="rowname">
 							<th>{{ rowname }}</th>
-							<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(row[key], key, 'cube:dimensions') }}</td>
+							<td v-for="(key, i) in cubeHeader" :key="i">{{ formatStacValue(row[key], key, 'cube:dimensions') }}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -90,28 +96,30 @@
 
 			<section class="summaries" v-if="hasSummaries">
 				<h3>Additional information</h3>
-				<div class="tabular" v-for="(value, field) in collection.summaries" :key="'summary_' + field">
+				<div v-for="(value, field) in collection.summaries" :key="'summary_' + field" class="tabular" :class="{wrap: isTable(value) && value.isWide}">
 					<label>{{ formatStacKey(field) }}:</label>
-					<div class="value" :set="tableKeys = isTable(value)"  :set2="formattedValue = formatStacValue(value, field)">
-						<table v-if="tableKeys" class="table">
+					<div class="value">
+						<table v-if="isTable(value)" class="table">
 							<thead>
 								<tr>
-									<th v-if="!Array.isArray(value)">&nbsp;</th>
-									<th v-for="(key, i) in tableKeys" :key="i">{{ formatStacKey(key) }}</th>
+									<th v-if="!Array.isArray(value.data)">&nbsp;</th>
+									<th v-for="(key, i) in value.header" :key="i">{{ formatStacKey(key) }}</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(row, rowname) in value" :key="rowname">
-									<th v-if="!Array.isArray(value)">{{ rowname }}</th>
-									<td v-for="(key, i) in tableKeys" :key="i">{{ formatStacValue(row[key], key, field) }}</td>
+								<tr v-for="(row, rowname) in value.data" :key="rowname">
+									<th v-if="!Array.isArray(value.data)">{{ rowname }}</th>
+									<td v-for="(key, i) in value.header" :key="i">
+										<ObjectTree v-if="row[key] && typeof row[key] === 'object'" :data="row[key]" />
+										<template v-else>{{ formatStacValue(row[key], key, field) }}</template>
+									</td>
 								</tr>
 							</tbody>
 						</table>
 						<ObjectTree v-else-if="typeof value === 'object'" :data="value" />
-						<template v-else>{{ formattedValue }}</template>
+						<template v-else>{{ formatStacValue(value, field) }}</template>
 					</div>
 				</div>
-
 			</section>
 
 			<section class="links">
@@ -139,63 +147,79 @@ const STAC_FIELDS = {
 	"version": {
 		label: "Collection Version"
 	},
+	"deprecated": {
+		label: "Deprecated"
+	},
+	"datetime": {
+		label: "Dates",
+		format: "Timestamp"
+	},
 	"start_datetime": {
-		label: "Start date",
+		label: "Start dates",
 		format: "Timestamp"
 	},
 	"end_datetime": {
-		label: "End date",
+		label: "End dates",
 		format: "Timestamp"
+	},
+	"platform": {
+		label: "Platform"
+	},
+	"constellation": {
+		label: "Constellation"
+	},
+	"instruments": {
+		label: "Instrument / Sensor"
+	},
+	"mission": {
+		label: "Mission"
+	},
+	"sat:orbit_state": {
+		label: "Orbit state"
+	},
+	"sat:relative_orbit": {
+		label: "Relative orbit numbers"
 	},
 	"eo:gsd": {
 		label: "Ground sample distance",
 		suffix: "m"
 	},
-	"platform": {
-		label: "Platforms"
-	},
-	"constellation": {
-		label: "Constellations"
-	},
-	"instruments": {
-		label: "Instruments / Sensors"
-	},
 	"eo:bands": {
-		label: "Bands"
+		label: "Spectral Bands"
 	},
 	"eo:bands.gsd": {
 		label: "GSD",
 		suffix: "m"
 	},
-	"eo:bands.accuracy": {
-		label: "Accuracy",
-		suffix: "m"
-	},
 	"eo:bands.center_wavelength": {
-		label: "Center Wavelength",
+		label: "Wavelength",
 		suffix: "μm"
-	},
-	"eo:epsg": {
-		label: "EPSG code"
 	},
 	"eo:cloud_cover": {
 		label: "Cloud cover",
 		suffix: "%"
 	},
-	"eo:off_nadir": {
+	"proj:epsg": {
+		label: "EPSG code"
+	},
+	"view:off_nadir": {
 		label: "Off-nadir angle",
 		suffix: "º"
 	},
-	"eo:azimuth": {
+	"view:azimuth": {
 		label: "Sun azimuth",
 		suffix: "º"
 	},
-	"eo:sun_azimuth": {
+	"view:sun_azimuth": {
 		label: "Sun azimuth",
 		suffix: "º"
 	},
-	"eo:sun_elevation": {
+	"view:sun_elevation": {
 		label: "Sun elevation",
+		suffix: "º"
+	},
+	"view:incidence_angle": {
+		label: "Incidence angle",
 		suffix: "º"
 	},
 	"sar:instrument_mode": {
@@ -204,19 +228,18 @@ const STAC_FIELDS = {
 	"sar:frequency_band": {
 		label: "Frequency band name"
 	},
-	"sar:center_wavelength": {
-		label: "Center wavelength",
-		suffix: "cm"
-	},
 	"sar:center_frequency": {
 		label: "Center frequency",
 		suffix: "GHz"
 	},
 	"sar:polarization": {
-		label: "Polarization(s)"
+		label: "Polarizations"
+	},
+	"sar:product_type": {
+		label: "Product type"
 	},
 	"sar:bands": {
-		label: "Bands"
+		label: "SAR Bands"
 	},
 	"sar:pass_direction": {
 		label: "Direction of the orbit"
@@ -224,23 +247,33 @@ const STAC_FIELDS = {
 	"sar:type": {
 		label: "Product type"
 	},
-	"sar:resolution": {
-		label: "Resolution (range, azimuth)",
+	"sar:resolution_range": {
+		label: "Range Resolution",
 		suffix: "m"
 	},
-	"sar:pixel_spacing": {
-		label: "Pixel spacing (range, azimuth)",
+	"sar:sar:resolution_azimuth": {
+		label: "Azimuth Resolution",
 		suffix: "m"
 	},
-	"sar:looks": {
-		label: "Groups of signal samples (looks)"
+	"sar:pixel_spacing_range": {
+		label: "Range pixel spacing",
+		suffix: "m"
 	},
-	"sar:absolute_orbit": {
-		label: "Absolute orbit numbers"
+	"sar:pixel_spacing_azimuth": {
+		label: "Azimuth pixel spacing",
+		suffix: "m"
 	},
-	"sar:off_nadir": {
-		label: "Viewing angle(s)",
-	    suffix: "º"
+	"sar:looks_range": {
+		label: "Number of range looks"
+	},
+	"sar:looks_azimuth": {
+		label: "Number of azimuth looks"
+	},
+	"sar:looks_equivalent_number": {
+		label: "Equivalent number of looks (ENL):"
+	},
+	"sar:observation_direction": {
+		label: "Antenna pointing direction"
 	},
 	"sci:doi": {
 		label: "DOI"
@@ -251,25 +284,12 @@ const STAC_FIELDS = {
 	"sci:publications": {
 		label: "Related publications"
 	},
-	"gee:type": {
-		label: "Earth Engine Data Type"
-	},
-	"gee:asset_schema": {
-		label: "Earth Engine Image Properties"
-	},
-	"gee:cadence": {
-		label: "Cadence"
-	},
-	"gee:revisit_interval": {
-		label: "Revisit interval"
-	},
 	"cube:dimensions.extent": {
 		label: "Extent",
 		format: "Extent"
 	},
 	"cube:dimensions.values": {
-		label: "Values",
-		format: "CommaValues"
+		label: "Values"
 	}
 };
 
@@ -293,12 +313,36 @@ export default {
 		return {
 			collapsed: false,
 			collection: {},
-			licenseUrl: false
+			licenseUrl: false,
+			map: null
 		}
 	},
 	computed: {
+		temporalInterval() {
+			let e = this.collection.extent;
+			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.temporal) && CommonUtils.size(e.temporal.interval) > 0 && e.temporal.interval[0].length >= 2) {
+				return e.temporal.interval[0];
+			}
+			return null;
+		},
+		boundingBox() {
+			let e = this.collection.extent;
+			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.spatial) && CommonUtils.size(e.spatial.bbox) > 0 && e.spatial.bbox[0].length >= 4) {
+				return e.spatial.bbox[0];
+			}
+			return null;
+		},
+		hasDimensions() {
+			return CommonUtils.size(this.collection['cube:dimensions']) > 0;
+		},
+		cubeHeader() {
+			if (this.hasDimensions) {
+				return this.tableHeader(this.collection['cube:dimensions']);
+			}
+			return [];
+		},
 		hasSummaries() {
-			return CommonUtils.isObject(this.collection.summaries) && Object.keys(this.collection.summaries).length > 0;
+			return CommonUtils.size(this.collection.summaries) > 0;
 		}
 	},
 	watch: {
@@ -309,7 +353,41 @@ export default {
 	beforeMount() {
 		this.collapsed = this.initiallyCollapsed;
 	},
+	mounted() {
+		this.initMap();
+	},
 	methods: {
+		initMap() {
+			if (!!this.$slots['collection-spatial-extent']) {
+				return;
+			}
+			console.log('leaflet');
+			try {
+				var L = require('leaflet');
+
+				var map = new L.Map('map');
+				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					name: 'OpenStreetMap',
+					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
+				});
+				osm.addTo(map);
+
+				var rect = L.rectangle([[this.boundingBox[3], this.boundingBox[0]], [this.boundingBox[1], this.boundingBox[2]]]);	
+				rect.addTo(map);
+
+				this.map = {
+					instance: map,
+					rectangle: rect
+				};
+				this.setMapSize("300px");
+			} catch (e) {}
+		},
+		setMapSize(height, width = null) {
+				this.$refs.mapContainer.style.width = width ? width : 'auto';
+				this.$refs.mapContainer.style.height = height;
+				this.map.instance.invalidateSize(true);
+				this.map.instance.fitBounds(this.map.rectangle.getBounds());
+		},
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
 		},
@@ -325,9 +403,22 @@ export default {
 
 			for(var key in data.summaries) {
 				let val = data.summaries[key];
+
 				if (Array.isArray(val) && val.length === 1) {
-					data.summaries[key] = val[0];
+					val = val[0];
 				}
+
+				let tableHeaders = this.tableHeader(val);
+				if (tableHeaders.length > 0) {
+					val = {
+						isTable: true,
+						isWide: tableHeaders.length >= 2,
+						header: tableHeaders,
+						data: val
+					};
+				}
+
+				data.summaries[key] = val;
 			}
 
 			this.collection = data;
@@ -450,8 +541,12 @@ export default {
 			return value;
 		},
 
-		isTable(value) {
+		tableHeader(value) {
 			return Utils.isTableLike(value);
+		},
+
+		isTable(value) {
+			return CommonUtils.isObject(value) && value.isTable;
 		}
 	}
 }
@@ -478,6 +573,14 @@ export default {
 }
 .tabular {
 	margin: 0.75em 0;
+}
+.tabular.wrap {
+	display: block;
+}
+.tabular.wrap .value {
+	margin-top: 0.5em;
+	margin-left: 1em;
+	margin-bottom: 2em;
 }
 .tabular .value ul {
 	padding-left: 20px;

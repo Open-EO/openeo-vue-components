@@ -96,7 +96,7 @@ class Utils {
 
     static isTableLike(data) {
         if (typeof data !== 'object' || data === null) {
-            return false;
+            return [];
         }
 
         var countedKeys = Utils.countObjectKeys(data);
@@ -115,7 +115,7 @@ class Utils {
             }
         }
 
-        return false;
+        return [];
     }
 
     static compareStringCaseInsensitive(a, b) {

@@ -32,10 +32,13 @@
     "@openeo/js-commons": "^1.0.0-rc.2",
     "commonmark": "^0.29.0"
   },
+  "optionalDependencies": {
+    "leaflet": "^1.6.0"
+  },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.9.2",
-    "@vue/cli-service": "^3.9.2",
-    "vue-template-compiler": "^2.5.22"
+    "@vue/cli-plugin-babel": "3.11.0",
+    "@vue/cli-service": "3.11.0",
+    "vue-template-compiler": "^2.6.0"
   },
   "peerDependencies": {
     "vue": "^2.6.0"
