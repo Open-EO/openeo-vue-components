@@ -78,25 +78,49 @@
 
 			<section class="providers" v-if="hasDimensions">
 				<h3>Data Cube Dimensions</h3>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>&nbsp;</th>
-							<th v-for="(key, i) in cubeHeader" :key="i">{{ formatStacKey(key) }}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="(row, rowname) in collection['cube:dimensions']" :key="rowname">
-							<th>{{ rowname }}</th>
-							<td v-for="(key, i) in cubeHeader" :key="i">{{ formatStacValue(row[key], key, 'cube:dimensions') }}</td>
-						</tr>
-					</tbody>
-				</table>
+				<ul>
+					<li v-for="(dim, name) in collection['cube:dimensions']" :key="name" class="dimension">
+						<h4>
+							<a v-if="dim.type === 'bands'" @click="scrollToBands()" class="name">{{ name }}</a>
+							<span v-else class="name">{{ name }}</span>
+							<ul class="type badges small"><li class="badge">{{ dim.type }}</li></ul>
+						</h4>
+						<Description v-if="dim.description" :description="dim.description" />
+						<div class="tabular" v-if="dim.axis">
+							<label>Axis:</label>
+							<div class="value">{{ dim.axis }}</div>
+						</div>
+						<div class="tabular">
+							<label>Labels:</label>
+							<div v-if="dim.extent" class="value">
+								{{ formatStacValue(dim.extent, "extent", 'cube:dimensions') }}
+							</div>
+							<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
+								<li v-for="(value, i) in dim.values" :key="i">{{ value }}</li>
+							</ul>
+							<div v-else class="value">N/A</div>
+						</div>
+						<div class="tabular" v-if="typeof dim.step !== 'undefined'">
+							<label>Steps:</label>
+							<div class="value">
+								<template v-if="dim.step === null">irregularly spaced</template>
+								<template v-else>{{ dim.step }}</template>
+							</div>
+						</div>
+						<div class="tabular" v-if="typeof dim.reference_system !== 'undefined'">
+							<label :key="i">Reference System:</label>
+							<div class="value">
+								<template v-if="typeof dim.reference_system === 'number'">EPSG {{ dim.reference_system }}</template>
+								<template v-else>{{ dim.reference_system }}</template>
+							</div>
+						</div>
+					</li>
+				</ul>
 			</section>
 
 			<section class="summaries" v-if="hasSummaries">
 				<h3>Additional information</h3>
-				<div v-for="(value, field) in collection.summaries" :key="'summary_' + field" class="tabular" :class="{wrap: isTable(value) && value.isWide}">
+				<div v-for="(value, field) in collection.summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: isTable(value) && value.isWide}">
 					<label>{{ formatStacKey(field) }}:</label>
 					<div class="value">
 						<table v-if="isTable(value)" class="table">
@@ -111,12 +135,14 @@
 									<th v-if="!Array.isArray(value.data)">{{ rowname }}</th>
 									<td v-for="(key, i) in value.header" :key="i">
 										<ObjectTree v-if="row[key] && typeof row[key] === 'object'" :data="row[key]" />
+										<Description v-else-if="descriptionFields.includes(key)" :description="row[key]" :compact="true" />
 										<template v-else>{{ formatStacValue(row[key], key, field) }}</template>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 						<ObjectTree v-else-if="typeof value === 'object'" :data="value" />
+						<Description v-else-if="descriptionFields.includes(field)" :description="value" :compact="true" />
 						<template v-else>{{ formatStacValue(value, field) }}</template>
 					</div>
 				</div>
@@ -142,6 +168,11 @@ import ObjectTree from './ObjectTree.vue';
 import { MigrateCollections, Utils as CommonUtils } from '@openeo/js-commons';
 import Utils from '../utils.js';
 import './base.css';
+
+const DESCRIPTION_FIELDS = [
+	'description',
+	'gee:terms_of_use'
+];
 
 const STAC_FIELDS = {
 	"version": {
@@ -288,8 +319,8 @@ const STAC_FIELDS = {
 		label: "Extent",
 		format: "Extent"
 	},
-	"cube:dimensions.values": {
-		label: "Values"
+	"gee:schema": {
+		label: "Variables"
 	}
 };
 
@@ -314,7 +345,8 @@ export default {
 			collapsed: false,
 			collection: {},
 			licenseUrl: false,
-			map: null
+			map: null,
+			descriptionFields: DESCRIPTION_FIELDS
 		}
 	},
 	computed: {
@@ -334,12 +366,6 @@ export default {
 		},
 		hasDimensions() {
 			return CommonUtils.size(this.collection['cube:dimensions']) > 0;
-		},
-		cubeHeader() {
-			if (this.hasDimensions) {
-				return this.tableHeader(this.collection['cube:dimensions']);
-			}
-			return [];
 		},
 		hasSummaries() {
 			return CommonUtils.size(this.collection.summaries) > 0;
@@ -388,6 +414,20 @@ export default {
 				this.map.instance.invalidateSize(true);
 				this.map.instance.fitBounds(this.map.rectangle.getBounds());
 		},
+		scrollToBands() {
+			for(let field of ['eo:bands', 'sar:bands']) { // ToDo: sar:bands is deprecated => remove
+				let id = 'summary_' + field;
+				if (Array.isArray(this.$refs[id]) && this.$refs[id].length) {
+					var elem = this.$refs[id][0];
+					elem.scrollIntoView();
+					elem.classList.add('highlight-box');
+					setTimeout(() => {
+						elem.classList.remove('highlight-box');
+					}, 5000);
+					break;
+				}
+			}
+		},
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
 		},
@@ -400,6 +440,9 @@ export default {
 					data.summaries[key] = [data[key]];
 				}
 			}
+
+			// ToDo: Use visualizations for something useful
+			delete data.summaries['gee:visualizations'];
 
 			for(var key in data.summaries) {
 				let val = data.summaries[key];
@@ -456,16 +499,16 @@ export default {
 			}
 		},
 		formatTemporalExtent(extent) {
-			if (!Array.isArray(extent) || extent.length < 2) {
+			if (!Array.isArray(extent) || extent.length < 2 || (!extent[0] && !extent[1])) {
 				return "N/A";
 			}
 			else if (extent[0] == extent[1]) {
 				return this.formatTimestamp(extent[0]);
 			}
-			else if (extent[0] === null) {
+			else if (!extent[0]) {
 				return "Until " + this.formatTimestamp(extent[1]);
 			}
-			else if (extent[1] === null) {
+			else if (!extent[1]) {
 				return this.formatTimestamp(extent[0]) + " until present";
 			}
 			else {
@@ -553,6 +596,14 @@ export default {
 </script>
 
 <style scoped>
+.dimension h4 {
+	margin: 0;
+}
+.dimension .type {
+	font-weight: normal;
+	font-size: 90%;
+	margin-left: 0.5em;
+}
 .provider-role {
 	text-transform: capitalize;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -25,6 +25,7 @@
     "assets/*.css",
     "components/*",
     "eventbus.js",
+    "featurelist.js",
     "main.js",
     "utils.js"
   ],

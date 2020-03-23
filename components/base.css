@@ -1,3 +1,7 @@
+.vue-component .highlight-box {
+	box-shadow: 0 0 0 0.2em #c8e1ff;
+}
+
 /* Comma separated list */
 .vue-component .comma-separated-list {
 	display: inline;
@@ -97,6 +101,7 @@
 .vue-component .tabular {
 	display: flex;
 	margin: 0.2em 0;
+	padding: 1px;
 }
 .vue-component .tabular label {
 	flex: 1;

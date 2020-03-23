@@ -77,18 +77,7 @@ export default {
                     missingEndpoints: unsupported
                 }
             }
-        },
-        getIcon(status) {
-            switch(status) {
-                case 1:
-                    return '⚠️';
-                case 2:
-                    return '✔️';
-                default:
-                    return '❌';
-            }
-        },
-    
+        },    
         getFeatures() {
             return Object.keys(FeatureList.features);
         },
