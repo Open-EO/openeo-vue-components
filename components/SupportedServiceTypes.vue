@@ -27,6 +27,9 @@ export default {
         }
     },
 	methods: {
+		getCount() {
+			return this.serviceTypeNames.length;
+		},
         updateData() {
 			let serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
 			this.serviceTypeNames = Object.keys(serviceTypes)

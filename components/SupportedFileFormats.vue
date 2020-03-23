@@ -41,6 +41,9 @@ export default {
         }
 	},
 	methods: {
+		getCount() {
+			return this.formatNames.length;
+		},
         updateData() {
 			let formats = MigrateCapabilities.convertFileFormatsToLatestSpec(this.formats, this.version);
 			let names = [].concat(

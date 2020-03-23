@@ -16,6 +16,10 @@ Visualizes the billing information of the back-end.
 - `version` (string): openEO version
 - `billing` (object): Billing information as defined by the openEO API.
 
+**Methods:**
+
+- `getPlanCount()` - Get the number of billing plans.
+
 
 ### `Capabilities`
 
@@ -83,6 +87,10 @@ A simple list of links.
 - `ignoreRel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
 - `showRel`: (boolean): Shows/Hides the `rel` types. Defaults to `false`.
 
+**Methods:**
+
+- `getCount()` - Get the number of shown links.
+
 
 ### `ObjectTree`
 
@@ -145,6 +153,10 @@ Visualizes the supported output file formats of the back-end.
 
 One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list with distinct values will be shown.
 
+**Methods:**
+
+- `getCount()` - Get the number of shown file formats.
+
 
 ### `SupportedServiceTypes`
 
@@ -154,6 +166,10 @@ Visualizes the supported secondary web service types of the back-end.
 
 - `version` (string): openEO version
 - `services` (object): Supported service types as defined by the openEO API.
+
+**Methods:**
+
+- `getCount()` - Get the number of shown service types.
 
 
 ### `Tabs` and `Tab`

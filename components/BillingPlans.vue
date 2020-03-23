@@ -53,6 +53,9 @@ export default {
         }
     },
 	methods: {
+		getPlanCount() {
+			return this.plans.length;
+		},
         updateData() {
 			var b = MigrateCapabilities.convertBillingToLatestSpec(this.billing, this.version);
 			this.currency = typeof b.currency === 'string' ? b.currency : null;

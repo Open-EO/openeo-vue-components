@@ -43,6 +43,11 @@ export default {
 		friendlyLinks() {
 			return Utils.friendlyLinks(this.links, this.sort, this.ignoreRel);
 		}
+	},
+	methods: {
+		getCount() {
+			return this.friendlyLinks.length;
+		}
 	}
 }
 </script>
