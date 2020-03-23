@@ -387,18 +387,19 @@ export default {
 			if (!!this.$slots['collection-spatial-extent']) {
 				return;
 			}
-			console.log('leaflet');
 			try {
 				var L = require('leaflet');
 
 				var map = new L.Map('map');
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
-					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
+					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
+					noWrap: true
 				});
 				osm.addTo(map);
 
-				var rect = L.rectangle([[this.boundingBox[3], this.boundingBox[0]], [this.boundingBox[1], this.boundingBox[2]]]);	
+				var rect = L.rectangle([[this.boundingBox[3], this.boundingBox[0]], [this.boundingBox[1], this.boundingBox[2]]]);
+				// ToDo: Use something like https://github.com/briannaAndCo/Leaflet.Antimeridian to show correct bboxes over the antimeridian
 				rect.addTo(map);
 
 				this.map = {
@@ -409,10 +410,25 @@ export default {
 			} catch (e) {}
 		},
 		setMapSize(height, width = null) {
-				this.$refs.mapContainer.style.width = width ? width : 'auto';
-				this.$refs.mapContainer.style.height = height;
-				this.map.instance.invalidateSize(true);
-				this.map.instance.fitBounds(this.map.rectangle.getBounds());
+			// Update map container in DOM
+			this.$refs.mapContainer.style.width = width ? width : 'auto';
+			this.$refs.mapContainer.style.height = height;
+			this.map.instance.invalidateSize(true);
+			// Compute somewhat smart map extent and zoom level around bbox
+			var bounds = this.map.rectangle.getBounds();
+			var zoom = this.map.instance.getBoundsZoom(bounds);
+			var newZoom = Math.min(zoom, 11); // Never zoom closer than 8
+			if (zoom > 8) {
+				newZoom = newZoom - 3; // Zoom out three levels
+			}
+			else if (zoom > 5) {
+				newZoom = newZoom - 2; // Zoom out two levels
+			}
+			else if (zoom > 2) {
+				newZoom--; // Zoom out one level
+			}
+			this.map.instance.fitBounds(bounds);
+			this.map.instance.setZoom(newZoom);
 		},
 		scrollToBands() {
 			for(let field of ['eo:bands', 'sar:bands']) { // ToDo: sar:bands is deprecated => remove
