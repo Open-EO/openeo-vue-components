@@ -204,6 +204,7 @@ Creates a tab interface.
 **Slots:**
 
 - `default` - Place for `Tab` components to be added by default. Must only contain children of type `Tab` which contain the content for each of the tabs. The variable `tabs` holds a reference to the `Tabs` component.
+- `tabName` - Slot that can be used to customize the appearance of the tab name for each tab. The slot applies to *all* tabs. The variable `tab` holds an object with the properties of the tab set with the `addTab` method.
 - `dynamic` - Default content for dynamic tabs. The variable `tab` holds an object with the properties of the tab set with the `addTab` method.
 - The content for each dynamic tab that is added programattically via the `addTab` method can also be filled with a slot that has the id of the tab (see example below). Otherwise the content of the `dynamic` slot is used. The variable `tab` holds an object with the properties of the tab set with the `addTab` method.
 
@@ -244,7 +245,7 @@ window.addEventListener('resize', event => {
 
 ##### Simple example with three static tabs
 
-```
+```html
 <template>
 	<Tabs id="viewerContent">
 		<Tab id="news" name="News" icon="fa-newspaper" :selected="true">
@@ -273,9 +274,9 @@ export default {
 </script>
 ```
 
-##### Dynamically adding tabs
+##### Dynamically adding tabs + custom tab names appearance
 
-```
+```html
 <template>
 	<Tabs id="viewerContent" ref="tabs">
 		<template #default>
@@ -293,6 +294,10 @@ export default {
 		<template #dynamic="{ tab }">
 			<!-- The default content for all other dynamic tabs -->
 			<DataViewer :data="tab.data" />
+		</template>
+		<template #tabName="{ tab }">
+			<!-- How to render the tab name, e.g. all upper-case -->
+			{{ tab.name.toUpperCase() }}
 		</template>
 	</Tabs>
 </template>

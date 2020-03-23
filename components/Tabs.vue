@@ -3,7 +3,7 @@
 		<div class="tabsHeader" ref="tabsHeader">
 			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
-				<span class="tabName">{{ tab.name }}</span>
+				<span class="tabName"><slot name="tabName" :tab="tab">{{ tab.name }}</slot></span>
 				<span class="tabClose" v-if="tab.closable" title="Close" @click.prevent.stop="closeTab(tab)"><i class="far fa-times-circle"></i></span>
 			</button>
 		</div>
