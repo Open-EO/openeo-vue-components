@@ -48,7 +48,7 @@
 				<template v-if="boundingBox">
 				<h3>Spatial Extent</h3>
 					<slot name="collection-spatial-extent" :extent="boundingBox">
-						<div id="map" ref="mapContainer">
+						<div :id="'map-' + collection.id" ref="mapContainer">
 							<ul v-if="!map">
 								<li>North: {{boundingBox[3]}}</li>
 								<li>South: {{boundingBox[1]}}</li>
@@ -374,23 +374,34 @@ export default {
 	watch: {
 		collectionData() {
 			this.updateData();
+		},
+		collapsed(newVal) {
+			if (!newVal) {
+				// Wait with the map initialization until the collapsed area is rendered
+				this.$nextTick(() => this.initMap());
+			}
 		}
 	},
 	beforeMount() {
 		this.collapsed = this.initiallyCollapsed;
 	},
 	mounted() {
-		this.initMap();
+		if (!this.collapsed) {
+			this.initMap();
+		}
 	},
 	methods: {
 		initMap() {
-			if (!!this.$slots['collection-spatial-extent']) {
+			if (!!this.$slots['collection-spatial-extent'] || this.map !== null) {
 				return;
 			}
 			try {
 				var L = require('leaflet');
 
-				var map = new L.Map('map');
+				if (!L) {
+					console.warn("Leaflet is not available");
+				}
+				var map = new L.Map('map-' + this.collection.id);
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
 					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
