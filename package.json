@@ -5,6 +5,9 @@
   "contributors": [
     {
       "name": "Matthias Mohr"
+    },
+    {
+      "name": "Christoph Friedrich"
     }
   ],
   "description": "Common Vue components for openEO.",
