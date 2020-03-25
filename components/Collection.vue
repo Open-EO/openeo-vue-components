@@ -443,9 +443,9 @@ export default {
 				this.setMapSize(this.leafletOptions.height, this.leafletOptions.width);
 			} catch (e) {}
 		},
-		setMapSize(height, width = null) {
+		setMapSize(height, width) {
 			// Update map container in DOM
-			this.$refs.mapContainer.style.width = width ? width : 'auto';
+			this.$refs.mapContainer.style.width = width;
 			this.$refs.mapContainer.style.height = height;
 			this.map.instance.invalidateSize(true);
 			// Compute somewhat smart map extent and zoom level around bbox
