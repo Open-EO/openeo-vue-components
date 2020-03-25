@@ -41,6 +41,11 @@ Visualizes a collection following the STAC-based collection description.
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
 - `collectionData` (object): A single STAC-based collection object as defined by the openEO API.
 - `initiallyCollapsed` (boolean): Allow collapsing/expanding the details and collapse the details by default (defaults to `false`).
+- `mapOptions` (object): For fine-tuning the behaviour of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
+  - `height` (string): Height of the map container div. Defaults to `"300px"`.
+  - `width` (string): Width of the map container div. Defaults to `"auto"`.
+  - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
+  - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `true`.
 
 **Slots:**
 

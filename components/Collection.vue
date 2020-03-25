@@ -338,6 +338,22 @@ export default {
 		initiallyCollapsed: {
 			type: Boolean,
 			default: false
+		},
+		mapOptions: {
+			// It's not possible to specify defaults for the individual properties, therefore this prop is only accessed through a computed property which adds them in.
+			default: function() { return {} },  // Don't remove! Must be a non-arrow factory function! When the prop is not given at all, this avoids having to deal with `undefined` in the computed-property-function.
+			validator: function(value) {
+				const allowedTypes = {  // keep in sync with Readme
+					height: "string",
+					width: "string",
+					wrapAroundAntimeridian: "boolean",
+					scrollWheelZoom: "boolean"
+				};
+				const allowedKeys = Object.keys(allowedTypes);
+				return typeof value == 'object' && Object.keys(value).every(key =>
+					allowedKeys.indexOf(key) != -1 && typeof value[key] == allowedTypes[key]
+				);
+			}
 		}
 	},
 	data() {
@@ -363,6 +379,14 @@ export default {
 				return e.spatial.bbox[0];
 			}
 			return null;
+		},
+		leafletOptions() {
+			return {  // keep in sync with Readme
+				height: this.mapOptions.height || "300px",
+				width: this.mapOptions.width || "auto",
+				noWrap: this.mapOptions.wrapAroundAntimeridian === undefined ? true : !this.mapOptions.wrapAroundAntimeridian,  // negate!
+				scrollWheelZoom: this.mapOptions.scrollWheelZoom === undefined ? true : this.mapOptions.scrollWheelZoom
+			}
 		},
 		hasDimensions() {
 			return CommonUtils.size(this.collection['cube:dimensions']) > 0;
@@ -401,11 +425,11 @@ export default {
 				if (!L) {
 					console.warn("Leaflet is not available");
 				}
-				var map = new L.Map('map-' + this.collection.id);
+				var map = new L.Map('map-' + this.collection.id, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
 					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
-					noWrap: true
+					noWrap: this.leafletOptions.noWrap
 				});
 				osm.addTo(map);
 
@@ -417,12 +441,12 @@ export default {
 					instance: map,
 					rectangle: rect
 				};
-				this.setMapSize("300px");
+				this.setMapSize(this.leafletOptions.height, this.leafletOptions.width);
 			} catch (e) {}
 		},
-		setMapSize(height, width = null) {
+		setMapSize(height, width) {
 			// Update map container in DOM
-			this.$refs.mapContainer.style.width = width ? width : 'auto';
+			this.$refs.mapContainer.style.width = width;
 			this.$refs.mapContainer.style.height = height;
 			this.map.instance.invalidateSize(true);
 			// Compute somewhat smart map extent and zoom level around bbox
