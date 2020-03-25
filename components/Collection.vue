@@ -340,7 +340,8 @@ export default {
 			default: false
 		},
 		mapOptions: {
-			default: function() { return {} },  // It's not possible to specify defaults for the individual properties, therefore this is handled in a computed property, and that function is easier when this prop is never `undefined`, hence the empty object (in a non-arrow factory function!).
+			// It's not possible to specify defaults for the individual properties, therefore this prop is only accessed through a computed property which adds them in.
+			default: function() { return {} },  // Don't remove! Must be a non-arrow factory function! When the prop is not given at all, this avoids having to deal with `undefined` in the computed-property-function.
 			validator: function(value) {
 				const allowedTypes = {  // keep in sync with Readme
 					height: "string",
