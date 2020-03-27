@@ -94,22 +94,25 @@ class Utils {
         return count;
     }
 
-    static isTableLike(data) {
+    static isTableLike(data, force = false) {
         if (typeof data !== 'object' || data === null) {
             return [];
         }
 
         var countedKeys = Utils.countObjectKeys(data);
         if (countedKeys !== null) {
+            if (force === true) {
+                return Object.keys(countedKeys);
+            }
             var num = 0;
             var sum = 0;
             for (var i in countedKeys) {
                 num++;
                 sum += countedKeys[i];
             }
+
             var avg = sum / num;
             var dataSize = Array.isArray(dataSize) ? data.length : Object.keys(data).length;
-
             if (avg > dataSize/2) {
                 return Object.keys(countedKeys);
             }

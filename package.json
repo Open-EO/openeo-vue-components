@@ -30,6 +30,7 @@
     "eventbus.js",
     "featurelist.js",
     "main.js",
+    "stacutils.js",
     "utils.js"
   ],
   "dependencies": {

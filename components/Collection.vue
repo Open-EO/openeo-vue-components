@@ -41,7 +41,7 @@
 				<template v-if="temporalInterval">
 					<h3>Temporal Extent</h3>
 					<slot name="collection-temporal-extent" :extent="temporalInterval">
-						<p>{{ formatTemporalExtent(temporalInterval) }}</p>
+						<p>{{ stac.formatTemporalExtent(temporalInterval) }}</p>
 					</slot>
 				</template>
 			
@@ -93,7 +93,7 @@
 						<div class="tabular">
 							<label>Labels:</label>
 							<div v-if="dim.extent" class="value">
-								{{ formatStacValue(dim.extent, "extent", 'cube:dimensions') }}
+								{{ stac.formatValue(dim.extent, "extent", 'cube:dimensions') }}
 							</div>
 							<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
 								<li v-for="(value, i) in dim.values" :key="i">{{ value }}</li>
@@ -120,36 +120,16 @@
 
 			<section class="summaries" v-if="hasSummaries">
 				<h3>Additional information</h3>
-				<div v-for="(value, field) in collection.summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: isTable(value) && value.isWide}">
-					<label>{{ formatStacKey(field) }}:</label>
+				<div v-for="(value, field) in collection.summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: stac.isTable(value) && value.isWide}">
+					<label>{{ stac.formatKey(field) }}:</label>
 					<div class="value">
-						<table v-if="isTable(value)" class="table">
-							<thead>
-								<tr>
-									<th v-if="!Array.isArray(value.data)">&nbsp;</th>
-									<th v-for="(key, i) in value.header" :key="i">{{ formatStacKey(key) }}</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="(row, rowname) in value.data" :key="rowname">
-									<th v-if="!Array.isArray(value.data)">{{ rowname }}</th>
-									<td v-for="(key, i) in value.header" :key="i">
-										<ObjectTree v-if="row[key] && typeof row[key] === 'object'" :data="row[key]" />
-										<Description v-else-if="descriptionFields.includes(key)" :description="row[key]" :compact="true" />
-										<template v-else>{{ formatStacValue(row[key], key, field) }}</template>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-						<ObjectTree v-else-if="typeof value === 'object'" :data="value" />
-						<Description v-else-if="descriptionFields.includes(field)" :description="value" :compact="true" />
-						<template v-else>{{ formatStacValue(value, field) }}</template>
+						<CollectionSummary :value="value" :field="field" />
 					</div>
 				</div>
 			</section>
 
 			<section class="links">
-				<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license']" />
+				<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
 			</section>
 
 			<slot name="collection-after-details"></slot>
@@ -161,177 +141,22 @@
 
 <script>
 import BaseMixin from './BaseMixin.vue';
+import CollectionSummary from './CollectionSummary.vue';
 import DeprecationNotice from './DeprecationNotice.vue';
 import Description from './Description.vue';
 import LinkList from './LinkList.vue';
-import ObjectTree from './ObjectTree.vue';
 import { MigrateCollections, Utils as CommonUtils } from '@openeo/js-commons';
-import Utils from '../utils.js';
+import StacCollectionUtils from '../stacutils';
 import './base.css';
-
-const DESCRIPTION_FIELDS = [
-	'description',
-	'gee:terms_of_use'
-];
-
-const STAC_FIELDS = {
-	"version": {
-		label: "Collection Version"
-	},
-	"deprecated": {
-		label: "Deprecated"
-	},
-	"datetime": {
-		label: "Dates",
-		format: "Timestamp"
-	},
-	"start_datetime": {
-		label: "Start dates",
-		format: "Timestamp"
-	},
-	"end_datetime": {
-		label: "End dates",
-		format: "Timestamp"
-	},
-	"platform": {
-		label: "Platform"
-	},
-	"constellation": {
-		label: "Constellation"
-	},
-	"instruments": {
-		label: "Instrument / Sensor"
-	},
-	"mission": {
-		label: "Mission"
-	},
-	"sat:orbit_state": {
-		label: "Orbit state"
-	},
-	"sat:relative_orbit": {
-		label: "Relative orbit numbers"
-	},
-	"eo:gsd": {
-		label: "Ground sample distance",
-		suffix: "m"
-	},
-	"eo:bands": {
-		label: "Spectral Bands"
-	},
-	"eo:bands.gsd": {
-		label: "GSD",
-		suffix: "m"
-	},
-	"eo:bands.center_wavelength": {
-		label: "Wavelength",
-		suffix: "μm"
-	},
-	"eo:cloud_cover": {
-		label: "Cloud cover",
-		suffix: "%"
-	},
-	"proj:epsg": {
-		label: "EPSG code"
-	},
-	"view:off_nadir": {
-		label: "Off-nadir angle",
-		suffix: "º"
-	},
-	"view:azimuth": {
-		label: "Sun azimuth",
-		suffix: "º"
-	},
-	"view:sun_azimuth": {
-		label: "Sun azimuth",
-		suffix: "º"
-	},
-	"view:sun_elevation": {
-		label: "Sun elevation",
-		suffix: "º"
-	},
-	"view:incidence_angle": {
-		label: "Incidence angle",
-		suffix: "º"
-	},
-	"sar:instrument_mode": {
-		label: "Instrument mode"
-	},
-	"sar:frequency_band": {
-		label: "Frequency band name"
-	},
-	"sar:center_frequency": {
-		label: "Center frequency",
-		suffix: "GHz"
-	},
-	"sar:polarization": {
-		label: "Polarizations"
-	},
-	"sar:product_type": {
-		label: "Product type"
-	},
-	"sar:bands": {
-		label: "SAR Bands"
-	},
-	"sar:pass_direction": {
-		label: "Direction of the orbit"
-	},
-	"sar:type": {
-		label: "Product type"
-	},
-	"sar:resolution_range": {
-		label: "Range Resolution",
-		suffix: "m"
-	},
-	"sar:sar:resolution_azimuth": {
-		label: "Azimuth Resolution",
-		suffix: "m"
-	},
-	"sar:pixel_spacing_range": {
-		label: "Range pixel spacing",
-		suffix: "m"
-	},
-	"sar:pixel_spacing_azimuth": {
-		label: "Azimuth pixel spacing",
-		suffix: "m"
-	},
-	"sar:looks_range": {
-		label: "Number of range looks"
-	},
-	"sar:looks_azimuth": {
-		label: "Number of azimuth looks"
-	},
-	"sar:looks_equivalent_number": {
-		label: "Equivalent number of looks (ENL):"
-	},
-	"sar:observation_direction": {
-		label: "Antenna pointing direction"
-	},
-	"sci:doi": {
-		label: "DOI"
-	},
-	"sci:citation": {
-		label: "Recommended citation"
-	},
-	"sci:publications": {
-		label: "Related publications"
-	},
-	"cube:dimensions.extent": {
-		label: "Extent",
-		format: "Extent"
-	},
-	"gee:schema": {
-		label: "Variables"
-	}
-};
 
 export default {
 	name: 'Collection',
 	mixins: [BaseMixin],
 	components: {
+		CollectionSummary,
 		Description,
 		DeprecationNotice,
-		LinkList,
-		ObjectTree
+		LinkList
 	},
 	props: {
 		collectionData: Object,
@@ -362,7 +187,7 @@ export default {
 			collection: {},
 			licenseUrl: false,
 			map: null,
-			descriptionFields: DESCRIPTION_FIELDS
+			stac: StacCollectionUtils
 		}
 	},
 	computed: {
@@ -496,23 +321,7 @@ export default {
 			delete data.summaries['gee:visualizations'];
 
 			for(var key in data.summaries) {
-				let val = data.summaries[key];
-
-				if (Array.isArray(val) && val.length === 1) {
-					val = val[0];
-				}
-
-				let tableHeaders = this.tableHeader(val);
-				if (tableHeaders.length > 0) {
-					val = {
-						isTable: true,
-						isWide: tableHeaders.length >= 2,
-						header: tableHeaders,
-						data: val
-					};
-				}
-
-				data.summaries[key] = val;
+				data.summaries[key] = StacCollectionUtils.restructure(data.summaries[key], key);
 			}
 
 			this.collection = data;
@@ -525,122 +334,10 @@ export default {
 				}
 			}
 		},
-		formatExtent(extent, key = null) {
-			var v1 = key === null ? extent[0] : this.formatStacValue(extent[0], key);
-			var v2 = key === null ? extent[1] : this.formatStacValue(extent[1], key);
-			if (v1 === null) {
-				return "Until " + v2;
-			}
-			else if (v2 === null) {
-				return "From " + v1;
-			}
-			else {
-				return v1 + ' to ' + v2;
-			}
-		},
-		formatValues(values, key) {
-			return this.formatCommaValues(values.map(v => this.formatStacValue(v, key)));
-		},
-		formatCommaValues(values) {
-			return values.join(', ');
-		},
 		toggle() {
 			if (this.initiallyCollapsed) {
 				this.collapsed = !this.collapsed;
 			}
-		},
-		formatTemporalExtent(extent) {
-			if (!Array.isArray(extent) || extent.length < 2 || (!extent[0] && !extent[1])) {
-				return "N/A";
-			}
-			else if (extent[0] == extent[1]) {
-				return this.formatTimestamp(extent[0]);
-			}
-			else if (!extent[0]) {
-				return "Until " + this.formatTimestamp(extent[1]);
-			}
-			else if (!extent[1]) {
-				return this.formatTimestamp(extent[0]) + " until present";
-			}
-			else {
-				return this.formatTimestamp(extent[0]) + ' – ' + this.formatTimestamp(extent[1]);
-			}
-		},
-		formatTimestamp(datetime) {
-			return datetime.replace('T', ' ').replace('Z', ' UTC');
-		},
-		formatStacKey(key) {
-			if (typeof STAC_FIELDS[key] === 'object') {
-				return STAC_FIELDS[key].label;
-			}
-			else if (key.indexOf(':') !== -1) {
-				key = key.substr(key.indexOf(':')+1);
-			}
-			return Utils.prettifyString(key);
-		},
-		formatStacValue(value, key, parentField = null) {
-			if (typeof value === 'undefined') {
-				return 'N/A';
-			}
-
-			if (CommonUtils.isObject(value) && typeof value.min !== 'undefined' && typeof value.max !== 'undefined') {
-				return this.formatExtent([value.min, value.max], key);
-			}
-
-			var fieldName = parentField ? parentField + "." + key : key;
-			if (typeof STAC_FIELDS[fieldName] === 'object') {
-				var info = STAC_FIELDS[fieldName];
-
-				if (typeof info.format === 'function') {
-					return info.format(value, key);
-				}
-				else if (typeof this['format' + info.format] === 'function') {
-					return this['format' + info.format](value);
-				}
-
-				var isScalarArray = false;
-				if (Array.isArray(value)) {
-					isScalarArray = true;
-					for(var i in value) {
-						if (typeof value[i] === 'object') {
-							isScalarArray = false;
-							break;
-						}
-					}
-					if (isScalarArray) {
-						for(var i in value) {
-							value[i] = this.formatStacValue(value[i]);
-						}
-					}
-				}
-
-				if (value === 'null') {
-					return "None";
-				}
-				else if (value === true) {
-					return '✔️';
-				}
-				else if (value === false) {
-					return '❌';
-				}
-
-				if (info.suffix && (typeof value === 'string' || typeof value === 'number')) {
-					return value + ' ' + info.suffix;
-				}
-
-				if (isScalarArray) {
-					return '[ ' + value.join(', ') + ' ]';
-				}
-			}
-			return value;
-		},
-
-		tableHeader(value) {
-			return Utils.isTableLike(value);
-		},
-
-		isTable(value) {
-			return CommonUtils.isObject(value) && value.isTable;
 		}
 	}
 }
@@ -657,21 +354,6 @@ export default {
 }
 .provider-role {
 	text-transform: capitalize;
-}
-.table {
-	width: 100%;
-	border-collapse: collapse;
-}
-.table th {
-	text-align: left;
-	background-color: #eee;
-}
-.table td, .table th {
-	border: 1px solid #ccc;
-	padding: 3px;
-}
-.table tr:hover {
-	background-color: #f9f9f9;
 }
 .tabular {
 	margin: 0.75em 0;
