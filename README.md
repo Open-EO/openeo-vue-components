@@ -147,12 +147,12 @@ Visualizes the supported functionalities of the back-end.
 
 ### `SupportedFileFormats`
 
-Visualizes the supported output file formats of the back-end.
+Visualizes the supported file formats of the back-end.
 
 **Properties:**
 
 - `version` (string): openEO version
-- `formats` (object): Supported output formats as defined by the openEO API.
+- `formats` (object): Supported file formats as defined by the respective version of the openEO API.
 - `showInput` (boolean): Show the input file formats. Defaults to `false`.
 - `showOutput` (boolean): Show the output file formats. Defaults to `false`.
 
