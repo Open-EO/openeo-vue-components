@@ -129,13 +129,24 @@ class Utils {
         if(CommonUtils.isNumeric(s)) {
             return s;
         }
-        else {
-            // Camelcase converter
-            s = s.replace(/([a-z])([A-Z])/g, '$1 $2');
-            // Kebab case converter
-            s = s.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
+        else if (s.length >= 2) {
+            if (s.includes('_')) {
+                // Snake case converter
+                s = s.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
+            }
+            else if (s.includes('-')) {
+                // Kebab case converter
+                s = s.replace(/([a-zA-Z\d])-([a-zA-Z\d])/g, '$1 $2');
+            }
+            else {
+                // Camelcase converter
+                s = s.replace(/([a-z])([A-Z])/g, '$1 $2');
+            }
             // Uppercase the first letter in the first word
             return s.charAt(0).toUpperCase() + s.substr(1);
+        }
+        else {
+            return String(s);
         }
     }
 
