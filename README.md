@@ -46,6 +46,7 @@ Visualizes a collection following the STAC-based collection description.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `true`.
+  - `onAfterMapInit` (function): Callback function with two parameters `map` (Leaflet Map) and `rectangle` (Bounding Box as Leaflet Rectangle) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to no callback.
 
 **Slots:**
 

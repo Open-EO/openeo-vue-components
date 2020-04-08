@@ -48,7 +48,7 @@
 				<template v-if="boundingBox">
 				<h3>Spatial Extent</h3>
 					<slot name="collection-spatial-extent" :extent="boundingBox">
-						<div :id="'map-' + collection.id" ref="mapContainer">
+						<div :id="'map-' + collection.id" class="map" ref="mapContainer">
 							<ul v-if="!map">
 								<li>North: {{boundingBox[3]}}</li>
 								<li>South: {{boundingBox[1]}}</li>
@@ -267,6 +267,9 @@ export default {
 					rectangle: rect
 				};
 				this.setMapSize(this.leafletOptions.height, this.leafletOptions.width);
+				if (typeof this.mapOptions.onAfterMapInit === 'function') {
+					typeof this.mapOptions.onAfterMapInit(map, rectangle);
+				}
 			} catch (e) {}
 		},
 		setMapSize(height, width) {
@@ -344,6 +347,9 @@ export default {
 </script>
 
 <style scoped>
+.map {
+	background: transparent;
+}
 .dimension h4 {
 	margin: 0;
 }
