@@ -22,7 +22,7 @@ import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
-	name: 'SupportedFileFormats',
+	name: 'FileFormats',
 	mixins: [BaseMixin],
 	props: {
 		formats: Object,

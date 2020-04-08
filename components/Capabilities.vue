@@ -17,11 +17,11 @@
 			<BillingPlans :billing="document.billing" />
 		</template>	
 		<h3>File formats for Import</h3>
-		<SupportedFileFormats :version="version" :formats="fileFormats" :showInput="true" />
+		<FileFormats :version="version" :formats="fileFormats" :showInput="true" />
 		<h3>File formats for Export</h3>
-		<SupportedFileFormats :version="version" :formats="fileFormats" :showOutput="true" />
+		<FileFormats :version="version" :formats="fileFormats" :showOutput="true" />
 		<h3>Secondary web services</h3>
-		<SupportedServiceTypes :version="version" :services="serviceTypes" />
+		<ServiceTypes :version="version" :services="serviceTypes" />
 		<h3>Runtimes for User-Defined Functions (UDF)</h3>
 		<UdfRuntimes :version="version" :runtimes="udfRuntimes" />
 		<LinkList :links="document.links" :billing="document.billing" heading="More information" headingTag="h3" />
@@ -33,8 +33,8 @@ import BillingPlans from './BillingPlans.vue';
 import Description from './Description.vue';
 import LinkList from './LinkList.vue';
 import SupportedFeatures from './SupportedFeatures.vue';
-import SupportedFileFormats from './SupportedFileFormats.vue';
-import SupportedServiceTypes from './SupportedServiceTypes.vue';
+import FileFormats from './FileFormats.vue';
+import ServiceTypes from './ServiceTypes.vue';
 import UdfRuntimes from './UdfRuntimes.vue';
 import { MigrateCapabilities, Utils as CommonUtils } from '@openeo/js-commons';
 import './base.css';
@@ -62,8 +62,8 @@ export default {
 		Description,
 		LinkList,
 		SupportedFeatures,
-		SupportedFileFormats,
-		SupportedServiceTypes,
+		FileFormats,
+		ServiceTypes,
 		UdfRuntimes
 	},
 	data() {

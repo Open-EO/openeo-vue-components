@@ -15,7 +15,7 @@ import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
-	name: 'SupportedServiceTypes',
+	name: 'ServiceTypes',
 	mixins: [BaseMixin],
 	props: {
 		services: Object

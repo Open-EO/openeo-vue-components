@@ -23,7 +23,7 @@ Visualizes the billing information of the back-end.
 
 ### `Capabilities`
 
-Visualizes all the server information of the back-end. Shows the title, description, back-end version, `SupportedFeatures` and `BillingPlans`. May add `SupportedFileFormats`, `SupportedServiceTypes` and `UdfRuntimes`.
+Visualizes all the server information of the back-end. Shows the title, description, back-end version, `SupportedFeatures` and `BillingPlans`. May add `FileFormats`, `ServiceTypes` and `UdfRuntimes`.
 
 **Properties:**
 - `capabilities` (object): Capabilities response as defined by the openEO API.
@@ -81,6 +81,24 @@ After importing the Mixin, include it in your component by adding `mixins: [Even
 - `emit(eventName, ...args)` - Emits an event with the specified name and arguments.
 
 
+### `FileFormats`
+
+Visualizes the supported file formats of the back-end.
+
+**Properties:**
+
+- `version` (string): openEO version
+- `formats` (object): Supported file formats as defined by the respective version of the openEO API.
+- `showInput` (boolean): Show the input file formats. Defaults to `false`.
+- `showOutput` (boolean): Show the output file formats. Defaults to `false`.
+
+One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list will be shown.
+
+**Methods:**
+
+- `getCount()` - Get the number of shown file formats.
+
+
 ### `LinkList`
 
 A simple list of links.
@@ -131,6 +149,20 @@ Note: `ProcessExample` is not meant to be used separately.
 - `process-after-details`
 
 
+### `ServiceTypes`
+
+Visualizes the supported secondary web service types of the back-end.
+
+**Properties:**
+
+- `version` (string): openEO version
+- `services` (object): Supported service types as defined by the openEO API.
+
+**Methods:**
+
+- `getCount()` - Get the number of shown service types.
+
+
 ### `SupportedFeatures`
 
 Visualizes the supported functionalities of the back-end.
@@ -145,38 +177,6 @@ Visualizes the supported functionalities of the back-end.
 - `getFeatures()` - Get a list of features (i.e. the categories).
 - `getFeatureCount()` - Get the number of supported and unsupported features that are shown by the component.
 - `getSupportedFeatureCount()` - Get the number of supported features by the back-end.
-
-
-### `SupportedFileFormats`
-
-Visualizes the supported file formats of the back-end.
-
-**Properties:**
-
-- `version` (string): openEO version
-- `formats` (object): Supported file formats as defined by the respective version of the openEO API.
-- `showInput` (boolean): Show the input file formats. Defaults to `false`.
-- `showOutput` (boolean): Show the output file formats. Defaults to `false`.
-
-One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list will be shown.
-
-**Methods:**
-
-- `getCount()` - Get the number of shown file formats.
-
-
-### `SupportedServiceTypes`
-
-Visualizes the supported secondary web service types of the back-end.
-
-**Properties:**
-
-- `version` (string): openEO version
-- `services` (object): Supported service types as defined by the openEO API.
-
-**Methods:**
-
-- `getCount()` - Get the number of shown service types.
 
 
 ### `Tabs` and `Tab`
