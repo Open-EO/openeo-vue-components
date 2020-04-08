@@ -242,21 +242,26 @@ const StacCollectionUtils = {
 		if (!Array.isArray(extent) || extent.length < 2 || (!extent[0] && !extent[1])) {
 			return "N/A";
 		}
-		else if (extent[0] == extent[1]) {
-			return this.formatTimestamp(extent[0]);
-		}
 		else if (!extent[0]) {
 			return "Until " + this.formatTimestamp(extent[1]);
 		}
 		else if (!extent[1]) {
 			return this.formatTimestamp(extent[0]) + " until present";
 		}
+		else if (extent[0] == extent[1]) {
+			return this.formatTimestamp(extent[0]);
+		}
 		else {
 			return this.formatTimestamp(extent[0]) + ' – ' + this.formatTimestamp(extent[1]);
 		}
 	},
 	formatTimestamp(datetime) {
-		return datetime.replace('T', ' ').replace('Z', ' UTC');
+		if (typeof datetime === 'string') {
+			return datetime.replace('T', ' ').replace('Z', ' UTC');
+		}
+		else {
+			return "N/A";
+		}
 	},
 	formatKey(key, parentField = null) {
 		var fieldName = parentField ? parentField + "." + key : key;
