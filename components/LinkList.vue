@@ -13,6 +13,7 @@
 <script>
 import './base.css';
 import Utils from '../utils';
+import { Utils as CommonUtils } from '@openeo/js-commons';
 
 export default {
 	name: 'LinkList',
@@ -46,7 +47,7 @@ export default {
 	},
 	methods: {
 		getCount() {
-			return this.friendlyLinks.length;
+			return CommonUtils.size(this.friendlyLinks);
 		}
 	}
 }

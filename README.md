@@ -23,13 +23,14 @@ Visualizes the billing information of the back-end.
 
 ### `Capabilities`
 
-Visualizes all the server information of the back-end. Shows the title, description, back-end version, `SupportedFeatures` and `BillingPlans`.
+Visualizes all the server information of the back-end. Shows the title, description, back-end version, `SupportedFeatures` and `BillingPlans`. May add `SupportedFileFormats`, `SupportedServiceTypes` and `UdfRuntimes`.
 
 **Properties:**
 - `capabilities` (object): Capabilities response as defined by the openEO API.
 - `url` (string): URL to the API
 - `serviceTypes` (object): If given, shows the supported web service types.
 - `fileFormats` (object): If given, shows the supported file formats (input and output).
+- `udfRuntimes` (object): If given, shows the supported UDF runtimes.
 
 
 ### `Collection`
@@ -157,7 +158,7 @@ Visualizes the supported file formats of the back-end.
 - `showInput` (boolean): Show the input file formats. Defaults to `false`.
 - `showOutput` (boolean): Show the output file formats. Defaults to `false`.
 
-One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list with distinct values will be shown.
+One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list will be shown.
 
 **Methods:**
 
@@ -344,6 +345,19 @@ export default {
 }
 </script>
 ```
+
+### `UdfRuntimes`
+
+Visualizes the supported UDF (user-defined function) runtimes of the back-end.
+
+**Properties:**
+
+- `version` (string): openEO version
+- `udfRuntimes` (object): Supported UDF runtimes as defined by the openEO API.
+
+**Methods:**
+
+- `getCount()` - Get the number of shown UDF runtimes.
 
 
 ## Other features

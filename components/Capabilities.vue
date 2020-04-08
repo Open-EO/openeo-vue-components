@@ -16,16 +16,14 @@
 			<h3>Billing</h3>
 			<BillingPlans :billing="document.billing" />
 		</template>	
-		<template v-if="showServiceTypes">
-			<h3>Secondary web services</h3>
-			<SupportedServiceTypes :version="version" :services="serviceTypes" />
-		</template>
-		<template v-if="showFileFormats">
-			<h3>File formats for Import</h3>
-			<SupportedFileFormats :version="version" :formats="fileFormats" :showInput="true" />
-			<h3>File formats for Export</h3>
-			<SupportedFileFormats :version="version" :formats="fileFormats" :showOutput="true" />
-		</template>
+		<h3>File formats for Import</h3>
+		<SupportedFileFormats :version="version" :formats="fileFormats" :showInput="true" />
+		<h3>File formats for Export</h3>
+		<SupportedFileFormats :version="version" :formats="fileFormats" :showOutput="true" />
+		<h3>Secondary web services</h3>
+		<SupportedServiceTypes :version="version" :services="serviceTypes" />
+		<h3>Runtimes for User-Defined Functions (UDF)</h3>
+		<UdfRuntimes :version="version" :runtimes="udfRuntimes" />
 		<LinkList :links="document.links" :billing="document.billing" heading="More information" headingTag="h3" />
 	</div>
 </template>
@@ -37,6 +35,7 @@ import LinkList from './LinkList.vue';
 import SupportedFeatures from './SupportedFeatures.vue';
 import SupportedFileFormats from './SupportedFileFormats.vue';
 import SupportedServiceTypes from './SupportedServiceTypes.vue';
+import UdfRuntimes from './UdfRuntimes.vue';
 import { MigrateCapabilities, Utils as CommonUtils } from '@openeo/js-commons';
 import './base.css';
 
@@ -52,6 +51,10 @@ export default {
 		fileFormats: {
 			type: Object,
 			default: null
+		},
+		udfRuntimes: {
+			type: Object,
+			default: null
 		}
 	},
 	components: {
@@ -60,7 +63,8 @@ export default {
 		LinkList,
 		SupportedFeatures,
 		SupportedFileFormats,
-		SupportedServiceTypes
+		SupportedServiceTypes,
+		UdfRuntimes
 	},
 	data() {
 		return {
@@ -69,12 +73,6 @@ export default {
 		};
 	},
 	computed: {
-		showServiceTypes() {
-			return CommonUtils.isObject(this.serviceTypes);
-		},
-		showFileFormats() {
-			return CommonUtils.isObject(this.fileFormats);
-		},
 		hostName() {
 			var url = new URL(this.url);
 			return url.hostname;

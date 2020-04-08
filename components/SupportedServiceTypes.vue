@@ -1,12 +1,16 @@
 <template>
 	<ul class="vue-component service-types">
-		<li v-for="name in serviceTypeNames" :key="name">{{ name }}</li>
+		<li v-for="service in serviceTypes" :key="service.id">
+			<strong>{{ service.id | abbrev }}</strong>
+			<template v-if="service.title"> - {{ service.title }}</template>
+		</li>
 	</ul>
 </template>
 
 <script>
 import BaseMixin from './BaseMixin.vue';
 import Utils from '../utils.js';
+import { Utils as CommonUtils } from '@openeo/js-commons';
 import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
@@ -16,31 +20,26 @@ export default {
 	props: {
 		services: Object
 	},
-	data() {
-		return {
-			serviceTypeNames: []
-		};
+	computed: {
+		serviceTypes() {
+			let serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
+			let data = [];
+			for(var name in serviceTypes) {
+				serviceTypes[name].id = name;
+				data.push(serviceTypes[name]);
+			}
+			return data.sort((a,b) => Utils.compareStringCaseInsensitive(a.id, b.id));
+		}
 	},
-    watch: {
-        services() {
-            this.updateData();
-        }
-    },
 	methods: {
 		getCount() {
-			return this.serviceTypeNames.length;
-		},
-        updateData() {
-			let serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
-			this.serviceTypeNames = Object.keys(serviceTypes)
-					.map(f => Utils.prettifyAbbreviation(f))
-					.sort(Utils.compareStringCaseInsensitive);
-        }
+			return CommonUtils.size(this.serviceTypes);
+		}
 	}
 }
 </script>
 
-<style>
+<style scoped>
 ul.service-types:empty::after {
 	content: 'None';
 	font-style: italic;

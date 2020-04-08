@@ -80,7 +80,7 @@ export default {
 	background-color: maroon;
 }
 .badges .default {
-	background-color: darkblue;
+	background-color: black;
 }
 .plan-name {
 	margin: 0.25em 0;

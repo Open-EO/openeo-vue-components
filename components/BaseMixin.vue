@@ -1,4 +1,6 @@
 <script>
+import Utils from '../utils.js';
+
 export default {
 	props: {
 		version: {
@@ -15,6 +17,11 @@ export default {
             this.updateData();
         }
     },
+	filters: {
+		abbrev(text) {
+			return Utils.prettifyAbbreviation(text);
+		}
+	},
 	methods: {
         updateData() {
 			// To be implemented by the component

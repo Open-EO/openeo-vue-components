@@ -17,6 +17,7 @@ import SupportedServiceTypes from './components/SupportedServiceTypes.vue';
 import SupportedFeatures from './components/SupportedFeatures.vue';
 import Tab from './components/Tab.vue';
 import Tabs from './components/Tabs.vue';
+import UdfRuntimes from './components/UdfRuntimes.vue';
 import Utils from './utils.js';
 
 export {
@@ -42,5 +43,6 @@ export {
 	SupportedFeatures,
 	Tab,
 	Tabs,
+	UdfRuntimes,
 	Utils
 };
