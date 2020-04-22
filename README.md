@@ -377,6 +377,10 @@ A list of categorized features with their corresponding endpoints as used by the
 
 ### `Utils`
 
-* `htmlentities(str) : str` - Replace `"`, `'`, `<` and `>` characters in strings with HTML entities.
-* `htmlentities_decode(str) : str` - Replace the HTML entities for `"`, `'`, `<` and `>` with their respective characters.
+* `compareStringCaseInsensitive(string a, string b) : integer` - Compares both strings case-insensitive. Returns `-1` if `a` is sorted before `b`, `0` if they are equal and `1` otherwise.
+* `friendlyLinks(array linkList, boolean sort = true, array ignoreRel = ['self']) : array` - Accepts an array of links as defined by the openEO API and pre-processes it for better handling in templates. It tries to generate a meaningful title, if not available. It optionally also sorts the links by title and removes links with the given relation types in `ignoreRel`.
+* `htmlentities(string str) : string` - Replace `"`, `'`, `<` and `>` characters in strings with HTML entities.
+* `htmlentities_decode(string str) : string` - Replace the HTML entities for `"`, `'`, `<` and `>` with their respective characters.
+* `prettifyAbbreviation(string str) : string` - Converts a string to uppercase if all letters given are lower-cased.
+* `prettifyString(string str) : string` - Tries to convert strings in snake-case, camel-case or kebab-case into more human-readable texts, mostly by adding spaces.
 * and other functions not meant for public use.

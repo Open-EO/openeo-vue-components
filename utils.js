@@ -131,28 +131,28 @@ class Utils {
         return a.toLowerCase().localeCompare(b.toLowerCase());
     }
 
-    static prettifyString(s) {
-        if(CommonUtils.isNumeric(s)) {
-            return s;
+    static prettifyString(str) {
+        if(CommonUtils.isNumeric(str)) {
+            return str;
         }
-        else if (s.length >= 2) {
-            if (s.includes('_')) {
+        else if (str.length >= 2) {
+            if (str.includes('_')) {
                 // Snake case converter
-                s = s.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
+                str = str.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
             }
             else if (s.includes('-')) {
                 // Kebab case converter
-                s = s.replace(/([a-zA-Z\d])-([a-zA-Z\d])/g, '$1 $2');
+                str = str.replace(/([a-zA-Z\d])-([a-zA-Z\d])/g, '$1 $2');
             }
             else {
                 // Camelcase converter
-                s = s.replace(/([a-z])([A-Z])/g, '$1 $2');
+                str = str.replace(/([a-z])([A-Z])/g, '$1 $2');
             }
             // Uppercase the first letter in the first word
-            return s.charAt(0).toUpperCase() + s.substr(1);
+            return str.charAt(0).toUpperCase() + str.substr(1);
         }
         else {
-            return String(s);
+            return String(str);
         }
     }
 
@@ -183,11 +183,11 @@ class Utils {
         return links;
     }
 
-    static prettifyAbbreviation(s) {
-        if (typeof s === 'string' && s.match(/[A-Z]+/) === null) {
-            return s.toUpperCase();
+    static prettifyAbbreviation(str) {
+        if (typeof str === 'string' && str.match(/[A-Z]+/) === null) {
+            return str.toUpperCase();
         }
-        return s;
+        return str;
     }
 
 };
