@@ -54,7 +54,12 @@ export default {
 			let data = [];
 			for(let type of this.typesToShow) {
 				for(var name in formats[type]) {
-					data.push(Object.assign(formats[type][name], {id: name, type: type}));
+					let format = Object.assign({}, formats[type][name], {id: name, type: type});
+					// Don't show title if equal to identifier
+					if (Utils.compareStringCaseInsensitive(format.id, format.title) === 0) {
+						delete format.title;
+					}
+					data.push(format);
 				}
 			}
 			return Object.values(data).sort((a,b) => Utils.compareStringCaseInsensitive(a.id, b.id));

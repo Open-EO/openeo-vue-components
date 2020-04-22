@@ -25,8 +25,13 @@ export default {
 			let serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
 			let data = [];
 			for(var name in serviceTypes) {
-				serviceTypes[name].id = name;
-				data.push(serviceTypes[name]);
+				let service = Object.assign({}, serviceTypes[name]);
+				service.id = name;
+				// Don't show title if equal to identifier
+				if (Utils.compareStringCaseInsensitive(service.id, service.title) === 0) {
+					delete service.title;
+				}
+				data.push(service);
 			}
 			return data.sort((a,b) => Utils.compareStringCaseInsensitive(a.id, b.id));
 		}

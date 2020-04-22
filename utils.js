@@ -122,6 +122,12 @@ class Utils {
     }
 
     static compareStringCaseInsensitive(a, b) {
+        if (typeof a !== 'string') {
+            a = String(a);
+        }
+        if (typeof b !== 'string') {
+            b = String(b);
+        }
         return a.toLowerCase().localeCompare(b.toLowerCase());
     }
 
@@ -172,7 +178,7 @@ class Utils {
             links.push(link);
         }
         if (sort) {
-            links.sort((a, b) => a.title.localeCompare(b.title));
+            links.sort((a, b) => Utils.compareStringCaseInsensitive(a.title, b.title));
         }
         return links;
     }
