@@ -140,7 +140,7 @@ class Utils {
                 // Snake case converter
                 str = str.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
             }
-            else if (s.includes('-')) {
+            else if (str.includes('-')) {
                 // Kebab case converter
                 str = str.replace(/([a-zA-Z\d])-([a-zA-Z\d])/g, '$1 $2');
             }
