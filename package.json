@@ -27,7 +27,6 @@
     "assets/*.js",
     "assets/*.css",
     "components/*",
-    "eventbus.js",
     "featurelist.js",
     "main.js",
     "stacutils.js",

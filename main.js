@@ -3,7 +3,6 @@ import Capabilities from './components/Capabilities.vue';
 import Collection from './components/Collection.vue';
 import DeprecationNotice from './components/DeprecationNotice.vue';
 import Description from './components/Description.vue';
-import EventBus from './eventbus.js';
 import EventBusMixin from './components/EventBusMixin.vue';
 import ExperimentalNotice from './components/ExperimentalNotice.vue';
 import FeatureList from './featurelist.js';
@@ -27,7 +26,6 @@ export {
 	// CollectionSummary is only for internal use of the Collection.
 	DeprecationNotice,
 	Description,
-	EventBus,
 	EventBusMixin,
 	ExperimentalNotice,
 	FeatureList,

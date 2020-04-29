@@ -217,11 +217,11 @@ Creates a tab interface.
 
 **Notes:**
 
-The component allows to hide the tab label texts if an icon is specified and not enough space is available. Therefore, the component listens to a `windowResized` event using the `EventBus`. To react on window size changes, you have to add the following code into the `mounted()` method of your central Vue component:
+The component allows to hide the tab label texts if an icon is specified and not enough space is available. Therefore, the component listens to a `windowResized` event. To react on window size changes, you have to add the following code into the `mounted()` method of your central Vue component:
 
 ```js
 window.addEventListener('resize', event => {
-	EventBus.$emit('windowResized', event);
+	this.$root.$emit('windowResized', event);
 });
 ```
 
@@ -361,15 +361,6 @@ Visualizes the supported UDF (user-defined function) runtimes of the back-end.
 
 
 ## Other features
-
-### `EventBus`
-
-A very simple Event handler, which you can emit and receive messages with. Use the following methods:
-
-* `$emit` -  see https://vuejs.org/v2/api/#vm-emit
-* `$on` - see https://vuejs.org/v2/api/#vm-on
-* `$once` - see https://vuejs.org/v2/api/#vm-once
-* `$off` - see https://vuejs.org/v2/api/#vm-off
 
 ### `FeatureList`
 

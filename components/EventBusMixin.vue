@@ -1,6 +1,4 @@
 <script>
-import EventBus from '../eventbus.js';
-
 export default {
 	data() {
 		return {
@@ -9,19 +7,19 @@ export default {
 	},
 	beforeDestroy() {
 		for (var eventName in this.eventBusListeners) {
-			EventBus.$off(eventName, this.eventBusListeners[eventName]);
+			this.$root.$off(eventName, this.eventBusListeners[eventName]);
 		}
 	},
 	methods: {
 		listen(eventName, callback) {
 			if (this.eventBusListeners[eventName]) {
-				EventBus.$off(eventName, callback);
+				this.$root.$off(eventName, callback);
 			}
-			EventBus.$on(eventName, callback);
+			this.$root.$on(eventName, callback);
 			this.eventBusListeners[eventName] = callback;
 		},
 		emit() {
-			EventBus.$emit(...arguments);
+			this.$root.$emit(...arguments);
 		}
 	}
 }

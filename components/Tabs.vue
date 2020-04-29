@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import EventBus from '../eventbus.js';
 import Tab from './Tab.vue'
 
 export default {
@@ -50,7 +49,7 @@ export default {
 			this.resetActiveTab();
 		}
 
-		EventBus.$on('windowResized', this.adjustSizes);
+		this.$root.$on('windowResized', this.adjustSizes);
 		this.$nextTick(this.adjustSizes);
 	},
 	computed: {
