@@ -33,7 +33,7 @@
     "utils.js"
   ],
   "dependencies": {
-    "@openeo/js-commons": "^1.0.0-rc.2",
+    "@openeo/js-commons": "^1.0.0-rc.3",
     "commonmark": "^0.29.0"
   },
   "optionalDependencies": {
