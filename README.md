@@ -206,6 +206,7 @@ Creates a tab interface.
 - `getTab(id)` - Get the Vue `Tab` instance by id. Returns `null` if not found.
 - `getActiveTabId()` - Get the id of the tab that is currently active. 
 - `selectTab(tab)` - Set the currently active tab (asynchronously). `tab` can be either a Vue `Tab` instance or the id of a tab.
+- `resetActiveTab(force = false)` -  Selects the first tab if no tab is selected yet or `force` is set to `true`.
 - `closeTab(tab)` - Removes the specified tab. `tab` can be either a Vue `Tab` instance or the id of a tab.
 
 **Slots:**

@@ -9,7 +9,7 @@
 		</div>
 		<div class="tabsBody">
 			<slot :tabs="this"></slot>
-			<Tab v-for="tab in this.dynamicTabs" :id="tab.id" :name="tab.name" :icon="tab.icon" :selected="tab.selected" :enabled="tab.enabled" :closable="true" @close="onDynamic(tab, 'close')" @hide="onDynamic(tab, 'hide')" @show="onDynamic(tab, 'show')" :allowShow="() => onDynamicAllowShow(tab)" :key="tab.id">
+			<Tab v-for="tab in this.dynamicTabs" :id="tab.id" :name="tab.name" :icon="tab.icon" :selected="tab.selected" :enabled="tab.enabled" :closable="tab.closable" @close="onDynamic(tab, 'close')" @hide="onDynamic(tab, 'hide')" @show="onDynamic(tab, 'show')" :allowShow="() => onDynamicAllowShow(tab)" :key="tab.id">
 				<slot :name="tab.id" :tab="tab"><slot name="dynamic" :tab="tab"></slot></slot>
 			</Tab>
 		</div>
@@ -138,6 +138,7 @@ export default {
 			if (typeof selectedTab === "string") {
 				selectedTab = this.getTab(selectedTab); // Get tab by id
 			}
+			console.log(this.activeTab === selectedTab, !selectedTab);
 			if (this.activeTab === selectedTab || !selectedTab) {
 				return;
 			}
@@ -153,9 +154,6 @@ export default {
 			}
 		},
 		closeTab(tab) {
-			if (!tab.closable) {
-				return;
-			}
 			if (typeof tab === "string") {
 				tab = this.getTab(tab); // Get tab by id
 			}
