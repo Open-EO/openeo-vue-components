@@ -29,6 +29,7 @@ export default {
 			type: Boolean,
 			default: true
 		},
+		data: {},
 		closable: {
 			type: Boolean,
 			default: false
