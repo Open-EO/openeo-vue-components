@@ -46,15 +46,15 @@ export default {
 		url: String,
 		serviceTypes: {
 			type: Object,
-			default: null
+			default: () => null
 		},
 		fileFormats: {
 			type: Object,
-			default: null
+			default: () => null
 		},
 		udfRuntimes: {
 			type: Object,
-			default: null
+			default: () => null
 		}
 	},
 	components: {
