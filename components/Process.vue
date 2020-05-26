@@ -74,10 +74,11 @@
 			<section class="examples" v-if="hasElements(process.examples)">
 				<h3>Examples</h3>
 				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="process.parameters" :processReferenceParser="processReferenceParser" />
+				<LinkList :links="exampleLinks" heading="More examples (full processes)" headingTag="h4" />
 			</section>
 
-			<section class="links" v-if="hasElements(process.links)">
-				<LinkList :links="process.links" heading="See Also" headingTag="h3" />
+			<section class="links">
+				<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
 			</section>
 
 			<slot name="process-after-details"></slot>
@@ -159,6 +160,12 @@ export default {
 			else {
 				return this.process.id + paramStr + returns;
 			}
+		},
+		exampleLinks() {
+			if (Array.isArray(this.process.links)) {
+				return this.process.links.filter(l => l.rel === 'example');
+			}
+			return [];
 		}
 	},
 	beforeMount() {
@@ -243,5 +250,8 @@ strong.experimental {
 .process .signature {
 	display: block;
 	margin: 1em 0;
+}
+.links:empty {
+	display: none;
 }
 </style>

@@ -18,6 +18,7 @@
 <script>
 import Description from './Description.vue';
 import Utils from '../utils.js';
+import { Utils as CommonUtils } from '@openeo/js-commons';
 import './base.css';
 
 export default {
@@ -41,6 +42,7 @@ export default {
 		}
 	},
 	methods: {
+		// deprecated
 		renderedGraph() {
 			var md = "##### Process Graph\n```json\n" + JSON.stringify(this.example.process_graph, null, 2) + "\n```";
 			if (typeof this.example.returns !== 'undefined') {
@@ -54,7 +56,17 @@ export default {
 				var param = this.processParameters[i];
 				if (typeof this.example.arguments[param.name] !== 'undefined') {
 					var arg = this.example.arguments[param.name];
-					params.push('<span class="param-name">' + param.name + '</span> = <span class="argument">' + JSON.stringify(arg) + '</span>');
+					let displayValue;
+					if (CommonUtils.isObject(arg) && arg.from_parameter) {
+						displayValue ='<em title="Variable">$' + Utils.htmlentities(arg.from_parameter) + '</em>';
+					}
+					else if (CommonUtils.isObject(arg) && arg.from_node) {
+						displayValue = '<em title="Result from other process">$' + Utils.htmlentities(arg.from_node) + '</em>';;
+					}
+					else {
+						displayValue = JSON.stringify(arg);
+					}
+					params.push('<span class="param-name">' + param.name + '</span> = <span class="argument">' + displayValue + '</span>');
 				}
 			}
 			var returns = "";
