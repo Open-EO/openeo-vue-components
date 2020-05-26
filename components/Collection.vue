@@ -31,6 +31,15 @@
 				</div>
 			</section>
 
+			<section class="preview" v-if="thumbnails.length">
+				<h3>Previews</h3>
+				<div class="thumbnails">
+					<a v-for="(img, i) in thumbnails" :key="i" :href="img.href" target="_blank">
+						<img :src="img.href" :title="img.title" :alt="img.title || 'Preview'" />
+					</a>
+				</div>
+			</section>
+
 			<section class="license">
 				<h3>License</h3>
 				<a class="value" v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
@@ -128,6 +137,10 @@
 				</div>
 			</section>
 
+			<section class="assets">
+				<LinkList :links="assetLinks" heading="Assets" headingTag="h3" />
+			</section>
+
 			<section class="links">
 				<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
 			</section>
@@ -148,6 +161,8 @@ import LinkList from './LinkList.vue';
 import { MigrateCollections, Utils as CommonUtils } from '@openeo/js-commons';
 import StacCollectionUtils from '../stacutils';
 import './base.css';
+
+const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
 export default {
 	name: 'Collection',
@@ -185,7 +200,6 @@ export default {
 		return {
 			collapsed: false,
 			collection: {},
-			licenseUrl: false,
 			map: null,
 			stac: StacCollectionUtils
 		}
@@ -218,6 +232,36 @@ export default {
 		},
 		hasSummaries() {
 			return CommonUtils.size(this.collection.summaries) > 0;
+		},
+		assetLinks() {
+			if (!CommonUtils.isObject(this.collection.assets)) {
+				return [];
+			}
+			return Object.values(this.collection.assets)
+				// Remove all thumbnails (covered by separate thumbnails viewer)
+				.filter(a => !this.assetIsImage(a))
+				// Convert from asset to links so that LinkList can be used
+				.map(a => {
+					if (Array.isArray(a.role) && a.roles.length > 0) {
+						a.rel = a.roles.join(' ');
+						delete a.roles;
+					}
+					return a;
+				});
+		},
+		thumbnails() {
+			if (!CommonUtils.isObject(this.collection.assets)) {
+				return [];
+			}
+			return Object.values(this.collection.assets).filter(this.assetIsImage);
+		},
+		licenseUrl() {
+			for(let link of this.collection.links) {
+				if (link.rel === 'license' && link.href) {
+					return link.href;
+				}
+			}
+			return false;
 		}
 	},
 	watch: {
@@ -240,6 +284,9 @@ export default {
 		}
 	},
 	methods: {
+		assetIsImage(asset) {
+			return Array.isArray(asset.roles) && asset.roles.includes('thumbnail') && IMAGE_MEDIA_TYPES.includes(asset.type);
+		},
 		initMap() {
 			if (!!this.$slots['collection-spatial-extent'] || this.map !== null) {
 				return;
@@ -328,14 +375,6 @@ export default {
 			}
 
 			this.collection = data;
-
-			this.licenseUrl = false;
-			for(let link in data.links) {
-				if (link.rel === 'license' && link.href) {
-					this.licenseUrl = l.href;
-					break;
-				}
-			}
 		},
 		toggle() {
 			if (this.initiallyCollapsed) {
@@ -374,5 +413,28 @@ export default {
 }
 .tabular .value ul {
 	padding-left: 20px;
+}
+.links:empty, .assets.empty {
+	display: none;
+}
+.thumbnails {
+	overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    white-space: nowrap;
+	padding: 5px;
+}
+.thumbnails a {
+	border: 5px solid transparent;
+	display: inline-block;
+}
+
+.thumbnails a:hover img {
+	border: 2px solid black;
+}
+.thumbnails a img {
+	max-height: 200px;
+	border: 2px solid white;
+	vertical-align: middle;
 }
 </style>
