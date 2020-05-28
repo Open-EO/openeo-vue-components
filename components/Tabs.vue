@@ -1,5 +1,5 @@
 <template>
-	<div :class="{tabs: true, hide: !hasEnabledTabs, spaceLimited: spaceLimited, pills: pills, boxed: !pills}" :id="id">
+	<div :class="classes" :id="id">
 		<div class="tabsHeader" ref="tabsHeader">
 			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
@@ -32,6 +32,10 @@ export default {
 		pills: {
 			type: Boolean,
 			default: false
+		},
+		position: {
+			type: String,
+			default: 'top'
 		}
 	},
 	data() {
@@ -55,6 +59,20 @@ export default {
 	computed: {
 		hasEnabledTabs() {
 			return this.tabs.filter(t => t.enabled).length > 0;
+		},
+		classes() {
+			var classes = [
+				'tabs',
+				this.pills ? 'pills' : 'boxed',
+				this.position
+			];
+			if (!this.hasEnabledTabs) {
+				classes.push('hide');
+			}
+			if (this.spaceLimited) {
+				classes.push('spaceLimited');
+			}
+			return classes;
 		}
 	},
 	watch: {
@@ -189,6 +207,9 @@ export default {
 	flex-direction: column;
 	height: 100%;
 }
+.tabs.bottom {
+	flex-direction: column-reverse;
+}
 .tabs.boxed {
 	border-radius: 3px;
 	border: 1px solid #aaa;
@@ -231,8 +252,15 @@ export default {
 }
 .tabs.boxed > .tabsBody > .tabContent {
 	background-color: white;
+}
+.tabs.boxed.top > .tabsBody > .tabContent {
 	border-top: 1px solid #ddd;
 	padding-top: 1px;
+	height: calc(100% - 2px);
+}
+.tabs.boxed.bottom > .tabsBody > .tabContent {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 1px;
 	height: calc(100% - 2px);
 }
 .tabs.pills > .tabsBody > .tabContent {
@@ -247,20 +275,31 @@ export default {
 	background-color: transparent;
 	border: 0;
 	padding: 5px 10px;
-	margin: 5px 5px 0px 0px;
 	min-width: 6em;
 	white-space: nowrap;
 	cursor: pointer;
+}
+.tabs.top .tabItem {
+	margin: 5px 5px 0 0;
+}
+.tabs.bottom .tabItem {
+	margin: 0 0 5px 5px;
 }
 .tabs .tabItem::-moz-focus-inner {
 	border: 0;
 }
 .tabs.boxed > .tabsHeader > .tabItem {
 	border: 1px solid #aaa;
-	border-bottom: 0;
-	border-radius: 5px 5px 0 0;
 	color: #666;
 	background-color: #eee;
+}
+.tabs.boxed.top > .tabsHeader > .tabItem {
+	border-bottom: 0;
+	border-radius: 5px 5px 0 0;
+}
+.tabs.boxed.bottom > .tabsHeader > .tabItem {
+	border-top: 0;
+	border-radius: 0 0 5px 5px;
 }
 .tabs.pills > .tabsHeader > .tabItem {
 	border: 1px solid #000;
@@ -283,9 +322,15 @@ export default {
 .tabs.boxed > .tabsHeader > .tabItem.tabActive {
 	background-color: white;
 	color: black;
+	z-index: 1;
+}
+.tabs.boxed.top > .tabsHeader > .tabItem.tabActive {
 	padding-bottom: 6px;
 	margin-bottom: -1px;
-	z-index: 1;
+}
+.tabs.boxed.bottom > .tabsHeader > .tabItem.tabActive {
+	padding-top: 6px;
+	margin-top: -1px;
 }
 .tabs.pills > .tabsHeader > .tabItem.tabActive {
 	opacity: 1;

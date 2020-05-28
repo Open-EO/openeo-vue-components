@@ -189,6 +189,7 @@ Creates a tab interface.
 
 - `id` (string, required): A unique identifier for the tab container.
 - `pills` (boolean, default `false`): Switch between [normal boxed tabs and tabs with pills styling](https://www.w3schools.com/bootstrap/bootstrap_tabs_pills.asp).
+- `position` (string, default `top`): Position of the tabs/pills, either `top` or `bottom`.
 
 **Methods:**
 
