@@ -1,7 +1,7 @@
 <template>
 	<ul class="vue-component features">
 		<li v-for="(status, feature) in supportedFeatures" :key="feature">
-            <span v-text="status.icon" :class="status.className"></span> {{ feature }}
+            <span v-text="status.icon" :class="status.className" :title="status.tooltip"></span> {{ feature }}
         </li>
 	</ul>
 </template>
@@ -54,26 +54,31 @@ export default {
                 let unsupported = requiredEndpoints.filter(requiredEndpoint => !supportedEndpointList.includes(requiredEndpoint));
                 let icon;
                 let className;
+                let tooltip;
                 switch(unsupported.length) {
                     case 0:
                         // No unsupported endpoints => fully supported
                         this.supportedFeatureCount++;
                         icon = '✔️';
-                        className = 'supported'
+                        className = 'supported';
+                        tooltip = 'fully supported';
                         break;
                     case requiredEndpoints.length:
                         // All endpoints are unsupported
                         icon = '❌';
-                        className = 'unsupported'
+                        className = 'unsupported';
+                        tooltip = 'not supported';
                         break;
                     default:
                         // Some endpoints are supported => partially supported
                         icon = '⚠️';
-                        className = 'partial'
+                        className = 'partial';
+                        tooltip = 'partially supported';
                 }
                 this.supportedFeatures[feature] = {
                     icon: icon,
                     className: className,
+                    tooltip: tooltip,
                     missingEndpoints: unsupported
                 }
             }
