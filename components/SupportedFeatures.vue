@@ -49,7 +49,8 @@ export default {
     
             // Create report
             for(let feature in FeatureList.features) {
-                let requiredEndpoints = FeatureList.features[feature];
+                let requiredEndpointsWithDescriptions = FeatureList.features[feature];
+                let requiredEndpoints = Object.keys(requiredEndpointsWithDescriptions);
                 // Get a list of unsupported, but required endpoints
                 let unsupported = requiredEndpoints.filter(requiredEndpoint => !supportedEndpointList.includes(requiredEndpoint));
                 let icon;
@@ -73,7 +74,7 @@ export default {
                         // Some endpoints are supported => partially supported
                         icon = '⚠️';
                         className = 'partial';
-                        tooltip = 'partially supported';
+                        tooltip = 'partially supported, missing: ' + unsupported.map(ep => requiredEndpointsWithDescriptions[ep]).join(', ');
                 }
                 this.supportedFeatures[feature] = {
                     icon: icon,
