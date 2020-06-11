@@ -283,7 +283,7 @@ export default {
 	margin: 5px 5px 0 0;
 }
 .tabs.bottom .tabItem {
-	margin: 0 0 5px 5px;
+	margin: 0 5px 5px 0;
 }
 .tabs .tabItem::-moz-focus-inner {
 	border: 0;
