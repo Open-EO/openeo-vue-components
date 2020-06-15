@@ -1,6 +1,6 @@
 import { Utils as CommonUtils } from '@openeo/js-commons';
 
-class Utils {
+class Utils extends CommonUtils {
 
     static dataType(schema, short = false, level = 0, type = undefined) {
         if (Utils.isAnyType(schema)) {
@@ -132,7 +132,7 @@ class Utils {
     }
 
     static prettifyString(str) {
-        if(CommonUtils.isNumeric(str)) {
+        if(Utils.isNumeric(str)) {
             return str;
         }
         else if (str.length >= 2) {
@@ -189,6 +189,102 @@ class Utils {
         }
         return str;
     }
+
+	static domBoundingBox(el) {
+		var rect = el.getBoundingClientRect();
+		rect.offsetTop = rect.top + document.body.scrollTop;
+		rect.offsetLeft = rect.left + document.body.scrollLeft;
+		return rect;
+    }
+    
+	static ensurePoint(pt, fallback = null) {
+		if (typeof fallback !== 'function') {
+			fallback = () => [0,0];
+		}
+		if (!Array.isArray(pt)) {
+			return fallback();
+		}
+		if (typeof pt[0] !== 'number') {
+			pt[0] = fallback()[0] || 0;
+		}
+		if (typeof pt[1] !== 'number') {
+			pt[1] = fallback()[1] || 0;
+		}
+		return pt;
+    }
+    
+	static formatRef(value) {
+		if (this.isRef(value)) {
+			if (value.from_node) {
+				return "#" + value.from_node;
+			}
+			else if (value.from_parameter) {
+				return "$" + value.from_parameter;
+			}
+		}
+		return value;
+	}
+
+	static isRef(obj) {
+		return (Utils.isObject(obj) && (obj.from_parameter || obj.from_node));
+	}
+
+	static isRefEqual(ref1, ref2) {
+		if (!Utils.isRef(ref1) || !Utils.isRef(ref2)) {
+			return false;
+		}
+		else if (ref1.from_parameter && ref1.from_parameter === ref2.from_parameter) {
+			return true;
+		}
+		else if (ref1.from_node && ref1.from_node === ref2.from_node) {
+			return true;
+		}
+		return false;
+	}
+
+	// A very rough GeoJSON detection, if no GeoJSON schema is available.
+	static detectGeoJson(data) {
+		if (!Utils.isObject(data)) {
+			return false;
+		}
+		else if (typeof data.type !== 'string') {
+			return false;
+		}
+
+		switch(data.type) {
+			case "Point":
+			case "MultiPoint":
+			case "LineString":
+			case "MultiLineString":
+			case "Polygon":
+			case "MultiPolygon":
+				if (!Array.isArray(data.coordinates)) {
+					return false;
+				}
+				return true;
+			case "GeometryCollection":
+				if (!Array.isArray(data.geometries)) {
+					return false;
+				}
+				return true;
+			case "Feature":
+				if (data.geometry !== null && !Utils.isObject(data.geometry)) {
+					return false;
+				}
+				if (data.properties !== null && !Utils.isObject(data.properties)) {
+					return false;
+				}
+				return true;
+			case "FeatureCollection":
+				if (!Array.isArray(data.features)) {
+					return false;
+				}
+				return true;
+			default:
+				return false;
+		}
+	}
+
 
 };
 
