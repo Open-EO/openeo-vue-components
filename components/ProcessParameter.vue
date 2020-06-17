@@ -3,6 +3,7 @@
 		<h4>
 			<code>{{ parameter.name }}</code>
 			<strong class="required" v-if="!parameter.optional" title="required">*</strong>
+			<code class="default" v-if="typeof parameter.default !== 'undefined'">&nbsp;=&nbsp;{{ defaultValue }}</code>
 		</h4>
 		<div class="details">
 			<Description v-if="parameter.description" :description="parameter.description" :preprocessor="processReferenceParser" />
@@ -33,6 +34,11 @@ export default {
 		Description,
 		ExperimentalNotice,
 		JsonSchema
+	},
+	computed: {
+		defaultValue() {
+			return JSON.stringify(this.parameter.default);
+		}
 	}
 }
 </script>
@@ -40,5 +46,8 @@ export default {
 <style scoped>
 .process-parameter .details {
 	margin-left: 1.5em;
+}
+.default {
+	font-weight: normal;;
 }
 </style>
