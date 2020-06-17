@@ -96,6 +96,13 @@
 	color: #fff;
 	border-bottom-style: solid;
 }
+/* Badges for UDFs */
+.vue-component .badges .docker {
+	background-color: #0db7ed;
+}
+.vue-component .badges .default {
+	background-color: black;
+}
 
 /* Table like lists */
 .vue-component .tabular {

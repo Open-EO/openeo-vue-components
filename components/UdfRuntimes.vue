@@ -51,10 +51,4 @@ ul.udf-runtimes:empty::after {
 .badges {
 	margin-left: 0.5em;
 }
-.badges .docker {
-	background-color: #0db7ed;
-}
-.badges .default {
-	background-color: black;
-}
 </style>

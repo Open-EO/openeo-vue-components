@@ -128,7 +128,7 @@ class Utils extends CommonUtils {
         if (typeof b !== 'string') {
             b = String(b);
         }
-        return a.toLowerCase().localeCompare(b.toLowerCase());
+        return a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'});
     }
 
     static prettifyString(str) {

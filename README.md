@@ -361,6 +361,19 @@ Visualizes the supported UDF (user-defined function) runtimes of the back-end.
 
 - `getCount()` - Get the number of shown UDF runtimes.
 
+### `UdfRuntime`
+
+Shows a single supported UDF (user-defined function) runtime of the back-end.
+
+**Note:** Unlike many other components, this component doesn't automatically migrate legacy API responses.
+You must pass the runtime data through `MigrateCapabilities.convertUdfRuntimesToLatestSpec` before passing it to this component.
+
+**Properties:**
+
+- `runtimeId` (string): The identifier of the runtime (the key of a runtime entry in the `GET /udf_runtimes` response).
+- `runtimeData` (object): The data associated with this runtime (the value of a runtime entry in the `GET /udf_runtimes` response).
+- `runtimeVersion` (string): If a specific version of the runtime should be pre-selected, specify it here. Defaults to `null`, which shows the pre-selects the default version.
+
 
 ## Other features
 
@@ -370,7 +383,7 @@ A list of categorized features with their corresponding endpoints as used by the
 
 ### `Utils`
 
-* `compareStringCaseInsensitive(string a, string b) : integer` - Compares both strings case-insensitive. Returns `-1` if `a` is sorted before `b`, `0` if they are equal and `1` otherwise.
+* `compareStringCaseInsensitive(string a, string b) : integer` - Compares both strings (a) case-insensitive and (b) in natural order. Returns `-1` if `a` is sorted before `b`, `0` if they are equal and `1` otherwise.
 * `friendlyLinks(array linkList, boolean sort = true, array ignoreRel = ['self']) : array` - Accepts an array of links as defined by the openEO API and pre-processes it for better handling in templates. It tries to generate a meaningful title, if not available. It optionally also sorts the links by title and removes links with the given relation types in `ignoreRel`.
 * `htmlentities(string str) : string` - Replace `"`, `'`, `<` and `>` characters in strings with HTML entities.
 * `htmlentities_decode(string str) : string` - Replace the HTML entities for `"`, `'`, `<` and `>` with their respective characters.
