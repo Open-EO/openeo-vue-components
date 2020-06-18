@@ -52,7 +52,6 @@
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
 import Description from './Description.vue';
 import LinkList from './LinkList.vue';
 import Tabs from './Tabs.vue';
@@ -63,7 +62,6 @@ import './base.css';
 
 export default {
 	name: 'UdfRuntime',
-	mixins: [BaseMixin],
 	components: {
 		Description,
 		LinkList,
