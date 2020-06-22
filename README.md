@@ -227,7 +227,7 @@ window.addEventListener('resize', event => {
 });
 ```
 
-####  `Tab`
+#### `Tab`
 
 **Properties:**
 
