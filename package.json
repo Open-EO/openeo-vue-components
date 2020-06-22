@@ -33,15 +33,16 @@
     "utils.js"
   ],
   "dependencies": {
-    "@openeo/js-commons": "^1.0.0-rc.3",
-    "commonmark": "^0.29.0"
+    "@openeo/js-commons": "^1.0.0-rc.4",
+    "commonmark": "^0.29.0",
+    "core-js": "^3.6.5"
   },
   "optionalDependencies": {
     "leaflet": "^1.6.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "3.11.0",
-    "@vue/cli-service": "3.11.0",
+    "@vue/cli-plugin-babel": "^4.4.5",
+    "@vue/cli-service": "^4.4.5",
     "vue-template-compiler": "^2.6.0"
   },
   "peerDependencies": {
