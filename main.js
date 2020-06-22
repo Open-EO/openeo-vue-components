@@ -16,6 +16,7 @@ import StacCollectionUtils from './stacutils';
 import SupportedFeatures from './components/SupportedFeatures.vue';
 import Tab from './components/Tab.vue';
 import Tabs from './components/Tabs.vue';
+import UdfRuntime from './components/UdfRuntime.vue';
 import UdfRuntimes from './components/UdfRuntimes.vue';
 import Utils from './utils.js';
 
@@ -41,6 +42,7 @@ export {
 	SupportedFeatures,
 	Tab,
 	Tabs,
+	UdfRuntime,
 	UdfRuntimes,
 	Utils
 };
