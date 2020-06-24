@@ -355,7 +355,7 @@ Visualizes the supported UDF (user-defined function) runtimes of the back-end.
 **Properties:**
 
 - `version` (string): openEO version
-- `udfRuntimes` (object): Supported UDF runtimes as defined by the openEO API.
+- `runtimes` (object): Supported UDF runtimes as defined by the openEO API.
 
 **Methods:**
 
