@@ -55,8 +55,8 @@ Visualizes a collection following the STAC-based collection description.
 - `collection-after-summary`
 - `collection-before-details`
 - `collection-after-details`
-- `collection-spatial-extent` - Custom HTML to display the spatial extent, e.g. a map. The variable `extent` is provides an array containing four elements (west, south, east, north) with the WGS84 coordinates.
-- `collection-temporal-extent` - Custom HTML to display the temporal extent. The variable `extent` is provides an array with two elements (start, end). Each is a RFC3339 compatible `date-time` or `null` to indicate an open range.
+- `collection-spatial-extents` - Custom HTML to display the spatial extents, e.g. a map. The variable `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates.
+- `collection-temporal-extents` - Custom HTML to display the temporal extents. The variable `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
 
 
 ### `Description`

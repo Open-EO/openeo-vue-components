@@ -74,7 +74,7 @@
 			<section class="examples" v-if="hasElements(process.examples)">
 				<h3>Examples</h3>
 				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="process.parameters" :processReferenceParser="processReferenceParser" />
-				<LinkList :links="exampleLinks" heading="More examples (full processes)" headingTag="h4" />
+				<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
 			</section>
 
 			<section class="links">

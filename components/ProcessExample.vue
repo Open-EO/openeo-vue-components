@@ -5,11 +5,8 @@
 		<div class="content">
 			<Description v-if="example.description" :description="example.description" :preprocessor="processReferenceParser" />
 
-			<div class="process-graph" v-if="example.process_graph">
-				<Description :description="renderedGraph()" />
-			</div>
 			<div class="arguments" v-if="example.arguments">
-				<code v-html="renderedArguments()"></code>
+				<code v-html="renderedArguments"></code>
 			</div>
 		</div>
 	</div>
@@ -39,16 +36,6 @@ export default {
 		},
 		title() {
 			return this.example.title ? this.example.title + " (" + this.identifier + ")" : "Example " + this.identifier;
-		}
-	},
-	methods: {
-		// deprecated
-		renderedGraph() {
-			var md = "##### Process Graph\n```json\n" + JSON.stringify(this.example.process_graph, null, 2) + "\n```";
-			if (typeof this.example.returns !== 'undefined') {
-				md += "\n##### Result\n```json\n" + JSON.stringify(this.example.returns, null, 2) + "\n```";
-			}
-			return md;
 		},
 		renderedArguments() {
 			var params = [];

@@ -4,8 +4,8 @@
 			<strong>{{ name }}</strong>
 			<template v-if="env.title"> - {{ env.title }}</template>
 			<ul class="badges small">
-				<template v-if="env.docker">
-					<li class="badge docker">Docker</li>
+				<template v-if="env.type === 'docker' || (env.docker && env.tags)">
+					<li class="badge docker">Docker: {{ env.docker }}</li>
 					<li class="badge version" :class="{default: tag === env.default}" v-for="tag in env.tags" :key="tag">{{ tag }}</li>
 				</template>
 				<template v-else>
