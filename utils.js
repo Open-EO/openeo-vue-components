@@ -121,68 +121,6 @@ class Utils extends CommonUtils {
         return [];
     }
 
-    static compareStringCaseInsensitive(a, b) {
-        if (typeof a !== 'string') {
-            a = String(a);
-        }
-        if (typeof b !== 'string') {
-            b = String(b);
-        }
-        return a.localeCompare(b, undefined, {numeric: true, sensitivity: 'base'});
-    }
-
-    static prettifyString(str) {
-        if(Utils.isNumeric(str)) {
-            return str;
-        }
-        else if (str.length >= 2) {
-            if (str.includes('_')) {
-                // Snake case converter
-                str = str.replace(/([a-zA-Z\d])_([a-zA-Z\d])/g, '$1 $2');
-            }
-            else if (str.includes('-')) {
-                // Kebab case converter
-                str = str.replace(/([a-zA-Z\d])-([a-zA-Z\d])/g, '$1 $2');
-            }
-            else {
-                // Camelcase converter
-                str = str.replace(/([a-z])([A-Z])/g, '$1 $2');
-            }
-            // Uppercase the first letter in the first word
-            return str.charAt(0).toUpperCase() + str.substr(1);
-        }
-        else {
-            return String(str);
-        }
-    }
-
-    static friendlyLinks(linkList, sort = true, ignoreRel = ['self']) {
-        let links = [];
-        if (!Array.isArray(linkList)) {
-            return links;
-        }
-
-        for(let link of linkList) {
-            link = Object.assign({}, link); // Make sure to work on a copy
-            if (typeof link.rel === 'string' && ignoreRel.includes(link.rel.toLowerCase())) {
-                continue;
-            }
-            if (typeof link.title !== 'string' || link.title.length === 0) {
-                if (typeof link.rel === 'string' && link.rel.length > 1) {
-                    link.title = Utils.prettifyString(link.rel);
-                }
-                else {
-                    link.title = link.href.replace(/^https?:\/\/(www.)?/i, '').replace(/\/$/i, '');
-                }
-            }
-            links.push(link);
-        }
-        if (sort) {
-            links.sort((a, b) => Utils.compareStringCaseInsensitive(a.title, b.title));
-        }
-        return links;
-    }
-
     static prettifyAbbreviation(str) {
         if (typeof str === 'string' && str.match(/[A-Z]+/) === null) {
             return str.toUpperCase();

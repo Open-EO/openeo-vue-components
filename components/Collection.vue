@@ -46,24 +46,25 @@
 				<span class="value" v-else>{{ collection.license }}</span>
 			</section>
 
-			<section class="extent" v-if="temporalInterval || boundingBox">
-				<template v-if="temporalInterval">
+			<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
+				<template v-if="temporalIntervals.length">
 					<h3>Temporal Extent</h3>
-					<slot name="collection-temporal-extent" :extent="temporalInterval">
-						<p>{{ stac.formatTemporalExtent(temporalInterval) }}</p>
+					<slot name="collection-temporal-extents" :extents="temporalIntervals">
+						<ul v-for="(interval, i) in temporalIntervals" :key="i">
+							<li>{{ stac.formatTemporalExtent(interval) }}</li>
+						</ul>
 					</slot>
 				</template>
 			
-				<template v-if="boundingBox">
+				<template v-if="boundingBoxes.length">
 				<h3>Spatial Extent</h3>
-					<slot name="collection-spatial-extent" :extent="boundingBox">
+					<slot name="collection-spatial-extents" :extents="boundingBoxes">
 						<div :id="'map-' + collection.id" class="map" ref="mapContainer">
-							<ul v-if="!map">
-								<li>North: {{boundingBox[3]}}</li>
-								<li>South: {{boundingBox[1]}}</li>
-								<li>East: {{boundingBox[2]}}</li>
-								<li>West: {{boundingBox[0]}}</li>
-							</ul>
+							<template v-if="!map">
+								<ul v-for="(bbox, i) in boundingBoxes" :key="i">
+									<li>Latitudes: {{ bbox[1] }} / {{ bbox[3] }}, Longitudes: {{ bbox[0] }} / {{ bbox[2] }}</li>
+								</ul>
+							</template>
 						</div>
 					</slot>
 				</template>
@@ -205,19 +206,19 @@ export default {
 		}
 	},
 	computed: {
-		temporalInterval() {
+		temporalIntervals() {
 			let e = this.collection.extent;
-			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.temporal) && CommonUtils.size(e.temporal.interval) > 0 && e.temporal.interval[0].length >= 2) {
-				return e.temporal.interval[0];
+			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.temporal) && CommonUtils.size(e.temporal.interval) > 0) {
+				return e.temporal.interval.filter(interval => interval.length >= 2);
 			}
-			return null;
+			return [];
 		},
-		boundingBox() {
+		boundingBoxes() {
 			let e = this.collection.extent;
-			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.spatial) && CommonUtils.size(e.spatial.bbox) > 0 && e.spatial.bbox[0].length >= 4) {
-				return e.spatial.bbox[0];
+			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.spatial) && CommonUtils.size(e.spatial.bbox) > 0) {
+				return e.spatial.bbox.filter(bbox => bbox.length >= 4);
 			}
-			return null;
+			return [];
 		},
 		leafletOptions() {
 			return {  // keep in sync with Readme
@@ -288,7 +289,7 @@ export default {
 			return Array.isArray(asset.roles) && asset.roles.includes('thumbnail') && IMAGE_MEDIA_TYPES.includes(asset.type);
 		},
 		initMap() {
-			if (!!this.$slots['collection-spatial-extent'] || this.map !== null) {
+			if (!!this.$slots['collection-spatial-extents'] || this.map !== null) {
 				return;
 			}
 			try {

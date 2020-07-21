@@ -3,31 +3,32 @@
 		<template v-if="visible">
 			<div v-if="isProcessGraph" class="schemaProcessGraph">
 				<div class="process-graph-parameters">
+					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">process</span></p>
 					<template v-if="Array.isArray(schema.parameters) && schema.parameters.length > 0">
-						<strong>The following parameters are passed to the process:</strong>
+						<p>The following parameters are passed to the process:</p>
 						<ProcessParameter v-for="(param, i) in schema.parameters" :key="i" :parameter="param" :processReferenceParser="processReferenceParser" />
 					</template>
 					<strong v-else>No parameters are passed to the process.</strong>
 				</div>
 			</div>
 			<div v-else-if="showRow('object')" class="schemaObjectElement">
-				<div v-if="filteredObjectSchema !== null" class="inline-schema-attrs">
-					<JsonSchema :schema="filteredObjectSchema" :nestingLevel="nestingLevel+1" />
+				<div class="inline-schema-attrs">
+					<JsonSchema v-if="filteredObjectSchema !== null" :schema="filteredObjectSchema" :nestingLevel="nestingLevel+1" />
+					<table class="object-properties">
+						<tr>
+							<th colspan="2" class="object-prop-heading">Object Properties:</th>
+						</tr>
+						<tr v-for="(val, key) in schema.properties" :key="key">
+							<td class="propKey">
+								{{ key }}
+								<strong class="required" v-if="schema.required && schema.required.indexOf(key) !== -1" title="required">*</strong>
+							</td>
+							<td class="value">
+								<JsonSchema :schema="val" :nestingLevel="nestingLevel+1" :processReferenceParser="processReferenceParser" />
+							</td>
+						</tr>
+					</table>
 				</div>
-				<table class="object-properties">
-					<tr>
-						<th colspan="2" class="object-prop-heading">Object Properties:</th>
-					</tr>
-					<tr v-for="(val, key) in schema.properties" :key="key">
-						<td class="propKey">
-							{{ key }}
-							<strong class="required" v-if="schema.required && schema.required.indexOf(key) !== -1" title="required">*</strong>
-						</td>
-						<td class="value">
-							<JsonSchema :schema="val" :nestingLevel="nestingLevel+1" :processReferenceParser="processReferenceParser" />
-						</td>
-					</tr>
-				</table>
 			</div>
 			<table v-else class="schema-attrs">
 				<tr v-if="typeof schema.title == 'string'">
@@ -174,53 +175,40 @@ export default {
 		formatKey(key) {
 			switch(key) {
 				case 'items':
-					key = 'Array items';
-					break;
+					return 'Array items';
 				case 'minItems':
-					key = 'Min. number of items';
-					break;
+					return 'Min. number of items';
 				case 'const':
-					key = 'Constant value';
-					break;
+					return 'Constant value';
 				case 'maxItems':
-					key = 'Max. number of items';
-					break;
+					return 'Max. number of items';
 				case 'minimum':
-					key = 'Minimum value (inclusive)';
-					break;
+					return 'Minimum value (inclusive)';
 				case 'maximum':
-					key = 'Maximum value (inclusive)';
-					break;
+					return 'Maximum value (inclusive)';
 				case 'exclusiveMinimum':
-					key = 'Minimum value (exclusive)';
-					break;
+					return 'Minimum value (exclusive)';
 				case 'exclusiveMinimum':
-					key = 'Maximum value (exclusive)';
-					break;
+					return 'Maximum value (exclusive)';
 				case 'enum':
-					key = 'Allowed values';
-					break;
+					return 'Allowed values';
 				case 'default':
-					key = 'Default value';
-					break;
+					return 'Default value';
 				case 'type':
-					key = 'Data type';
-					break;
+					return 'Data type';
 				case 'allOf':
-					key = 'Composite data type';
-					break;
+					return 'Composite data type';
 				case 'contentMediaType':
-					key = 'Media Type';
-					break;
+					return 'Media Type';
 				case 'contentEncoding':
-					key = 'Encoding';
-					break;
+					return 'Encoding';
 				case 'deprecated':
-					key = 'Deprecated';
-					break;
+					return 'Deprecated';
+				case 'additionalProperties':
+					return "Each property";
 				default:
 					if (key.length > 1) {
-						key = key.charAt(0).toUpperCase() + key.slice(1);
+						return key.charAt(0).toUpperCase() + key.slice(1);
 					}
 			}
 			return key;
@@ -257,6 +245,9 @@ export default {
 </style>
 
 <style scoped>
+.data-type {
+	font-weight: bold;
+}
 .json-schema {
 	border-left: 7px solid #ccc;
 	border-bottom: 1px dotted #ccc;
@@ -267,12 +258,16 @@ export default {
 	border-left: 1px solid #ccc;
 	border-bottom: 1px dotted #ccc;
 	margin-top: 0.5em;
+	margin-left: 1em;
 }
-.json-schema td, .schemaProcessGraph {
+.json-schema td, .json-schema th, .schemaProcessGraph {
 	padding: 0.25em;
 }
 .inline-schema-attrs .json-schema {
 	border: 0;
+	padding: 0;
+	width: 100%;
+	background-color: transparent;
 }
 .schema-name {
 	display: inline-block;
@@ -282,16 +277,15 @@ export default {
 	width: 100%;
 }
 .schema-attrs .key {
-	min-width: 8em;
-	width: 18%;
+	white-space: nowrap;
 }
 .schema-attrs .value {
-	width: 82%;
+	width: 90%;
+}
+p.schema-attrs {
+	padding: 0 0 1em 0;
 }
 
-.inline-schema-attrs .json-schema {
-	background-color: transparent;
-}
 .object-prop-heading, .data-types-heading {
 	padding: 0.5em 0em;
 	text-align: left;

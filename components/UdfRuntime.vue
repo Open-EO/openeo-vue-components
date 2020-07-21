@@ -81,7 +81,7 @@ export default {
 			return this.runtimeData.title || this.runtimeId;
 		},
 		isDocker() {
-			return Boolean(this.runtimeData.docker && this.runtimeData.tags);
+			return Boolean(this.runtimeData.type === 'docker' || (this.runtimeData.docker && this.runtimeData.tags));
 		},
 		selectVersion() {
 			if ((Utils.isObject(this.runtimeData.versions) && this.runtimeData.versions[this.runtimeVersion]) || (Array.isArray(this.runtimeData.tags) && this.runtimeData.tags[this.runtimeVersion])) {
