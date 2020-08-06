@@ -174,6 +174,9 @@ export default {
 			if (typeof tab === "string") {
 				tab = this.getTab(tab); // Get tab by id
 			}
+			if (!tab.closable) {
+				return;
+			}
 			var index = this.tabs.findIndex(t => t.id === tab.id);
 			if (index !== -1) {
 				this.tabs.splice(index, 1);
