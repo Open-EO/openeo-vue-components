@@ -228,8 +228,8 @@ export default {
 }
 .tabs .tabsBody {
 	flex-grow: 1;
-	overflow: auto;
 	height: 100%;
+	overflow: hidden;
 }
 .tabs.hide {
 	display: none;
@@ -255,10 +255,11 @@ export default {
 }
 .tabs.boxed > .tabsBody > .tabContent {
 	background-color: white;
+	overflow: auto;
+	height: 100%;
 }
 .tabs.boxed.top > .tabsBody > .tabContent {
 	border-top: 1px solid #ddd;
-	padding-top: 1px;
 	height: calc(100% - 2px);
 }
 .tabs.boxed.bottom > .tabsBody > .tabContent {
