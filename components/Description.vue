@@ -24,7 +24,7 @@ export default {
 			}
 			// Parse CommonMark
 			var reader = new commonmark.Parser();
-			var writer = new commonmark.HtmlRenderer();
+			var writer = new commonmark.HtmlRenderer({safe: true, smart: true});
 			var parsed = reader.parse(text);
 			return writer.render(parsed);
 		}
