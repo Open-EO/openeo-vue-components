@@ -294,10 +294,11 @@ export default {
 			}
 			try {
 				var L = require('leaflet');
-
 				if (!L) {
 					console.warn("Leaflet is not available");
+					return;
 				}
+	
 				var map = new L.Map('map-' + this.collection.id, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
@@ -306,17 +307,36 @@ export default {
 				});
 				osm.addTo(map);
 
-				var rect = L.rectangle([[this.boundingBox[3], this.boundingBox[0]], [this.boundingBox[1], this.boundingBox[2]]]);
-				// ToDo: Use something like https://github.com/briannaAndCo/Leaflet.Antimeridian to show correct bboxes over the antimeridian
-				rect.addTo(map);
+				let features = L.featureGroup();
+				features.addTo(map);
+
+				try {
+					L.Wrapped = require('leaflet.antimeridian');
+				} catch (e) {}
+				for(let bbox of this.boundingBoxes) {
+					let p = [[bbox[1], bbox[0]], [bbox[3], bbox[0]], [bbox[3], bbox[2]], [bbox[1], bbox[2]]];
+					let rect;
+					if (L.Wrapped && bbox[2] < bbox[0]) {
+						rect = new L.Wrapped.Polygon(p);
+					}
+					else {
+						rect = L.polygon(p);
+					}
+					rect.setStyle({
+						color: '#3388ff',
+						fillOpacity: 0.2
+					});
+					features.addLayer(rect);
+				}
 
 				this.map = {
 					instance: map,
-					rectangle: rect
+					rectangles: features
 				};
+
 				this.setMapSize(this.leafletOptions.height, this.leafletOptions.width);
 				if (typeof this.mapOptions.onAfterMapInit === 'function') {
-					typeof this.mapOptions.onAfterMapInit(map, rectangle);
+					typeof this.mapOptions.onAfterMapInit(map, features);
 				}
 			} catch (e) {}
 		},
@@ -326,7 +346,7 @@ export default {
 			this.$refs.mapContainer.style.height = height;
 			this.map.instance.invalidateSize(true);
 			// Compute somewhat smart map extent and zoom level around bbox
-			var bounds = this.map.rectangle.getBounds();
+			var bounds = this.map.rectangles.getBounds();
 			var zoom = this.map.instance.getBoundsZoom(bounds);
 			var newZoom = Math.min(zoom, 11); // Never zoom closer than 8
 			if (zoom > 8) {
@@ -361,7 +381,7 @@ export default {
 		updateData() {
 			var data = MigrateCollections.convertCollectionToLatestSpec(this.collectionData, this.version);
 
-			for(var key in data) {
+			for(let key in data) {
 				// Move all custom top-level fields to summaries for easier visualization
 				if (key === 'version' || (key !== 'cube:dimensions' && key.includes(':'))) {
 					data.summaries[key] = [data[key]];
@@ -371,7 +391,7 @@ export default {
 			// ToDo: Use visualizations for something useful
 			delete data.summaries['gee:visualizations'];
 
-			for(var key in data.summaries) {
+			for(let key in data.summaries) {
 				data.summaries[key] = StacCollectionUtils.restructure(data.summaries[key], key);
 			}
 

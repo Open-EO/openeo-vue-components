@@ -21,14 +21,14 @@ class Utils extends CommonUtils {
                 choice = schema.oneOf || schema.anyOf;
             }
             var types = [];
-            for(var i in choice) {
+            for(let i in choice) {
                 types.push(Utils.dataType(choice[i], short, level));
             }
             return types.join(', ');
         }
         else if (Array.isArray(type)) {
             var types = [];
-            for(var i in type) {
+            for(let i in type) {
                 types.push(Utils.dataType(schema, short, level, type[i]));
             }
             return types.join(short ? '|' : ', ');
