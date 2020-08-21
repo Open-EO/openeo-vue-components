@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **1.0.0-rc.1** and supports **openEO API versions 0.4.x and 1.0.x**. Legacy versions are available as releases.
+This library's version is **1.0.0-rc.2** and supports **openEO API versions 0.4.x and 1.0.x**. Legacy versions are available as releases.
 
 ## Components
 
@@ -37,6 +37,19 @@ Visualizes all the server information of the back-end. Shows the title, descript
 
 Visualizes a collection following the STAC-based collection description.
 
+**Optional dependencies:**
+
+This component has two optional dependencies to show the spatial extents of the collection on a map:
+- `leaflet` - mapping library
+- `leaflet.antimeridian` - plugin to correctly show bounding boxes spanning over the antimeridian
+
+You can either install them using npm or add them to your HTML page:
+```html
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.6/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.antimeridian@1/dist/leaflet.antimeridian-src.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6/dist/leaflet.css" />
+```
+
 **Properties:**
 
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
@@ -47,7 +60,7 @@ Visualizes a collection following the STAC-based collection description.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `true`.
-  - `onAfterMapInit` (function): Callback function with two parameters `map` (Leaflet Map) and `rectangle` (Bounding Box as Leaflet Rectangle) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to no callback.
+  - `onAfterMapInit` (function): Callback function with two parameters `map` (Leaflet Map) and `rectangles` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to no callback.
 
 **Slots:**
 

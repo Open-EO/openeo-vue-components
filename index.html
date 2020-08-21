@@ -7,11 +7,12 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<script src="https://cdn.jsdelivr.net/npm/leaflet@1.6/dist/leaflet.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/leaflet.antimeridian@1/dist/leaflet.antimeridian-src.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@openeo/vue-components@latest/assets/openeo-vue.umd.min.js"></script>
+		<script src="assets/openeo-vue.umd.js"></script>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6/dist/leaflet.css" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@openeo/processes-docgen@latest/dist/DocGen.css">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@openeo/vue-components@latest/assets/openeo-vue.css">
+		<link rel="stylesheet" href="assets/openeo-vue.css">
 		<style>html, body { height: 100%; margin: 1em; }</style>
 	</head>
 
@@ -30,7 +31,7 @@
 							"license": "proprietary",
 							"extent": {
 								"spatial": {
-									"bbox": [[-180, -56, 180, 83]]
+									"bbox": [[160.6, -55.95, -170, -25.89], [-180, 0, 180, 83]]
 								},
 								"temporal": {
 									"interval": [["2015-06-23T00:00:00Z", null]]
