@@ -209,14 +209,14 @@ export default {
 		temporalIntervals() {
 			let e = this.collection.extent;
 			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.temporal) && CommonUtils.size(e.temporal.interval) > 0) {
-				return e.temporal.interval.filter(interval => interval.length >= 2);
+				return e.temporal.interval.filter(interval => Array.isArray(interval) && interval.length >= 2);
 			}
 			return [];
 		},
 		boundingBoxes() {
 			let e = this.collection.extent;
 			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.spatial) && CommonUtils.size(e.spatial.bbox) > 0) {
-				return e.spatial.bbox.filter(bbox => bbox.length >= 4);
+				return e.spatial.bbox.filter(bbox => Array.isArray(bbox) && bbox.length >= 4);
 			}
 			return [];
 		},
@@ -273,6 +273,9 @@ export default {
 			if (!newVal) {
 				// Wait with the map initialization until the collapsed area is rendered
 				this.$nextTick(() => this.initMap());
+			}
+			else {
+				this.map = null;
 			}
 		}
 	},
