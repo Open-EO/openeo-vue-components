@@ -14,7 +14,7 @@
 					<li class="badge category" v-for="(value, key) in process.categories" :key="key" v-text="formatCategory(value)"></li>
 				</ul>
 				<ul class="badges actions" v-if="provideDownload">
-					<li class="badge action download"><a class="badge-fill" @click="download(process)">Download JSON</a></li>
+					<li class="badge action download"><a class="badge-fill" @click="download">Download JSON</a></li>
 				</ul>
 			</div>
 		</template>
@@ -192,7 +192,7 @@ export default {
 			let dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.processData, null, 2));
 			let downloadAnchorNode = document.createElement('a');
 			downloadAnchorNode.setAttribute("href", dataStr);
-			downloadAnchorNode.setAttribute("download", this.process.id + ".json");
+			downloadAnchorNode.setAttribute("download", this.processData.id + ".json");
 			document.body.appendChild(downloadAnchorNode);
 			downloadAnchorNode.click();
 			downloadAnchorNode.remove();
@@ -227,6 +227,9 @@ export default {
 }
 .actions .action {
 	background-color: chocolate;
+}
+.actions .action:hover {
+	background-color: black;
 }
 strong.deprecated {
 	color: red;
