@@ -78,7 +78,9 @@ A simple text renderer, which supports CommonMark.
 
 **Properties:**
 - `description` (string): The text to show.
-- `preprocessor` (function): A function that further processes the text, before CommonMark is parsed.
+- `preprocessor` (function): A function that further processes the text, *before* CommonMark is parsed.
+- `processor` (function): A function that further processes the text, *after* CommonMark is parsed.
+- `processUrl` (string): The URL to point process references (` ``process_id()`` `) to. `${}` gets replaced with the process id. Set to `null` (default) to disable process links. Example: `https://processes.openeo.org/#${}`
 - `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
 
 

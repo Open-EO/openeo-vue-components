@@ -39,20 +39,20 @@
 			<section class="description" v-if="process.description">
 				<h3>Description</h3>
 				<code class="signature" v-html="signature"></code>
-				<Description :description="process.description" :preprocessor="processReferenceParser" />
+				<Description :description="process.description" :processUrl="processUrl" />
 				<DeprecationNotice v-if="process.deprecated" entity="process" />
 				<ExperimentalNotice v-if="process.experimental" entity="process" />
 			</section>
 
 			<section class="parameters">
 				<h3>Parameters</h3>
-				<ProcessParameter v-for="(param, i) in process.parameters" :key="i" :parameter="param" :processReferenceParser="processReferenceParser" />
+				<ProcessParameter v-for="(param, i) in process.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
 				<p v-if="process.parameters.length === 0">This process has no parameters.</p>
 			</section>
 
 			<section class="returns">
 				<h3>Return Value</h3>
-				<Description v-if="process.returns.description" :description="process.returns.description" :preprocessor="processReferenceParser" />
+				<Description v-if="process.returns.description" :description="process.returns.description" :processUrl="processUrl" />
 				<div class="json-schema-container" v-if="process.returns.schema">
 					<JsonSchema :schema="process.returns.schema" />
 				</div>
@@ -65,7 +65,7 @@
 						<code>{{ name }}</code>
 						<span class="http-code" v-if="exception.http"> — HTTP {{ exception.http }}</span>
 						<span class="error-code" v-if="exception.code"> — {{ exception.code }}</span>
-						<Description v-if="exception.description" :description="exception.description" :preprocessor="processReferenceParser" :compact="true" />
+						<Description v-if="exception.description" :description="exception.description" :processUrl="processUrl" :compact="true" />
 						<div v-if="exception.message" class="message">Message: <em>{{ exception.message }}</em></div>
 					</li>
 				</ul>
@@ -73,7 +73,7 @@
 
 			<section class="examples" v-if="hasElements(process.examples)">
 				<h3>Examples</h3>
-				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="process.parameters" :processReferenceParser="processReferenceParser" />
+				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="process.parameters" :processUrl="processUrl" />
 				<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
 			</section>
 
@@ -123,7 +123,7 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		processReferenceBuilder: Function
+		processUrl: String
 	},
 	data() {
 		return {
@@ -196,15 +196,6 @@ export default {
 			document.body.appendChild(downloadAnchorNode);
 			downloadAnchorNode.click();
 			downloadAnchorNode.remove();
-		},
-		processReferenceParser(text) {
-			if (typeof this.processReferenceBuilder !== 'function') {
-				return text;
-			}
-			// Parse our extension to CommonMark, which allows linking to other processes with ``process()``
-			return text.replace(/(^|[^\w`])``(\w+)\(\)``(?![\w`])/g, (_, prefix, pid) => {
-				return prefix + this.processReferenceBuilder(pid);
-			});
 		}
 	}
 }

@@ -10,23 +10,68 @@ export default {
 	name: 'Description',
 	props: {
 		description: String,
-		preprocessor: Function,
+		preprocessor: {
+			type: Function,
+			default: null
+		},
+		processor: {
+			type: Function,
+			default: null
+		},
+		processUrl: {
+			type: String,
+			default: null
+		},
 		compact: {
 			type: Boolean,
 			default: false
 		}
 	},
+	computed: {
+		preprocessorFunc() {
+			if (typeof this.preprocessor === 'function') {
+				return this.preprocessor;
+			}
+			else {
+				return text => text;
+			}
+		},
+		processorFunc() {
+			if (typeof this.processor === 'function') {
+				return this.processor;
+			}
+			else {
+				return text => text;
+			}
+		}
+	},
 	methods: {
 		markup(text) {
-			// Preprocess data
-			if (typeof this.preprocessor === 'function') {
-				text = this.preprocessor(text);
+			// Parse our extension to CommonMark, which allows linking to other processes with ``process()``
+			// Temporarily replace with a non-commonmark and non-html string to avoid parsing/removal
+			if (typeof this.processUrl === 'string') {
+				text = text.replace(/(^|[^\w`])``(\w+)\(\)``(?![\w`])/g, (_, prefix, pid) => {
+					return `${prefix}@pid:${pid}@@`;
+				});
 			}
+
 			// Parse CommonMark
 			var reader = new commonmark.Parser();
 			var writer = new commonmark.HtmlRenderer({safe: true, smart: true});
-			var parsed = reader.parse(text);
-			return writer.render(parsed);
+			var parsed = reader.parse(this.preprocessorFunc(text));
+			var rendered = this.processorFunc(writer.render(parsed));
+	
+			// Replace temporary replacement code with process link
+			if (typeof this.processUrl === 'string') {
+				rendered = rendered.replace(/@pid:(\w+)@@/g, (_, pid) => this.linkToProcess(pid));
+			}
+
+			return rendered;
+		},
+		linkToProcess(processId) {
+			let url = this.processUrl.replace('${}', encodeURIComponent(processId));
+			let target = this.processUrl.startsWith('#') ? '_self' : '_blank';
+			return `<code><a href="${url}" target="${target}" class="process-link">${processId}</a></code>`;
 		}
 	}
 }

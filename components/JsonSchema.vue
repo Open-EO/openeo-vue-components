@@ -6,7 +6,7 @@
 					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">process</span></p>
 					<template v-if="Array.isArray(schema.parameters) && schema.parameters.length > 0">
 						<p>The following parameters are passed to the process:</p>
-						<ProcessParameter v-for="(param, i) in schema.parameters" :key="i" :parameter="param" :processReferenceParser="processReferenceParser" />
+						<ProcessParameter v-for="(param, i) in schema.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
 					</template>
 					<strong v-else>No parameters are passed to the process.</strong>
 				</div>
@@ -24,7 +24,7 @@
 								<strong class="required" v-if="schema.required && schema.required.indexOf(key) !== -1" title="required">*</strong>
 							</td>
 							<td class="value">
-								<JsonSchema :schema="val" :nestingLevel="nestingLevel+1" :processReferenceParser="processReferenceParser" />
+								<JsonSchema :schema="val" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 							</td>
 						</tr>
 					</table>
@@ -47,7 +47,7 @@
 					</tr>
 					<tr>
 						<td colspan="2" class="schema-container data-types-container">
-							<JsonSchema v-for="(v, k) in compositeTypes" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processReferenceParser="processReferenceParser" />
+							<JsonSchema v-for="(v, k) in compositeTypes" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 						</td>
 					</tr>
 				</template>
@@ -58,7 +58,7 @@
 							<td class="value">
 								<span v-if="key == 'type'" class="data-type">{{ formatType() }}</span>
 								<div v-else-if="key == 'allOf' && Array.isArray(val)" class="schema-container">
-									<JsonSchema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processReferenceParser="processReferenceParser" />
+									<JsonSchema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								</div>
 								<span v-else-if="key != 'default' && key != 'examples' && val === true" title="true">✓ Yes</span>
 								<span v-else-if="key != 'default' && key != 'examples' && val === false" title="false">✕ No</span>
@@ -73,7 +73,7 @@
 								<em v-else-if="key == 'default' && val === ''">Empty string</em>
 								<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
 								<code v-else-if="key == 'pattern'">{{ val }}</code>
-								<JsonSchema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processReferenceParser="processReferenceParser" />
+								<JsonSchema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								<span v-else>{{ val }}</span>
 							</td>
 						</template>
@@ -103,7 +103,7 @@ export default {
 			type: Number,
 			default: 1
 		},
-		processReferenceParser: Function
+		processUrl: String
 	},
 	data() {
 		return {
