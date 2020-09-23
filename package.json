@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -33,7 +33,7 @@
     "utils.js"
   ],
   "dependencies": {
-    "@openeo/js-commons": "^1.1.1",
+    "@openeo/js-commons": "^1.2.0",
     "commonmark": "^0.29.0",
     "core-js": "^3.6.5"
   },

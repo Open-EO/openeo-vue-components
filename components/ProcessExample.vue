@@ -3,7 +3,7 @@
 		<h4>{{ title }}</h4>
 
 		<div class="content">
-			<Description v-if="example.description" :description="example.description" :preprocessor="processReferenceParser" />
+			<Description v-if="example.description" :description="example.description" :processUrl="processUrl" />
 
 			<div class="arguments" v-if="example.arguments">
 				<code v-html="renderedArguments"></code>
@@ -25,7 +25,7 @@ export default {
 		example: Object,
 		processId: String,
 		processParameters: Array,
-		processReferenceParser: Function
+		processUrl: String
 	},
 	components: {
 		Description

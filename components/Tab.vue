@@ -49,6 +49,13 @@ export default {
 		this.$on('hide', () => this.active = false);
 		this.$on('show', () => this.active = true);
 	},
+	watch: {
+		enabled(newVal) {
+			if (!newVal && this.active && this.$parent && this.$parent.$options.name === 'Tabs') {
+				this.$parent.resetActiveTab(true);
+			}
+		}
+	},
 	methods: {
 		async canShow() {
 			if (this.active) {

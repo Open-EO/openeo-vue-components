@@ -197,7 +197,7 @@ export default {
 				return;
 			}
 			if (force || this.getActiveTab() === null) {
-				this.selectTab(this.tabs[0]);
+				this.selectTab(this.tabs.find(tab => tab.enabled));
 			}
 		}
 	}

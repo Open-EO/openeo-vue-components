@@ -6,11 +6,11 @@
 			<code class="default" v-if="typeof parameter.default !== 'undefined'">&nbsp;=&nbsp;{{ defaultValue }}</code>
 		</h4>
 		<div class="details">
-			<Description v-if="parameter.description" :description="parameter.description" :preprocessor="processReferenceParser" />
+			<Description v-if="parameter.description" :description="parameter.description" :processUrl="processUrl" />
 			<DeprecationNotice v-if="parameter.deprecated === true" entity="parameter" />
 			<ExperimentalNotice v-if="parameter.experimental === true" entity="parameter" />
 			<div class="json-schema-container" v-if="parameter.schema">
-				<JsonSchema :schema="parameter.schema" :processReferenceParser="processReferenceParser" />
+				<JsonSchema :schema="parameter.schema" :processUrl="processUrl" />
 			</div>
 		</div>
 	</div>
@@ -27,7 +27,7 @@ export default {
 	name: 'ProcessParameter',
 	props: {
 		parameter: Object,
-		processReferenceParser: Function
+		processUrl: String
 	},
 	components: {
 		DeprecationNotice,

@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **1.0.0-rc.2** and supports **openEO API versions 0.4.x and 1.0.x**. Legacy versions are available as releases.
+This library's version is **1.0.0-rc.3** and supports **openEO API versions 0.4.x and 1.0.x**. Legacy versions are available as releases.
 
 ## Components
 
@@ -78,7 +78,9 @@ A simple text renderer, which supports CommonMark.
 
 **Properties:**
 - `description` (string): The text to show.
-- `preprocessor` (function): A function that further processes the text, before CommonMark is parsed.
+- `preprocessor` (function): A function that further processes the text, *before* CommonMark is parsed.
+- `processor` (function): A function that further processes the text, *after* CommonMark is parsed.
+- `processUrl` (string): The URL to point process references (` ``process_id()`` `) to. `${}` gets replaced with the process id. Set to `null` (default) to disable process links. Example: `https://processes.openeo.org/#${}`
 - `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
 
 
