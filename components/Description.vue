@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import commonmark from 'commonmark';
+import * as commonmark from 'commonmark';
 import './base.css';
 
 export default {

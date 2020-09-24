@@ -34,7 +34,7 @@
   ],
   "dependencies": {
     "@openeo/js-commons": "^1.2.0",
-    "commonmark": "^0.29.0",
+    "commonmark": "^0.29.2",
     "core-js": "^3.6.5"
   },
   "optionalDependencies": {
