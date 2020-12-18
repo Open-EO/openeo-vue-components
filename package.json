@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -34,7 +34,7 @@
   ],
   "dependencies": {
     "@openeo/js-commons": "^1.2.0",
-    "commonmark": "^0.29.2",
+    "commonmark": "^0.29.3",
     "core-js": "^3.6.5"
   },
   "optionalDependencies": {
@@ -42,8 +42,8 @@
     "leaflet.antimeridian": "^1.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.4.5",
-    "@vue/cli-service": "^4.4.5",
+    "@vue/cli-plugin-babel": "~4.4.6",
+    "@vue/cli-service": "~4.4.6",
     "vue-template-compiler": "^2.6.0"
   },
   "peerDependencies": {
