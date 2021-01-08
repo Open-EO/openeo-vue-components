@@ -88,13 +88,15 @@
 <script>
 import Description from './Description.vue';
 import Utils from '../utils.js';
-import { CommonUtils } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'JsonSchema',
 	props: {
-		schema: Object | Array,
+		schema: {
+			type: Object | Array,
+			default: () => ({})
+		},
 		initShown: {
 			type: Boolean,
 			default: true
@@ -116,7 +118,7 @@ export default {
 	},
 	beforeCreate() {
 		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
-		this.$options.components.ProcessParameter = require('./ProcessParameter.vue').default
+		this.$options.components.ProcessParameter = require('./internal/ProcessParameter.vue').default
 	},
 	created() {
         this.updateData();

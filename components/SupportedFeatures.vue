@@ -7,16 +7,16 @@
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
 import FeatureList from '../featurelist';
-import { MigrateCapabilities, Versions } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'SupportedFeatures',
-	mixins: [BaseMixin],
 	props: {
-		endpoints: Array
+		endpoints: {
+			type: Array,
+			default: () => ([])
+		},
     },
     data() {
         return {
@@ -25,18 +25,10 @@ export default {
         };
     },
     watch: {
-        endpoints() {
-            this.updateData();
-        }
-    },
-    methods: {
-        updateData() {
-            // Migrate endpoints to latest version (also update paths)
-            let migratedEndpoints = MigrateCapabilities.convertEndpointsToLatestSpec(this.endpoints, this.version, true);
-            
+        endpoints() {            
             // Flatten list of supported endpoints
             let supportedEndpointList = [];
-            for(let endpoint of migratedEndpoints) {
+            for(let endpoint of this.endpoints) {
                 for(let method of endpoint.methods) {
                     let request = method + ' ' + endpoint.path;
                     supportedEndpointList.push(request.toLowerCase());
@@ -81,9 +73,11 @@ export default {
                     className: className,
                     tooltip: tooltip,
                     missingEndpoints: unsupported
-                }
+                };
             }
-        },    
+        }
+    },
+    methods: {
         getFeatures() {
             return Object.keys(FeatureList.features);
         },

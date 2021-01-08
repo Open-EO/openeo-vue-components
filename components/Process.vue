@@ -46,15 +46,15 @@
 
 			<section class="parameters">
 				<h3>Parameters</h3>
-				<ProcessParameter v-for="(param, i) in process.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
-				<p v-if="process.parameters.length === 0">This process has no parameters.</p>
+				<ProcessParameter v-for="(param, i) in parameters" :key="i" :parameter="param" :processUrl="processUrl" />
+				<p v-if="parameters.length === 0">This process has no parameters.</p>
 			</section>
 
 			<section class="returns">
 				<h3>Return Value</h3>
-				<Description v-if="process.returns.description" :description="process.returns.description" :processUrl="processUrl" />
-				<div class="json-schema-container" v-if="process.returns.schema">
-					<JsonSchema :schema="process.returns.schema" />
+				<Description v-if="returns.description" :description="returns.description" :processUrl="processUrl" />
+				<div class="json-schema-container" v-if="returns.schema">
+					<JsonSchema :schema="returns.schema" />
 				</div>
 			</section>
 
@@ -73,7 +73,7 @@
 
 			<section class="examples" v-if="hasElements(process.examples)">
 				<h3>Examples</h3>
-				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="process.parameters" :processUrl="processUrl" />
+				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="parameters" :processUrl="processUrl" />
 				<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
 			</section>
 
@@ -89,21 +89,18 @@
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
 import DeprecationNotice from './DeprecationNotice.vue';
 import Description from './Description.vue';
 import ExperimentalNotice from './ExperimentalNotice.vue';
 import JsonSchema from './JsonSchema.vue';
 import LinkList from './LinkList.vue';
-import ProcessExample from './ProcessExample.vue';
-import ProcessParameter from './ProcessParameter.vue';
+import ProcessExample from './internal/ProcessExample.vue';
+import ProcessParameter from './internal/ProcessParameter.vue';
 import Utils from '../utils.js';
-import { MigrateProcesses } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'Process',
-	mixins: [BaseMixin],
 	components: {
 		JsonSchema,
 		DeprecationNotice,
@@ -114,7 +111,10 @@ export default {
 		LinkList
 	},
 	props: {
-		processData: Object,
+		process: {
+			type: Object,
+			default: () => ({})
+		},
 		provideDownload: {
 			type: Boolean,
 			default: true
@@ -127,20 +127,30 @@ export default {
 	},
 	data() {
 		return {
-			collapsed: false,
-			process: {}
-		}
-	},
-	watch: {
-		processData() {
-			this.updateData();
+			collapsed: false
 		}
 	},
 	computed: {
+		parameters() {
+			if (Array.isArray(this.process.parameters)) {
+				return this.process.parameters;
+			}
+			else {
+				return [];
+			}
+		},
+		returns() {
+			if (Utils.isObject(this.process.returns)) {
+				return this.process.returns;
+			}
+			else {
+				return {};
+			}
+		},
 		signature(html = true) {
 			let params = [];
-			for(let i in this.process.parameters) {
-				let p = this.process.parameters[i];
+			for(let i in this.parameters) {
+				let p = this.parameters[i];
 				let pType = Utils.dataType(p.schema, true);
 				let req = p.optional ? '?' : '';
 				let pStr;
@@ -152,7 +162,7 @@ export default {
 				}
 				params.push(pStr);
 			}
-			let returns = Utils.dataType(this.process.returns.schema, true);
+			let returns = Utils.dataType(this.returns.schema, true);
 			let paramStr = "(" + params.join(", ") + ") : ";
 			if (html) {
 				return '<span class="process-name">' + this.process.id + '</span>' + paramStr + '<span class="data-type">' + Utils.htmlentities(returns) + "</span>";
@@ -176,9 +186,6 @@ export default {
 	methods: {
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
-		},
-		updateData() {
-			this.process = MigrateProcesses.convertProcessToLatestSpec(this.processData, this.version);
 		},
 		toggle() {
 			if (this.initiallyCollapsed) {

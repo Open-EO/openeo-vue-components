@@ -1,8 +1,9 @@
-# openeo-vue-components
+# Vue Components for openEO (@openeo/vue-components)
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **1.0.0** and supports **openEO API versions 0.4.x and 1.0.x**. Legacy versions are available as releases.
+This library's version is **2.0.0-beta.1** and supports **openEO API versions 1.0.x**.
+Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
 
 ## Components
 
@@ -15,10 +16,6 @@ Visualizes the billing information of the back-end.
 **Properties:**
 - `version` (string): openEO version
 - `billing` (object): Billing information as defined by the openEO API.
-
-**Methods:**
-
-- `getPlanCount()` - Get the number of billing plans.
 
 
 ### `Capabilities`
@@ -53,7 +50,7 @@ You can either install them using npm or add them to your HTML page:
 **Properties:**
 
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
-- `collectionData` (object): A single STAC-based collection object as defined by the openEO API.
+- `collection` (object): A single STAC-based collection object as defined by the openEO API.
 - `initiallyCollapsed` (boolean): Allow collapsing/expanding the details and collapse the details by default (defaults to `false`).
 - `mapOptions` (object): For fine-tuning the behaviour of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
@@ -84,12 +81,6 @@ A simple text renderer, which supports CommonMark.
 - `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
 
 
-### `EventBusMixin`
-
-A Mixin for components to manage EventBus listeners across the lifecycle of your components.
-
-After importing the Mixin, include it in your component by adding `mixins: [EventBusMixin],`. This components helps to keep track of events over the lifecycle of components. It removes all event listeners after the listening component has been destroyed. This ensures that no old listeners are called and produce errors due to missing data. The Mixin also ensures that listeners are not added twice.
-
 **Methods:**
 
 - `listen(eventName, callback)` - Adds a listener for an event with the specified name. Replaces existing listeners with the same name in the component.
@@ -109,10 +100,6 @@ Visualizes the supported file formats of the back-end.
 
 One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list will be shown.
 
-**Methods:**
-
-- `getCount()` - Get the number of shown file formats.
-
 
 ### `LinkList`
 
@@ -126,10 +113,6 @@ A simple list of links.
 - `headingTag` (string): HTML Tag to put the heading into. Defaults to `strong`.
 - `ignoreRel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
 - `showRel`: (boolean): Shows/Hides the `rel` types. Defaults to `false`.
-
-**Methods:**
-
-- `getCount()` - Get the number of shown links.
 
 
 ### `ObjectTree`
@@ -151,7 +134,7 @@ Note: `ProcessExample` is not meant to be used separately.
 **Properties:**
 
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
-- `processData` (object): Process specification as defined by the openEO API.
+- `process` (object): Process specification as defined by the openEO API.
 - `provideDownload` (boolean): Provide a link to download the JSON file (defaults to `true`).
 - `initiallyCollapsed` (boolean): Allow collapsing/expanding the details and collapse the details by default (defaults to `false`).
 - `processReferenceBuilder` (function): A function that generates a link to a process by its process identifier.
@@ -172,10 +155,6 @@ Visualizes the supported secondary web service types of the back-end.
 
 - `version` (string): openEO version
 - `services` (object): Supported service types as defined by the openEO API.
-
-**Methods:**
-
-- `getCount()` - Get the number of shown service types.
 
 
 ### `SupportedFeatures`
@@ -371,10 +350,6 @@ Visualizes the supported UDF (user-defined function) runtimes of the back-end.
 
 - `version` (string): openEO version
 - `runtimes` (object): Supported UDF runtimes as defined by the openEO API.
-
-**Methods:**
-
-- `getCount()` - Get the number of shown UDF runtimes.
 
 ### `UdfRuntime`
 

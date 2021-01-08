@@ -57,7 +57,6 @@ import LinkList from './LinkList.vue';
 import Tabs from './Tabs.vue';
 import Tab from './Tab.vue';
 import Utils from '../utils.js';
-import { MigrateProcesses } from '@openeo/js-commons';
 import './base.css';
 
 export default {
@@ -69,8 +68,14 @@ export default {
 		Tab
 	},
 	props: {
-		runtimeId: String,
-		runtimeData: Object,
+		runtimeId: {
+			type: String,
+			default: ''
+		},
+		runtimeData:  {
+			type: Object,
+			default: () => ({})
+		},
 		runtimeVersion: {
 			type: String,
 			default: null

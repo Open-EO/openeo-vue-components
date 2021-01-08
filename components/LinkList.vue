@@ -13,12 +13,14 @@
 <script>
 import './base.css';
 import Utils from '../utils';
-import { Utils as CommonUtils } from '@openeo/js-commons';
 
 export default {
 	name: 'LinkList',
 	props: {
-		links: Array,
+		links: {
+			type: Array,
+			default: () => ([])
+		},
 		sort: {
 			type: Boolean,
 			default: true
@@ -43,11 +45,6 @@ export default {
 	computed: {
 		friendlyLinks() {
 			return Utils.friendlyLinks(this.links, this.sort, this.ignoreRel);
-		}
-	},
-	methods: {
-		getCount() {
-			return CommonUtils.size(this.friendlyLinks);
 		}
 	}
 }

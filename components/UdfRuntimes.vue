@@ -1,6 +1,6 @@
 <template>
 	<ul class="vue-component udf-runtimes">
-		<li v-for="(env, name) in udfRuntimes" :key="name">
+		<li v-for="(env, name) in runtimes" :key="name">
 			<strong>{{ name }}</strong>
 			<template v-if="env.title"> - {{ env.title }}</template>
 			<ul class="badges small">
@@ -17,26 +17,14 @@
 </template>
 
 <script>
-import Utils from '../utils.js';
-import { Utils as CommonUtils } from '@openeo/js-commons';
-import BaseMixin from './BaseMixin.vue';
-import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'UdfRuntimes',
-	mixins: [BaseMixin],
 	props: {
-		runtimes: Object
-	},
-	computed: {
-		udfRuntimes() {
-			return MigrateCapabilities.convertUdfRuntimesToLatestSpec(this.runtimes, this.version);
-		}
-	},
-	methods: {
-		getCount() {
-			return CommonUtils.size(this.udfRuntimes);
+		runtimes:  {
+			type: Object,
+			default: () => ({})
 		}
 	}
 }

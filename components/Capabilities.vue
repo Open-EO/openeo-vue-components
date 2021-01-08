@@ -1,20 +1,20 @@
 <template>
 	<div class="vue-component capabilities">
-		<h2>{{ document.title || hostName }}</h2>
+		<h2>{{ title }}</h2>
 		<section class="base-data">
-			<div class="tabular"><label>URL:</label><span class="value">{{ url }}</span></div>
-			<div class="tabular"><label>openEO-Version:</label><span class="value">{{ version }}</span></div>
+			<div class="tabular" v-if="url"><label>URL:</label><span class="value">{{ url }}</span></div>
+			<div class="tabular" v-if="capabilities.api_version"><label>openEO-Version:</label><span class="value">{{ capabilities.api_version }}</span></div>
 			<div class="tabular"><label>Production:</label><span class="value">
-				<template v-if="document.production">✔️</template>
+				<template v-if="capabilities.production">✔️</template>
 				<template v-else>❌</template>
 			</span></div>
 		</section>
-		<Description v-if="document.description" :description="document.description" />
+		<Description v-if="capabilities.description" :description="capabilities.description" />
 		<h3>Supported functionalities</h3>
-		<SupportedFeatures :endpoints="document.endpoints" />
-		<template v-if="document.billing">
+		<SupportedFeatures :endpoints="capabilities.endpoints" />
+		<template v-if="capabilities.billing">
 			<h3>Billing</h3>
-			<BillingPlans :billing="document.billing" />
+			<BillingPlans :billing="capabilities.billing" />
 		</template>	
 		<h3>File formats for Import</h3>
 		<FileFormats :version="version" :formats="fileFormats" :showInput="true" />
@@ -24,7 +24,7 @@
 		<ServiceTypes :version="version" :services="serviceTypes" />
 		<h3>Runtimes for User-Defined Functions (UDF)</h3>
 		<UdfRuntimes :version="version" :runtimes="udfRuntimes" />
-		<LinkList :links="document.links" :billing="document.billing" heading="More information" headingTag="h3" />
+		<LinkList :links="capabilities.links" :billing="capabilities.billing" heading="More information" headingTag="h3" />
 	</div>
 </template>
 
@@ -36,25 +36,26 @@ import SupportedFeatures from './SupportedFeatures.vue';
 import FileFormats from './FileFormats.vue';
 import ServiceTypes from './ServiceTypes.vue';
 import UdfRuntimes from './UdfRuntimes.vue';
-import { MigrateCapabilities, Utils as CommonUtils } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'Capabilities',
 	props: {
-		capabilities: Object,
-		url: String,
-		serviceTypes: {
+		capabilities: {
 			type: Object,
-			default: () => null
+			default: () => ({})
+		},
+		url: {
+			type: String
+		},
+		serviceTypes: {
+			type: Object
 		},
 		fileFormats: {
-			type: Object,
-			default: () => null
+			type: Object
 		},
 		udfRuntimes: {
-			type: Object,
-			default: () => null
+			type: Object
 		}
 	},
 	components: {
@@ -66,31 +67,20 @@ export default {
 		ServiceTypes,
 		UdfRuntimes
 	},
-	data() {
-		return {
-			version: "",
-			document: {}
-		};
-	},
 	computed: {
-		hostName() {
-			var url = new URL(this.url);
-			return url.hostname;
+		title() {
+			if (typeof this.capabilities.title === 'string' && this.capabilities.title.length > 0) {
+				return this.capabilities.title;
+			}
+			else {
+				try {
+					var url = new URL(this.url);
+					return url.hostname;
+				} catch (error) {
+					return '';
+				}
+			}
 		}
-	},
-    created() {
-        this.updateData();
-    },
-    watch: {
-        version() {
-            this.updateData();
-        }
-    },
-	methods: {
-        updateData() {
-            this.version = MigrateCapabilities.guessApiVersion(this.capabilities);
-            this.document = MigrateCapabilities.convertCapabilitiesToLatestSpec(this.capabilities, this.version, false, true);
-        }
 	}
 }
 </script>

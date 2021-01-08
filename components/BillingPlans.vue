@@ -26,42 +26,32 @@
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
 import Description from './Description.vue';
-import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'BillingPlans',
-	mixins: [BaseMixin],
 	components: {
 		Description
 	},
 	props: {
-		billing: Object
+		billing: {
+			type: Object,
+			default: () => ({})
+		}
 	},
-	data() {
-		return {
-			currency: null,
-			defaultPlan: null,
-			plans: []
-		};
-	},
-    watch: {
-        billing() {
-            this.updateData();
-        }
-    },
-	methods: {
-		getPlanCount() {
-			return this.plans.length;
+	computed: {
+		currency() {
+			return typeof this.billing.currency === 'string' ? this.billing.currency : null;
 		},
-        updateData() {
-			var b = MigrateCapabilities.convertBillingToLatestSpec(this.billing, this.version);
-			this.currency = typeof b.currency === 'string' ? b.currency : null;
-			this.defaultPlan = typeof b.default_plan === 'string' ? b.default_plan : null;
-			this.plans = Array.isArray(b.plans) ? b.plans : [];
-        },
+		defaultPlan() {
+			return typeof this.billing.default_plan === 'string' ? this.billing.default_plan : null;
+		},
+		plans() {
+			return Array.isArray(this.billing.plans) ? this.billing.plans : [];
+		}
+	},
+	methods: {
 		prettify(name) {
 			return Utils.prettifyAbbreviation(name);
 		}

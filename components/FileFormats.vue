@@ -2,7 +2,7 @@
 	<ul class="vue-component file-formats">
 		<li v-for="f in fileFormats" :key="f.id">
 			<strong>{{ f.id | abbrev }}</strong>
-			<template v-if="f.title"> - {{ f.title }}</template>
+			<template v-if="showTitle(f)"> - {{ f.title }}</template>
 			<ul class="badges small">
 				<li class="badge input" v-if="showAll && f.type === 'input'">Import</li>
 				<li class="badge output" v-if="showAll && f.type === 'output'">Export</li>
@@ -15,17 +15,16 @@
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
 import Utils from '../utils.js';
-import { Utils as CommonUtils } from '@openeo/js-commons';
-import { MigrateCapabilities } from '@openeo/js-commons';
 import './base.css';
 
 export default {
 	name: 'FileFormats',
-	mixins: [BaseMixin],
 	props: {
-		formats: Object,
+		formats: {
+			type: Object,
+			default: () => ({})
+		},
 		showInput: {
 			type: Boolean,
 			default: false
@@ -50,24 +49,22 @@ export default {
 			return types;
 		},
 		fileFormats() {
-			let formats = MigrateCapabilities.convertFileFormatsToLatestSpec(this.formats, this.version);
 			let data = [];
 			for(let type of this.typesToShow) {
-				for(var name in formats[type]) {
-					let format = Object.assign({}, formats[type][name], {id: name, type: type});
-					// Don't show title if equal to identifier
-					if (Utils.compareStringCaseInsensitive(format.id, format.title) === 0) {
-						delete format.title;
-					}
+				for(var name in this.formats[type]) {
+					let format = Object.assign({}, this.formats[type][name], {id: name, type: type});
 					data.push(format);
 				}
 			}
 			return Object.values(data).sort((a,b) => Utils.compareStringCaseInsensitive(a.id, b.id));
 		}
 	},
+	filters: {
+		abbrev: Utils.prettifyAbbreviation
+	},
 	methods: {
-		getCount() {
-			return CommonUtils.size(this.fileFormats);
+		showTitle(format) {
+			return (Utils.compareStringCaseInsensitive(format.id, format.title) !== 0);
 		}
 	}
 }

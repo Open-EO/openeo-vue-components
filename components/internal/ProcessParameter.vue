@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import DeprecationNotice from './DeprecationNotice.vue';
-import Description from './Description.vue';
-import ExperimentalNotice from './ExperimentalNotice.vue';
-import JsonSchema from './JsonSchema.vue';
-import './base.css';
+import DeprecationNotice from '../DeprecationNotice.vue';
+import Description from '../Description.vue';
+import ExperimentalNotice from '../ExperimentalNotice.vue';
+import JsonSchema from '../JsonSchema.vue';
+import '../base.css';
 
 export default {
 	name: 'ProcessParameter',

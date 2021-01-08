@@ -9,7 +9,10 @@ import './base.css';
 export default {
 	name: 'Description',
 	props: {
-		description: String,
+		description: {
+			type: String,
+			default: ''
+		},
 		preprocessor: {
 			type: Function,
 			default: null

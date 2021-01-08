@@ -130,7 +130,7 @@
 
 			<section class="summaries" v-if="hasSummaries">
 				<h3>Additional information</h3>
-				<div v-for="(value, field) in collection.summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: stac.isTable(value) && value.isWide}">
+				<div v-for="(value, field) in summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: stac.isTable(value) && value.isWide}">
 					<label>{{ stac.formatKey(field) }}:</label>
 					<div class="value">
 						<CollectionSummary :value="value" :field="field" />
@@ -154,20 +154,18 @@
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
-import CollectionSummary from './CollectionSummary.vue';
+import CollectionSummary from './internal/CollectionSummary.vue';
 import DeprecationNotice from './DeprecationNotice.vue';
 import Description from './Description.vue';
 import LinkList from './LinkList.vue';
-import { MigrateCollections, Utils as CommonUtils } from '@openeo/js-commons';
 import StacCollectionUtils from '../stacutils';
 import './base.css';
+import Utils from '../utils';
 
 const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
 export default {
 	name: 'Collection',
-	mixins: [BaseMixin],
 	components: {
 		CollectionSummary,
 		Description,
@@ -175,7 +173,10 @@ export default {
 		LinkList
 	},
 	props: {
-		collectionData: Object,
+		collection: {
+			type: Object,
+			default: () => ({})
+		},
 		initiallyCollapsed: {
 			type: Boolean,
 			default: false
@@ -200,22 +201,40 @@ export default {
 	data() {
 		return {
 			collapsed: false,
-			collection: {},
 			map: null,
 			stac: StacCollectionUtils
 		}
 	},
 	computed: {
+		summaries() {
+			let summaries = Object.assign({}, this.collection.summaries);
+
+			for(let key in this.collection) {
+				// Move all custom top-level fields to summaries for easier visualization
+				if (key === 'version' || (key !== 'cube:dimensions' && key.includes(':'))) {
+					summaries[key] = [this.collection[key]];
+				}
+			}
+
+			// ToDo: Use visualizations for something useful
+			delete summaries['gee:visualizations'];
+
+			for(let key in summaries) {
+				summaries[key] = StacCollectionUtils.restructure(summaries[key], key);
+			}
+
+			return summaries;
+		},
 		temporalIntervals() {
 			let e = this.collection.extent;
-			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.temporal) && CommonUtils.size(e.temporal.interval) > 0) {
+			if (Utils.isObject(e) && Utils.isObject(e.temporal) && Utils.size(e.temporal.interval) > 0) {
 				return e.temporal.interval.filter(interval => Array.isArray(interval) && interval.length >= 2);
 			}
 			return [];
 		},
 		boundingBoxes() {
 			let e = this.collection.extent;
-			if (CommonUtils.isObject(e) && CommonUtils.isObject(e.spatial) && CommonUtils.size(e.spatial.bbox) > 0) {
+			if (Utils.isObject(e) && Utils.isObject(e.spatial) && Utils.size(e.spatial.bbox) > 0) {
 				return e.spatial.bbox.filter(bbox => Array.isArray(bbox) && bbox.length >= 4);
 			}
 			return [];
@@ -229,13 +248,13 @@ export default {
 			}
 		},
 		hasDimensions() {
-			return CommonUtils.size(this.collection['cube:dimensions']) > 0;
+			return Utils.size(this.collection['cube:dimensions']) > 0;
 		},
 		hasSummaries() {
-			return CommonUtils.size(this.collection.summaries) > 0;
+			return Utils.size(this.summaries) > 0;
 		},
 		assetLinks() {
-			if (!CommonUtils.isObject(this.collection.assets)) {
+			if (!Utils.isObject(this.collection.assets)) {
 				return [];
 			}
 			return Object.values(this.collection.assets)
@@ -251,24 +270,23 @@ export default {
 				});
 		},
 		thumbnails() {
-			if (!CommonUtils.isObject(this.collection.assets)) {
+			if (!Utils.isObject(this.collection.assets)) {
 				return [];
 			}
 			return Object.values(this.collection.assets).filter(this.assetIsImage);
 		},
 		licenseUrl() {
-			for(let link of this.collection.links) {
-				if (link.rel === 'license' && link.href) {
-					return link.href;
+			if (Array.isArray(this.collection.links)) {
+				for(let link of this.collection.links) {
+					if (link.rel === 'license' && link.href) {
+						return link.href;
+					}
 				}
 			}
 			return false;
 		}
 	},
 	watch: {
-		collectionData() {
-			this.updateData();
-		},
 		collapsed(newVal) {
 			if (!newVal) {
 				// Wait with the map initialization until the collapsed area is rendered
@@ -380,25 +398,6 @@ export default {
 		},
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
-		},
-		updateData() {
-			var data = MigrateCollections.convertCollectionToLatestSpec(this.collectionData, this.version);
-
-			for(let key in data) {
-				// Move all custom top-level fields to summaries for easier visualization
-				if (key === 'version' || (key !== 'cube:dimensions' && key.includes(':'))) {
-					data.summaries[key] = [data[key]];
-				}
-			}
-
-			// ToDo: Use visualizations for something useful
-			delete data.summaries['gee:visualizations'];
-
-			for(let key in data.summaries) {
-				data.summaries[key] = StacCollectionUtils.restructure(data.summaries[key], key);
-			}
-
-			this.collection = data;
 		},
 		toggle() {
 			if (this.initiallyCollapsed) {

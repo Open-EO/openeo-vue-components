@@ -20,7 +20,7 @@
     "url": "https://github.com/open-eo/openeo-vue-components.git"
   },
   "scripts": {
-    "build": "vue-cli-service build --report --target lib --name openeo-vue main.js"
+    "build": "vue-cli-service build --report --target wc-async --name openeo ./components/*.vue"
   },
   "main": "main.js",
   "files": [

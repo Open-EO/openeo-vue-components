@@ -13,10 +13,9 @@
 </template>
 
 <script>
-import Description from './Description.vue';
-import Utils from '../utils.js';
-import { Utils as CommonUtils } from '@openeo/js-commons';
-import './base.css';
+import Description from '../Description.vue';
+import Utils from '../../utils.js';
+import '../base.css';
 
 export default {
 	name: 'ProcessExample',
@@ -44,10 +43,10 @@ export default {
 				if (typeof this.example.arguments[param.name] !== 'undefined') {
 					var arg = this.example.arguments[param.name];
 					let displayValue;
-					if (CommonUtils.isObject(arg) && arg.from_parameter) {
+					if (Utils.isObject(arg) && arg.from_parameter) {
 						displayValue ='<em title="Variable">$' + Utils.htmlentities(arg.from_parameter) + '</em>';
 					}
-					else if (CommonUtils.isObject(arg) && arg.from_node) {
+					else if (Utils.isObject(arg) && arg.from_node) {
 						displayValue = '<em title="Result from other process">$' + Utils.htmlentities(arg.from_node) + '</em>';;
 					}
 					else {

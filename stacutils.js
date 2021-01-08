@@ -1,4 +1,3 @@
-import { Utils as CommonUtils } from '@openeo/js-commons';
 import Utils from './utils';
 
 const StacFields = {
@@ -330,7 +329,7 @@ const StacCollectionUtils = {
 		return value;
 	},
 	isObject(value) {
-		return CommonUtils.isObject(value);
+		return Utils.isObject(value);
 	},
 	isLink(value) {
 		return this.isObject(value) && value.href && value.title;

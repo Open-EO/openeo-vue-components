@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-component message-block experimental-notice">
 		<strong>Experimental</strong>
-		<p>Please note that this {{entity}} is experimental with the potential for major things to change. Feel encouraged to try it out and give feedback, but refrain from using the {{entity}} in production.</p>
+		<p>Please note that this {{entity}} is experimental with the potential for major things to change. Feel encouraged to try it out and give feedback, but refrain from using it in production.</p>
 	</div>
 </template>
 

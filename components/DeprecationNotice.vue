@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-component message-block depcrecation-notice">
 		<strong>Deprecated</strong>
-		<p>Please note that this {{entity}} is now deprecated with the potential to be removed in any of the next versions. The {{entity}} should be transitioned out of usage as soon as possible. Refrain from using the {{entity}} in new implementations.</p>
+		<p>Please note that this {{entity}} is now deprecated with the potential to be removed in any of the next versions. It should be transitioned out of usage as soon as possible. Refrain from using it in new implementations.</p>
 	</div>
 </template>
 
