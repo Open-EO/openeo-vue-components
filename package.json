@@ -22,22 +22,19 @@
   "scripts": {
     "build": "vue-cli-service build --report --target wc-async --name openeo ./components/*.vue"
   },
-  "main": "main.js",
+  "main": "assets/openeo.js",
   "files": [
     "assets/*.js",
-    "assets/*.css",
+    "assets/*.map",
     "components/*",
     "featurelist.js",
-    "main.js",
     "stacutils.js",
     "utils.js"
   ],
   "dependencies": {
     "@openeo/js-commons": "^1.2.0",
     "commonmark": "^0.29.3",
-    "core-js": "^3.6.5"
-  },
-  "optionalDependencies": {
+    "core-js": "^3.6.5",
     "leaflet": "^1.6.0",
     "leaflet.antimeridian": "^1.0.0"
   },

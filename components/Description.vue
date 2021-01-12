@@ -4,9 +4,9 @@
 
 <script>
 import * as commonmark from 'commonmark';
-import './base.css';
+import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'Description',
 	props: {
 		description: {
@@ -30,26 +30,12 @@ export default {
 			default: false
 		}
 	},
-	computed: {
-		preprocessorFunc() {
-			if (typeof this.preprocessor === 'function') {
-				return this.preprocessor;
-			}
-			else {
-				return text => text;
-			}
-		},
-		processorFunc() {
-			if (typeof this.processor === 'function') {
-				return this.processor;
-			}
-			else {
-				return text => text;
-			}
-		}
-	},
 	methods: {
 		markup(text) {
+			if (typeof text !== 'string') {
+				return '';
+			}
+
 			// Parse our extension to CommonMark, which allows linking to other processes with ``process()``
 			// Temporarily replace with a non-commonmark and non-html string to avoid parsing/removal
 			if (typeof this.processUrl === 'string') {
@@ -61,8 +47,15 @@ export default {
 			// Parse CommonMark
 			var reader = new commonmark.Parser();
 			var writer = new commonmark.HtmlRenderer({safe: true, smart: true});
-			var parsed = reader.parse(this.preprocessorFunc(text));
-			var rendered = this.processorFunc(writer.render(parsed));
+			if (typeof this.preprocessor === 'function') {
+				text = this.preprocessor(text);
+				console.log(text);
+			}
+			var parsed = reader.parse(text);
+			var rendered = writer.render(parsed);
+			if (typeof this.processor === 'function') {
+				rendered = this.processor(rendered);
+			}
 	
 			// Replace temporary replacement code with process link
 			if (typeof this.processUrl === 'string') {
@@ -77,10 +70,12 @@ export default {
 			return `<code><a href="${url}" target="${target}" class="process-link">${processId}</a></code>`;
 		}
 	}
-}
+})
 </script>
 
 <style>
+@import url('./base.css');
+
 .vue-component.styled-description {
 	line-height: 1.25em;
 }

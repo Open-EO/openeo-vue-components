@@ -2,6 +2,45 @@ import { Utils as CommonUtils } from '@openeo/js-commons';
 
 class Utils extends CommonUtils {
 
+    static enableHtmlProps(vue) {
+        if (Utils.isObject(vue) && Utils.isObject(vue.props)) {
+            for(let key in vue.props) {
+                if (!Utils.isObject(vue.props[key])) {
+                    vue.props[key] = {
+                        type: vue.props[key],
+                        default: undefined
+                    }
+                }
+                if (vue.props[key].type === Function) {
+                    continue;
+                }
+                let defaultValue = vue.props[key].default;
+                if (typeof defaultValue === 'function') {
+                    defaultValue = defaultValue();
+                }
+                vue.props[key].default = function() {
+                    return Utils.readHtmlProp(key, this, defaultValue);
+                };
+            }
+        }
+        return vue;
+    }
+
+    static readHtmlProp(prop, component, defaultValue = undefined) {
+        if (Utils.isObject(component) && Utils.isObject(component.$slots) && Array.isArray(component.$slots.default)) {
+            let el = component.$slots.default.find(slot => slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.prop === prop && slot.data.attrs.type === 'application/json');
+            if (el) {
+                try {
+                    return JSON.parse(el.data.domProps.innerHTML);
+                }
+                catch (error) {
+                    console.error(`Data passed to prop '${prop}' via script tag is invalid: ${error.message}`);
+                }
+            }
+        }
+        return defaultValue;
+    }
+
     static dataType(schema, short = false, level = 0, type = undefined) {
         if (Utils.isAnyType(schema)) {
             type = 'any';

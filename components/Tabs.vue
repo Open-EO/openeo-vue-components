@@ -17,9 +17,10 @@
 </template>
 
 <script>
-import Tab from './Tab.vue'
+import Tab from './Tab.vue';
+import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: "Tabs",
 	components: {
 		Tab
@@ -201,7 +202,7 @@ export default {
 			}
 		}
 	}
-};
+})
 </script>
 
 <style>

@@ -11,10 +11,9 @@
 </template>
 
 <script>
-import './base.css';
 import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'LinkList',
 	props: {
 		links: {
@@ -47,5 +46,9 @@ export default {
 			return Utils.friendlyLinks(this.links, this.sort, this.ignoreRel);
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>

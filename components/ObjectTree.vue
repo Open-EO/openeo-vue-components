@@ -13,7 +13,7 @@
 <script>
 import Utils from '../utils.js';
 
-export default {
+export default Utils.enableHtmlProps({
     name: 'ObjectTree',
 	props: ['data'],
 	data() {
@@ -47,5 +47,9 @@ export default {
 			return (typeof value === 'object') && !this.collapsed;
 		}
     }
-};
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>

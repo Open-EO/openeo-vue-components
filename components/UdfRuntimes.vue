@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import './base.css';
+import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'UdfRuntimes',
 	props: {
 		runtimes:  {
@@ -27,8 +27,12 @@ export default {
 			default: () => ({})
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 ul.udf-runtimes:empty::after {

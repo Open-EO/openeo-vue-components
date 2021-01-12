@@ -9,9 +9,8 @@
 
 <script>
 import Utils from '../utils.js';
-import './base.css';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'ServiceTypes',
 	props: {
 		services: {
@@ -38,8 +37,12 @@ export default {
 			return (Utils.compareStringCaseInsensitive(service.id, service.title) !== 0);
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 ul.service-types:empty::after {

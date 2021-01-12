@@ -88,9 +88,8 @@
 <script>
 import Description from './Description.vue';
 import Utils from '../utils.js';
-import './base.css';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'JsonSchema',
 	props: {
 		schema: {
@@ -236,10 +235,12 @@ export default {
 			return true;
 		}
 	}
-}
+})
 </script>
 
 <style>
+@import url('./base.css');
+
 .vue-component .schemaProcessGraph h4 {
 	font-size: 1.1em;
 	margin-top: 1em;

@@ -27,9 +27,9 @@
 
 <script>
 import Description from './Description.vue';
-import './base.css';
+import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'BillingPlans',
 	components: {
 		Description
@@ -56,8 +56,12 @@ export default {
 			return Utils.prettifyAbbreviation(name);
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 .badges {

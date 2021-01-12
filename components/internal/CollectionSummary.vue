@@ -27,7 +27,6 @@
 import Description from '../Description.vue';
 import ObjectTree from '../ObjectTree.vue';
 import StacCollectionUtils from '../../stacutils';
-import '../base.css';
 
 export default {
 	name: 'CollectionSummary',
@@ -50,6 +49,10 @@ export default {
 	}
 };
 </script>
+
+<style>
+@import url('../base.css');
+</style>
 
 <style scoped>
 .table {

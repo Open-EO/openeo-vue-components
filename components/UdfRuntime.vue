@@ -57,9 +57,8 @@ import LinkList from './LinkList.vue';
 import Tabs from './Tabs.vue';
 import Tab from './Tab.vue';
 import Utils from '../utils.js';
-import './base.css';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'UdfRuntime',
 	components: {
 		Description,
@@ -97,8 +96,12 @@ export default {
 			}
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 h4 {

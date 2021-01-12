@@ -97,9 +97,8 @@ import LinkList from './LinkList.vue';
 import ProcessExample from './internal/ProcessExample.vue';
 import ProcessParameter from './internal/ProcessParameter.vue';
 import Utils from '../utils.js';
-import './base.css';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'Process',
 	components: {
 		JsonSchema,
@@ -205,8 +204,12 @@ export default {
 			downloadAnchorNode.remove();
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 .process-bar {

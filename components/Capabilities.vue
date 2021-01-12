@@ -36,9 +36,9 @@ import SupportedFeatures from './SupportedFeatures.vue';
 import FileFormats from './FileFormats.vue';
 import ServiceTypes from './ServiceTypes.vue';
 import UdfRuntimes from './UdfRuntimes.vue';
-import './base.css';
+import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'Capabilities',
 	props: {
 		capabilities: {
@@ -82,5 +82,9 @@ export default {
 			}
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>

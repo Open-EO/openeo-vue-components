@@ -59,7 +59,7 @@
 				<template v-if="boundingBoxes.length">
 				<h3>Spatial Extent</h3>
 					<slot name="collection-spatial-extents" :extents="boundingBoxes">
-						<div :id="'map-' + collection.id" class="map" ref="mapContainer">
+						<div class="map" ref="mapContainer">
 							<template v-if="!map">
 								<ul v-for="(bbox, i) in boundingBoxes" :key="i">
 									<li>Latitudes: {{ bbox[1] }} / {{ bbox[3] }}, Longitudes: {{ bbox[0] }} / {{ bbox[2] }}</li>
@@ -159,12 +159,11 @@ import DeprecationNotice from './DeprecationNotice.vue';
 import Description from './Description.vue';
 import LinkList from './LinkList.vue';
 import StacCollectionUtils from '../stacutils';
-import './base.css';
 import Utils from '../utils';
 
 const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'Collection',
 	components: {
 		CollectionSummary,
@@ -183,7 +182,7 @@ export default {
 		},
 		mapOptions: {
 			// It's not possible to specify defaults for the individual properties, therefore this prop is only accessed through a computed property which adds them in.
-			default: function() { return {} },  // Don't remove! Must be a non-arrow factory function! When the prop is not given at all, this avoids having to deal with `undefined` in the computed-property-function.
+			default: () => ({}),
 			validator: function(value) {
 				const allowedTypes = {  // keep in sync with Readme
 					height: "string",
@@ -320,7 +319,7 @@ export default {
 					return;
 				}
 	
-				var map = new L.Map('map-' + this.collection.id, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
+				var map = new L.Map(this.$refs.mapContainer, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
 					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
@@ -333,7 +332,9 @@ export default {
 
 				try {
 					L.Wrapped = require('leaflet.antimeridian');
-				} catch (e) {}
+				} catch (e) {
+					console.warn("Leaflet Antimeridian plugin is not available");
+				}
 				for(let bbox of this.boundingBoxes) {
 					let p = [[bbox[1], bbox[0]], [bbox[3], bbox[0]], [bbox[3], bbox[2]], [bbox[1], bbox[2]]];
 					let rect;
@@ -359,7 +360,9 @@ export default {
 				if (typeof this.mapOptions.onAfterMapInit === 'function') {
 					typeof this.mapOptions.onAfterMapInit(map, features);
 				}
-			} catch (e) {}
+			} catch (e) {
+				console.error(e);
+			}
 		},
 		setMapSize(height, width) {
 			// Update map container in DOM
@@ -405,8 +408,13 @@ export default {
 			}
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+@import url('../node_modules/leaflet/dist/leaflet.css');
+</style>
 
 <style scoped>
 .map {

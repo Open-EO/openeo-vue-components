@@ -34,19 +34,6 @@ Visualizes all the server information of the back-end. Shows the title, descript
 
 Visualizes a collection following the STAC-based collection description.
 
-**Optional dependencies:**
-
-This component has two optional dependencies to show the spatial extents of the collection on a map:
-- `leaflet` - mapping library
-- `leaflet.antimeridian` - plugin to correctly show bounding boxes spanning over the antimeridian
-
-You can either install them using npm or add them to your HTML page:
-```html
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.6/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet.antimeridian@1/dist/leaflet.antimeridian-src.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6/dist/leaflet.css" />
-```
-
 **Properties:**
 
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).

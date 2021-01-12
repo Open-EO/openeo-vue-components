@@ -4,9 +4,10 @@
 	</div>
 </template>
 
-
 <script>
-export default {
+import Utils from '../utils';
+
+export default Utils.enableHtmlProps({
 	name: 'Tab',
 	props: {
 		id: {
@@ -69,5 +70,5 @@ export default {
 			}
 		}
 	}
-}
+})
 </script>

@@ -15,7 +15,6 @@
 <script>
 import Description from '../Description.vue';
 import Utils from '../../utils.js';
-import '../base.css';
 
 export default {
 	name: 'ProcessExample',
@@ -64,6 +63,10 @@ export default {
 	}
 }
 </script>
+
+<style>
+@import url('../base.css');
+</style>
 
 <style scoped>
 .content {

@@ -16,9 +16,8 @@
 
 <script>
 import Utils from '../utils.js';
-import './base.css';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'FileFormats',
 	props: {
 		formats: {
@@ -67,8 +66,12 @@ export default {
 			return (Utils.compareStringCaseInsensitive(format.id, format.title) !== 0);
 		}
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 ul.file-formats:empty::after {

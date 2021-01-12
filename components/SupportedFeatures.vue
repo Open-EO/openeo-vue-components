@@ -8,9 +8,9 @@
 
 <script>
 import FeatureList from '../featurelist';
-import './base.css';
+import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'SupportedFeatures',
 	props: {
 		endpoints: {
@@ -92,8 +92,12 @@ export default {
         }
 
     }
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 .features {

@@ -21,7 +21,6 @@ import DeprecationNotice from '../DeprecationNotice.vue';
 import Description from '../Description.vue';
 import ExperimentalNotice from '../ExperimentalNotice.vue';
 import JsonSchema from '../JsonSchema.vue';
-import '../base.css';
 
 export default {
 	name: 'ProcessParameter',
@@ -42,6 +41,10 @@ export default {
 	}
 }
 </script>
+
+<style>
+@import url('../base.css');
+</style>
 
 <style scoped>
 .process-parameter .details {

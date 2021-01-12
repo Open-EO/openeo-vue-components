@@ -6,15 +6,19 @@
 </template>
 
 <script>
-import './base.css';
+import Utils from '../utils';
 
-export default {
+export default Utils.enableHtmlProps({
 	name: 'ExperimentalNotice',
 	props: {
 		entity: String
 	}
-}
+})
 </script>
+
+<style>
+@import url('./base.css');
+</style>
 
 <style scoped>
 .experimental-notice {
