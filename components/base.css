@@ -122,26 +122,3 @@
 	max-height: 15em;
 	overflow: auto;
 }
-
-/* Collapsible panels */
-
-.vue-component .collapsible {
-	margin-left: 1.5em;
-}
-.vue-component .collapsible h2 {
-	margin-left: -1.5em;
-	cursor: pointer;
-	border-bottom: 0;
-}
-.vue-component h2 .toggle {
-	display: none;
-}
-.vue-component .collapsible h2 .toggle {
-	display: inline-block;
-	width: 0.5em;
-	margin: 0 0.5em;
-}
-.vue-component .collapsible.expanded h2 .toggle {
-	top: 1em;
-	transform: rotate(90deg);
-}

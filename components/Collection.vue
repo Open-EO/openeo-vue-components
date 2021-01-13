@@ -1,156 +1,148 @@
 <template>
-	<article class="vue-component collection"><div :class="{collapsible: initiallyCollapsed, expanded: !collapsed}">
+	<article class="vue-component collection">
 
-		<a class="anchor" :name="collection.id"></a>
-		<h2 @click="toggle()">
-			<span class="toggle">▸</span>{{ collection.id }}
-		</h2>
-
-		<slot name="collection-before-summary"></slot>
+		<slot name="collection-title">
+			<a class="anchor" :name="collection.id"></a>
+			<h2>{{ collection.id }}</h2>
+		</slot>
 
 		<summary v-if="collection.title">{{collection.title}}</summary>
 
-		<slot name="collection-after-summary"></slot>
+		<slot name="collection-before-details"></slot>
 
-		<div v-if="!collapsed">
+		<section class="description" v-if="collection.description">
+			<h3>Description</h3>
 
-			<slot name="collection-before-details"></slot>
+			<Description :description="collection.description"></Description>
 
-			<section class="description" v-if="collection.description">
-				<h3>Description</h3>
+			<DeprecationNotice v-if="collection.deprecated" entity="collection" />
 
-				<Description :description="collection.description"></Description>
-
-				<DeprecationNotice v-if="collection.deprecated" entity="collection" />
-
-				<div v-if="hasElements(collection.keywords)">
-					<strong>Keywords:</strong>&nbsp;
-					<ul class="comma-separated-list">
-						<li v-for="(keyword, i) in collection.keywords" :key="i">{{ keyword }}</li>
-					</ul>
-				</div>
-			</section>
-
-			<section class="preview" v-if="thumbnails.length">
-				<h3>Previews</h3>
-				<div class="thumbnails">
-					<a v-for="(img, i) in thumbnails" :key="i" :href="img.href" target="_blank">
-						<img :src="img.href" :title="img.title" :alt="img.title || 'Preview'" />
-					</a>
-				</div>
-			</section>
-
-			<section class="license">
-				<h3>License</h3>
-				<a class="value" v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
-				<span class="value" v-else>{{ collection.license }}</span>
-			</section>
-
-			<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
-				<template v-if="temporalIntervals.length">
-					<h3>Temporal Extent</h3>
-					<slot name="collection-temporal-extents" :extents="temporalIntervals">
-						<ul v-for="(interval, i) in temporalIntervals" :key="i">
-							<li>{{ stac.formatTemporalExtent(interval) }}</li>
-						</ul>
-					</slot>
-				</template>
-			
-				<template v-if="boundingBoxes.length">
-				<h3>Spatial Extent</h3>
-					<slot name="collection-spatial-extents" :extents="boundingBoxes">
-						<div class="map" ref="mapContainer">
-							<template v-if="!map">
-								<ul v-for="(bbox, i) in boundingBoxes" :key="i">
-									<li>Latitudes: {{ bbox[1] }} / {{ bbox[3] }}, Longitudes: {{ bbox[0] }} / {{ bbox[2] }}</li>
-								</ul>
-							</template>
-						</div>
-					</slot>
-				</template>
-			</section>
-
-			<section class="providers" v-if="collection.providers">
-				<h3>Providers</h3>
-                <ol>
-					<li v-for="(provider, key) in collection.providers" :key="key">
-						<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
-						<template v-else>{{ provider.name }}</template>
-						<template v-if="hasElements(provider.roles)">
-							(<ul class="comma-separated-list">
-								<li v-for="(role, r) in provider.roles" :key="r" class="provider-role">{{ role }}</li>
-							</ul>)
-						</template>
-						<Description v-if="provider.description" :description="provider.description" :compact="true" />
-					</li>
-                </ol>
-			</section>
-
-			<section class="providers" v-if="hasDimensions">
-				<h3>Data Cube Dimensions</h3>
-				<ul>
-					<li v-for="(dim, name) in collection['cube:dimensions']" :key="name" class="dimension">
-						<h4>
-							<a v-if="dim.type === 'bands'" @click="scrollToBands()" class="name">{{ name }}</a>
-							<span v-else class="name">{{ name }}</span>
-							<ul class="type badges small"><li class="badge">{{ dim.type }}</li></ul>
-						</h4>
-						<Description v-if="dim.description" :description="dim.description" />
-						<div class="tabular" v-if="dim.axis">
-							<label>Axis:</label>
-							<div class="value">{{ dim.axis }}</div>
-						</div>
-						<div class="tabular">
-							<label>Labels:</label>
-							<div v-if="dim.extent" class="value">
-								{{ stac.formatValue(dim.extent, "extent", 'cube:dimensions') }}
-							</div>
-							<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
-								<li v-for="(value, i) in dim.values" :key="i">{{ value }}</li>
-							</ul>
-							<div v-else class="value">N/A</div>
-						</div>
-						<div class="tabular" v-if="typeof dim.step !== 'undefined'">
-							<label>Steps:</label>
-							<div class="value">
-								<template v-if="dim.step === null">irregularly spaced</template>
-								<template v-else>{{ dim.step }}</template>
-							</div>
-						</div>
-						<div class="tabular" v-if="typeof dim.reference_system !== 'undefined'">
-							<label :key="i">Reference System:</label>
-							<div class="value">
-								<template v-if="typeof dim.reference_system === 'number'">EPSG {{ dim.reference_system }}</template>
-								<template v-else>{{ dim.reference_system }}</template>
-							</div>
-						</div>
-					</li>
+			<div v-if="hasElements(collection.keywords)">
+				<strong>Keywords:</strong>&nbsp;
+				<ul class="comma-separated-list">
+					<li v-for="(keyword, i) in collection.keywords" :key="i">{{ keyword }}</li>
 				</ul>
-			</section>
+			</div>
+		</section>
 
-			<section class="summaries" v-if="hasSummaries">
-				<h3>Additional information</h3>
-				<div v-for="(value, field) in summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: stac.isTable(value) && value.isWide}">
-					<label>{{ stac.formatKey(field) }}:</label>
-					<div class="value">
-						<CollectionSummary :value="value" :field="field" />
+		<section class="preview" v-if="thumbnails.length">
+			<h3>Previews</h3>
+			<div class="thumbnails">
+				<a v-for="(img, i) in thumbnails" :key="i" :href="img.href" target="_blank">
+					<img :src="img.href" :title="img.title" :alt="img.title || 'Preview'" />
+				</a>
+			</div>
+		</section>
+
+		<section class="license">
+			<h3>License</h3>
+			<a class="value" v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
+			<span class="value" v-else>{{ collection.license }}</span>
+		</section>
+
+		<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
+			<template v-if="temporalIntervals.length">
+				<h3>Temporal Extent</h3>
+				<slot name="collection-temporal-extents" :extents="temporalIntervals">
+					<ul v-for="(interval, i) in temporalIntervals" :key="i">
+						<li>{{ stac.formatTemporalExtent(interval) }}</li>
+					</ul>
+				</slot>
+			</template>
+		
+			<template v-if="boundingBoxes.length">
+			<h3>Spatial Extent</h3>
+				<slot name="collection-spatial-extents" :extents="boundingBoxes">
+					<div class="map" ref="mapContainer">
+						<template v-if="!map">
+							<ul v-for="(bbox, i) in boundingBoxes" :key="i">
+								<li>Latitudes: {{ bbox[1] }} / {{ bbox[3] }}, Longitudes: {{ bbox[0] }} / {{ bbox[2] }}</li>
+							</ul>
+						</template>
 					</div>
+				</slot>
+			</template>
+		</section>
+
+		<section class="providers" v-if="collection.providers">
+			<h3>Providers</h3>
+			<ol>
+				<li v-for="(provider, key) in collection.providers" :key="key">
+					<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
+					<template v-else>{{ provider.name }}</template>
+					<template v-if="hasElements(provider.roles)">
+						(<ul class="comma-separated-list">
+							<li v-for="(role, r) in provider.roles" :key="r" class="provider-role">{{ role }}</li>
+						</ul>)
+					</template>
+					<Description v-if="provider.description" :description="provider.description" :compact="true" />
+				</li>
+			</ol>
+		</section>
+
+		<section class="providers" v-if="hasDimensions">
+			<h3>Data Cube Dimensions</h3>
+			<ul>
+				<li v-for="(dim, name) in collection['cube:dimensions']" :key="name" class="dimension">
+					<h4>
+						<a v-if="dim.type === 'bands'" @click="scrollToBands()" class="name">{{ name }}</a>
+						<span v-else class="name">{{ name }}</span>
+						<ul class="type badges small"><li class="badge">{{ dim.type }}</li></ul>
+					</h4>
+					<Description v-if="dim.description" :description="dim.description" />
+					<div class="tabular" v-if="dim.axis">
+						<label>Axis:</label>
+						<div class="value">{{ dim.axis }}</div>
+					</div>
+					<div class="tabular">
+						<label>Labels:</label>
+						<div v-if="dim.extent" class="value">
+							{{ stac.formatValue(dim.extent, "extent", 'cube:dimensions') }}
+						</div>
+						<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
+							<li v-for="(value, i) in dim.values" :key="i">{{ value }}</li>
+						</ul>
+						<div v-else class="value">N/A</div>
+					</div>
+					<div class="tabular" v-if="typeof dim.step !== 'undefined'">
+						<label>Steps:</label>
+						<div class="value">
+							<template v-if="dim.step === null">irregularly spaced</template>
+							<template v-else>{{ dim.step }}</template>
+						</div>
+					</div>
+					<div class="tabular" v-if="typeof dim.reference_system !== 'undefined'">
+						<label :key="i">Reference System:</label>
+						<div class="value">
+							<template v-if="typeof dim.reference_system === 'number'">EPSG {{ dim.reference_system }}</template>
+							<template v-else>{{ dim.reference_system }}</template>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</section>
+
+		<section class="summaries" v-if="hasSummaries">
+			<h3>Additional information</h3>
+			<div v-for="(value, field) in summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: stac.isTable(value) && value.isWide}">
+				<label>{{ stac.formatKey(field) }}:</label>
+				<div class="value">
+					<CollectionSummary :value="value" :field="field" />
 				</div>
-			</section>
+			</div>
+		</section>
 
-			<section class="assets">
-				<LinkList :links="assetLinks" heading="Assets" headingTag="h3" />
-			</section>
+		<section class="assets">
+			<LinkList :links="assetLinks" heading="Assets" headingTag="h3" />
+		</section>
 
-			<section class="links">
-				<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
-			</section>
+		<section class="links">
+			<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
+		</section>
 
-			<slot name="collection-after-details"></slot>
-			
-		</div>
+		<slot name="collection-end"></slot>
 
-	</div></article>
+	</article>
 </template>
 
 <script>
@@ -176,10 +168,6 @@ export default Utils.enableHtmlProps({
 			type: Object,
 			default: () => ({})
 		},
-		initiallyCollapsed: {
-			type: Boolean,
-			default: false
-		},
 		mapOptions: {
 			// It's not possible to specify defaults for the individual properties, therefore this prop is only accessed through a computed property which adds them in.
 			default: () => ({}),
@@ -199,7 +187,6 @@ export default Utils.enableHtmlProps({
 	},
 	data() {
 		return {
-			collapsed: false,
 			map: null,
 			stac: StacCollectionUtils
 		}
@@ -285,24 +272,8 @@ export default Utils.enableHtmlProps({
 			return false;
 		}
 	},
-	watch: {
-		collapsed(newVal) {
-			if (!newVal) {
-				// Wait with the map initialization until the collapsed area is rendered
-				this.$nextTick(() => this.initMap());
-			}
-			else {
-				this.map = null;
-			}
-		}
-	},
-	beforeMount() {
-		this.collapsed = this.initiallyCollapsed;
-	},
 	mounted() {
-		if (!this.collapsed) {
-			this.initMap();
-		}
+		this.initMap();
 	},
 	methods: {
 		assetIsImage(asset) {
@@ -401,11 +372,6 @@ export default Utils.enableHtmlProps({
 		},
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
-		},
-		toggle() {
-			if (this.initiallyCollapsed) {
-				this.collapsed = !this.collapsed;
-			}
 		}
 	}
 })

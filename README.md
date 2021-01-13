@@ -38,7 +38,6 @@ Visualizes a collection following the STAC-based collection description.
 
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
 - `collection` (object): A single STAC-based collection object as defined by the openEO API.
-- `initiallyCollapsed` (boolean): Allow collapsing/expanding the details and collapse the details by default (defaults to `false`).
 - `mapOptions` (object): For fine-tuning the behaviour of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
@@ -48,10 +47,9 @@ Visualizes a collection following the STAC-based collection description.
 
 **Slots:**
 
-- `collection-before-summary`
-- `collection-after-summary`
+- `collection-title`
 - `collection-before-details`
-- `collection-after-details`
+- `collection-end`
 - `collection-spatial-extents` - Custom HTML to display the spatial extents, e.g. a map. The variable `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates.
 - `collection-temporal-extents` - Custom HTML to display the temporal extents. The variable `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
 
@@ -123,15 +121,13 @@ Note: `ProcessExample` is not meant to be used separately.
 - `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
 - `process` (object): Process specification as defined by the openEO API.
 - `provideDownload` (boolean): Provide a link to download the JSON file (defaults to `true`).
-- `initiallyCollapsed` (boolean): Allow collapsing/expanding the details and collapse the details by default (defaults to `false`).
 - `processReferenceBuilder` (function): A function that generates a link to a process by its process identifier.
 
 **Slots:**
 
-- `process-before-summary`
-- `process-after-summary`
+- `process-title`
 - `process-before-details`
-- `process-after-details`
+- `process-end`
 
 
 ### `ServiceTypes`

@@ -1,12 +1,10 @@
 <template>
-	<article class="vue-component process"><div :class="{collapsible: initiallyCollapsed, expanded: !collapsed}">
+	<article class="vue-component process">
 
-		<a class="anchor" :name="process.id"></a>
-		<h2 @click="toggle()">
-			<span class="toggle">▸</span>{{ process.id }}
-		</h2>
-
-		<slot name="process-before-summary"></slot>
+		<slot name="process-title">
+			<a class="anchor" :name="process.id"></a>
+			<h2>{{ process.id }}</h2>
+		</slot>
 
 		<template v-if="provideDownload || hasElements(process.categories)">
 			<div class="process-bar">
@@ -30,62 +28,56 @@
 			</summary>
 		</template>
 
-		<slot name="process-after-summary"></slot>
+		<slot name="process-before-details"></slot>
 
-		<div v-if="!collapsed">
+		<section class="description" v-if="process.description">
+			<h3>Description</h3>
+			<code class="signature" v-html="signature"></code>
+			<Description :description="process.description" :processUrl="processUrl" />
+			<DeprecationNotice v-if="process.deprecated" entity="process" />
+			<ExperimentalNotice v-if="process.experimental" entity="process" />
+		</section>
 
-			<slot name="process-before-details"></slot>
+		<section class="parameters">
+			<h3>Parameters</h3>
+			<ProcessParameter v-for="(param, i) in parameters" :key="i" :parameter="param" :processUrl="processUrl" />
+			<p v-if="parameters.length === 0">This process has no parameters.</p>
+		</section>
 
-			<section class="description" v-if="process.description">
-				<h3>Description</h3>
-				<code class="signature" v-html="signature"></code>
-				<Description :description="process.description" :processUrl="processUrl" />
-				<DeprecationNotice v-if="process.deprecated" entity="process" />
-				<ExperimentalNotice v-if="process.experimental" entity="process" />
-			</section>
+		<section class="returns">
+			<h3>Return Value</h3>
+			<Description v-if="returns.description" :description="returns.description" :processUrl="processUrl" />
+			<div class="json-schema-container" v-if="returns.schema">
+				<JsonSchema :schema="returns.schema" />
+			</div>
+		</section>
 
-			<section class="parameters">
-				<h3>Parameters</h3>
-				<ProcessParameter v-for="(param, i) in parameters" :key="i" :parameter="param" :processUrl="processUrl" />
-				<p v-if="parameters.length === 0">This process has no parameters.</p>
-			</section>
+		<section class="exceptions" v-if="hasElements(process.exceptions)">
+			<h3>Errors/Exceptions</h3>
+			<ul>
+				<li class="exception" v-for="(exception, name) in process.exceptions" :key="name">
+					<code>{{ name }}</code>
+					<span class="http-code" v-if="exception.http"> — HTTP {{ exception.http }}</span>
+					<span class="error-code" v-if="exception.code"> — {{ exception.code }}</span>
+					<Description v-if="exception.description" :description="exception.description" :processUrl="processUrl" :compact="true" />
+					<div v-if="exception.message" class="message">Message: <em>{{ exception.message }}</em></div>
+				</li>
+			</ul>
+		</section>
 
-			<section class="returns">
-				<h3>Return Value</h3>
-				<Description v-if="returns.description" :description="returns.description" :processUrl="processUrl" />
-				<div class="json-schema-container" v-if="returns.schema">
-					<JsonSchema :schema="returns.schema" />
-				</div>
-			</section>
+		<section class="examples" v-if="hasElements(process.examples)">
+			<h3>Examples</h3>
+			<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="parameters" :processUrl="processUrl" />
+			<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
+		</section>
 
-			<section class="exceptions" v-if="hasElements(process.exceptions)">
-				<h3>Errors/Exceptions</h3>
-				<ul>
-					<li class="exception" v-for="(exception, name) in process.exceptions" :key="name">
-						<code>{{ name }}</code>
-						<span class="http-code" v-if="exception.http"> — HTTP {{ exception.http }}</span>
-						<span class="error-code" v-if="exception.code"> — {{ exception.code }}</span>
-						<Description v-if="exception.description" :description="exception.description" :processUrl="processUrl" :compact="true" />
-						<div v-if="exception.message" class="message">Message: <em>{{ exception.message }}</em></div>
-					</li>
-				</ul>
-			</section>
+		<section class="links">
+			<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
+		</section>
 
-			<section class="examples" v-if="hasElements(process.examples)">
-				<h3>Examples</h3>
-				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="parameters" :processUrl="processUrl" />
-				<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
-			</section>
+		<slot name="process-end"></slot>
 
-			<section class="links">
-				<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
-			</section>
-
-			<slot name="process-after-details"></slot>
-
-		</div>
-
-	</div></article>
+	</article>
 </template>
 
 <script>
@@ -123,11 +115,6 @@ export default Utils.enableHtmlProps({
 			default: false
 		},
 		processUrl: String
-	},
-	data() {
-		return {
-			collapsed: false
-		}
 	},
 	computed: {
 		parameters() {
@@ -177,19 +164,9 @@ export default Utils.enableHtmlProps({
 			return [];
 		}
 	},
-	beforeMount() {
-		if (this.initiallyCollapsed) {
-			this.collapsed = !this.collapsed;
-		}
-	},
 	methods: {
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
-		},
-		toggle() {
-			if (this.initiallyCollapsed) {
-				this.collapsed = !this.collapsed;
-			}
 		},
 		formatCategory(name) {
 			return name.replace('_', ' ');
