@@ -49,7 +49,6 @@ export default Utils.enableHtmlProps({
 			var writer = new commonmark.HtmlRenderer({safe: true, smart: true});
 			if (typeof this.preprocessor === 'function') {
 				text = this.preprocessor(text);
-				console.log(text);
 			}
 			var parsed = reader.parse(text);
 			var rendered = writer.render(parsed);

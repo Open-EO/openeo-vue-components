@@ -343,9 +343,9 @@ You must pass the runtime data through `MigrateCapabilities.convertUdfRuntimesTo
 
 **Properties:**
 
-- `runtimeId` (string): The identifier of the runtime (the key of a runtime entry in the `GET /udf_runtimes` response).
-- `runtimeData` (object): The data associated with this runtime (the value of a runtime entry in the `GET /udf_runtimes` response).
-- `runtimeVersion` (string): If a specific version of the runtime should be pre-selected, specify it here. Defaults to `null`, which shows the pre-selects the default version.
+- `id` (string): The identifier of the runtime (the key of a runtime entry in the `GET /udf_runtimes` response).
+- `data` (object): The data associated with this runtime (the value of a runtime entry in the `GET /udf_runtimes` response).
+- `version` (string): If a specific version of the runtime should be pre-selected, specify it here. Defaults to `null`, which shows the pre-selects the default version.
 
 
 ## Other features

@@ -1,20 +1,20 @@
 <template>
 	<article class="vue-component udf-runtime">
 
-		<a class="anchor" :name="runtimeId"></a>
+		<a class="anchor" :name="id"></a>
 		<h2>{{ title }}</h2>
 
 		<ul class="badges">
-			<li v-if="isDocker" class="badge docker">Docker: {{ runtimeData.docker }}</li>
+			<li v-if="isDocker" class="badge docker">Docker: {{ data.docker }}</li>
 			<li v-else class="badge">Programming Language</li>
 		</ul>
 
-		<section class="description" v-if="runtimeData.description">
-			<Description :description="runtimeData.description"></Description>
+		<section class="description" v-if="data.description">
+			<Description :description="data.description"></Description>
 		</section>
 
 		<section class="links">
-			<LinkList :links="runtimeData.links" heading="See Also" headingTag="h3" />
+			<LinkList :links="data.links" heading="See Also" headingTag="h3" />
 		</section>
 
 		<template v-if="isDocker">
@@ -22,15 +22,15 @@
 			<ul>
 				<li v-for="tag in tags" :key="tag">
 					{{ tag }}
-					<ul v-if="tag === runtimeData.default" class="badges small"><li class="badge default">default</li></ul>
+					<ul v-if="tag === data.default" class="badges small"><li class="badge default">default</li></ul>
 				</li>
 			</ul>
 		</template>
 		<template v-else>
 			<h3>Versions</h3>
 			<Tabs id="userContent" ref="tabs">
-				<Tab v-for="(env, version) in runtimeData.versions" :key="version" :id="version" :name="version" :selected="version === selectVersion">
-					<ul v-if="version === runtimeData.default" class="badges">
+				<Tab v-for="(env, version) in data.versions" :key="version" :id="version" :name="version" :selected="version === selectVersion">
+					<ul v-if="version === data.default" class="badges">
 						<li class="badge default">default</li>
 					</ul>
 					<p>This runtime includes support for:</p>
@@ -67,32 +67,32 @@ export default Utils.enableHtmlProps({
 		Tab
 	},
 	props: {
-		runtimeId: {
+		id: {
 			type: String,
 			default: ''
 		},
-		runtimeData:  {
+		data:  {
 			type: Object,
 			default: () => ({})
 		},
-		runtimeVersion: {
+		version: {
 			type: String,
 			default: null
 		}
 	},
 	computed: {
 		title() {
-			return this.runtimeData.title || this.runtimeId;
+			return this.data.title || this.id;
 		},
 		isDocker() {
-			return Boolean(this.runtimeData.type === 'docker' || (this.runtimeData.docker && this.runtimeData.tags));
+			return Boolean(this.data.type === 'docker' || (this.data.docker && this.data.tags));
 		},
 		selectVersion() {
-			if ((Utils.isObject(this.runtimeData.versions) && this.runtimeData.versions[this.runtimeVersion]) || (Array.isArray(this.runtimeData.tags) && this.runtimeData.tags[this.runtimeVersion])) {
-				return this.runtimeVersion;
+			if ((Utils.isObject(this.data.versions) && this.data.versions[this.version]) || (Array.isArray(this.data.tags) && this.data.tags[this.version])) {
+				return this.version;
 			}
 			else {
-				return this.runtimeData.default;
+				return this.data.default;
 			}
 		}
 	}
@@ -109,6 +109,9 @@ h4 {
 }
 .vue-component .badges .badge {
 	margin-left: 0;
+}
+.vue-component .tabContent {
+	padding: 0.5em;
 }
 .badge.deprecated {
 	background-color: red;

@@ -28,7 +28,7 @@ class Utils extends CommonUtils {
 
     static readHtmlProp(prop, component, defaultValue = undefined) {
         if (Utils.isObject(component) && Utils.isObject(component.$slots) && Array.isArray(component.$slots.default)) {
-            let el = component.$slots.default.find(slot => slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.prop === prop && slot.data.attrs.type === 'application/json');
+            let el = component.$slots.default.find(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.prop === prop && slot.data.attrs.type === 'application/json');
             if (el) {
                 try {
                     return JSON.parse(el.data.domProps.innerHTML);
