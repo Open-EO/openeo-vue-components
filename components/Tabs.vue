@@ -51,7 +51,13 @@ export default Utils.enableHtmlProps({
 	mounted() {
 		if (Array.isArray(this.$children)) {
 			this.tabs = this.$children;
-			this.resetActiveTab();
+			let activeTabs = this.tabs.filter(tab => tab.active === true);
+			if (activeTabs.length === 1) {
+				this.activeTab = activeTabs[0];
+			}
+			else {
+				this.resetActiveTab();
+			}
 		}
 
 		this.$root.$on('windowResized', this.adjustSizes);
