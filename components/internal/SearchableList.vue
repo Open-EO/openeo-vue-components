@@ -4,16 +4,16 @@
             <span class="icon">🔎</span>
             <input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" />
         </div>
-		<ul class="vue-component searchable-list" :class="{expandable: hasDetails}">
-			<li v-for="(item, i) in items" :key="i" v-show="item.show" :class="{expanded: showDetails[i] === true}">
+		<ul class="vue-component searchable-list" :class="{expandable}">
+			<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
 				<summary @click="toggle(i)" class="summary">
-					<slot name="summary" :item="item">
-						<strong>{{ item.identifier }}</strong>
-						<small :class="{hide: hideSummary}">{{ item.summary }}</small>
+					<slot name="summary" :summary="summary" :item="data[summary.index]">
+						<strong>{{ summary.identifier }}</strong>
+						<small :class="{hideOnExpand: hideSummaryOnExpand}">{{ summary.summary }}</small>
 					</slot>
 				</summary>
 				<div class="details">
-					<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true" :item="data[item.details]">
+					<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true"  :summary="summary" :item="data[summary.index]">
 						No details available!
 					</slot>
 				</div>
@@ -29,7 +29,7 @@ export default {
 	name: 'SearchableList',
 	props: {
 		data: {
-			type: Array,
+			type: Array | Object,
 			default: () => ([])
 		},
 		identifierKey: {
@@ -52,7 +52,11 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		hideSummary: {
+		allowExpand: {
+			type: Boolean,
+			default: true
+		},
+		hideSummaryOnExpand: {
 			type: Boolean,
 			default: false
 		}
@@ -60,12 +64,8 @@ export default {
 	data() {
 		return {
 			searchTerm: '',
-			hasDetails: false,
 			showDetails: {}
 		};
-	},
-	mounted() {
-		this.hasDetails = !!this.$slots['details'] || !!this.$scopedSlots['details'];
 	},
 	watch: {
 		externalSearchTerm: {
@@ -79,40 +79,55 @@ export default {
 		}
 	},
 	computed: {
-		items() {
-			return this.data.map((entry, index) => {
-				let item = {
-					identifier: '',
+		expandable() {
+			return this.allowExpand && (!!this.$slots['details'] || !!this.$scopedSlots['details']);
+		},
+		summaries() {
+			let summaries = [];
+			for(let index in this.data) {
+				let entry = this.data[index];
+				let summary = {
+					identifier: index,
 					summary: '',
 					show: true,
-					details: index
+					index: index
 				};
 
-				if (this.identifierKey && typeof entry[this.identifierKey] === 'string') {
-					item.identifier = entry[this.identifierKey];
+				if (typeof entry[this.identifierKey] === 'string') {
+					summary.identifier = entry[this.identifierKey];
 				}
-				if (this.summaryKey && typeof entry[this.summaryKey] === 'string') {
-					item.summary = entry[this.summaryKey];
+				if (typeof entry[this.summaryKey] === 'string') {
+					summary.summary = entry[this.summaryKey];
 				}
 
-				return item;
-			}).sort((a,b) => Utils.compareStringCaseInsensitive(a.identifier, b.identifier));
+				summaries.push(summary);
+			}
+			if (this.sort) {
+				if (Utils.isObject(this.data)) {
+					summaries = Object.values(summaries);
+				}
+				summaries.sort((a,b) => Utils.compareStringCaseInsensitive(a.identifier, b.identifier));
+			}
+			return summaries;
 		}
 	},
 	methods: {
 		toggle(id) {
+			if (!this.expandable) {
+				return;
+			}
 			this.$set(this.showDetails, id, !this.showDetails[id]);
 		},
 		search(value) {
 			if (value.length >= 2) {
-				this.items.forEach(item => {
+				this.summaries.forEach(item => {
 					let searchable = (item.identifier + ' ' + item.summary).toLowerCase();
 					let result = searchable.includes(this.searchTerm.toLowerCase());
 					this.$set(item, 'show', result);
 				});
 			}
 			else {
-				this.items.forEach(item => this.$set(item, 'show', true));
+				this.summaries.forEach(item => this.$set(item, 'show', true));
 			}
 		}
 	}
@@ -167,7 +182,7 @@ ul.expandable > li.expanded .details {
 	display: block;
 	margin-left: 1em;
 }
-ul.expandable > li.expanded > summary .hide {
+ul.expandable > li.expanded > summary .hideOnExpand {
 	display: none;
 }
 ul.expandable > li.expanded > summary:before {

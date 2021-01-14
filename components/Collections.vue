@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component collections">
-		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :hideSummary="true">
+		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :hideSummaryOnExpand="true" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand">
 			<template v-slot:details="slot">
 				<Collection :collection="slot.item" :mapOptions="mapOptions">
 					<template v-slot:title><span class="hidden" /></template>
@@ -11,14 +11,13 @@
 </template>
 
 <script>
-import Collection from './Collection.vue';
 import SearchableList from './internal/SearchableList.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({
 	name: 'Collections',
 	components: {
-		Collection,
+		Collection: () => import('./Collection.vue'),
 		SearchableList
 	},
 	props: {
@@ -31,6 +30,18 @@ export default Utils.enableHtmlProps({
 			default: () => ({
 				scrollWheelZoom: false
 			})
+		},
+		searchTerm: {
+			type: String,
+			default: null
+		},
+		sort: {
+			type: Boolean,
+			default: true
+		},
+		allowExpand: {
+			type: Boolean,
+			default: true
 		}
 	}
 })

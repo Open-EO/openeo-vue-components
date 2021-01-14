@@ -1,8 +1,10 @@
 <template>
 	<article class="vue-component udf-runtime">
 
-		<a class="anchor" :name="id"></a>
-		<h2>{{ title }}</h2>
+		<slot name="title">
+			<a class="anchor" :name="id"></a>
+			<h2>{{ title }}</h2>
+		</slot>
 
 		<ul class="badges">
 			<li v-if="isDocker" class="badge docker">Docker: {{ data.docker }}</li>

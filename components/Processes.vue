@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component processes">
-		<SearchableList :data="processes" :hideSummary="true">
+		<SearchableList :data="processes" :hideSummaryOnExpand="true" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand">
 			<template v-slot:details="slot">
 				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl">
 					<template v-slot:title><span class="hidden" /></template>
@@ -11,14 +11,13 @@
 </template>
 
 <script>
-import Process from './Process.vue';
 import SearchableList from './internal/SearchableList.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({
 	name: 'Processes',
 	components: {
-		Process,
+		Process: () => import('./Process.vue'),
 		SearchableList
 	},
 	props: {
@@ -30,7 +29,19 @@ export default Utils.enableHtmlProps({
 			type: Boolean,
 			default: true
 		},
-		processUrl: String
+		processUrl: String,
+		searchTerm: {
+			type: String,
+			default: null
+		},
+		sort: {
+			type: Boolean,
+			default: true
+		},
+		allowExpand: {
+			type: Boolean,
+			default: true
+		}
 	}
 })
 </script>
