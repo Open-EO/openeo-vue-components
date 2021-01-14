@@ -1,5 +1,5 @@
 const fs = require('fs');
-const examples = require('./examples.json');
+const examples = require('./examples');
 
 for(let component in examples) {
 	for(let id in examples[component]) {

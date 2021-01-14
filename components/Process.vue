@@ -1,7 +1,7 @@
 <template>
 	<article class="vue-component process">
 
-		<slot name="process-title">
+		<slot name="title">
 			<a class="anchor" :name="process.id"></a>
 			<h2>{{ process.id }}</h2>
 		</slot>
@@ -28,7 +28,7 @@
 			</summary>
 		</template>
 
-		<slot name="process-before-details"></slot>
+		<slot name="after-summary"></slot>
 
 		<section class="description" v-if="process.description">
 			<h3>Description</h3>
@@ -75,7 +75,7 @@
 			<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
 		</section>
 
-		<slot name="process-end"></slot>
+		<slot name="end"></slot>
 
 	</article>
 </template>
@@ -109,10 +109,6 @@ export default Utils.enableHtmlProps({
 		provideDownload: {
 			type: Boolean,
 			default: true
-		},
-		initiallyCollapsed: {
-			type: Boolean,
-			default: false
 		},
 		processUrl: String
 	},

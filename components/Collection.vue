@@ -1,14 +1,14 @@
 <template>
 	<article class="vue-component collection">
 
-		<slot name="collection-title">
+		<slot name="title">
 			<a class="anchor" :name="collection.id"></a>
 			<h2>{{ collection.id }}</h2>
 		</slot>
 
 		<summary v-if="collection.title">{{collection.title}}</summary>
 
-		<slot name="collection-before-details"></slot>
+		<slot name="after-summary"></slot>
 
 		<section class="description" v-if="collection.description">
 			<h3>Description</h3>
@@ -43,7 +43,7 @@
 		<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
 			<template v-if="temporalIntervals.length">
 				<h3>Temporal Extent</h3>
-				<slot name="collection-temporal-extents" :extents="temporalIntervals">
+				<slot name="temporal-extents" :extents="temporalIntervals">
 					<ul v-for="(interval, i) in temporalIntervals" :key="i">
 						<li>{{ stac.formatTemporalExtent(interval) }}</li>
 					</ul>
@@ -52,7 +52,7 @@
 		
 			<template v-if="boundingBoxes.length">
 			<h3>Spatial Extent</h3>
-				<slot name="collection-spatial-extents" :extents="boundingBoxes">
+				<slot name="spatial-extents" :extents="boundingBoxes">
 					<div class="map" ref="mapContainer">
 						<template v-if="!map">
 							<ul v-for="(bbox, i) in boundingBoxes" :key="i">
@@ -140,7 +140,7 @@
 			<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
 		</section>
 
-		<slot name="collection-end"></slot>
+		<slot name="end"></slot>
 
 	</article>
 </template>
@@ -170,6 +170,7 @@ export default Utils.enableHtmlProps({
 		},
 		mapOptions: {
 			// It's not possible to specify defaults for the individual properties, therefore this prop is only accessed through a computed property which adds them in.
+			type: Object,
 			default: () => ({}),
 			validator: function(value) {
 				const allowedTypes = {  // keep in sync with Readme
@@ -279,8 +280,8 @@ export default Utils.enableHtmlProps({
 		assetIsImage(asset) {
 			return Array.isArray(asset.roles) && asset.roles.includes('thumbnail') && IMAGE_MEDIA_TYPES.includes(asset.type);
 		},
-		initMap() {
-			if (!!this.$slots['collection-spatial-extents'] || this.map !== null) {
+		async initMap() {
+			if (!!this.$slots['spatial-extents'] || this.$scopedSlots['spatial-extents'] || this.map !== null || this.boundingBoxes.length === 0) {
 				return;
 			}
 			try {

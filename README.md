@@ -47,11 +47,11 @@ Visualizes a collection following the STAC-based collection description.
 
 **Slots:**
 
-- `collection-title`
-- `collection-before-details`
-- `collection-end`
-- `collection-spatial-extents` - Custom HTML to display the spatial extents, e.g. a map. The variable `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates.
-- `collection-temporal-extents` - Custom HTML to display the temporal extents. The variable `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
+- `title`
+- `after-summary`
+- `end`
+- `spatial-extents` - Custom HTML to display the spatial extents, e.g. a map. The variable `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates.
+- `temporal-extents` - Custom HTML to display the temporal extents. The variable `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
 
 
 ### `Description`
@@ -125,9 +125,9 @@ Note: `ProcessExample` is not meant to be used separately.
 
 **Slots:**
 
-- `process-title`
-- `process-before-details`
-- `process-end`
+- `title`
+- `after-summary`
+- `end`
 
 
 ### `ServiceTypes`

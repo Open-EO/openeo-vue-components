@@ -5,21 +5,25 @@
 			<h2>{{ component }}</h2>
 			<div class="example" v-for="(props, id) in examples" :key="id">
 				<h3>Example: {{ id }}</h3>
-				<div v-if="show[component + id]" style="border: 1px solid white; outline: 1px solid black;">
-					<component :is="component" v-bind="props"></component>
+				<div v-if="show[component + id]">
+					<button @click="load(component, id, false)" type="button">Remove Component</button>
+					<div class="rendered">
+						<component :is="component" v-bind="props"></component>
+					</div>
 				</div>
-				<button v-else @click="load(component, id)" type="button">Load...</button>
+				<button v-else @click="load(component, id)" type="button">Load Component</button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import EXAMPLES from './examples.json';
+import EXAMPLES from './examples';
 
 import BillingPlans from '../components/BillingPlans.vue';
 import Capabilities from '../components/Capabilities.vue';
 import Collection from '../components/Collection.vue';
+import Collections from '../components/Collections.vue';
 import DeprecationNotice from '../components/DeprecationNotice.vue';
 import Description from '../components/Description.vue';
 import ExperimentalNotice from '../components/ExperimentalNotice.vue';
@@ -28,6 +32,7 @@ import JsonSchema from '../components/JsonSchema.vue';
 import LinkList from '../components/LinkList.vue';
 import ObjectTree from '../components/ObjectTree.vue';
 import Process from '../components/Process.vue';
+import Processes from '../components/Processes.vue';
 import ServiceTypes from '../components/ServiceTypes.vue';
 import SupportedFeatures from '../components/SupportedFeatures.vue';
 import Tab from '../components/Tab.vue';
@@ -41,6 +46,7 @@ export default {
 		BillingPlans,
 		Capabilities,
 		Collection,
+		Collections,
 		DeprecationNotice,
 		Description,
 		ExperimentalNotice,
@@ -49,6 +55,7 @@ export default {
 		LinkList,
 		ObjectTree,
 		Process,
+		Processes,
 		ServiceTypes,
 		SupportedFeatures,
 		Tab,
@@ -63,8 +70,8 @@ export default {
 		};
 	},
 	methods: {
-		load(component, id) {
-			this.$set(this.show, component + id, true);
+		load(component, id, show = true) {
+			this.$set(this.show, component + id, show);
 		}
 	}
 }
@@ -72,4 +79,12 @@ export default {
 
 <style>
 @import url('./examples.css');
+</style>
+
+<style scoped>
+.rendered {
+	margin: 1em 0;
+	border: 1px solid white;
+	outline: 1px solid black;
+}
 </style>
