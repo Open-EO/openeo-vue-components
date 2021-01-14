@@ -20,14 +20,11 @@ Visualizes the billing information of the back-end.
 
 ### `Capabilities`
 
-Visualizes all the server information of the back-end. Shows the title, description, back-end version, `SupportedFeatures` and `BillingPlans`. May add `FileFormats`, `ServiceTypes` and `UdfRuntimes`.
+Visualizes all the server information of the back-end. Shows the title, description, back-end version, `SupportedFeatures` and `BillingPlans`.
 
 **Properties:**
 - `capabilities` (object): Capabilities response as defined by the openEO API.
 - `url` (string): URL to the API
-- `serviceTypes` (object): If given, shows the supported web service types.
-- `fileFormats` (object): If given, shows the supported file formats (input and output).
-- `udfRuntimes` (object): If given, shows the supported UDF runtimes.
 
 
 ### `Collection`

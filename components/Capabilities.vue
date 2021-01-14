@@ -15,16 +15,8 @@
 		<template v-if="capabilities.billing">
 			<h3>Billing</h3>
 			<BillingPlans :billing="capabilities.billing" />
-		</template>	
-		<h3>File formats for Import</h3>
-		<FileFormats :version="version" :formats="fileFormats" :showInput="true" />
-		<h3>File formats for Export</h3>
-		<FileFormats :version="version" :formats="fileFormats" :showOutput="true" />
-		<h3>Secondary web services</h3>
-		<ServiceTypes :version="version" :services="serviceTypes" />
-		<h3>Runtimes for User-Defined Functions (UDF)</h3>
-		<UdfRuntimes :version="version" :runtimes="udfRuntimes" />
-		<LinkList :links="capabilities.links" :billing="capabilities.billing" heading="More information" headingTag="h3" />
+		</template>
+		<LinkList :links="capabilities.links" heading="More information" headingTag="h3" />
 	</div>
 </template>
 
@@ -47,25 +39,13 @@ export default Utils.enableHtmlProps({
 		},
 		url: {
 			type: String
-		},
-		serviceTypes: {
-			type: Object
-		},
-		fileFormats: {
-			type: Object
-		},
-		udfRuntimes: {
-			type: Object
 		}
 	},
 	components: {
 		BillingPlans,
 		Description,
 		LinkList,
-		SupportedFeatures,
-		FileFormats,
-		ServiceTypes,
-		UdfRuntimes
+		SupportedFeatures
 	},
 	computed: {
 		title() {

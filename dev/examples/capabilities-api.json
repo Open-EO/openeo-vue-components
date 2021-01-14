@@ -1,0 +1,100 @@
+{
+  "api_version": "1.0.1",
+  "backend_version": "1.1.2",
+  "stac_version": "string",
+  "id": "cool-eo-cloud",
+  "title": "Cool EO Cloud",
+  "description": "This service is provided to you by [Cool EO Cloud Corp.](http://cool-eo-cloud-corp.com). It implements the full openEO API and allows to process a range of 999 EO data sets, including \n\n* Sentinel 1/2/3 and 5\n* Landsat 7/8\n\nA free plan is available to test the service. For further information please contact our customer service at [support@cool-eo-cloud-corp.com](mailto:support@cool-eo-cloud-corp.com).",
+  "production": false,
+  "endpoints": [
+    {
+      "path": "/collections",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/collections/{collection_id}",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/processes",
+      "methods": [
+        "GET"
+      ]
+    },
+    {
+      "path": "/jobs",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    {
+      "path": "/jobs/{job_id}",
+      "methods": [
+        "GET",
+        "DELETE",
+        "PATCH"
+      ]
+    }
+  ],
+  "billing": {
+    "currency": "USD",
+    "default_plan": "free",
+    "plans": [
+      {
+        "name": "free",
+        "description": "Free plan. Calculates one tile per second and a maximum amount of 100 tiles per hour.",
+        "url": "http://cool-cloud-corp.com/plans/free-plan",
+        "paid": false
+      },
+      {
+        "name": "premium",
+        "description": "Premium plan. Calculates unlimited tiles and each calculated tile costs 0.003 USD.",
+        "url": "http://cool-cloud-corp.com/plans/premium-plan",
+        "paid": true
+      }
+    ]
+  },
+  "links": [
+    {
+      "href": "http://www.cool-cloud-corp.com",
+      "rel": "about",
+      "type": "text/html",
+      "title": "Homepage of the service provider"
+    },
+    {
+      "href": "https://www.cool-cloud-corp.com/tos",
+      "rel": "terms-of-service",
+      "type": "text/html",
+      "title": "Terms of Service"
+    },
+    {
+      "href": "https://www.cool-cloud-corp.com/privacy",
+      "rel": "privacy-policy",
+      "type": "text/html",
+      "title": "Privacy Policy"
+    },
+    {
+      "href": "http://www.cool-cloud-corp.com/.well-known/openeo",
+      "rel": "version-history",
+      "type": "application/json",
+      "title": "List of supported openEO versions"
+    },
+    {
+      "href": "http://www.cool-cloud-corp.com/api/v1.0/conformance",
+      "rel": "conformance",
+      "type": "application/json",
+      "title": "OGC Conformance Classes"
+    },
+    {
+      "href": "http://www.cool-cloud-corp.com/api/v1.0/collections",
+      "rel": "data",
+      "type": "application/json",
+      "title": "List of Datasets"
+    }
+  ]
+}
