@@ -4,14 +4,16 @@
 		<div class="compomnent" v-for="(examples, component) in data" :key="component">
 			<h2>{{ component }}</h2>
 			<div class="example" v-for="(props, id) in examples" :key="id">
-				<h3>Example: {{ id }}</h3>
-				<div v-if="show[component + id]">
-					<button @click="load(component, id, false)" type="button">Remove Component</button>
-					<div class="rendered">
-						<component :is="component" v-bind="props"></component>
-					</div>
+				<h3>
+					➥ {{ id }}
+					<button @click="toggle(component, id)" type="button">
+						<template v-if="show[component + id]">Remove Component</template>
+						<template v-else>Load Component</template>
+					</button>
+				</h3>
+				<div class="rendered" v-if="show[component + id]">
+					<component :is="component" v-bind="props"></component>
 				</div>
-				<button v-else @click="load(component, id)" type="button">Load Component</button>
 			</div>
 		</div>
 	</div>
@@ -70,8 +72,9 @@ export default {
 		};
 	},
 	methods: {
-		load(component, id, show = true) {
-			this.$set(this.show, component + id, show);
+		toggle(component, id) {
+			let key = component + id;
+			this.$set(this.show, key, !this.show[key]);
 		}
 	}
 }

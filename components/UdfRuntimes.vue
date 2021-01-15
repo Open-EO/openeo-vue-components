@@ -25,7 +25,7 @@
 
 <script>
 import Utils from '../utils';
-import SearchableList from './internal/SearchableList.vue';
+import SearchableList from './SearchableList.vue';
 
 export default Utils.enableHtmlProps({
 	name: 'UdfRuntimes',

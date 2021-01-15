@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import SearchableList from './internal/SearchableList.vue';
+import SearchableList from './SearchableList.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({

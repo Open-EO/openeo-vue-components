@@ -4,17 +4,19 @@ let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
 let fileFormats = require('./examples/file-formats-api.json');
 let serviceTypes = require('./examples/service-types-api.json');
+let reduceApi = require('./examples/reduce-api-new.json');
+let longArray = [...Array(1000).keys()];
 
 module.exports = {
-	"Capabilities": {
+	"billing-plans": {
+		"api": {
+			"billing": capabilities.billing
+		}
+	},
+	"capabilities": {
 		"api": {
 			"capabilities": capabilities,
 			"url": 'https://cool-eo-cloud.com'
-		}
-	},
-	"collections": {
-		"gee": {
-			"collections": collections
 		}
 	},
 	"collection": {
@@ -22,10 +24,64 @@ module.exports = {
 			"collection": collections[0]
 		}
 	},
+	"collections": {
+		"gee": {
+			"collections": collections
+		}
+	},
 	"deprecation-notice": {
 		"process": {
 			"entity": "process"
 		}
+	},
+	"description": {
+		"general": {
+			"description": `
+# H1
+
+Normal text and \`code\`
+
+## H2
+
+**Bold**
+
+No HTML:
+
+<hr>
+
+### H3
+
+*Italic*
+
+> Blockquote
+
+#### H4
+
+~Strikethrough~
+
+\`\`\`js
+if (a == b) console.log("Hello World");
+\`\`\`
+
+##### H5 
+
+[Link](http://a.com)
+
+###### H6
+
+![Image](https://commonmark.org/help/images/favicon.png)
+
+* Unordered List
+* Foo
+* Bar
+
+---
+
+1. Ordered List
+2. X
+3. Y
+`
+		}	
 	},
 	"experimental-notice": {
 		"process": {
@@ -42,9 +98,39 @@ module.exports = {
 			"showOutput": true
 		}
 	},
+	"json-schema": {
+		"callback": {
+			"schema": reduceApi.parameters[1].schema
+		}
+	},
+	"link-list": {
+		"gee-capabilities-links": {
+			"links": capabilities.links,
+			"heading": "Google Earth Engine Links",
+			"headingTag": "h3",
+			"ignoreRel": ['self', 'conformance']
+		}
+	},
+	"object-tree": {
+		"array": {
+			"data": collections
+		},
+		"object": {
+			"data": capabilities
+		},
+		"scalar": {
+			"data": 1000
+		},
+		"md-array": {
+			"data": [longArray,longArray,longArray,longArray,longArray,longArray,longArray]
+		}
+	},
 	"process": {
-		"gee": {
-			"process": processes.find(p => p.id === 'reduce_dimension')
+		"gee-load-collection": {
+			"process": processes.find(p => p.id === 'load_collection')
+		},
+		"api-reduce-new": {
+			"process": reduceApi
 		}
 	},
 	"processes": {
@@ -52,11 +138,18 @@ module.exports = {
 			"processes": processes
 		}
 	},
+	// ToDo: SearchableList
 	"service-types": {
 		"api": {
 			"services": serviceTypes
 		}
 	},
+	"supported-features": {
+		"api": {
+			"endpoints": capabilities.endpoints
+		}
+	},
+	// ToDo: Tab, Tabs
 	"udf-runtime": {
 		"api": {
 			"id": "R",

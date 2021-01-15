@@ -14,7 +14,6 @@ Note: Methods, properties and slots not listed here are not meant to be used as 
 Visualizes the billing information of the back-end.
 
 **Properties:**
-- `version` (string): openEO version
 - `billing` (object): Billing information as defined by the openEO API.
 
 
@@ -33,7 +32,6 @@ Visualizes a collection following the STAC-based collection description.
 
 **Properties:**
 
-- `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
 - `collection` (object): A single STAC-based collection object as defined by the openEO API.
 - `mapOptions` (object): For fine-tuning the behaviour of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
@@ -63,19 +61,12 @@ A simple text renderer, which supports CommonMark.
 - `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
 
 
-**Methods:**
-
-- `listen(eventName, callback)` - Adds a listener for an event with the specified name. Replaces existing listeners with the same name in the component.
-- `emit(eventName, ...args)` - Emits an event with the specified name and arguments.
-
-
 ### `FileFormats`
 
 Visualizes the supported file formats of the back-end.
 
 **Properties:**
 
-- `version` (string): openEO version
 - `formats` (object): Supported file formats as defined by the respective version of the openEO API.
 - `showInput` (boolean): Show the input file formats. Defaults to `false`.
 - `showOutput` (boolean): Show the output file formats. Defaults to `false`.
@@ -115,7 +106,6 @@ Note: `ProcessExample` is not meant to be used separately.
 
 **Properties:**
 
-- `version` (string): openEO version (defaults to `null`, which tries to auto-detect the version).
 - `process` (object): Process specification as defined by the openEO API.
 - `provideDownload` (boolean): Provide a link to download the JSON file (defaults to `true`).
 - `processReferenceBuilder` (function): A function that generates a link to a process by its process identifier.
@@ -133,7 +123,6 @@ Visualizes the supported secondary web service types of the back-end.
 
 **Properties:**
 
-- `version` (string): openEO version
 - `services` (object): Supported service types as defined by the openEO API.
 
 
@@ -143,14 +132,7 @@ Visualizes the supported functionalities of the back-end.
 
 **Properties:**
 
-- `version` (string): openEO version
 - `endpoints` (object): Supported endpoints as defined by the openEO API.
-
-**Methods:**
-
-- `getFeatures()` - Get a list of features (i.e. the categories).
-- `getFeatureCount()` - Get the number of supported and unsupported features that are shown by the component.
-- `getSupportedFeatureCount()` - Get the number of supported features by the back-end.
 
 
 ### `Tabs` and `Tab`
@@ -328,7 +310,6 @@ Visualizes the supported UDF (user-defined function) runtimes of the back-end.
 
 **Properties:**
 
-- `version` (string): openEO version
 - `runtimes` (object): Supported UDF runtimes as defined by the openEO API.
 
 ### `UdfRuntime`
