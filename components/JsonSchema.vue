@@ -4,11 +4,19 @@
 			<div v-if="isProcessGraph" class="schemaProcessGraph">
 				<div class="process-graph-parameters">
 					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">process</span></p>
-					<template v-if="Array.isArray(schema.parameters) && schema.parameters.length > 0">
-						<p>The following parameters are passed to the process:</p>
+					<template v-if="hasParameters">
+						<p><strong>These parameters are passed to the process:</strong></p>
 						<ProcessParameter v-for="(param, i) in schema.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
 					</template>
 					<strong v-else>No parameters are passed to the process.</strong>
+					<template v-if="hasReturns">
+						<p><strong>The process must return:</strong></p>
+						<Description v-if="schema.returns.description" :description="schema.returns.description" :processUrl="processUrl" />
+						<div class="json-schema-container" v-if="schema.returns.schema">
+							<JsonSchema :schema="schema.returns.schema" />
+						</div>
+					</template>
+					<strong v-else>Not defined by the process.</strong>
 				</div>
 			</div>
 			<div v-else-if="showRow('object')" class="schemaObjectElement">
@@ -146,6 +154,12 @@ export default Utils.enableHtmlProps({
 				return this.schema.oneOf;
 			}
 			return [this.schema];
+		},
+		hasReturns() {
+			return this.isProcessGraph && Utils.isObject(this.schema.returns);
+		},
+		hasParameters() {
+			return this.isProcessGraph && Array.isArray(this.schema.parameters) && this.schema.parameters.length > 0;
 		}
 	},
 	watch: {
@@ -160,7 +174,7 @@ export default Utils.enableHtmlProps({
 		updateData() {
 			var filtered = null;
 			for(var key in this.schema) {
-				if (key == 'required' || key == 'properties' || key == 'parameters') {
+				if (key == 'required' || key == 'properties' || key == 'parameters' || key === 'returns') {
 					continue;
 				}
 				if (filtered === null) {
