@@ -79,27 +79,15 @@ export default Utils.enableHtmlProps({
 					data.push(format);
 				}
 			}
-			return Object.values(data).sort((a,b) => Utils.compareStringCaseInsensitive(a.id, b.id));
+			return data;
 		}
 	},
 	filters: {
 		abbrev: Utils.prettifyAbbreviation
-	},
-	methods: {
-		showTitle(format) {
-			return (Utils.compareStringCaseInsensitive(format.id, format.title) !== 0);
-		}
 	}
 })
 </script>
 
 <style>
 @import url('./base.css');
-</style>
-
-<style scoped>
-ul.file-formats:empty::after {
-	content: 'None';
-	font-style: italic;
-}
 </style>

@@ -2,7 +2,7 @@
 	<article class="vue-component file-format">
 
 		<slot name="title">
-			<a class="anchor" :name="format.id"></a>
+			<a class="anchor" :name="id"></a>
 			<h2>
 				<template v-if="format.title">
 					{{ format.title }}
@@ -36,7 +36,7 @@
 		</section>
 
 		<section class="links">
-			<LinkList :links="format.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
+			<LinkList :links="format.links" heading="See Also" headingTag="h3" />
 		</section>
 
 		<slot name="end"></slot>

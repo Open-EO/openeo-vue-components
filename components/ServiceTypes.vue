@@ -1,10 +1,17 @@
 <template>
-	<ul class="vue-component service-types">
-		<li v-for="service in serviceTypes" :key="service.id">
-			<strong>{{ service.id | abbrev }}</strong>
-			<template v-if="showTitle(service)"> - {{ service.title }}</template>
-		</li>
-	</ul>
+	<div class="vue-component service-types">
+		<SearchableList :data="services" summaryKey="title" :hideSummaryOnExpand="true" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand">
+			<template v-slot:summary="slot">
+				<strong>{{ slot.summary.identifier }}</strong>
+				<small>{{ slot.summary.summary }}</small>
+			</template>
+			<template v-slot:details="slot">
+				<ServiceType :id="slot.summary.identifier" :service="slot.item">
+					<template v-slot:title><span class="hidden" /></template>
+				</ServiceType>
+			</template>
+		</SearchableList>
+	</div>
 </template>
 
 <script>
@@ -12,41 +19,34 @@ import Utils from '../utils.js';
 
 export default Utils.enableHtmlProps({
 	name: 'ServiceTypes',
+	components: {
+		SearchableList: () => import('./SearchableList.vue'),
+		ServiceType: () => import('./ServiceType.vue')
+	},
 	props: {
 		services: {
 			type: Object,
 			default: () => ({})
-		}
-	},
-	computed: {
-		serviceTypes() {
-			let data = [];
-			for(var name in this.services) {
-				let service = Object.assign({}, this.services[name]);
-				service.id = name;
-				data.push(service);
-			}
-			return data.sort((a,b) => Utils.compareStringCaseInsensitive(a.id, b.id));
+		},
+		searchTerm: {
+			type: String,
+			default: null
+		},
+		sort: {
+			type: Boolean,
+			default: true
+		},
+		allowExpand: {
+			type: Boolean,
+			default: true
 		}
 	},
 	filters: {
 		abbrev: Utils.prettifyAbbreviation
-	},
-	methods: {
-		showTitle(service) {
-			return (Utils.compareStringCaseInsensitive(service.id, service.title) !== 0);
-		}
 	}
 })
 </script>
 
 <style>
 @import url('./base.css');
-</style>
-
-<style scoped>
-ul.service-types:empty::after {
-	content: 'None';
-	font-style: italic;
-}
 </style>

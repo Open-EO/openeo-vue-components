@@ -159,16 +159,19 @@ if (a == b) console.log("Hello World");
 		}
 	},
 	// ToDo: SearchableList
-/*	"service-type": {
+	"searchable-list": {
+		"empty": {}
+	},
+	"service-type": {
 		"wms": {
 			"id": "WMS",
-			"format": serviceTypes.WMS
+			"service": serviceTypes.WMS
 		},
 		"ogcapi-features": {
 			"id": "OGCAPI-FEATURES",
-			"format": serviceTypes['OGCAPI-FEATURES']
+			"service": serviceTypes['OGCAPI-FEATURES']
 		}
-	}, */
+	},
 	"service-types": {
 		"api": {
 			"services": serviceTypes

@@ -36,7 +36,8 @@ import LinkList from '../components/LinkList.vue';
 import ObjectTree from '../components/ObjectTree.vue';
 import Process from '../components/Process.vue';
 import Processes from '../components/Processes.vue';
-//import ServiceType from '../components/ServiceType.vue';
+import SearchableList from '../components/SearchableList.vue';
+import ServiceType from '../components/ServiceType.vue';
 import ServiceTypes from '../components/ServiceTypes.vue';
 import SupportedFeatures from '../components/SupportedFeatures.vue';
 import Tab from '../components/Tab.vue';
@@ -61,7 +62,8 @@ export default {
 		ObjectTree,
 		Process,
 		Processes,
-//		ServiceType,
+		SearchableList,
+		ServiceType,
 		ServiceTypes,
 		SupportedFeatures,
 		Tab,

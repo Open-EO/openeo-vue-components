@@ -1,24 +1,30 @@
 <template>
-	<div class>
-        <div class="search-box" v-if="externalSearchTerm === null">
-            <span class="icon">🔎</span>
-            <input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" />
-        </div>
-		<ul class="vue-component searchable-list" :class="{expandable}">
-			<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
-				<summary @click="toggle(i)" class="summary">
-					<slot name="summary" :summary="summary" :item="data[summary.index]">
-						<strong>{{ summary.identifier }}</strong>
-						<small :class="{hideOnExpand: hideSummaryOnExpand}">{{ summary.summary }}</small>
-					</slot>
-				</summary>
-				<div class="details">
-					<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true"  :summary="summary" :item="data[summary.index]">
-						No details available!
-					</slot>
-				</div>
-			</li>
-		</ul>
+	<div class="vue-component searchable-list">
+		<template v-if="data.length === 0">
+			<p>No data available.</p>
+		</template>
+		<template v-else>
+			<div class="search-box" v-if="externalSearchTerm === null">
+				<span class="icon">🔎</span>
+				<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" />
+			</div>
+			<p v-if="noResults">No search results available.</p>
+			<ul v-else class="list" :class="{expandable}">
+				<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
+					<summary @click="toggle(i)" class="summary">
+						<slot name="summary" :summary="summary" :item="data[summary.index]">
+							<strong>{{ summary.identifier }}</strong>
+							<small :class="{hideOnExpand: hideSummaryOnExpand}">{{ summary.summary }}</small>
+						</slot>
+					</summary>
+					<div class="details">
+						<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true"  :summary="summary" :item="data[summary.index]">
+							No details available!
+						</slot>
+					</div>
+				</li>
+			</ul>
+		</template>
 	</div>
 </template>
 
@@ -79,6 +85,9 @@ export default {
 		}
 	},
 	computed: {
+		noResults() {
+			return (this.searchTerm.length > 0 && typeof this.summaries.find(item => item.show === true) === 'undefined');
+		},
 		expandable() {
 			return this.allowExpand && (!!this.$slots['details'] || !!this.$scopedSlots['details']);
 		},
@@ -135,11 +144,11 @@ export default {
 </script>
 
 <style>
-.vue-component.searchable-list .details h2,
-.vue-component.searchable-list .details h3,
-.vue-component.searchable-list .details h4,
-.vue-component.searchable-list .details h5,
-.vue-component.searchable-list .details h6 {
+.vue-component.searchable-list .list .details h2,
+.vue-component.searchable-list .list .details h3,
+.vue-component.searchable-list .list .details h4,
+.vue-component.searchable-list .list .details h5,
+.vue-component.searchable-list .list .details h6 {
 	font-size: 1em;
 }
 </style>
@@ -148,29 +157,29 @@ export default {
 .details  {
 	display: none;
 }
-ul.searchable-list {
+ul.list {
 	margin-left: 0;
 	padding-left: 0;
 	list-style-type: none;
 }
-ul.searchable-list > li {
+ul.list > li {
 	margin-bottom: 0.5em;
 }
-ul.searchable-list > li > summary {
+ul.list > li > summary {
 	margin-bottom: 0.5em;
 	margin-left: 1em;
 	line-height: 1.33em;
 }
-ul.searchable-list > li > summary strong {
+ul.list > li > summary strong {
 	display: block;
 	text-overflow: ellipsis;
     overflow: hidden;
 }
-ul.searchable-list > li > summary strong.inline {
+ul.list > li > summary strong.inline {
     display: inline;
     overflow: auto;
 }
-ul.searchable-list > li > summary:before {
+ul.list > li > summary:before {
 	content: "▸";
 	margin-left: -1em;
 	float: left;
