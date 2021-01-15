@@ -24,12 +24,11 @@
 
 <script>
 import Utils from '../utils.js';
-import SearchableList from './SearchableList.vue';
 
 export default Utils.enableHtmlProps({
 	name: 'FileFormats',
 	components: {
-		SearchableList,
+		SearchableList: () => import('./SearchableList.vue'),
 		FileFormat: () => import('./FileFormat.vue')
 	},
 	props: {

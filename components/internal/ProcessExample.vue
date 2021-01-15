@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import Description from '../Description.vue';
 import Utils from '../../utils.js';
 
 export default {
@@ -26,7 +25,7 @@ export default {
 		processUrl: String
 	},
 	components: {
-		Description
+		Description: () => import('../Description.vue')
 	},
 	computed: {
 		identifier() {

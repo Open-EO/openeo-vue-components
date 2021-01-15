@@ -17,11 +17,6 @@
 </template>
 
 <script>
-import DeprecationNotice from '../DeprecationNotice.vue';
-import Description from '../Description.vue';
-import ExperimentalNotice from '../ExperimentalNotice.vue';
-import JsonSchema from '../JsonSchema.vue';
-
 export default {
 	name: 'ProcessParameter',
 	props: {
@@ -29,10 +24,10 @@ export default {
 		processUrl: String
 	},
 	components: {
-		DeprecationNotice,
-		Description,
-		ExperimentalNotice,
-		JsonSchema
+		DeprecationNotice: () => import('../DeprecationNotice.vue'),
+		Description: () => import('../Description.vue'),
+		ExperimentalNotice: () => import('../ExperimentalNotice.vue'),
+		JsonSchema: () => import('../JsonSchema.vue')
 	},
 	computed: {
 		defaultValue() {

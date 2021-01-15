@@ -62,23 +62,17 @@
 </template>
 
 <script>
-import DeprecationNotice from './DeprecationNotice.vue';
-import Description from './Description.vue';
-import ExperimentalNotice from './ExperimentalNotice.vue';
-import LinkList from './LinkList.vue';
-import Tabs from './Tabs.vue';
-import Tab from './Tab.vue';
 import Utils from '../utils.js';
 
 export default Utils.enableHtmlProps({
 	name: 'UdfRuntime',
 	components: {
-		DeprecationNotice,
-		Description,
-		ExperimentalNotice,
-		LinkList,
-		Tabs,
-		Tab
+		DeprecationNotice: () => import('./DeprecationNotice.vue'),
+		Description: () => import('./Description.vue'),
+		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
+		LinkList: () => import('./LinkList.vue'),
+		Tabs: () => import('./Tabs.vue'),
+		Tab: () => import('./Tab.vue')
 	},
 	props: {
 		id: {

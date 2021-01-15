@@ -17,13 +17,12 @@
 </template>
 
 <script>
-import Tab from './Tab.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({
 	name: "Tabs",
 	components: {
-		Tab
+		Tab: () => import('./Tab.vue')
 	},
 	props: {
 		id: {

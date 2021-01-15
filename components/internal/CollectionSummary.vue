@@ -24,15 +24,13 @@
 </template>
 
 <script>
-import Description from '../Description.vue';
-import ObjectTree from '../ObjectTree.vue';
 import StacCollectionUtils from '../../stacutils';
 
 export default {
 	name: 'CollectionSummary',
 	components: {
-		Description,
-		ObjectTree
+		Description: () => import('../Description.vue'),
+		ObjectTree: () => import('../ObjectTree.vue')
 	},
 	props: {
 		value: {},

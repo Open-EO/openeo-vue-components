@@ -11,14 +11,13 @@
 </template>
 
 <script>
-import SearchableList from './SearchableList.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({
 	name: 'Processes',
 	components: {
 		Process: () => import('./Process.vue'),
-		SearchableList
+		SearchableList: () => import('./SearchableList.vue')
 	},
 	props: {
 		processes: {

@@ -25,12 +25,11 @@
 
 <script>
 import Utils from '../utils';
-import SearchableList from './SearchableList.vue';
 
 export default Utils.enableHtmlProps({
 	name: 'UdfRuntimes',
 	components: {
-		SearchableList,
+		SearchableList: () => import('./SearchableList.vue'),
 		UdfRuntime: () => import('./UdfRuntime.vue')
 	},
 	props: {

@@ -21,13 +21,6 @@
 </template>
 
 <script>
-import BillingPlans from './BillingPlans.vue';
-import Description from './Description.vue';
-import LinkList from './LinkList.vue';
-import SupportedFeatures from './SupportedFeatures.vue';
-import FileFormats from './FileFormats.vue';
-import ServiceTypes from './ServiceTypes.vue';
-import UdfRuntimes from './UdfRuntimes.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({
@@ -42,10 +35,10 @@ export default Utils.enableHtmlProps({
 		}
 	},
 	components: {
-		BillingPlans,
-		Description,
-		LinkList,
-		SupportedFeatures
+		BillingPlans: () => import('./BillingPlans.vue'),
+		Description: () => import('./Description.vue'),
+		LinkList: () => import('./LinkList.vue'),
+		SupportedFeatures: () => import('./SupportedFeatures.vue')
 	},
 	computed: {
 		title() {

@@ -45,21 +45,16 @@
 </template>
 
 <script>
-import DeprecationNotice from './DeprecationNotice.vue';
-import Description from './Description.vue';
-import ExperimentalNotice from './ExperimentalNotice.vue';
-import LinkList from './LinkList.vue';
-import ProcessParameter from './internal/ProcessParameter.vue';
 import Utils from '../utils.js';
 
 export default Utils.enableHtmlProps({
 	name: 'FileFormat',
 	components: {
-		DeprecationNotice,
-		Description,
-		ExperimentalNotice,
-		ProcessParameter,
-		LinkList
+		DeprecationNotice: () => import('./DeprecationNotice.vue'),
+		Description: () => import('./Description.vue'),
+		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
+		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
+		LinkList: () => import('./LinkList.vue')
 	},
 	props: {
 		id: {

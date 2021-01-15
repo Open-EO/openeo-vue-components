@@ -26,13 +26,12 @@
 </template>
 
 <script>
-import Description from './Description.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({
 	name: 'BillingPlans',
 	components: {
-		Description
+		Description: () => import('./Description.vue')
 	},
 	props: {
 		billing: {

@@ -94,7 +94,6 @@
 </template>
 
 <script>
-import Description from './Description.vue';
 import Utils from '../utils.js';
 
 export default Utils.enableHtmlProps({
@@ -121,7 +120,7 @@ export default Utils.enableHtmlProps({
 		};
 	},
 	components: {
-		Description
+		Description: () => import('./Description.vue')
 	},
 	beforeCreate() {
 		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components

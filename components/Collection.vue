@@ -147,9 +147,6 @@
 
 <script>
 import CollectionSummary from './internal/CollectionSummary.vue';
-import DeprecationNotice from './DeprecationNotice.vue';
-import Description from './Description.vue';
-import LinkList from './LinkList.vue';
 import StacCollectionUtils from '../stacutils';
 import Utils from '../utils';
 
@@ -159,9 +156,9 @@ export default Utils.enableHtmlProps({
 	name: 'Collection',
 	components: {
 		CollectionSummary,
-		Description,
-		DeprecationNotice,
-		LinkList
+		Description: () => import('./Description.vue'),
+		DeprecationNotice: () => import('./DeprecationNotice.vue'),
+		LinkList: () => import('./LinkList.vue')
 	},
 	props: {
 		collection: {

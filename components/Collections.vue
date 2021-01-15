@@ -11,14 +11,13 @@
 </template>
 
 <script>
-import SearchableList from './SearchableList.vue';
 import Utils from '../utils';
 
 export default Utils.enableHtmlProps({
 	name: 'Collections',
 	components: {
 		Collection: () => import('./Collection.vue'),
-		SearchableList
+		SearchableList: () => import('./SearchableList.vue')
 	},
 	props: {
 		collections: {

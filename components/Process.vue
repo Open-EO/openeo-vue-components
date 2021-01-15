@@ -81,25 +81,19 @@
 </template>
 
 <script>
-import DeprecationNotice from './DeprecationNotice.vue';
-import Description from './Description.vue';
-import ExperimentalNotice from './ExperimentalNotice.vue';
-import JsonSchema from './JsonSchema.vue';
-import LinkList from './LinkList.vue';
 import ProcessExample from './internal/ProcessExample.vue';
-import ProcessParameter from './internal/ProcessParameter.vue';
 import Utils from '../utils.js';
 
 export default Utils.enableHtmlProps({
 	name: 'Process',
 	components: {
-		JsonSchema,
-		DeprecationNotice,
-		Description,
-		ExperimentalNotice,
+		JsonSchema: () => import('./JsonSchema.vue'),
+		DeprecationNotice: () => import('./DeprecationNotice.vue'),
+		Description: () => import('./Description.vue'),
+		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
 		ProcessExample,
-		ProcessParameter,
-		LinkList
+		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
+		LinkList: () => import('./LinkList.vue')
 	},
 	props: {
 		process: {
