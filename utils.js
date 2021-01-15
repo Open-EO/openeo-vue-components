@@ -260,7 +260,28 @@ class Utils extends CommonUtils {
 			default:
 				return false;
 		}
-	}
+    }
+    
+    static toProcessParameters(parameters) {
+        if (Utils.isObject(parameters)) {
+            let processParameters = [];
+            for(let name in parameters) {
+                let param = parameters[name];
+                let schema = Utils.omitFromObject(param, ['description', 'required', 'default']);
+                processParameters.push({
+                    name,
+                    description: param.description,
+                    optional: !param.required,
+                    default: param.default,
+                    schema
+                });
+            }
+            return processParameters.sort((a,b) => Utils.compareStringCaseInsensitive(a.name, b.name));
+        }
+        else {
+            return [];
+        }
+    }
 
 
 };

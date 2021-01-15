@@ -166,13 +166,17 @@ ul.searchable-list > li > summary strong {
 	text-overflow: ellipsis;
     overflow: hidden;
 }
+ul.searchable-list > li > summary strong.inline {
+    display: inline;
+    overflow: auto;
+}
 ul.searchable-list > li > summary:before {
 	content: "▸";
 	margin-left: -1em;
 	float: left;
 	font-size: 1em;
 }
-ul.expandable > li {
+ul.expandable > li > summary {
 	cursor: pointer;
 }
 ul.expandable > li.expanded {

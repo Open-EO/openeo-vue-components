@@ -3,36 +3,44 @@
 
 		<slot name="title">
 			<a class="anchor" :name="id"></a>
-			<h2>{{ title }}</h2>
+			<h2>
+				<template v-if="runtime.title">
+					{{ runtime.title }}
+					(<code class="id">{{ id }}</code>)
+				</template>
+				<code class="id" v-else>{{ id }}</code>
+			</h2>
 		</slot>
 
 		<ul class="badges">
-			<li v-if="isDocker" class="badge docker">Docker: {{ data.docker }}</li>
+			<li v-if="isDocker" class="badge docker">Docker: {{ runtime.docker }}</li>
 			<li v-else class="badge">Programming Language</li>
 		</ul>
 
-		<section class="description" v-if="data.description">
-			<Description :description="data.description"></Description>
+		<section class="description" v-if="runtime.description">
+			<Description :description="runtime.description"></Description>
+			<DeprecationNotice v-if="runtime.deprecated" entity="UDF runtime" />
+			<ExperimentalNotice v-if="runtime.experimental" entity="UDF runtime" />
 		</section>
 
 		<section class="links">
-			<LinkList :links="data.links" heading="See Also" headingTag="h3" />
+			<LinkList :links="runtime.links" heading="See Also" headingTag="h3" />
 		</section>
 
 		<template v-if="isDocker">
 			<h3>Tags</h3>
 			<ul>
-				<li v-for="tag in tags" :key="tag">
+				<li v-for="tag in runtime.tags" :key="tag">
 					{{ tag }}
-					<ul v-if="tag === data.default" class="badges small"><li class="badge default">default</li></ul>
+					<ul v-if="tag === runtime.default" class="badges small"><li class="badge default">default</li></ul>
 				</li>
 			</ul>
 		</template>
 		<template v-else>
 			<h3>Versions</h3>
 			<Tabs id="userContent" ref="tabs">
-				<Tab v-for="(env, version) in data.versions" :key="version" :id="version" :name="version" :selected="version === selectVersion">
-					<ul v-if="version === data.default" class="badges">
+				<Tab v-for="(env, version) in runtime.versions" :key="version" :id="version" :name="version" :selected="version === selectVersion">
+					<ul v-if="version === runtime.default" class="badges">
 						<li class="badge default">default</li>
 					</ul>
 					<p>This runtime includes support for:</p>
@@ -54,7 +62,9 @@
 </template>
 
 <script>
+import DeprecationNotice from './DeprecationNotice.vue';
 import Description from './Description.vue';
+import ExperimentalNotice from './ExperimentalNotice.vue';
 import LinkList from './LinkList.vue';
 import Tabs from './Tabs.vue';
 import Tab from './Tab.vue';
@@ -63,7 +73,9 @@ import Utils from '../utils.js';
 export default Utils.enableHtmlProps({
 	name: 'UdfRuntime',
 	components: {
+		DeprecationNotice,
 		Description,
+		ExperimentalNotice,
 		LinkList,
 		Tabs,
 		Tab
@@ -73,7 +85,7 @@ export default Utils.enableHtmlProps({
 			type: String,
 			default: ''
 		},
-		data:  {
+		runtime:  {
 			type: Object,
 			default: () => ({})
 		},
@@ -84,17 +96,17 @@ export default Utils.enableHtmlProps({
 	},
 	computed: {
 		title() {
-			return this.data.title || this.id;
+			return this.runtime.title || this.id;
 		},
 		isDocker() {
-			return Boolean(this.data.type === 'docker' || (this.data.docker && this.data.tags));
+			return Boolean(this.runtime.type === 'docker' || (this.runtime.docker && this.runtime.tags));
 		},
 		selectVersion() {
-			if ((Utils.isObject(this.data.versions) && this.data.versions[this.version]) || (Array.isArray(this.data.tags) && this.data.tags[this.version])) {
+			if ((Utils.isObject(this.runtime.versions) && this.runtime.versions[this.version]) || (Array.isArray(this.runtime.tags) && this.runtime.tags[this.version])) {
 				return this.version;
 			}
 			else {
-				return this.data.default;
+				return this.runtime.default;
 			}
 		}
 	}
@@ -109,14 +121,8 @@ export default Utils.enableHtmlProps({
 h4 {
 	margin: 0.25em 0 0.75em 0;
 }
-.vue-component .badges .badge {
-	margin-left: 0;
-}
 .vue-component .tabContent {
 	padding: 0.5em;
-}
-.badge.deprecated {
-	background-color: red;
 }
 .library {
 	margin-bottom: 0.5em;

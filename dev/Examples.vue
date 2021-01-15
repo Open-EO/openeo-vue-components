@@ -29,12 +29,14 @@ import Collections from '../components/Collections.vue';
 import DeprecationNotice from '../components/DeprecationNotice.vue';
 import Description from '../components/Description.vue';
 import ExperimentalNotice from '../components/ExperimentalNotice.vue';
+import FileFormat from '../components/FileFormat.vue';
 import FileFormats from '../components/FileFormats.vue';
 import JsonSchema from '../components/JsonSchema.vue';
 import LinkList from '../components/LinkList.vue';
 import ObjectTree from '../components/ObjectTree.vue';
 import Process from '../components/Process.vue';
 import Processes from '../components/Processes.vue';
+//import ServiceType from '../components/ServiceType.vue';
 import ServiceTypes from '../components/ServiceTypes.vue';
 import SupportedFeatures from '../components/SupportedFeatures.vue';
 import Tab from '../components/Tab.vue';
@@ -52,12 +54,14 @@ export default {
 		DeprecationNotice,
 		Description,
 		ExperimentalNotice,
+		FileFormat,
 		FileFormats,
 		JsonSchema,
 		LinkList,
 		ObjectTree,
 		Process,
 		Processes,
+//		ServiceType,
 		ServiceTypes,
 		SupportedFeatures,
 		Tab,

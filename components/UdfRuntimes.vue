@@ -2,8 +2,8 @@
 	<div class="vue-component udf-runtimes">
 		<SearchableList :data="runtimes" summaryKey="title" :hideSummaryOnExpand="true" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand">
 			<template v-slot:summary="slot">
-				<strong class="udf-identifier">{{ slot.summary.identifier }}</strong>
-				<ul class="badges small">
+				<strong class="inline">{{ slot.summary.identifier }}</strong>
+				<ul class="badges small inline">
 					<template v-if="slot.item.type === 'docker' || (slot.item.docker && slot.item.tags)">
 						<li class="badge docker">Docker</li>
 						<li class="badge version" :class="{default: tag === slot.item.default}" v-for="tag in slot.item.tags" :key="tag">{{ tag }}</li>
@@ -15,7 +15,7 @@
 				<small>{{ slot.summary.summary }}</small>
 			</template>
 			<template v-slot:details="slot">
-				<UdfRuntime :id="slot.summary.identifier" :data="slot.item">
+				<UdfRuntime :id="slot.summary.identifier" :runtime="slot.item">
 					<template v-slot:title><span class="hidden" /></template>
 				</UdfRuntime>
 			</template>
@@ -59,16 +59,8 @@ export default Utils.enableHtmlProps({
 </style>
 
 <style scoped>
-ul.searchable-list > li > summary strong.udf-identifier {
-    display: inline;
-    overflow: auto;
-}
 ul.udf-runtimes:empty::after {
 	content: 'None';
 	font-style: italic;
-}
-
-.badges {
-	margin-left: 0.5em;
 }
 </style>

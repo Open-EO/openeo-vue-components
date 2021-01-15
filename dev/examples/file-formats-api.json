@@ -82,7 +82,19 @@
       "parameters": {
         "table": {
           "type": "string",
-          "description": "**RASTER ONLY.** Name of the table containing the tiles. If the GeoPackage dataset only contains one table, this option is not necessary. Otherwise, it is required."
+          "required": true,
+          "description": "Name of the table containing the tiles (called “Tile Pyramid User Data Table” in the GeoPackage specification language)."
+        },
+        "version": {
+          "type": "string",
+          "description": "Set GeoPackage version. In AUTO mode, this will be equivalent to 1.2 starting with GDAL 2.3.",
+          "enum": [
+            "auto",
+            "1",
+            "1.1",
+            "1.2"
+          ],
+          "default": "auto"
         }
       },
       "links": [

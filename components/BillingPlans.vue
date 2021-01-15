@@ -13,10 +13,10 @@
 					<a v-if="plan.url" :href="plan.url" target="_blank">{{ plan.name }}</a>
 					<template v-else>{{ plan.name }}</template>
 				</strong>
-				<ul class="badges small">
+				<ul class="badges small inline">
 					<li class="badge default" v-if="defaultPlan == plan.name">default</li>
-					<li class="badge paid" v-if="plan.paid === true">paid</li>
-					<li class="badge free" v-else-if="plan.paid === false">free</li>
+					<li class="badge red" v-if="plan.paid === true">paid</li>
+					<li class="badge green" v-else-if="plan.paid === false">free</li>
 				</ul>
 				<Description v-if="plan.description" :description="plan.description" :compact="true" />
 			</li>
@@ -64,18 +64,6 @@ export default Utils.enableHtmlProps({
 </style>
 
 <style scoped>
-.badges {
-	margin-left: 0.5em;
-}
-.badges .free {
-	background-color: green;
-}
-.badges .paid {
-	background-color: maroon;
-}
-.badges .default {
-	background-color: black;
-}
 .plan-name {
 	margin: 0.25em 0;
 	padding: 0.2em 0;

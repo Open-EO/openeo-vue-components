@@ -88,14 +88,34 @@ if (a == b) console.log("Hello World");
 			"entity": "process"
 		}
 	},
+	"file-format": {
+		"output-gtiff": {
+			"id": "GTIFF",
+			"format": fileFormats.output.GTIFF,
+			"type": "output"
+		},
+		"output-gpkg": {
+			"id": "GPKG",
+			"format": fileFormats.output.GPKG,
+			"type": "output"
+		},
+		"input-gpkg": {
+			"id": "GPKG",
+			"format": fileFormats.input.GPKG,
+			"type": "input"
+		}
+	},
 	"file-formats": {
+		"api-all": {
+			"formats": fileFormats
+		},
 		"api-input": {
 			"formats": fileFormats,
-			"showInput": true
+			"showOutput": false
 		},
 		"api-output": {
 			"formats": fileFormats,
-			"showOutput": true
+			"showInput": false
 		}
 	},
 	"json-schema": {
@@ -139,6 +159,16 @@ if (a == b) console.log("Hello World");
 		}
 	},
 	// ToDo: SearchableList
+/*	"service-type": {
+		"wms": {
+			"id": "WMS",
+			"format": serviceTypes.WMS
+		},
+		"ogcapi-features": {
+			"id": "OGCAPI-FEATURES",
+			"format": serviceTypes['OGCAPI-FEATURES']
+		}
+	}, */
 	"service-types": {
 		"api": {
 			"services": serviceTypes
@@ -153,7 +183,7 @@ if (a == b) console.log("Hello World");
 	"udf-runtime": {
 		"api": {
 			"id": "R",
-			"data": runtimes["R"]
+			"runtime": runtimes["R"]
 		}
 	},
 	"udf-runtimes": {

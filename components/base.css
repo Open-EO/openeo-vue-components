@@ -1,6 +1,9 @@
 .vue-component .highlight-box {
 	box-shadow: 0 0 0 0.2em #c8e1ff;
 }
+.vue-component code.id {
+	color: maroon;
+}
 
 /* Comma separated list */
 .vue-component .comma-separated-list {
@@ -73,9 +76,15 @@
 	color: #fff;
 	background-color: #6c757d;
 }
+.vue-component .badges .badge:first-of-type {
+	margin-left: 0;
+}
 .vue-component .badges.small .badge {
 	padding: 0.2em 0.3em;
 	font-size: 0.75em;
+}
+.vue-component .badges.inline {
+	margin-left: 0.5em;
 }
 .vue-component .badges .badge a {
 	color: #fff;
@@ -96,12 +105,33 @@
 	color: #fff;
 	border-bottom-style: solid;
 }
+.vue-component .badges .default {
+	background-color: black;
+}
+.vue-component .badges .green {
+	background-color: green;
+}
+.vue-component .badges .red {
+	background-color: maroon;
+}
+.vue-component .badges .option1 {
+	background-color: #369;
+}
+.vue-component .badges .option2 {
+	background-color: #693;
+}
+.vue-component .badges .option3 {
+	background-color: #936;
+}
+.vue-component .badges .deprecated {
+	background-color: red;
+}
+.vue-component .badges .experimental {
+	background-color: blueviolet;
+}
 /* Badges for UDFs */
 .vue-component .badges .docker {
 	background-color: #0db7ed;
-}
-.vue-component .badges .default {
-	background-color: black;
 }
 
 /* Table like lists */

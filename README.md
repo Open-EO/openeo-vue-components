@@ -68,8 +68,8 @@ Visualizes the supported file formats of the back-end.
 **Properties:**
 
 - `formats` (object): Supported file formats as defined by the respective version of the openEO API.
-- `showInput` (boolean): Show the input file formats. Defaults to `false`.
-- `showOutput` (boolean): Show the output file formats. Defaults to `false`.
+- `showInput` (boolean): Show the input file formats. Defaults to `true`.
+- `showOutput` (boolean): Show the output file formats. Defaults to `true`.
 
 One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list will be shown.
 
@@ -322,7 +322,7 @@ You must pass the runtime data through `MigrateCapabilities.convertUdfRuntimesTo
 **Properties:**
 
 - `id` (string): The identifier of the runtime (the key of a runtime entry in the `GET /udf_runtimes` response).
-- `data` (object): The data associated with this runtime (the value of a runtime entry in the `GET /udf_runtimes` response).
+- `runtime` (object): The data associated with this runtime (the value of a runtime entry in the `GET /udf_runtimes` response).
 - `version` (string): If a specific version of the runtime should be pre-selected, specify it here. Defaults to `null`, which shows the pre-selects the default version.
 
 

@@ -51,6 +51,9 @@ export default {
 	margin-left: 1.5em;
 }
 .default {
-	font-weight: normal;;
+	font-weight: normal;
+}
+h4 code {
+	font-size: 1.1em;
 }
 </style>
