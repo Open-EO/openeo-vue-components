@@ -12,10 +12,14 @@
 			</h2>
 		</slot>
 
-		<ul class="badges">
-			<li v-if="isDocker" class="badge docker">Docker: {{ runtime.docker }}</li>
-			<li v-else class="badge">Programming Language</li>
-		</ul>
+		<slot name="badges">
+			<ul class="badges">
+				<li v-if="isDocker" class="badge docker">Docker: {{ runtime.docker }}</li>
+				<li v-else class="badge">Programming Language</li>
+			</ul>
+		</slot>
+
+		<slot name="before-description"></slot>
 
 		<section class="description" v-if="runtime.description">
 			<Description :description="runtime.description"></Description>

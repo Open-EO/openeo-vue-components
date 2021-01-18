@@ -19,7 +19,7 @@ Directly as HTML tag in an HTML page or in a Vue environment as normal Single Fi
 
 ### HTML
 
-To use the components in HTML, simply include the following into the `head` of your HTML page:
+To use the components in HTML (as so-called 'Web Components'), simply include the following into the `head` of your HTML page:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@openeo/vue-components@latest/assets/openeo.min.js"></script>
@@ -44,6 +44,8 @@ For example, the `Capabilities` component can be used as follows:
 
 The components are async web components, which means only the components you are actually using are requested. This keeps page loading times at a minimum.
 
+*Note for Contributors:* Web Components must be built via `npm run build` and will be placed in the `assets` folder. Examples can be generated using `npm run wc-examples` and will be placed in the `examples` folder. You can also serve the examples via HTTP with the command `npm run wc-serve`.
+
 ### Vue
 
 In a Vue environment, you can just import the Single File Components directly.
@@ -57,13 +59,13 @@ For example, the `Capabilities` component can be imported as follows:
 
 Afterwards, you need to declare the component in the `components` section of your SFC, e.g. `components: { Capabilities }`.
 
-In the Template of your SFC you can now include the component as follows:
+In the Template of your SFC you can now include the component as shown in the example below. Please note that `url` and `capabilities` must be defined in the SFC, e.g. in `data` property or as `computed` property.
 
 ```html
 <Capabilities :url="url" :capabilities="capabilities"></Capabilities>
 ```
 
-*Note: `url` and `capabilities` must be defined in the SFC, e.g. in `data` property or as `computed` property.*
+*Note for Contributors*: This usage mode doesn't require the initial build step `npm run build`. The Vue Components can simply be imported from the `components` folder. You can also serve examples via HTTP with the command `npm run serve`.
 
 ## Components
 
@@ -92,7 +94,7 @@ Visualizes a single collection following the STAC-based collection description.
 
 **Properties:**
 
-- `collection` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collectionId}`).
+- `collection` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collection_id}`).
 - `mapOptions` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
@@ -115,12 +117,12 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 
 **Properties:**
 
-- `collections` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections`).
+- `collections` (array, required): An array of STAC-based collection objects as defined by the openEO API (`GET /collections`, property `collections`).
 - `mapOptions` (object): See the corresponding prop in `Collection`. By default, `scrollWheelZoom` is set to `false`.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.
-- `heading` (string): Specifies the title of the component. If set to null, the title is hidden. Defaults to `Collections`.
+- `heading` (string): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 
 
 ### DeprecationNotice
@@ -169,6 +171,7 @@ The properties must be filled with parts of the response for supported file form
 **Slots:**
 
 - `title` - HTML to display as the main heading.
+- `badges` - HTML to display as the badges.
 - `before-description` - HTML to display before the description.
 - `end` - HTML to display after the component.
 
@@ -184,10 +187,19 @@ Visualizes all supported file formats of the back-end.
 - `showOutput` (boolean): Show the output file formats. Defaults to `true`.- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.
-- `heading` (string): Specifies the title of the component. If set to null, the title is hidden. Defaults to `File Formats`.
+- `heading` (string): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
+
+### `JsonSchema`
+
+Renders JSON Schemas in a way that it's a bit easier for humans to read.
+
+**Properties:**
+
+- `schema` (object|array\<object>, required): Either a single JSON Schema as object or an array of JSON Schema objects.
+- `processUrl` (string): See the corresponding prop in `Description`. 
 
 ### `LinkList`
 
@@ -195,12 +207,12 @@ A simple list of links.
 
 **Properties:**
 
-- `links` (array\<object>): An array of objects, each describing a link as defined by the openEO API.
+- `links` (array\<object>, required): An array of objects, each describing a link as defined by the openEO API.
 - `sort` (boolean): Sort the links by title. Defaults to `true`.
 - `heading` (string): If given, a heading is shown above the list. Defaults to `null` (no heading shown).
-- `headingTag` (string): HTML Tag to put the heading into. Defaults to `strong`.
+- `headingTag` (string): HTML Tag to use for the heading. Defaults to `strong`.
 - `ignoreRel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
-- `showRel`: (boolean): Shows/Hides the `rel` types. Defaults to `false`.
+- `showRel`: (boolean): If set to `true`, shows the `rel` types. Defaults to `false`.
 
 
 ### `ObjectTree`
@@ -210,20 +222,19 @@ Often used as a fallback if no other form of presentation is known by the client
 
 **Properties:**
 
-- `data` (object): Any object (i.e. objects, arrays, null)
+- `data` (object): Any object (i.e. object, array or null)
+- `collapseAfter` (integer|null): The number of elements to display for each object or array until a "show all" button is shown. Set to `null` to show all elements.
 
 
 ### `Process`
 
-Visualizes a process following the openEO process description in the latest version.
-
-Note: `ProcessExample` is not meant to be used separately.
+Visualizes a single process following the openEO process description.
 
 **Properties:**
 
-- `process` (object): Process specification as defined by the openEO API.
+- `process` (object, required): Process specification as defined by the openEO API (Either one of the array elements in the property `processes` returned by `GET /process` or the response from `GET /process_graphs/{process_graph_id}`).
 - `provideDownload` (boolean): Provide a link to download the JSON file (defaults to `true`).
-- `processReferenceBuilder` (function): A function that generates a link to a process by its process identifier.
+- `processUrl` (string): See the corresponding prop in `Description`.
 
 **Slots:**
 
@@ -232,7 +243,39 @@ Note: `ProcessExample` is not meant to be used separately.
 - `end` - HTML to display after the component.
 
 
-### `ServiceTypes`
+### `Processes`
+
+Shows an (expandable) list of all processes available at a back-end.
+
+**Properties:**
+
+- `processes` (array, required): An array of processes as defined by the openEO API (`GET /processes` or `GET /process_graphs` although the latter is usually not complete).
+- `provideDownload` (boolean): See the corresponding prop in `Process`.
+- `processUrl` (string): See the corresponding prop in `Description`.
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
+- `sort` (boolean): See the corresponding prop in `SearchableList`. 
+- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `heading` (string): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
+
+
+### `SearchableList` (ToDo)
+
+
+
+
+### `ServiceType` (ToDo)
+
+**Properties:**
+
+- 
+
+**Slots:**
+
+- `title` - HTML to display the main heading.
+- `before-description` - HTML to display before the description.
+- `end` - HTML to display after the component.
+
+### `ServiceTypes` (ToDo)
 
 Visualizes the supported secondary web service types of the back-end.
 
@@ -241,7 +284,7 @@ Visualizes the supported secondary web service types of the back-end.
 - `services` (object): Supported service types as defined by the openEO API.
 
 
-### `SupportedFeatures`
+### `SupportedFeatures` (ToDo)
 
 Visualizes the supported functionalities of the back-end.
 
@@ -250,7 +293,7 @@ Visualizes the supported functionalities of the back-end.
 - `endpoints` (object): Supported endpoints as defined by the openEO API.
 
 
-### `Tabs` and `Tab`
+### `Tabs` and `Tab` (ToDo)
 
 Creates a tab interface. 
 
@@ -419,20 +462,9 @@ export default {
 </script>
 ```
 
-### `UdfRuntimes`
-
-Visualizes the supported UDF (user-defined function) runtimes of the back-end.
-
-**Properties:**
-
-- `runtimes` (object): Supported UDF runtimes as defined by the openEO API.
-
-### `UdfRuntime`
+### `UdfRuntime` (ToDo)
 
 Shows a single supported UDF (user-defined function) runtime of the back-end.
-
-**Note:** Unlike many other components, this component doesn't automatically migrate legacy API responses.
-You must pass the runtime data through `MigrateCapabilities.convertUdfRuntimesToLatestSpec` before passing it to this component.
 
 **Properties:**
 
@@ -440,8 +472,21 @@ You must pass the runtime data through `MigrateCapabilities.convertUdfRuntimesTo
 - `runtime` (object): The data associated with this runtime (the value of a runtime entry in the `GET /udf_runtimes` response).
 - `version` (string): If a specific version of the runtime should be pre-selected, specify it here. Defaults to `null`, which shows the pre-selects the default version.
 
+**Slots:**
 
-## Other features
+- `title` - HTML to display the main heading.
+- `before-description` - HTML to display before the description.
+
+### `UdfRuntimes` (ToDo)
+
+Visualizes the supported UDF (user-defined function) runtimes of the back-end.
+
+**Properties:**
+
+- `runtimes` (object): Supported UDF runtimes as defined by the openEO API.
+
+
+## Other features (ToDo)
 
 ### `FeatureList`
 

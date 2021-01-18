@@ -12,6 +12,8 @@
 			</h2>
 		</slot>
 
+		<slot name="before-description"></slot>
+
 		<section class="description" v-if="service.description">
 			<h3>Description</h3>
 			<Description :description="service.description" />
