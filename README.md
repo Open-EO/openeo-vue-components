@@ -149,7 +149,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 
 
-### DeprecationNotice
+### `DeprecationNotice`
 
 Show a message that something has been deprecated.
 
@@ -171,7 +171,7 @@ A simple text renderer, which supports CommonMark.
 - `allowHTML` (boolean): By default (`false`), HTML is removed from the rendered version. To show HTML set this to `true`. Only set to `true` if you trust the content, it may contain insecure elements.
 
 
-### ExperimentalNotice
+### `ExperimentalNotice`
 
 Show a message that something is experimental.
 
@@ -208,7 +208,8 @@ Visualizes all supported file formats of the back-end.
 
 - `formats` (object, required): Supported file formats as defined by the openEO API (`GET /file_formats`).
 - `showInput` (boolean): Show the input file formats. Defaults to `true`.
-- `showOutput` (boolean): Show the output file formats. Defaults to `true`.- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
+- `showOutput` (boolean): Show the output file formats. Defaults to `true`.
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
@@ -444,8 +445,8 @@ window.addEventListener('resize', event => {
 </template>
 
 <script>
-import Tabs from './Tabs.vue';
-import Tab from './Tab.vue';
+import Tabs from '@openeo/vue-components/components/Tabs.vue';
+import Tab from '@openeo/vue-components/components/Tab.vue';
 
 export default {
 	name: 'Viewer',
@@ -486,8 +487,8 @@ export default {
 </template>
 
 <script>
-import Tabs from './Tabs.vue';
-import Tab from './Tab.vue';
+import Tabs from '@openeo/vue-components/components/Tabs.vue';
+import Tab from '@openeo/vue-components/components/Tab.vue';
 import ImageViewer from './ImageViewer.vue';
 import DataViewer from './DataViewer.vue';
 import MapViewer from './MapViewer.vue'
