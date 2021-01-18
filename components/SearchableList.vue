@@ -1,9 +1,9 @@
 <template>
 	<div class="vue-component searchable-list">
-		<slot name="heading" :isSearching="isSearching" :filteredCount="filteredCount" :totalCount="totalCount">
+		<slot name="heading" :filteredCount="filteredCount" :totalCount="totalCount">
 			<h2 v-if="heading">
 				{{ heading }}
-				<template v-if="isSearching">({{ filteredCount }}/{{ totalCount }})</template>
+				<template v-if="filteredCount !== null">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
 			</h2>
 		</slot>
@@ -16,13 +16,13 @@
 					<span class="icon">🔎</span>
 					<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" :minlength="searchMinLength" :title="searchHint" />
 				</div>
-				<p v-if="isSearching && totalCount === 0">No search results available.</p>
+				<p v-if="filteredCount === 0">No search results available.</p>
 				<ul v-else class="list" :class="{expandable}">
 					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
 						<summary @click="toggle(i)" class="summary">
 							<slot name="summary" :summary="summary" :item="data[summary.index]">
 								<strong>{{ summary.identifier }}</strong>
-								<small :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
+								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
 							</slot>
 						</summary>
 						<div class="details">
@@ -116,10 +116,10 @@ export default {
 			return Utils.size(this.data);
 		},
 		filteredCount() {
-			return this.summaries.filter(item => item.show === true).length;
-		},
-		isSearching() {
-			return (this.searchTerm.length >= this.searchMinLength);
+			if (this.searchTerm.length >= this.searchMinLength) {
+				return this.summaries.filter(item => item.show === true).length;
+			}
+			return null;
 		},
 		expandable() {
 			return this.allowExpand && (!!this.$slots['details'] || !!this.$scopedSlots['details']);
