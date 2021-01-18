@@ -1,9 +1,9 @@
 <template>
 	<div class="vue-component collections">
 		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
-			<template v-slot:details="slot">
+			<template #details="slot">
 				<Collection :collection="slot.item" :mapOptions="mapOptions">
-					<template v-slot:title><span class="hidden" /></template>
+					<template #title><span class="hidden" /></template>
 				</Collection>
 			</template>
 		</SearchableList>

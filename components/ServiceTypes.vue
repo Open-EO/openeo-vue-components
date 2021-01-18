@@ -1,13 +1,13 @@
 <template>
 	<div class="vue-component service-types">
 		<SearchableList :data="services" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
-			<template v-slot:summary="slot">
+			<template #summary="slot">
 				<strong>{{ slot.summary.identifier }}</strong>
 				<small>{{ slot.summary.summary }}</small>
 			</template>
-			<template v-slot:details="slot">
+			<template #details="slot">
 				<ServiceType :id="slot.summary.identifier" :service="slot.item">
-					<template v-slot:title><span class="hidden" /></template>
+					<template #title><span class="hidden" /></template>
 				</ServiceType>
 			</template>
 		</SearchableList>

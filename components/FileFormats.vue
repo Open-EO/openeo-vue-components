@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-component file-formats">
 		<SearchableList :data="fileFormats" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
-			<template v-slot:summary="slot">
+			<template #summary="slot">
 				<strong class="inline">{{ slot.item.name }}</strong>
 				<ul class="badges small inline">
 					<li class="badge option1" v-if="showAll && slot.item.type === 'input'">Import</li>
@@ -12,10 +12,10 @@
 				</ul><br />
 				<small>{{ slot.summary.summary }}</small>
 			</template>
-			<template v-slot:details="slot">
+			<template #details="slot">
 				<FileFormat :id="slot.summary.identifier" :format="slot.item" :type="slot.item.type">
-					<template v-slot:title><span class="hidden" /></template>
-					<template v-slot:badges><span class="hidden" /></template>
+					<template #title><span class="hidden" /></template>
+					<template #badges><span class="hidden" /></template>
 				</FileFormat>
 			</template>
 		</SearchableList>

@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-component udf-runtimes">
 		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
-			<template v-slot:summary="slot">
+			<template #summary="slot">
 				<strong class="inline">{{ slot.summary.identifier }}</strong>
 				<ul class="badges small inline">
 					<template v-if="slot.item.type === 'docker' || (slot.item.docker && slot.item.tags)">
@@ -14,9 +14,9 @@
 				</ul><br />
 				<small>{{ slot.summary.summary }}</small>
 			</template>
-			<template v-slot:details="slot">
+			<template #details="slot">
 				<UdfRuntime :id="slot.summary.identifier" :runtime="slot.item">
-					<template v-slot:title><span class="hidden" /></template>
+					<template #title><span class="hidden" /></template>
 				</UdfRuntime>
 			</template>
 		</SearchableList>
