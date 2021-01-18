@@ -2,7 +2,7 @@
 	<div class="vue-component capabilities">
 		<h2>{{ title }}</h2>
 		<section class="base-data">
-			<div class="tabular" v-if="url"><label>URL:</label><span class="value">{{ url }}</span></div>
+			<div class="tabular" v-if="url2"><label>URL:</label><span class="value">{{ url2 }}</span></div>
 			<div class="tabular" v-if="capabilities.api_version"><label>openEO-Version:</label><span class="value">{{ capabilities.api_version }}</span></div>
 			<div class="tabular"><label>Production:</label><span class="value">
 				<template v-if="capabilities.production">✔️</template>
@@ -53,6 +53,18 @@ export default Utils.enableHtmlProps({
 					return '';
 				}
 			}
+		},
+		url2() {
+			if (typeof this.url === 'string') {
+				return this.url;
+			}
+			else if (Array.isArray(this.capabilities.links)) {
+				let self = this.capabilities.links.find(link => link.rel === 'self');
+				if (self) {
+					return self.href;
+				}
+			}
+			return null;
 		}
 	}
 })

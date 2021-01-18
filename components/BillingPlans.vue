@@ -49,11 +49,6 @@ export default Utils.enableHtmlProps({
 		plans() {
 			return Array.isArray(this.billing.plans) ? this.billing.plans : [];
 		}
-	},
-	methods: {
-		prettify(name) {
-			return Utils.prettifyAbbreviation(name);
-		}
 	}
 })
 </script>
