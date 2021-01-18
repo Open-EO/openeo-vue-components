@@ -5,48 +5,131 @@ A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 This library's version is **2.0.0-beta.1** and supports **openEO API versions 1.0.x**.
 Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
 
+**Table of Contents:**
+
+1. Usage
+    * HTML
+	* Vue
+2. [Components](#components)
+
+## Usage
+
+All components listed below can be used in two different environments: 
+Directly as HTML tag in an HTML page or in a Vue environment as normal Single File Components (SFC).
+
+### HTML
+
+To use the components in HTML, simply include the following into the `head` of your HTML page:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@openeo/vue-components@latest/assets/openeo.min.js"></script>
+```
+
+All components can be used as HTML tags in kebab-case.
+For example, the component `BillingPlans` can be used as `<billing-plans></billing-plans>`.
+Props can be passed as HTML attributes if the value is a scalar.
+For arrays and objects, you have to specify them as child `script` tags with the attributes `prop="..."` and `type="application/json"`.
+
+For example, the `Capabilities` component can be used as follows:
+```html
+<capabilities url="https://example.com/api">
+	<script prop="capabilities" type="application/json">
+		{
+			"api_version": "1.0.0",
+			...
+		}
+	</script>
+</capabilities>
+```
+
+The components are async web components, which means only the components you are actually using are requested. This keeps page loading times at a minimum.
+
+### Vue
+
+In a Vue environment, you can just import the Single File Components directly.
+
+First, you need to install the package: `npm install @openeo/vue-components --save`
+Now, you can import the Vue components with the `import` or `require`, depending on the module system you are using.
+
+For example, the `Capabilities` component can be imported as follows:
+* `const Capabilities = require('@openeo/vue-components/components/Capabilities.vue');` (Node.js require)
+* `import Capabilities from '@openeo/vue-components/components/Capabilities.vue';` (ES6 modules)
+
+Afterwards, you need to declare the component in the `components` section of your SFC, e.g. `components: { Capabilities }`.
+
+In the Template of your SFC you can now include the component as follows:
+
+```html
+<Capabilities :url="url" :capabilities="capabilities"></Capabilities>
+```
+
+*Note: `url` and `capabilities` must be defined in the SFC, e.g. in `data` property or as `computed` property.*
+
 ## Components
 
-Note: Methods, properties and slots not listed here are not meant to be used as public and stable API.
+*Note: Methods, properties and slots not listed here are not meant to be used as public and stable API.*
 
 ### `BillingPlans`
 
 Visualizes the billing information of the back-end.
 
 **Properties:**
-- `billing` (object): Billing information as defined by the openEO API.
+- `billing` (object, required): Billing information as defined by the openEO API (`GET /`, property `billing`).
 
 
 ### `Capabilities`
 
-Visualizes all the server information of the back-end. Shows the title, description, back-end version, `SupportedFeatures` and `BillingPlans`.
+Visualizes fundamental server information of the back-end. Shows the URL, title, description, version numbers, links, the production flag, `SupportedFeatures` and `BillingPlans`.
 
 **Properties:**
-- `capabilities` (object): Capabilities response as defined by the openEO API.
-- `url` (string): URL to the API
+- `capabilities` (object, required): Capabilities response as defined by the openEO API (`GET /`).
+- `url` (string): URL to the API. If not set, the URL from the link with relation type `self` is shown. If neither is available, no URL is shown.
 
 
 ### `Collection`
 
-Visualizes a collection following the STAC-based collection description.
+Visualizes a single collection following the STAC-based collection description.
 
 **Properties:**
 
-- `collection` (object): A single STAC-based collection object as defined by the openEO API.
-- `mapOptions` (object): For fine-tuning the behaviour of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
+- `collection` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collectionId}`).
+- `mapOptions` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `true`.
-  - `onAfterMapInit` (function): Callback function with two parameters `map` (Leaflet Map) and `rectangles` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to no callback.
+  - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `rectangles` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).
 
 **Slots:**
 
-- `title`
-- `after-summary`
-- `end`
-- `spatial-extents` - Custom HTML to display the spatial extents, e.g. a map. The variable `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates.
-- `temporal-extents` - Custom HTML to display the temporal extents. The variable `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
+- `title` - HTML to display as the main heading.
+- `before-description` - HTML to display before the description.
+- `end` - HTML to display after the component.
+- `spatial-extents` - HTML to display the spatial extents, e.g. a map. The variable `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates.
+- `temporal-extents` - HTML to display the temporal extents. The variable `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
+
+
+### `Collections`
+
+Shows an (expandable) list of all STAC-based collections available at a back-end.
+
+**Properties:**
+
+- `collections` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections`).
+- `mapOptions` (object): See the corresponding prop in `Collection`. By default, `scrollWheelZoom` is set to `false`.
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
+- `sort` (boolean): See the corresponding prop in `SearchableList`. 
+- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `heading` (string): Specifies the title of the component. If set to null, the title is hidden. Defaults to `Collections`.
+
+
+### DeprecationNotice
+
+Show a message that something has been deprecated.
+
+**Properties:**
+
+- `entity` (string): A noun that describes the entity that has been deprecated, e.g. `process` or `collection`.
 
 
 ### `Description`
@@ -54,24 +137,56 @@ Visualizes a collection following the STAC-based collection description.
 A simple text renderer, which supports CommonMark.
 
 **Properties:**
-- `description` (string): The text to show.
-- `preprocessor` (function): A function that further processes the text, *before* CommonMark is parsed.
-- `processor` (function): A function that further processes the text, *after* CommonMark is parsed.
+- `description` (string, required): The text to show.
+- `preprocessor` (function|null): A function that further processes the text, *before* CommonMark is parsed. Defaults to `null`.
+- `processor` (function|null): A function that further processes the text, *after* CommonMark is parsed. Defaults to `null`.
 - `processUrl` (string): The URL to point process references (` ``process_id()`` `) to. `${}` gets replaced with the process id. Set to `null` (default) to disable process links. Example: `https://processes.openeo.org/#${}`
 - `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
+- `allowHTML` (boolean): By default (`false`), HTML is removed from the rendered version. To show HTML set this to `true`. Only set to `true` if you trust the content, it may contain insecure elements.
+
+
+### ExperimentalNotice
+
+Show a message that something is experimental.
+
+**Properties:**
+
+- `entity` (string): A noun that describes the entity that is still experimental, e.g. `process` or `collection`.
+
+
+### `FileFormat`
+
+Visualizes a single supported file format of the back-end.
+
+**Properties:**
+
+The properties must be filled with parts of the response for supported file formats as defined by the openEO API (`GET /file_formats`). Returned is an object like `{ input: { GTiff: {...} }, output: { PNG: {...} } }` and some of the keys and values must be passed.
+
+- `id` (object, required): The identifier of the file format (i.e. the key of the second level; `GTiff` or `PNG` in the example above)
+- `format` (object, required): The file format specification (i.e. the value of the second level; `{...}` in the example above)
+- `type` (boolean, required): Either `input` or `output` (i.e. the key of the first level)
+
+**Slots:**
+
+- `title` - HTML to display as the main heading.
+- `before-description` - HTML to display before the description.
+- `end` - HTML to display after the component.
 
 
 ### `FileFormats`
 
-Visualizes the supported file formats of the back-end.
+Visualizes all supported file formats of the back-end.
 
 **Properties:**
 
-- `formats` (object): Supported file formats as defined by the respective version of the openEO API.
+- `formats` (object, required): Supported file formats as defined by the openEO API (`GET /file_formats`).
 - `showInput` (boolean): Show the input file formats. Defaults to `true`.
-- `showOutput` (boolean): Show the output file formats. Defaults to `true`.
+- `showOutput` (boolean): Show the output file formats. Defaults to `true`.- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
+- `sort` (boolean): See the corresponding prop in `SearchableList`. 
+- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `heading` (string): Specifies the title of the component. If set to null, the title is hidden. Defaults to `File Formats`.
 
-One of `showInput` or `showOutput` must be set to `true`, otherwise the list will be empty. If both are set to `true`, a single list will be shown.
+*Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
 
 ### `LinkList`
@@ -112,9 +227,9 @@ Note: `ProcessExample` is not meant to be used separately.
 
 **Slots:**
 
-- `title`
-- `after-summary`
-- `end`
+- `title` - HTML to display the main heading.
+- `before-description` - HTML to display before the description.
+- `end` - HTML to display after the component.
 
 
 ### `ServiceTypes`
