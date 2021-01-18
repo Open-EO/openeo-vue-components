@@ -1,35 +1,39 @@
 <template>
 	<div class="vue-component searchable-list">
-		<h2 v-if="heading">
-			{{ heading }}
-			<template v-if="isSearching">({{ filteredCount }}/{{ totalCount }})</template>
-			<template v-else>({{ totalCount }})</template>
-		</h2>
-		<template v-if="totalCount === 0">
-			<p>No data available.</p>
-		</template>
-		<template v-else>
-			<div class="search-box" v-if="externalSearchTerm === null">
-				<span class="icon">🔎</span>
-				<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" :minlength="searchMinLength" :title="searchHint" />
-			</div>
-			<p v-if="isSearching && totalCount === 0">No search results available.</p>
-			<ul v-else class="list" :class="{expandable}">
-				<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
-					<summary @click="toggle(i)" class="summary">
-						<slot name="summary" :summary="summary" :item="data[summary.index]">
-							<strong>{{ summary.identifier }}</strong>
-							<small :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
-						</slot>
-					</summary>
-					<div class="details">
-						<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true" :summary="summary" :item="data[summary.index]">
-							No details available!
-						</slot>
-					</div>
-				</li>
-			</ul>
-		</template>
+		<slot name="heading" :isSearching="isSearching" :filteredCount="filteredCount" :totalCount="totalCount">
+			<h2 v-if="heading">
+				{{ heading }}
+				<template v-if="isSearching">({{ filteredCount }}/{{ totalCount }})</template>
+				<template v-else>({{ totalCount }})</template>
+			</h2>
+		</slot>
+		<div class="body">
+			<template v-if="totalCount === 0">
+				<p>No data available.</p>
+			</template>
+			<template v-else>
+				<div class="search-box" v-if="externalSearchTerm === null">
+					<span class="icon">🔎</span>
+					<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" :minlength="searchMinLength" :title="searchHint" />
+				</div>
+				<p v-if="isSearching && totalCount === 0">No search results available.</p>
+				<ul v-else class="list" :class="{expandable}">
+					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
+						<summary @click="toggle(i)" class="summary">
+							<slot name="summary" :summary="summary" :item="data[summary.index]">
+								<strong>{{ summary.identifier }}</strong>
+								<small :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
+							</slot>
+						</summary>
+						<div class="details">
+							<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true" :summary="summary" :item="data[summary.index]">
+								No details available!
+							</slot>
+						</div>
+					</li>
+				</ul>
+			</template>
+		</div>
 	</div>
 </template>
 
