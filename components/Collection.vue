@@ -8,7 +8,7 @@
 
 		<summary v-if="collection.title">{{collection.title}}</summary>
 
-		<slot name="after-summary"></slot>
+		<slot name="before-description"></slot>
 
 		<section class="description" v-if="collection.description">
 			<h3>Description</h3>

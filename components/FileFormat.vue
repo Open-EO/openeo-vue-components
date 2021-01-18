@@ -22,6 +22,8 @@
 			</ul>
 		</slot>
 
+		<slot name="before-description"></slot>
+
 		<section class="description" v-if="format.description">
 			<h3>Description</h3>
 			<Description :description="format.description" />
