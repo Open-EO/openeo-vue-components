@@ -28,6 +28,10 @@ export default Utils.enableHtmlProps({
 		compact: {
 			type: Boolean,
 			default: false
+		},
+		allowHTML: {
+			type: Boolean,
+			default: false
 		}
 	},
 	methods: {
@@ -46,7 +50,7 @@ export default Utils.enableHtmlProps({
 
 			// Parse CommonMark
 			var reader = new commonmark.Parser();
-			var writer = new commonmark.HtmlRenderer({safe: true, smart: true});
+			var writer = new commonmark.HtmlRenderer({safe: !this.allowHTML, smart: true});
 			if (typeof this.preprocessor === 'function') {
 				text = this.preprocessor(text);
 			}
