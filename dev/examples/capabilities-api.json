@@ -26,6 +26,12 @@
       ]
     },
     {
+      "path": "/result",
+      "methods": [
+        "POST"
+      ]
+    },
+    {
       "path": "/jobs",
       "methods": [
         "GET",

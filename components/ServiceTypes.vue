@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component service-types">
-		<SearchableList :data="services" summaryKey="title" :hideSummaryOnExpand="true" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand">
+		<SearchableList :data="services" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
 			<template v-slot:summary="slot">
 				<strong>{{ slot.summary.identifier }}</strong>
 				<small>{{ slot.summary.summary }}</small>
@@ -39,6 +39,10 @@ export default Utils.enableHtmlProps({
 		allowExpand: {
 			type: Boolean,
 			default: true
+		},
+		heading: {
+			type: String,
+			default: 'Secondary Web Services'
 		}
 	},
 	filters: {

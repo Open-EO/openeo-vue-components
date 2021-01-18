@@ -1,24 +1,29 @@
 <template>
 	<div class="vue-component searchable-list">
-		<template v-if="data.length === 0">
+		<h2 v-if="heading">
+			{{ heading }}
+			<template v-if="isSearching">({{ filteredCount }}/{{ totalCount }})</template>
+			<template v-else>({{ totalCount }})</template>
+		</h2>
+		<template v-if="totalCount === 0">
 			<p>No data available.</p>
 		</template>
 		<template v-else>
 			<div class="search-box" v-if="externalSearchTerm === null">
 				<span class="icon">🔎</span>
-				<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" />
+				<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" :minlength="searchMinLength" :title="searchHint" />
 			</div>
-			<p v-if="noResults">No search results available.</p>
+			<p v-if="isSearching && totalCount === 0">No search results available.</p>
 			<ul v-else class="list" :class="{expandable}">
 				<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
 					<summary @click="toggle(i)" class="summary">
 						<slot name="summary" :summary="summary" :item="data[summary.index]">
 							<strong>{{ summary.identifier }}</strong>
-							<small :class="{hideOnExpand: hideSummaryOnExpand}">{{ summary.summary }}</small>
+							<small :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
 						</slot>
 					</summary>
 					<div class="details">
-						<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true"  :summary="summary" :item="data[summary.index]">
+						<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true" :summary="summary" :item="data[summary.index]">
 							No details available!
 						</slot>
 					</div>
@@ -30,6 +35,7 @@
 
 <script>
 import Utils from '../utils';
+import Vue from 'vue';
 
 export default {
 	name: 'SearchableList',
@@ -62,9 +68,17 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		hideSummaryOnExpand: {
+		showSummaryOnExpand: {
 			type: Boolean,
-			default: false
+			default: true
+		},
+		heading: {
+			type: String,
+			default: null
+		},
+		searchMinLength:{
+			type: Number,
+			default: 2
 		}
 	},
 	data() {
@@ -81,15 +95,36 @@ export default {
 			}
 		},
 		searchTerm(value) {
-			this.search(value);
+			if (value.length >= this.searchMinLength) {
+				this.summaries.forEach(item => {
+					let searchable = (item.identifier + ' ' + item.summary).toLowerCase();
+					let result = searchable.includes(this.searchTerm.toLowerCase());
+					this.$set(item, 'show', result);
+				});
+			}
+			else {
+				this.summaries.forEach(item => this.$set(item, 'show', true));
+			}
 		}
 	},
 	computed: {
-		noResults() {
-			return (this.searchTerm.length > 0 && typeof this.summaries.find(item => item.show === true) === 'undefined');
+		totalCount() {
+			return Utils.size(this.data);
+		},
+		filteredCount() {
+			return this.summaries.filter(item => item.show === true).length;
+		},
+		isSearching() {
+			return (this.searchTerm.length >= this.searchMinLength);
 		},
 		expandable() {
 			return this.allowExpand && (!!this.$slots['details'] || !!this.$scopedSlots['details']);
+		},
+		searchHint() {
+			if (this.searchMinLength >= 1) {
+				return `Searching requires at least ${this.searchMinLength} characters.`;
+			}
+			return null;
 		},
 		summaries() {
 			let summaries = [];
@@ -109,7 +144,7 @@ export default {
 					summary.summary = entry[this.summaryKey];
 				}
 
-				summaries.push(summary);
+				summaries.push(Vue.observable(summary));
 			}
 			if (this.sort) {
 				if (Utils.isObject(this.data)) {
@@ -126,18 +161,6 @@ export default {
 				return;
 			}
 			this.$set(this.showDetails, id, !this.showDetails[id]);
-		},
-		search(value) {
-			if (value.length >= 2) {
-				this.summaries.forEach(item => {
-					let searchable = (item.identifier + ' ' + item.summary).toLowerCase();
-					let result = searchable.includes(this.searchTerm.toLowerCase());
-					this.$set(item, 'show', result);
-				});
-			}
-			else {
-				this.summaries.forEach(item => this.$set(item, 'show', true));
-			}
 		}
 	}
 }

@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component file-formats">
-		<SearchableList :data="fileFormats" summaryKey="title" :hideSummaryOnExpand="true" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand">
+		<SearchableList :data="fileFormats" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
 			<template v-slot:summary="slot">
 				<strong class="inline">{{ slot.item.name }}</strong>
 				<ul class="badges small inline">
@@ -55,6 +55,10 @@ export default Utils.enableHtmlProps({
 		allowExpand: {
 			type: Boolean,
 			default: true
+		},
+		heading: {
+			type: String,
+			default: 'File Formats'
 		}
 	},
 	computed: {

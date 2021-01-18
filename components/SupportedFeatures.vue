@@ -1,9 +1,15 @@
 <template>
-	<ul class="vue-component features">
-		<li v-for="(status, feature) in supportedFeatures" :key="feature">
-            <span v-text="status.icon" :class="status.className" :title="status.tooltip"></span> {{ feature }}
-        </li>
-	</ul>
+    <div class="vue-component features">
+        <h2 v-if="heading">
+            {{ heading }}
+            ({{ supportedFeatureCount }}/{{ totalCount }})
+        </h2>
+        <ul>
+            <li v-for="(status, feature) in supportedFeatures" :key="feature">
+                <span v-text="status.icon" :class="status.className" :title="status.tooltip"></span> {{ feature }}
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
@@ -17,12 +23,21 @@ export default Utils.enableHtmlProps({
 			type: Array,
 			default: () => ([])
 		},
+		heading: {
+			type: String,
+			default: 'Supported Functionalities'
+		}
     },
     data() {
         return {
             supportedFeatures: {},
             supportedFeatureCount: 0
         };
+    },
+    computed: {
+        totalCount() {
+            return Utils.size(this.supportedFeatures);
+        }
     },
     watch: {
         endpoints: {

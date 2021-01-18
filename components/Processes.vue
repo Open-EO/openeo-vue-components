@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component processes">
-		<SearchableList :data="processes" :hideSummaryOnExpand="true" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand">
+		<SearchableList :data="processes" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
 			<template v-slot:details="slot">
 				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl">
 					<template v-slot:title><span class="hidden" /></template>
@@ -40,6 +40,10 @@ export default Utils.enableHtmlProps({
 		allowExpand: {
 			type: Boolean,
 			default: true
+		},
+		heading: {
+			type: String,
+			default: 'Processes'
 		}
 	}
 })
