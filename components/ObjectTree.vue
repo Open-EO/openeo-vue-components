@@ -32,7 +32,7 @@ export default Utils.enableHtmlProps({
     name: 'ObjectTree',
 	props: {
 		data: {
-			type: Array | Object,
+			type: [Object, Array],
 			default: null
 		},
 		// Set to null to disable collapsing
@@ -68,9 +68,6 @@ export default Utils.enableHtmlProps({
 				arr = Array(this.collapseAfter);
 			}
 			return [...arr.keys()];
-		},
-		collapse() {
-			return (Array.isArray(this.data) && this.data.length > 50);
 		}
 	},
     methods: {

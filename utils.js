@@ -1,4 +1,5 @@
 import { Utils as CommonUtils } from '@openeo/js-commons';
+import { types } from 'util';
 
 class Utils extends CommonUtils {
 
@@ -11,8 +12,14 @@ class Utils extends CommonUtils {
                         default: undefined
                     }
                 }
-                if (vue.props[key].type === Function) {
+                let types = Array.isArray(vue.props[key].type) ? vue.props[key].type : [vue.props[key].type];
+                types = types.filter(t => typeof t === 'function').map(t => t.name);
+                if (types.includes('Function')) {
                     continue;
+                }
+                else if (types.includes('Boolean')) {
+                    // Functions for default are not executed for Boolean, so remove the type
+                    delete vue.props[key].type;
                 }
                 let defaultValue = vue.props[key].default;
                 if (typeof defaultValue === 'function') {
@@ -28,6 +35,7 @@ class Utils extends CommonUtils {
 
     static readHtmlProp(prop, component, defaultValue = undefined) {
         if (Utils.isObject(component) && Utils.isObject(component.$slots) && Array.isArray(component.$slots.default)) {
+            // Read script tag for specific prop
             let el = component.$slots.default.find(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.prop === prop && slot.data.attrs.type === 'application/json');
             if (el) {
                 try {
@@ -35,6 +43,19 @@ class Utils extends CommonUtils {
                 }
                 catch (error) {
                     console.error(`Data passed to prop '${prop}' via script tag is invalid: ${error.message}`);
+                }
+            }
+            // Read script tag containing all props as JSON
+            let elAll = component.$slots.default.find(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.type === 'application/json');
+            if (elAll) {
+                try {
+                    let data = JSON.parse(elAll.data.domProps.innerHTML);
+                    if (Utils.isObject(data) && typeof data[prop] !== 'undefined') {
+                        return data[prop];
+                    }
+                }
+                catch (error) {
+                    console.error(`Data passed via script tag is invalid: ${error.message}`);
                 }
             }
         }

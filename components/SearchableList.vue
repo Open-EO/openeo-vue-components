@@ -45,7 +45,7 @@ export default {
 	name: 'SearchableList',
 	props: {
 		data: {
-			type: Array | Object,
+			type: [Array, Object],
 			default: () => ([])
 		},
 		identifierKey: {

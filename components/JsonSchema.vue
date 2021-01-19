@@ -100,7 +100,7 @@ export default Utils.enableHtmlProps({
 	name: 'JsonSchema',
 	props: {
 		schema: {
-			type: Object | Array,
+			type: [Object, Array],
 			default: () => ({})
 		},
 		initShown: {
