@@ -1,9 +1,11 @@
-# Vue Components for openEO (@openeo/vue-components)
+# Vue Components for openEO
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
 This library's version is **2.0.0-beta.1** and supports **openEO API versions 1.0.x**.
 Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
+
+npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-components)
 
 **Table of Contents:**
 
@@ -167,7 +169,7 @@ A simple text renderer, which supports CommonMark.
 - `preprocessor` (function|null): A function that further processes the text, *before* CommonMark is parsed. Defaults to `null`.
 - `processor` (function|null): A function that further processes the text, *after* CommonMark is parsed. Defaults to `null`.
 - `processUrl` (string): The URL to point process references (` ``process_id()`` `) to. `${}` gets replaced with the process id. Set to `null` (default) to disable process links. Example: `https://processes.openeo.org/#${}`
-- `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
+- `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
 - `allowHTML` (boolean): By default (`false`), HTML is removed from the rendered version. To show HTML set this to `true`. Only set to `true` if you trust the content, it may contain insecure elements.
 
 
