@@ -190,7 +190,7 @@ Visualizes a single supported file format of the back-end.
 
 The properties must be filled with parts of the response for supported file formats as defined by the openEO API (`GET /file_formats`). Returned is an object like `{ input: { GTiff: {...} }, output: { PNG: {...} } }` and some of the keys and values must be passed.
 
-- `id` (object, required): The identifier of the file format (i.e. the key of the second level; `GTiff` or `PNG` in the example above)
+- `id` (string, required): The identifier of the file format (i.e. the key of the second level; `GTiff` or `PNG` in the example above)
 - `format` (object, required): The file format specification (i.e. the value of the second level; `{...}` in the example above)
 - `type` (boolean, required): Either `input` or `output` (i.e. the key of the first level)
 
@@ -250,7 +250,7 @@ Often used as a fallback if no other form of presentation is known by the client
 **Properties:**
 
 - `data` (object): Any object (i.e. object, array or null)
-- `collapseAfter` (integer|null): The number of elements to display for each object or array until a "show all" button is shown. Set to `null` to show all elements.
+- `collapseAfter` (integer|null): The number of elements to display for each object or array until a "show all" button is shown. Set to `null` to show all elements. Defaults to `10`.
 
 
 ### `Process`
@@ -323,7 +323,7 @@ Visualizes a single secondary web service supported by the back-end.
 
 The properties must be filled with parts of the response for supported secondary web services as defined by the openEO API (`GET /service_types`). Returned is an object like `{ WMS: {...}, WFS: {...} }` and one of the keys and values must be passed to the component.
 
-- `id` (object, required): The identifier of the secondary web service (i.e. a key of the object; `WMS` or `WFS` in the example above)
+- `id` (string, required): The identifier of the secondary web service (i.e. a key of the object; `WMS` or `WFS` in the example above)
 - `service` (object, required): The secondary web service specification (i.e. the value for the corresponding key; `{...}` in the example above)
 
 **Slots:**
@@ -533,7 +533,7 @@ Visualizes a single UDF (user-defined function) runtime supported by the back-en
 
 The properties must be filled with parts of the response for supported UDF runtime as defined by the openEO API (`GET /udf_runtimes`). Returned is an object like `{ R: {...}, Python: {...} }` and one of the keys and values must be passed to the component.
 
-- `id` (object, required): The identifier of the UDF runtime (i.e. a key of the object; `R` or `Python` in the example above)
+- `id` (string, required): The identifier of the UDF runtime (i.e. a key of the object; `R` or `Python` in the example above)
 - `runtime` (object, required): The UDF runtime specification (i.e. the value for the corresponding key; `{...}` in the example above)
 - `version` (string|null): If one of the versions or tags available for the runtime should be pre-selected and shown, specify the version or tag here. By default (`null`), the default version or tag specified by the back-end will be shown.
 
