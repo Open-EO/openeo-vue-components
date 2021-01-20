@@ -125,7 +125,7 @@ Visualizes a single collection following the STAC-based collection description.
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
-  - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `true`.
+  - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.
   - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `rectangles` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).
 
 **Slots:**
@@ -144,7 +144,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 **Properties:**
 
 - `collections` (array, required): An array of STAC-based collection objects as defined by the openEO API (`GET /collections`, property `collections`).
-- `mapOptions` (object): See the corresponding prop in `Collection`. By default, `scrollWheelZoom` is set to `false`.
+- `mapOptions` (object): See the corresponding prop in `Collection`.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.

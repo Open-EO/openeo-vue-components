@@ -36,6 +36,7 @@ This release contains a large number of changes. It lists only the major changes
 - `Capabilities`: Removed properties `serviceTypes`, `fileFormats` and `udfRuntimes`. These are not rendered any longer in the component and the corresponding components need to be rendered manually.
 - `Collection`:
 	- Property renamed from `collectionData` to `collection`.
+	- Property `mapOptions.scrollWheelZoom` defaults to `false` instead of `true`.
 	- Leaflet and related dependencies don't need to be included explicitly in the HTML files.
 	- All slots have changed.
 - `DeprecationNotice` and `ExperimentalNotice`: The texts have slightly changed so that the property `entity` is not required any longer.

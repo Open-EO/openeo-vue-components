@@ -228,7 +228,7 @@ export default Utils.enableHtmlProps({
 				height: this.mapOptions.height || "300px",
 				width: this.mapOptions.width || "auto",
 				noWrap: this.mapOptions.wrapAroundAntimeridian === undefined ? true : !this.mapOptions.wrapAroundAntimeridian,  // negate!
-				scrollWheelZoom: this.mapOptions.scrollWheelZoom === undefined ? true : this.mapOptions.scrollWheelZoom
+				scrollWheelZoom: this.mapOptions.scrollWheelZoom === undefined ? false : this.mapOptions.scrollWheelZoom
 			}
 		},
 		hasDimensions() {

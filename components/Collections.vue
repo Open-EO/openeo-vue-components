@@ -26,9 +26,7 @@ export default Utils.enableHtmlProps({
 		},
 		mapOptions: {
 			type: Object,
-			default: () => ({
-				scrollWheelZoom: false
-			})
+			default: () => ({})
 		},
 		searchTerm: {
 			type: String,
