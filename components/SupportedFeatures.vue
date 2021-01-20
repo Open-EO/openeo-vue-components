@@ -1,9 +1,9 @@
 <template>
     <div class="vue-component features">
-        <h2 v-if="heading">
+		<component v-if="heading" :is="headingTag">
             {{ heading }}
             ({{ supportedFeatureCount }}/{{ totalCount }})
-        </h2>
+        </component>
         <ul>
             <li v-for="(status, feature) in supportedFeatures" :key="feature">
                 <span v-text="status.icon" :class="status.className" :title="status.tooltip"></span> {{ feature }}
@@ -26,6 +26,10 @@ export default Utils.enableHtmlProps({
 		heading: {
 			type: String,
 			default: 'Supported Functionalities'
+		},
+		headingTag: {
+			type: String,
+			default: 'h2'
 		}
     },
     data() {

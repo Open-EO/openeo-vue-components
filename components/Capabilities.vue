@@ -10,12 +10,8 @@
 			</span></div>
 		</section>
 		<Description v-if="capabilities.description" :description="capabilities.description" />
-		<h3>Supported functionalities</h3>
-		<SupportedFeatures :endpoints="capabilities.endpoints" />
-		<template v-if="capabilities.billing">
-			<h3>Billing</h3>
-			<BillingPlans :billing="capabilities.billing" />
-		</template>
+		<SupportedFeatures :endpoints="capabilities.endpoints" headingTag="h3" />
+		<BillingPlans v-if="capabilities.billing" :billing="capabilities.billing" headingTag="h3" />
 		<LinkList :links="capabilities.links" heading="More information" headingTag="h3" />
 	</div>
 </template>

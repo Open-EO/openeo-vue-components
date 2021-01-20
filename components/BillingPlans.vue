@@ -1,12 +1,7 @@
 <template>
 	<section class="vue-component billing-plans">
-		<div class="billing-currency">
-			<template  v-if="currency !== null">
-				<strong>Currency:</strong> {{ currency }}
-			</template>
-			<template v-else>No billing information provided.</template>
-		</div>
-		<h4>Plans</h4>
+		<component v-if="heading" :is="headingTag">{{ heading }}</component>
+		<strong>Plans</strong>
 		<ul v-if="currency !== null && plans.length">
 			<li v-for="(plan, key) in plans" :key="key">
 				<strong class="plan-name">
@@ -21,7 +16,13 @@
 				<Description v-if="plan.description" :description="plan.description" :compact="true" />
 			</li>
 		</ul>
-		<div v-else>No plans available.</div>
+		<p v-else>No plans available.</p>
+		<div class="billing-currency">
+			<template  v-if="currency !== null">
+				<strong>Currency:</strong> {{ currency }}
+			</template>
+			<template v-else>No billing information provided.</template>
+		</div>
 	</section>
 </template>
 
@@ -37,6 +38,14 @@ export default Utils.enableHtmlProps({
 		billing: {
 			type: Object,
 			default: () => ({})
+		},
+		heading: {
+			type: String,
+			default: 'Billing'
+		},
+		headingTag: {
+			type: String,
+			default: 'h2'
 		}
 	},
 	computed: {

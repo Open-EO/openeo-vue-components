@@ -17,6 +17,9 @@ This release contains a large number of changes. It lists only the major changes
 	- `Processes`
 	- `SearchableList`
 	- `ServiceType`
+- `BillingPlans`: 
+	- New properties `heading` and `headingTag`
+	- Shows a heading by default
 - `Description`: New property `allowHTML` to enable HTML rendering embedded in Markdown files
 - `FileFormats`, `ServiceTypes` and `UdfRuntimes`:
 	- New properties `searchTerm`, `sort`, `allowExpand`, `heading`
@@ -25,7 +28,7 @@ This release contains a large number of changes. It lists only the major changes
 	- Expands on click to show details about the file format / service type / UDF runtime
 - `ObjectTree`: New property `collapseAfter` to set the number of array elements or object properties to show by default. This can now be used to show all, too.
 - `SupportedFeatures`: 
-	- New property `heading`
+	- New properties `heading` and `headingTag`
 	- Shows a heading by default
 - `UdfRuntime`: Added slots `title`, `badges` and `before-description`
 

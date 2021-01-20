@@ -3,20 +3,24 @@
 		<template v-if="visible">
 			<div v-if="isProcessGraph" class="schemaProcessGraph">
 				<div class="process-graph-parameters">
-					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">process</span></p>
+					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">child process</span></p>
+					<p title="The parameters that can be used in the process.">
+						<strong>Child Process Parameters:</strong>
+					</p>
 					<template v-if="hasParameters">
-						<p><strong>These parameters are passed to the process:</strong></p>
 						<ProcessParameter v-for="(param, i) in schema.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
 					</template>
-					<strong v-else>No parameters are passed to the process.</strong>
+					<p v-else>No parameters defined.</p>
+					<p title="Describes what must be returned by the process.">
+						<strong>Child Process Return Value:</strong>
+					</p>
 					<template v-if="hasReturns">
-						<p><strong>The process must return:</strong></p>
 						<Description v-if="schema.returns.description" :description="schema.returns.description" :processUrl="processUrl" />
 						<div class="json-schema-container" v-if="schema.returns.schema">
 							<JsonSchema :schema="schema.returns.schema" />
 						</div>
 					</template>
-					<strong v-else>Not defined by the process.</strong>
+					<p v-else>No constraints defined.</p>
 				</div>
 			</div>
 			<div v-else-if="showRow('object')" class="schemaObjectElement">
