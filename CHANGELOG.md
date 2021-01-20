@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.0.0-beta.1] - 2020-01-19
+## [2.0.0-beta.1] - 2020-01-20
 
 This release contains a large number of changes. It lists only the major changes that may need users to adapt their code. Bug fixes or minor improvements are not listed in detail.
 
@@ -68,7 +68,7 @@ This release contains a large number of changes. It lists only the major changes
 - Better documentation
 
 
-## [1.0.0] - 2017-06-20
+## [1.0.0] - 2020-12-18
 
 First stable release.
 
