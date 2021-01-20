@@ -1,6 +1,7 @@
 <template>
 	<div class="vue-component file-formats">
 		<SearchableList :data="fileFormats" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
+			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
 				<strong class="inline">{{ slot.item.name }}</strong>
 				<ul class="badges small inline">

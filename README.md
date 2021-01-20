@@ -150,6 +150,10 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 
+**Slots:**
+
+- `heading`: See the corresponding slot in `SearchableList`.
+
 
 ### `DeprecationNotice`
 
@@ -218,6 +222,10 @@ Visualizes all supported file formats of the back-end.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
+**Slots:**
+
+- `heading`: See the corresponding slot in `SearchableList`.
+
 
 ### `JsonSchema`
 
@@ -284,6 +292,10 @@ Shows an (expandable) list of all processes available at a back-end.
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 
+**Slots:**
+
+- `heading`: See the corresponding slot in `SearchableList`.
+
 
 ### `SearchableList`
 
@@ -344,6 +356,10 @@ Visualizes all secondary web services supported by the back-end.
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
+
+**Slots:**
+
+- `heading`: See the corresponding slot in `SearchableList`.
 
 
 ### `SupportedFeatures`
@@ -555,6 +571,10 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `allowExpand` (string): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
+
+**Slots:**
+
+- `heading`: See the corresponding slot in `SearchableList`.
 
 
 ## Other features

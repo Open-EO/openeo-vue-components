@@ -1,6 +1,7 @@
 <template>
 	<div class="vue-component udf-runtimes">
 		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
+			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
 				<strong class="inline">{{ slot.summary.identifier }}</strong>
 				<ul class="badges small inline">

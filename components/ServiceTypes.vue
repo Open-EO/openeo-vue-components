@@ -1,6 +1,7 @@
 <template>
 	<div class="vue-component service-types">
 		<SearchableList :data="services" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
+			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
 				<strong>{{ slot.summary.identifier }}</strong>
 				<small>{{ slot.summary.summary }}</small>

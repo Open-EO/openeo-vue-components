@@ -31,6 +31,7 @@ This release contains a large number of changes. It lists only the major changes
 	- New properties `heading` and `headingTag`
 	- Shows a heading by default
 - `UdfRuntime`: Added slots `title`, `badges` and `before-description`
+- `Collections`, `FileFormats`, `Processes`, `ServiceTypes`, `UdfRuntimes`: Added slot `heading` (passes through to `SearchableList`)
 
 ### Changed
 - Release components as [Async Web Components](https://cli.vuejs.org/guide/build-targets.html#async-web-component) instead of as Vue Library. [#28](https://github.com/Open-EO/openeo-vue-components/issues/28)
