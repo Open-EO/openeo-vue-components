@@ -17,7 +17,7 @@
 					<template v-if="hasReturns">
 						<Description v-if="schema.returns.description" :description="schema.returns.description" :processUrl="processUrl" />
 						<div class="json-schema-container" v-if="schema.returns.schema">
-							<JsonSchema :schema="schema.returns.schema" />
+							<openeo-json-schema :schema="schema.returns.schema" />
 						</div>
 					</template>
 					<p v-else>No constraints defined.</p>
@@ -25,7 +25,7 @@
 			</div>
 			<div v-else-if="showRow('object')" class="schemaObjectElement">
 				<div class="inline-schema-attrs">
-					<JsonSchema v-if="filteredObjectSchema !== null" :schema="filteredObjectSchema" :nestingLevel="nestingLevel+1" />
+					<openeo-json-schema v-if="filteredObjectSchema !== null" :schema="filteredObjectSchema" :nestingLevel="nestingLevel+1" />
 					<table class="object-properties">
 						<tr>
 							<th colspan="2" class="object-prop-heading">Object Properties:</th>
@@ -36,7 +36,7 @@
 								<strong class="required" v-if="schema.required && schema.required.indexOf(key) !== -1" title="required">*</strong>
 							</td>
 							<td class="value">
-								<JsonSchema :schema="val" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
+								<openeo-json-schema :schema="val" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 							</td>
 						</tr>
 					</table>
@@ -59,7 +59,7 @@
 					</tr>
 					<tr>
 						<td colspan="2" class="schema-container data-types-container">
-							<JsonSchema v-for="(v, k) in compositeTypes" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
+							<openeo-json-schema v-for="(v, k) in compositeTypes" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 						</td>
 					</tr>
 				</template>
@@ -70,7 +70,7 @@
 							<td class="value">
 								<span v-if="key == 'type'" class="data-type">{{ formatType() }}</span>
 								<div v-else-if="key == 'allOf' && Array.isArray(val)" class="schema-container">
-									<JsonSchema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
+									<openeo-json-schema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								</div>
 								<span v-else-if="key != 'default' && key != 'examples' && val === true" title="true">✓ Yes</span>
 								<span v-else-if="key != 'default' && key != 'examples' && val === false" title="false">✕ No</span>
@@ -85,7 +85,7 @@
 								<em v-else-if="key == 'default' && val === ''">Empty string</em>
 								<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
 								<code v-else-if="key == 'pattern'">{{ val }}</code>
-								<JsonSchema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
+								<openeo-json-schema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								<span v-else>{{ val }}</span>
 							</td>
 						</template>
@@ -124,7 +124,9 @@ export default Utils.enableHtmlProps({
 		};
 	},
 	components: {
-		Description: () => import('./Description.vue')
+		Description: () => import('./Description.vue'),
+		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
+		'openeo-json-schema': () => import('./JsonSchema.vue')
 	},
 	beforeCreate() {
 		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components

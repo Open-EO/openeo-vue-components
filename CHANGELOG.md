@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- `JsonSchema` and `ObjectTree` show all details when used as Web Component [vue-cli#6225](https://github.com/vuejs/vue-cli/issues/6225)
+
+
 ## [2.0.0-beta.1] - 2020-01-20
 
 This release contains a large number of changes. It lists only the major changes that may need users to adapt their code. Bug fixes or minor improvements are not listed in detail.

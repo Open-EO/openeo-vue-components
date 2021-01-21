@@ -19,6 +19,7 @@ class Utils extends CommonUtils {
                 }
                 else if (types.includes('Boolean')) {
                     // Functions for default are not executed for Boolean, so remove the type
+                    // PR to solve this issue: https://github.com/vuejs/vue-web-component-wrapper/pull/58
                     delete vue.props[key].type;
                 }
                 let defaultValue = vue.props[key].default;

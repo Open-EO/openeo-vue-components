@@ -4,7 +4,7 @@
 		<template v-else-if="Array.isArray(data)">
 			<ol>
 				<li v-for="i in indicesShown" :key="i">
-					<ObjectTree v-if="isStructured(data[i])" :data="data[i]"></ObjectTree>
+					<openeo-object-tree v-if="isStructured(data[i])" :data="data[i]"></openeo-object-tree>
 					<a v-else-if="isUrl(data[i])" :href="data[i]" target="_blank">{{ data[i] }}</a>
 					<em v-else-if="format(data[i])">{{ format(data[i]) }}</em>
 					<template v-else>{{ data[i] }}</template>
@@ -15,7 +15,7 @@
 		<ul v-else-if="typeof data === 'object'">
 			<li v-for="(value, key) in data" :key="key">
 				<template><strong>{{ prettifyKey(key) }}</strong>: </template>
-				<ObjectTree v-if="isStructured(value)" :data="value"></ObjectTree>
+				<openeo-object-tree v-if="isStructured(value)" :data="value"></openeo-object-tree>
 				<a v-else-if="isUrl(value)" :href="value" target="_blank">{{ value }}</a>
 				<em v-else-if="format(value)">{{ format(value) }}</em>
 				<template v-else>{{ value }}</template>
@@ -29,7 +29,11 @@
 import Utils from '../utils.js';
 
 export default Utils.enableHtmlProps({
-    name: 'ObjectTree',
+	name: 'ObjectTree',
+	components: {
+		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
+		'openeo-object-tree': () => import('./ObjectTree.vue')
+	},
 	props: {
 		data: {
 			type: [Object, Array],
