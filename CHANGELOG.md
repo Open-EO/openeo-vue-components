@@ -9,11 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `SearchBox` component
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `collapse` has been introduced
-- `Collections`: Added slots `collection-before-description`, `collection-end`, `collection-spatial-extents`, `collection-temporal-extents`
-- `FileFormats`: Added slots `file-format-before-description`, `file-format-end`
-- `Processes`: Added slots `process-before-description`, `process-end`
-- `ServiceTypes`: Added slots `service-type-before-description`, `service-type-end`
-- `UdfRuntimes`: Added slots `udf-runtime-badges`, `udf-runtime-before-description`
+- `Collections`: Added slots `collection-before-description`, `collection-end`, `collection-spatial-extents`, `collection-temporal-extents` and `summary`
+- `FileFormats`: Added slots `file-format-before-description`, `file-format-end` and `summary`
+- `Processes`: Added slots `process-before-description`, `process-end` and `summary`
+- `ServiceTypes`: Added slots `service-type-before-description`, `service-type-end` and `summary`
+- `UdfRuntimes`: Added slots `udf-runtime-badges`, `udf-runtime-before-description` and `summary`
 
 ### Changed
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `allowExpand` has been renamed to `offerDetails`

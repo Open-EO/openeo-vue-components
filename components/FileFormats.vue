@@ -3,15 +3,17 @@
 		<SearchableList :data="fileFormats" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
-				<strong class="inline">{{ slot.item.name }}</strong>
-				<ul class="badges small inline">
-					<li class="badge option1" v-if="showAll && slot.item.type === 'input'">Import</li>
-					<li class="badge option2" v-if="showAll && slot.item.type === 'output'">Export</li>
-					<template v-if="Array.isArray(slot.item.gis_data_types)">
-						<li class="badge gis" v-for="type in slot.item.gis_data_types" :key="type">{{ type }}</li>
-					</template>
-				</ul><br />
-				<small>{{ slot.summary.summary }}</small>
+				<slot name="summary" v-bind="slot">
+					<strong class="inline">{{ slot.item.name }}</strong>
+					<ul class="badges small inline">
+						<li class="badge option1" v-if="showAll && slot.item.type === 'input'">Import</li>
+						<li class="badge option2" v-if="showAll && slot.item.type === 'output'">Export</li>
+						<template v-if="Array.isArray(slot.item.gis_data_types)">
+							<li class="badge gis" v-for="type in slot.item.gis_data_types" :key="type">{{ type }}</li>
+						</template>
+					</ul><br />
+					<small>{{ slot.summary.summary }}</small>
+				</slot>
 			</template>
 			<template #details="slot">
 				<FileFormat :id="slot.summary.identifier" :format="slot.item" :type="slot.item.type">

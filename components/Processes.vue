@@ -2,6 +2,7 @@
 	<div class="vue-component processes">
 		<SearchableList :data="processes" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
+			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
 				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl">
 					<template #title><span class="hidden" /></template>

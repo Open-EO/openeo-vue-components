@@ -2,6 +2,7 @@
 	<div class="vue-component collections">
 		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
+			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
 				<Collection :collection="slot.item" :mapOptions="mapOptions">
 					<template #title><span class="hidden" /></template>

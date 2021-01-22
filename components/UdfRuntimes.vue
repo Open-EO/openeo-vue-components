@@ -3,17 +3,19 @@
 		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
-				<strong class="inline">{{ slot.summary.identifier }}</strong>
-				<ul class="badges small inline">
-					<template v-if="slot.item.type === 'docker' || (slot.item.docker && slot.item.tags)">
-						<li class="badge docker">Docker</li>
-						<li class="badge version" :class="{default: tag === slot.item.default}" v-for="tag in slot.item.tags" :key="tag">{{ tag }}</li>
-					</template>
-					<template v-else>
-						<li class="badge version" :class="{default: version === slot.item.default}" v-for="(lang, version) in slot.item.versions" :key="version">{{ version }}</li>
-					</template>
-				</ul><br />
-				<small>{{ slot.summary.summary }}</small>
+				<slot name="summary" v-bind="slot">
+					<strong class="inline">{{ slot.summary.identifier }}</strong>
+					<ul class="badges small inline">
+						<template v-if="slot.item.type === 'docker' || (slot.item.docker && slot.item.tags)">
+							<li class="badge docker">Docker</li>
+							<li class="badge version" :class="{default: tag === slot.item.default}" v-for="tag in slot.item.tags" :key="tag">{{ tag }}</li>
+						</template>
+						<template v-else>
+							<li class="badge version" :class="{default: version === slot.item.default}" v-for="(lang, version) in slot.item.versions" :key="version">{{ version }}</li>
+						</template>
+					</ul><br />
+					<small>{{ slot.summary.summary }}</small>
+				</slot>
 			</template>
 			<template #details="slot">
 				<UdfRuntime :id="slot.summary.identifier" :runtime="slot.item">

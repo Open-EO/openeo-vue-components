@@ -2,6 +2,7 @@
 	<div class="vue-component service-types">
 		<SearchableList :data="services" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
+			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
 				<ServiceType :id="slot.summary.identifier" :service="slot.item">
 					<template #title><span class="hidden" /></template>
