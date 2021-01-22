@@ -278,7 +278,7 @@ export default Utils.enableHtmlProps({
 			return Array.isArray(asset.roles) && asset.roles.includes('thumbnail') && IMAGE_MEDIA_TYPES.includes(asset.type);
 		},
 		async initMap() {
-			if (!!this.$slots['spatial-extents'] || this.$scopedSlots['spatial-extents'] || this.map !== null || this.boundingBoxes.length === 0) {
+			if (!this.$refs.mapContainer || this.map !== null || this.boundingBoxes.length === 0) {
 				return;
 			}
 			try {

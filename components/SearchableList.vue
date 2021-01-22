@@ -17,7 +17,7 @@
 					<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" :minlength="searchMinLength" :title="searchHint" />
 				</div>
 				<p v-if="filteredCount === 0">No search results found.</p>
-				<ul v-else class="list" :class="{expandable: detailsExpandable}">
+				<ul v-else class="list" :class="{expandable: offerDetails}">
 					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i]}">
 						<summary @click="toggleDetails(i)" class="summary">
 							<slot name="summary" :summary="summary" :item="data[summary.index]">
@@ -25,8 +25,8 @@
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
 							</slot>
 						</summary>
-						<div class="details">
-							<slot name="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true" :summary="summary" :item="data[summary.index]">
+						<div class="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true">
+							<slot name="details" :summary="summary" :item="data[summary.index]">
 								No details available!
 							</slot>
 						</div>
@@ -131,9 +131,6 @@ export default {
 			}
 			return null;
 		},
-		detailsExpandable() {
-			return this.offerDetails && (!!this.$slots['details'] || !!this.$scopedSlots['details']);
-		},
 		searchHint() {
 			if (this.searchMinLength >= 1) {
 				return `Searching requires at least ${this.searchMinLength} characters.`;
@@ -177,7 +174,7 @@ export default {
 			this.showList = !this.showList;
 		},
 		toggleDetails(id) {
-			if (!this.detailsExpandable) {
+			if (!this.offerDetails) {
 				return;
 			}
 			this.$set(this.showDetails, id, !this.showDetails[id]);
