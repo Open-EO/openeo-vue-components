@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component collections">
-		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
+		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #details="slot">
 				<Collection :collection="slot.item" :mapOptions="mapOptions">
@@ -37,13 +37,17 @@ export default Utils.enableHtmlProps({
 			type: Boolean,
 			default: true
 		},
-		allowExpand: {
+		offerDetails: {
 			type: Boolean,
 			default: true
 		},
 		heading: {
 			type: String,
 			default: 'Collections'
+		},
+		collapsed: {
+			type: Boolean,
+			default: false
 		}
 	}
 })

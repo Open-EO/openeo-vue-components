@@ -27,6 +27,10 @@ module.exports = {
 	"collections": {
 		"gee": {
 			"collections": collections
+		},
+		"collapsed": {
+			"collections": collections,
+			"collapsed": true
 		}
 	},
 	"deprecation-notice": {

@@ -1,13 +1,13 @@
 <template>
-	<div class="vue-component searchable-list">
+	<div class="vue-component searchable-list" :class="{expandable: collapsed, expanded: showList}">
 		<slot name="heading" :filteredCount="filteredCount" :totalCount="totalCount">
-			<h2 v-if="heading">
+			<h2 v-if="heading" class="heading" @click="toggleHeading">
 				{{ heading }}
 				<template v-if="filteredCount !== null">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
 			</h2>
 		</slot>
-		<div class="body">
+		<div class="body" v-if="showList !== null" v-show="showList === true">
 			<template v-if="totalCount === 0">
 				<p>No data available.</p>
 			</template>
@@ -16,10 +16,10 @@
 					<span class="icon">🔎</span>
 					<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" :minlength="searchMinLength" :title="searchHint" />
 				</div>
-				<p v-if="filteredCount === 0">No search results available.</p>
-				<ul v-else class="list" :class="{expandable}">
-					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i] === true}">
-						<summary @click="toggle(i)" class="summary">
+				<p v-if="filteredCount === 0">No search results found.</p>
+				<ul v-else class="list" :class="{expandable: detailsExpandable}">
+					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i]}">
+						<summary @click="toggleDetails(i)" class="summary">
 							<slot name="summary" :summary="summary" :item="data[summary.index]">
 								<strong>{{ summary.identifier }}</strong>
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
@@ -68,7 +68,7 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		allowExpand: {
+		offerDetails: {
 			type: Boolean,
 			default: true
 		},
@@ -80,6 +80,10 @@ export default {
 			type: String,
 			default: null
 		},
+		collapsed: {
+			type: Boolean,
+			default: false
+		},
 		searchMinLength:{
 			type: Number,
 			default: 2
@@ -88,7 +92,13 @@ export default {
 	data() {
 		return {
 			searchTerm: '',
-			showDetails: {}
+			// For showDetails / showList the following states are possible:
+			// null = if allowed to collapse, null indicates it is collapsed and has not been expanded yet
+			// false = collapsed, but has been expanded before
+			// true = expanded
+			// This allows with a combination of v-if and v-show to not render by default (=> null), but keep rendered versions in cache (=> false)
+			showDetails: {},
+			showList: this.collapsed ? null : true
 		};
 	},
 	watch: {
@@ -121,8 +131,8 @@ export default {
 			}
 			return null;
 		},
-		expandable() {
-			return this.allowExpand && (!!this.$slots['details'] || !!this.$scopedSlots['details']);
+		detailsExpandable() {
+			return this.offerDetails && (!!this.$slots['details'] || !!this.$scopedSlots['details']);
 		},
 		searchHint() {
 			if (this.searchMinLength >= 1) {
@@ -160,8 +170,14 @@ export default {
 		}
 	},
 	methods: {
-		toggle(id) {
-			if (!this.expandable) {
+		toggleHeading() {
+			if (!this.collapsed) {
+				return;
+			}
+			this.showList = !this.showList;
+		},
+		toggleDetails(id) {
+			if (!this.detailsExpandable) {
 				return;
 			}
 			this.$set(this.showDetails, id, !this.showDetails[id]);
@@ -171,6 +187,19 @@ export default {
 </script>
 
 <style>
+.vue-component.expandable .heading {
+	cursor: pointer;
+	padding-left: 1em;
+}
+.vue-component.expandable .heading:before {
+	content: "▸";
+	margin-left: -1em;
+	float: left;
+	font-size: 1em;
+}
+.vue-component.expandable.expanded .heading:before {
+	content: "▾";
+}
 .vue-component.searchable-list .list .details h2,
 .vue-component.searchable-list .list .details h3,
 .vue-component.searchable-list .list .details h4,

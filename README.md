@@ -147,8 +147,10 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `mapOptions` (object): See the corresponding prop in `Collection`.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `offerDetails` (string): See the corresponding prop in `SearchableList`.
+- `collapse` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
+- 
 
 **Slots:**
 
@@ -217,7 +219,8 @@ Visualizes all supported file formats of the back-end.
 - `showOutput` (boolean): Show the output file formats. Defaults to `true`.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `offerDetails` (string): See the corresponding prop in `SearchableList`.
+- `collapse` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
@@ -289,7 +292,8 @@ Shows an (expandable) list of all processes available at a back-end.
 - `processUrl` (string): See the corresponding prop in `Description`.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `offerDetails` (string): See the corresponding prop in `SearchableList`.
+- `collapse` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 
 **Slots:**
@@ -309,7 +313,8 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `externalSearchTerm` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Default to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
 - `searchPlaceholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
 - `sort` (boolean): Sort the data by identifier. Defaults to `true`.
-- `allowExpand` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
+- `offerDetails` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
+- `collapse` (boolean): If set to `true`, the component is collapsible and only the heading is shown initially. Users can then click to expand and collapse the list. Defaults to `false`, which expands the list by default and doesn't offer to collapse it.
 - `showSummaryOnExpand` (boolean): If set to `false`, the summary gets hidden for expanded elements. Defaults to `true`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `null`.
 - `searchMinLength` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
@@ -354,7 +359,8 @@ Visualizes all secondary web services supported by the back-end.
 - `services` (object, required): Supported secondary web services as defined by the openEO API (`GET /service_types`).
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `offerDetails` (string): See the corresponding prop in `SearchableList`.
+- `collapse` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
 
 **Slots:**
@@ -569,7 +575,8 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `runtimes` (object, required): Supported UDF runtimes as defined by the openEO API (`GET /udf_runtimes`).
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `allowExpand` (string): See the corresponding prop in `SearchableList`.
+- `offerDetails` (string): See the corresponding prop in `SearchableList`.
+- `collapse` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
 
 **Slots:**

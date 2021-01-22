@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component udf-runtimes">
-		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :allowExpand="allowExpand" :heading="heading">
+		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
 				<strong class="inline">{{ slot.summary.identifier }}</strong>
@@ -46,13 +46,17 @@ export default Utils.enableHtmlProps({
 			type: Boolean,
 			default: true
 		},
-		allowExpand: {
+		offerDetails: {
 			type: Boolean,
 			default: true
 		},
 		heading: {
 			type: String,
 			default: 'UDF Runtimes'
+		},
+		collapsed: {
+			type: Boolean,
+			default: false
 		}
 	}
 })
