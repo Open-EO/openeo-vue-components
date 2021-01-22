@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- `SearchBox` component
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `collapse` has been introduced
 - `Collections`: Added slots `collection-before-description`, `collection-end`, `collection-spatial-extents`, `collection-temporal-extents`
 - `FileFormats`: Added slots `file-format-before-description`, `file-format-end`
@@ -16,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `allowExpand` has been renamed to `offerDetails`
+
+### Fixed
+- Slot detection
 
 
 ## [2.0.0-beta.2] - 2020-01-21

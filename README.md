@@ -28,6 +28,7 @@ npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-componen
 	* [Process](#process)
 	* [Processes](#processes)
 	* [SearchableList](#searchablelist)
+	* [SearchBox](#searchbox)
 	* [ServiceType](#servicetype)
 	* [ServiceTypes](#servicetypes)
 	* [SupportedFeatures](#supportedfeatures)
@@ -339,6 +340,18 @@ A template to implement searchable, sortable and collapsible lists (all optional
 	- `summary` (object): An object with some high-level information for the list element: `identifier`, `summary`, `show` and `index`.
 	- `item` (object): The original object from `data` for the list element. This is what you usually want to show here.
 
+
+### `SearchBox`
+
+A simple input field for searching.
+
+**Properties:**
+- `value` / v-model (string, required): The search term given by the user.
+- `placeholder` (string): A placeholder string to show in the input field if no search term has been typed in. Defaults to `Search`.
+- `minLength` (number): Minimum length required for the search term. Defaults to `1`.
+
+**Events:**
+- `@input` / v-model: Fired when the value has changed.
 
 ### `ServiceType`
 

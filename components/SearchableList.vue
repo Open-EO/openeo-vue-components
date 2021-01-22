@@ -12,10 +12,7 @@
 				<p>No data available.</p>
 			</template>
 			<template v-else>
-				<div class="search-box" v-if="externalSearchTerm === null">
-					<span class="icon">🔎</span>
-					<input type="search" v-model="searchTerm" :placeholder="searchPlaceholder" :minlength="searchMinLength" :title="searchHint" />
-				</div>
+				<SearchBox v-if="externalSearchTerm === null" v-model="searchTerm" :placeholder="searchPlaceholder" :minLength="searchMinLength" />
 				<p v-if="filteredCount === 0">No search results found.</p>
 				<ul v-else class="list" :class="{expandable: offerDetails}">
 					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i]}">
@@ -43,6 +40,9 @@ import Vue from 'vue';
 
 export default {
 	name: 'SearchableList',
+	components: {
+		SearchBox: () => import('./SearchBox.vue')
+	},
 	props: {
 		data: {
 			type: [Array, Object],
@@ -128,12 +128,6 @@ export default {
 		filteredCount() {
 			if (this.searchTerm.length >= this.searchMinLength) {
 				return this.summaries.filter(item => item.show === true).length;
-			}
-			return null;
-		},
-		searchHint() {
-			if (this.searchMinLength >= 1) {
-				return `Searching requires at least ${this.searchMinLength} characters.`;
 			}
 			return null;
 		},
@@ -253,35 +247,5 @@ ul.expandable > li.expanded > summary .hideOnExpand {
 }
 ul.expandable > li.expanded > summary:before {
 	content: "▾";
-}
-
-.search-box {
-    margin: 0 1px 1em 0;
-    position: relative;
-}
-.search-box input, .search-box .icon {
-	height: 1.5em;
-	font-size: 1em;
-	margin: 0;
-}
-.search-box input {
-    padding: 0.25em 0.3em;
-    padding-left: 1.9em;
-    z-index: 1;
-	display: inline-block;
-	border: 1px solid #ccc;
-	box-sizing: content-box;
-	background-color: #fff;
-	width: calc(100% - 2.2em);
-}
-.search-box .icon {
-    user-select: none;
-    margin-top: 0.3em;
-    margin-left: 0.3em;
-    width: 1em;
-    z-index: 2;
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 </style>
