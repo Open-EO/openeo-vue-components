@@ -113,16 +113,14 @@ export default Utils.enableHtmlProps({
 
 <style>
 @import url('./base.css');
-</style>
 
-<style scoped>
-h4 {
+.vue-component.udf-runtime h4 {
 	margin: 0.25em 0 0.75em 0;
 }
-.vue-component .tabContent {
+.vue-component.udf-runtime .tabContent {
 	padding: 0.5em;
 }
-.library {
+.vue-component.udf-runtime .library {
 	margin-bottom: 0.5em;
 }
 </style>

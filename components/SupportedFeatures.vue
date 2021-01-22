@@ -104,22 +104,20 @@ export default Utils.enableHtmlProps({
 
 <style>
 @import url('./base.css');
-</style>
 
-<style scoped>
-.features {
+.vue-component.features ul {
     padding: 0;
 }
-.features li {
+.vue-component.features ul li {
     list-style-type: none;
 }
-.supported {
+.vue-component.features .supported {
     color: darkgreen;
 }
-.unsupported {
+.vue-component.features .unsupported {
     color: maroon;
 }
-.partial {
+.vue-component.features .partial {
     color: darkgoldenrod;
 }
 </style>

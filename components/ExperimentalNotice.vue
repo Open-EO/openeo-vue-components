@@ -18,14 +18,12 @@ export default Utils.enableHtmlProps({
 
 <style>
 @import url('./base.css');
-</style>
 
-<style scoped>
-.experimental-notice {
+.vue-component.experimental-notice {
 	background-color: rgb(138,43,226,0.1);
 	border: 1px solid blueviolet;
 }
-.experimental-notice strong {
+.vue-component.experimental-notice strong {
 	color: blueviolet;
 }
 </style>

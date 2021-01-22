@@ -69,10 +69,3 @@ export default Utils.enableHtmlProps({
 <style>
 @import url('./base.css');
 </style>
-
-<style scoped>
-ul.udf-runtimes:empty::after {
-	content: 'None';
-	font-style: italic;
-}
-</style>

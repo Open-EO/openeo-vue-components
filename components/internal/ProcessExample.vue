@@ -65,10 +65,8 @@ export default {
 
 <style>
 @import url('../base.css');
-</style>
 
-<style scoped>
-.content {
+.vue-component.process-example .content {
 	border-left: 0.5em solid #ccc;
 	border-bottom: 1px dotted #ccc;
 	padding: 0.5em;

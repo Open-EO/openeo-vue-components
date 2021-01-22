@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="vue-component collection-summary">
 		<table v-if="stac.isTable(value)" class="table">
 			<thead>
 				<tr>
@@ -50,25 +50,24 @@ export default {
 
 <style>
 @import url('../base.css');
-</style>
 
-<style scoped>
-.table {
+.vue-component.collection-summary .table {
 	width: 100%;
 	border-collapse: collapse;
 }
-.table th {
+.vue-component.collection-summary .table th {
 	text-align: left;
 	background-color: #eee;
 }
-.table td, .table th {
+.vue-component.collection-summary .table td,
+.vue-component.collection-summary .table th {
 	border: 1px solid #ccc;
 	padding: 3px;
 }
-.table td {
+.vue-component.collection-summary .table td {
 	vertical-align: top;
 }
-.table tr:hover {
+.vue-component.collection-summary .table tr:hover {
 	background-color: #f9f9f9;
 }
 </style>

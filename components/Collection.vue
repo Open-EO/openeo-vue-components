@@ -378,56 +378,54 @@ export default Utils.enableHtmlProps({
 <style>
 @import url('./base.css');
 @import url('../node_modules/leaflet/dist/leaflet.css');
-</style>
 
-<style scoped>
-.map {
+.vue-component.collection .map {
 	background: transparent;
 }
-.dimension h4 {
+.vue-component.collection .dimension h4 {
 	margin: 0;
 }
-.dimension .type {
+.vue-component.collection .dimension .type {
 	font-weight: normal;
 	font-size: 90%;
 	margin-left: 0.5em;
 }
-.provider-role {
+.vue-component.collection .provider-role {
 	text-transform: capitalize;
 }
-.tabular {
-	margin: 0.75em 0;
+.vue-component.collection .tabular {
+	margin: 0.5em 0;
 }
-.tabular.wrap {
+.vue-component.collection .tabular.wrap {
 	display: block;
 }
-.tabular.wrap .value {
+.vue-component.collection .tabular.wrap .value {
 	margin-top: 0.5em;
 	margin-left: 1em;
 	margin-bottom: 2em;
 }
-.tabular .value ul {
+.vue-component.collection .tabular .value ul {
 	padding-left: 20px;
 }
-.links:empty, .assets.empty {
+.vue-component.collection .links:empty, .assets.empty {
 	display: none;
 }
-.thumbnails {
+.vue-component.collection .thumbnails {
 	overflow-x: auto;
     overflow-y: hidden;
     width: 100%;
     white-space: nowrap;
 	padding: 5px;
 }
-.thumbnails a {
+.vue-component.collection .thumbnails a {
 	border: 5px solid transparent;
 	display: inline-block;
 }
 
-.thumbnails a:hover img {
+.vue-component.collection .thumbnails a:hover img {
 	border: 2px solid black;
 }
-.thumbnails a img {
+.vue-component.collection .thumbnails a img {
 	max-height: 200px;
 	border: 2px solid white;
 	vertical-align: middle;

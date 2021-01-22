@@ -18,14 +18,12 @@ export default Utils.enableHtmlProps({
 
 <style>
 @import url('./base.css');
-</style>
 
-<style scoped>
-.depcrecation-notice {
+.vue-component.depcrecation-notice {
 	background-color: rgb(255,0,0,0.1);
 	border: 1px solid red;
 }
-.depcrecation-notice strong {
+.vue-component.depcrecation-notice strong {
 	display: block;
 	color: red;
 }

@@ -39,16 +39,14 @@ export default {
 
 <style>
 @import url('../base.css');
-</style>
 
-<style scoped>
-.process-parameter .details {
+.vue-component.process-parameter .details {
 	margin-left: 1.5em;
 }
-.default {
+.vue-component.process-parameter .default {
 	font-weight: normal;
 }
-h4 code {
+.vue-component.process-parameter h4 code {
 	font-size: 1.1em;
 }
 </style>

@@ -46,17 +46,20 @@ export default {
 }
 </script>
 
-<style scoped>
-.search-box {
+<style>
+@import url('./base.css');
+
+.vue-component.search-box {
     margin: 0 1px 1em 0;
     position: relative;
 }
-.search-box input, .search-box .icon {
+.vue-component.search-box input,
+.vue-component.search-box .icon {
 	height: 1.5em;
 	font-size: 1em;
 	margin: 0;
 }
-.search-box input {
+.vue-component.search-box input {
     padding: 0.25em 0.3em;
     padding-left: 1.9em;
     z-index: 1;
@@ -66,7 +69,7 @@ export default {
 	background-color: #fff;
 	width: calc(100% - 2.2em);
 }
-.search-box .icon {
+.vue-component.search-box .icon {
     user-select: none;
     margin-top: 0.3em;
     margin-left: 0.3em;

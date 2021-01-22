@@ -176,53 +176,51 @@ export default Utils.enableHtmlProps({
 
 <style>
 @import url('./base.css');
-</style>
 
-<style scoped>
-.process-bar {
+.vue-component.process .process-bar {
 	display: flex;
 	align-items: baseline;
 }
-.badges {
+.vue-component.process .badges {
 	margin-bottom: 0.75em;
 }
-.categories {
+.vue-component.process .categories {
 	flex: 3;
 }
-.actions {
+.vue-component.process .actions {
 	flex: 1;
 	text-align: right;
 }
-.actions .action {
+.vue-component.process .actions .action {
 	background-color: chocolate;
 }
-.actions .action:hover {
+.vue-component.process .actions .action:hover {
 	background-color: black;
 }
-strong.deprecated {
+.vue-component.process strong.deprecated {
 	color: red;
 }
-strong.experimental {
+.vue-component.process strong.experimental {
 	color: blueviolet;
 }
-.exception {
+.vue-component.process .exception {
 	margin-top: 0.5em;
 }
-.exception code {
+.vue-component.process .exception code {
 	font-weight: bold;
 }
-.exception .styled-description {
+.vue-component.process .exception .styled-description {
 	margin: 0.5em 0;
 }
-.exception .message {
+.vue-component.process .exception .message {
 	margin: 0.5em 0;
 	font-size: 0.8em;
 }
-.process .signature {
+.vue-component.process .process .signature {
 	display: block;
 	margin: 1em 0;
 }
-.links:empty {
+.vue-component.process .links:empty {
 	display: none;
 }
 </style>

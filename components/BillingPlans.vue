@@ -64,10 +64,8 @@ export default Utils.enableHtmlProps({
 
 <style>
 @import url('./base.css');
-</style>
 
-<style scoped>
-.plan-name {
+.vue-component.billing-plans .plan-name {
 	margin: 0.25em 0;
 	padding: 0.2em 0;
 	line-height: 1em;

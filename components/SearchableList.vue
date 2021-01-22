@@ -191,6 +191,10 @@ export default {
 .vue-component.expandable.expanded .heading:before {
 	content: "▾";
 }
+
+.vue-component.searchable-list .details  {
+	display: none;
+}
 .vue-component.searchable-list .list .details h2,
 .vue-component.searchable-list .list .details h3,
 .vue-component.searchable-list .list .details h4,
@@ -198,54 +202,48 @@ export default {
 .vue-component.searchable-list .list .details h6 {
 	font-size: 1em;
 }
-</style>
-
-<style scoped>
-.details  {
-	display: none;
-}
-ul.list {
+.vue-component.searchable-list ul.list {
 	margin-left: 0;
 	padding-left: 0;
 	list-style-type: none;
 }
-ul.list > li {
+.vue-component.searchable-list ul.list > li {
 	margin-bottom: 0.5em;
 }
-ul.list > li > summary {
+.vue-component.searchable-list ul.list > li > summary {
 	margin-bottom: 0.5em;
 	margin-left: 1em;
 	line-height: 1.33em;
 }
-ul.list > li > summary strong {
+.vue-component.searchable-list ul.list > li > summary strong {
 	display: block;
 	text-overflow: ellipsis;
     overflow: hidden;
 }
-ul.list > li > summary strong.inline {
+.vue-component.searchable-list ul.list > li > summary strong.inline {
     display: inline;
     overflow: auto;
 }
-ul.list > li > summary:before {
+.vue-component.searchable-list ul.list > li > summary:before {
 	content: "▸";
 	margin-left: -1em;
 	float: left;
 	font-size: 1em;
 }
-ul.expandable > li > summary {
+.vue-component.searchable-list ul.expandable > li > summary {
 	cursor: pointer;
 }
-ul.expandable > li.expanded {
+.vue-component.searchable-list ul.expandable > li.expanded {
 	margin-bottom: 2em;
 }
-ul.expandable > li.expanded .details {
+.vue-component.searchable-list ul.expandable > li.expanded .details {
 	display: block;
 	margin-left: 1em;
 }
-ul.expandable > li.expanded > summary .hideOnExpand {
+.vue-component.searchable-list ul.expandable > li.expanded > summary .hideOnExpand {
 	display: none;
 }
-ul.expandable > li.expanded > summary:before {
+.vue-component.searchable-list ul.expandable > li.expanded > summary:before {
 	content: "▾";
 }
 </style>
