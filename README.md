@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **2.0.0-beta.2** and supports **openEO API versions 1.0.x**.
+This library's version is **2.0.0-rc.1** and supports **openEO API versions 1.0.x**.
 Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
 
 npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-components)

@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [2.0.0-rc.1] - 2020-01-22
+
 ### Added
 - `SearchBox` component
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `collapse` has been introduced
@@ -100,7 +103,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-beta.2...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.1...HEAD
+[2.0.0-rc.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-beta.2...v2.0.0-rc.1
 [2.0.0-beta.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-beta.1...v2.0.0-beta.2
 [2.0.0-beta.1]: https://github.com/Open-EO/openeo-vue-components/compare/v1.0.0...v2.0.0-beta.1
 [1.0.0]: https://github.com/Open-EO/openeo-vue-components/releases/tag/v1.0.0
