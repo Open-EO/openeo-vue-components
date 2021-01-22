@@ -5,6 +5,10 @@
 			<template #details="slot">
 				<Collection :collection="slot.item" :mapOptions="mapOptions">
 					<template #title><span class="hidden" /></template>
+					<template #before-description><slot name="collection-before-description" /></template>
+					<template #end><slot name="collection-end" /></template>
+					<template #spatial-extents="scope"><slot name="collection-spatial-extents" v-bind="scope" /></template>
+					<template #temporal-extents="scope"><slot name="collection-temporal-extents" v-bind="scope" /></template>
 				</Collection>
 			</template>
 		</SearchableList>

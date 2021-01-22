@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `collapse` has been introduced
+- `Collections`: Added slots `collection-before-description`, `collection-end`, `collection-spatial-extents`, `collection-temporal-extents`
+- `FileFormats`: Added slots `file-format-before-description`, `file-format-end`
+- `Processes`: Added slots `process-before-description`, `process-end`
+- `ServiceTypes`: Added slots `service-type-before-description`, `service-type-end`
+- `UdfRuntimes`: Added slots `udf-runtime-badges`, `udf-runtime-before-description`
 
 ### Changed
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `allowExpand` has been renamed to `offerDetails`

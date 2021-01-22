@@ -17,6 +17,8 @@
 				<FileFormat :id="slot.summary.identifier" :format="slot.item" :type="slot.item.type">
 					<template #title><span class="hidden" /></template>
 					<template #badges><span class="hidden" /></template>
+					<template #before-description><slot name="file-format-before-description" /></template>
+					<template #end><slot name="file-format-end" /></template>
 				</FileFormat>
 			</template>
 		</SearchableList>

@@ -9,6 +9,8 @@
 			<template #details="slot">
 				<ServiceType :id="slot.summary.identifier" :service="slot.item">
 					<template #title><span class="hidden" /></template>
+					<template #before-description><slot name="service-type-before-description" /></template>
+					<template #end><slot name="service-type-end" /></template>
 				</ServiceType>
 			</template>
 		</SearchableList>

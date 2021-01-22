@@ -155,6 +155,10 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 **Slots:**
 
 - `heading`: See the corresponding slot in `SearchableList`.
+- `collection-before-description`: See the corresponding slot `before-description` in `Collection`.
+- `collection-end`: See the corresponding slot `end` in `Collection`.
+- `collection-spatial-extents`: See the corresponding slot `spatial-extents` in `Collection`.
+- `collection-temporal-extents`: See the corresponding slot `temporal-extents` in `Collection`.
 
 
 ### `DeprecationNotice`
@@ -228,6 +232,8 @@ Visualizes all supported file formats of the back-end.
 **Slots:**
 
 - `heading`: See the corresponding slot in `SearchableList`.
+- `file-format-before-description`: See the corresponding slot `before-description` in `FileFormat`.
+- `file-format-end`: See the corresponding slot `end` in `FileFormat`.
 
 
 ### `JsonSchema`
@@ -299,6 +305,8 @@ Shows an (expandable) list of all processes available at a back-end.
 **Slots:**
 
 - `heading`: See the corresponding slot in `SearchableList`.
+- `process-before-description`: See the corresponding slot `before-description` in `Process`.
+- `process-end`: See the corresponding slot `end` in `Process`.
 
 
 ### `SearchableList`
@@ -366,6 +374,8 @@ Visualizes all secondary web services supported by the back-end.
 **Slots:**
 
 - `heading`: See the corresponding slot in `SearchableList`.
+- `service-type-before-description`: See the corresponding slot `before-description` in `ServiceType`.
+- `service-type-end`: See the corresponding slot `end` in `ServiceType`.
 
 
 ### `SupportedFeatures`
@@ -582,6 +592,8 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 **Slots:**
 
 - `heading`: See the corresponding slot in `SearchableList`.
+- `udf-runtime-badges`: See the corresponding slot `badges` in `UdfRuntime`.
+- `udf-runtime-before-description`: See the corresponding slot `before-description` in `UdfRuntime`.
 
 
 ## Other features

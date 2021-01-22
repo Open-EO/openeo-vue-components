@@ -5,6 +5,8 @@
 			<template #details="slot">
 				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl">
 					<template #title><span class="hidden" /></template>
+					<template #before-description><slot name="process-before-description" /></template>
+					<template #end><slot name="process-end" /></template>
 				</Process>
 			</template>
 		</SearchableList>

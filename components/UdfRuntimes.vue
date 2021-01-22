@@ -18,6 +18,8 @@
 			<template #details="slot">
 				<UdfRuntime :id="slot.summary.identifier" :runtime="slot.item">
 					<template #title><span class="hidden" /></template>
+					<template #badges><slot name="udf-runtime-badges" /></template>
+					<template #before-description><slot name="udf-runtime-before-description" /></template>
 				</UdfRuntime>
 			</template>
 		</SearchableList>
