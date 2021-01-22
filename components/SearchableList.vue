@@ -16,7 +16,7 @@
 				<p v-if="filteredCount === 0">No search results found.</p>
 				<ul v-else class="list" :class="{expandable: offerDetails}">
 					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i]}">
-						<summary @click="toggleDetails(i)" class="summary">
+						<summary @click="toggleDetails(i)" class="summary" :class="{experimental: summary.experimental, deprecated: summary.deprecated}">
 							<slot name="summary" :summary="summary" :item="data[summary.index]">
 								<strong>{{ summary.identifier }}</strong>
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
@@ -139,7 +139,9 @@ export default {
 					identifier: index,
 					summary: '',
 					show: true,
-					index: index
+					index: index,
+					experimental: entry.experimental,
+					deprecated: entry.deprecated
 				};
 
 				if (typeof entry[this.identifierKey] === 'string') {
@@ -223,6 +225,12 @@ export default {
 .vue-component.searchable-list ul.list > li > summary strong.inline {
     display: inline;
     overflow: auto;
+}
+.vue-component.searchable-list ul.list > li > summary.experimental strong {
+	color: blueviolet;
+}
+.vue-component.searchable-list ul.list > li > summary.deprecated strong {
+	text-decoration: line-through;
 }
 .vue-component.searchable-list ul.list > li > summary:before {
 	content: "▸";
