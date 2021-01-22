@@ -108,16 +108,19 @@ export default {
 				this.searchTerm = typeof value === 'string' ? value : '';
 			}
 		},
-		searchTerm(value) {
-			if (value.length >= this.searchMinLength) {
-				this.summaries.forEach(item => {
-					let searchable = (item.identifier + ' ' + item.summary).toLowerCase();
-					let result = searchable.includes(this.searchTerm.toLowerCase());
-					this.$set(item, 'show', result);
-				});
-			}
-			else {
-				this.summaries.forEach(item => this.$set(item, 'show', true));
+		searchTerm: {
+			immediate: true,
+			handler(value) {
+				if (value.length >= this.searchMinLength) {
+					this.summaries.forEach(item => {
+						let searchable = (item.identifier + ' ' + item.summary).toLowerCase();
+						let result = searchable.includes(this.searchTerm.toLowerCase());
+						this.$set(item, 'show', result);
+					});
+				}
+				else {
+					this.summaries.forEach(item => this.$set(item, 'show', true));
+				}
 			}
 		}
 	},

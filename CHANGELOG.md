@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `SearchableList`: The item keys `experimental` and `deprecated` lead to a different rendering.
 
+### Fixed
+- `SearchableList`: Do initial search if externalSearchTerm is given
 
 ## [2.0.0-rc.1] - 2020-01-22
 
