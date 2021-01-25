@@ -319,7 +319,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 
 **Properties:**
 
-- `data` (array<object>|object, required): The data to show in the list. Usually an array, but if an object is given the key of the elements is used as the default identifier. Each value of the array or object must be an object.
+- `data` (array\<object>|object, required): The data to show in the list. Usually an array, but if an object is given the key of the elements is used as the default identifier. Each value of the array or object must be an object.
 - `identifierKey` (string|null): The key in the object to use as identifiers (first line of the list). If not `null`, overrides the default identifier set from object keys. Defaults to `id`.
 - `summaryKey` (string|null): The key in the object to use as summary (second line of the list). If set to `null`, no summary is shown. Defaults to `summary`.
 - `externalSearchTerm` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Default to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
