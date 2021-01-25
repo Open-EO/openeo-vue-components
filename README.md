@@ -151,7 +151,6 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
 - `collapse` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
-- 
 
 **Slots:**
 
@@ -161,6 +160,9 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `collection-end`: See the corresponding slot `end` in `Collection`.
 - `collection-spatial-extents`: See the corresponding slot `spatial-extents` in `Collection`.
 - `collection-temporal-extents`: See the corresponding slot `temporal-extents` in `Collection`.
+
+**Methods:**
+- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 
 ### `DeprecationNotice`
@@ -238,6 +240,9 @@ Visualizes all supported file formats of the back-end.
 - `file-format-before-description`: See the corresponding slot `before-description` in `FileFormat`.
 - `file-format-end`: See the corresponding slot `end` in `FileFormat`.
 
+**Methods:**
+- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
+
 
 ### `JsonSchema`
 
@@ -312,6 +317,9 @@ Shows an (expandable) list of all processes available at a back-end.
 - `process-before-description`: See the corresponding slot `before-description` in `Process`.
 - `process-end`: See the corresponding slot `end` in `Process`.
 
+**Methods:**
+- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
+
 
 ### `SearchableList`
 
@@ -342,6 +350,10 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `details`: HTML to display for the details of the list element. This is what is shown after an element has been expanded. The following slot properties are made available:
 	- `summary` (object): An object with some high-level information for the list element: `identifier`, `summary`, `show` and `index`.
 	- `item` (object): The original object from `data` for the list element. This is what you usually want to show here.
+
+**Methods:**
+- `toggleHeading(show)`: Expand/Collapse the component. Only applies if the property `collapsed` is set to `true`.
+    - `show` (boolean): `true` to expand, `false` to collapse, `null` to toggle between the two states. Defaults to `null`.
 
 
 ### `SearchBox`
@@ -393,6 +405,9 @@ Visualizes all secondary web services supported by the back-end.
 - `summary`: See the corresponding slot in `SearchableList`.
 - `service-type-before-description`: See the corresponding slot `before-description` in `ServiceType`.
 - `service-type-end`: See the corresponding slot `end` in `ServiceType`.
+
+**Methods:**
+- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 
 ### `SupportedFeatures`
@@ -612,6 +627,9 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `summary`: See the corresponding slot in `SearchableList`.
 - `udf-runtime-badges`: See the corresponding slot `badges` in `UdfRuntime`.
 - `udf-runtime-before-description`: See the corresponding slot `before-description` in `UdfRuntime`.
+
+**Methods:**
+- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 
 ## Other features

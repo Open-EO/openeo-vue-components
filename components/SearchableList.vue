@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-component searchable-list" :class="{expandable: collapsed, expanded: showList}">
+	<div class="vue-component searchable-list" :class="{expandable: collapsed, expanded: showList, noResults: filteredCount === 0}">
 		<slot name="heading" :filteredCount="filteredCount" :totalCount="totalCount">
 			<h2 v-if="heading" class="heading" @click="toggleHeading">
 				{{ heading }}
@@ -166,11 +166,11 @@ export default {
 		}
 	},
 	methods: {
-		toggleHeading() {
+		toggleHeading(show = null) {
 			if (!this.collapsed) {
 				return;
 			}
-			this.showList = !this.showList;
+			this.showList = show === null ? !this.showList : show;
 		},
 		toggleDetails(id) {
 			if (!this.offerDetails) {
