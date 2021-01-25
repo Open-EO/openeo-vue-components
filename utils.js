@@ -119,21 +119,17 @@ class Utils extends CommonUtils {
     }
 
     static htmlentities_decode(str) {
-        if (typeof str === 'string') {
-            return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+        if (typeof str !== 'string') {
+            str = String(str);
         }
-        else {
-            return str;
-        }
+        return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'");
     }
 
     static htmlentities(str) {
-        if (typeof str === 'string') {
-            return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, '&apos;');
+        if (typeof str !== 'string') {
+            str = String(str);
         }
-        else {
-            return str;
-        }
+        return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, '&apos;');
     }
     
     static countObjectKeys(data) {
