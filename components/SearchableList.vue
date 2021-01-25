@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-component searchable-list" :class="{expandable: collapsed, expanded: showList, noResults: filteredCount === 0}">
 		<slot name="heading" :filteredCount="filteredCount" :totalCount="totalCount">
-			<h2 v-if="heading" class="heading" @click="toggleHeading">
+			<h2 v-if="heading" class="heading" @click="toggleHeading(null)">
 				{{ heading }}
 				<template v-if="filteredCount !== null">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>

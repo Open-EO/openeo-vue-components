@@ -11,7 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Method `toggleHeading` has been introduced
 
 ### Fixed
-- `SearchableList`: Do initial search if externalSearchTerm is given
+- `SearchableList`:
+  - Do initial search if `externalSearchTerm` is given
+  - Correctly call expand/collapse function for heading
 
 ## [2.0.0-rc.1] - 2020-01-22
 
