@@ -4,14 +4,14 @@
 			<div v-if="isProcessGraph" class="schemaProcessGraph">
 				<div class="process-graph-parameters">
 					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">child process</span></p>
-					<p title="The parameters that can be used in the process.">
+					<p class="schema-attrs" title="The parameters that can be used in the process.">
 						<strong>Child Process Parameters:</strong>
 					</p>
 					<template v-if="hasParameters">
 						<ProcessParameter v-for="(param, i) in schema.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
 					</template>
 					<p v-else>No parameters defined.</p>
-					<p title="Describes what must be returned by the process.">
+					<p class="schema-attrs" title="Describes what must be returned by the process.">
 						<strong>Child Process Return Value:</strong>
 					</p>
 					<template v-if="hasReturns">
@@ -305,7 +305,10 @@ export default Utils.enableHtmlProps({
 	width: 90%;
 }
 p.schema-attrs {
-	padding: 0 0 1em 0;
+	margin: 1em 0 0.5em 0;
+}
+p.schema-attrs:first-of-type {
+	margin: 0 0 1em 0;
 }
 
 .object-prop-heading, .data-types-heading {
