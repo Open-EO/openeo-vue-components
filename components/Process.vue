@@ -162,10 +162,10 @@ export default Utils.enableHtmlProps({
 			return name.replace('_', ' ');
 		},
 		download() {
-			let dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.processData, null, 2));
+			let dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.process, null, 2));
 			let downloadAnchorNode = document.createElement('a');
 			downloadAnchorNode.setAttribute("href", dataStr);
-			downloadAnchorNode.setAttribute("download", this.processData.id + ".json");
+			downloadAnchorNode.setAttribute("download", this.process.id + ".json");
 			document.body.appendChild(downloadAnchorNode);
 			downloadAnchorNode.click();
 			downloadAnchorNode.remove();
