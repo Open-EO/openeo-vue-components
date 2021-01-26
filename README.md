@@ -105,6 +105,8 @@ Visualizes the billing information of the back-end.
 **Properties:**
 
 - `billing` (object, required): Billing information as defined by the openEO API (`GET /`, property `billing`).
+- `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Billing`.
+- `headingTag` (string): HTML Tag to use for the heading. Defaults to `h2`.
 
 
 ### `Capabilities`
@@ -434,6 +436,7 @@ Visualizes the supported functionalities of the back-end.
 
 - `endpoints` (array, required): Supported endpoints as defined by the openEO API (`GET /capabilities`, property `endpoints`).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Supported Functionalities`.
+- `headingTag` (string): HTML Tag to use for the heading. Defaults to `h2`.
 
 
 ### `Tabs` and `Tab`
