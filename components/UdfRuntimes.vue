@@ -60,7 +60,7 @@ export default Utils.enableHtmlProps({
 		},
 		collapsed: {
 			type: Boolean,
-			default: false
+			default: null
 		}
 	}
 })
