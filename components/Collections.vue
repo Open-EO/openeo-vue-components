@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component collections">
-		<SearchableList ref="list" :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
+		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
@@ -52,14 +52,7 @@ export default Utils.enableHtmlProps({
 		},
 		collapsed: {
 			type: Boolean,
-			default: false
-		}
-	},
-	methods: {
-		toggleHeading(show = null) {
-			if (this.$refs.list) {
-				this.$refs.list.toggleHeading(show);
-			}
+			default: null
 		}
 	}
 })

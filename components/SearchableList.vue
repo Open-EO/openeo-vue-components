@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-component searchable-list" :class="{expandable: collapsed, expanded: showList, noResults: filteredCount === 0}">
+	<div class="vue-component searchable-list" :class="{expandable: collapsed !== null, expanded: showList, noResults: filteredCount === 0}">
 		<slot name="heading" :filteredCount="filteredCount" :totalCount="totalCount">
 			<h2 v-if="heading" class="heading" @click="toggleHeading(null)">
 				{{ heading }}
@@ -82,7 +82,7 @@ export default {
 		},
 		collapsed: {
 			type: Boolean,
-			default: false
+			default: null
 		},
 		searchMinLength:{
 			type: Number,
@@ -122,6 +122,15 @@ export default {
 					this.summaries.forEach(item => this.$set(item, 'show', true));
 				}
 			}
+		},
+		collapsed(newState) {
+			if (newState === false) {
+				this.showList = true;
+			}
+			else if (this.showList !== null) {
+				this.showList = false;
+			}
+			// else: Leave state as it is: null => don't render anything yet until expanded for the first time {
 		}
 	},
 	computed: {
@@ -167,13 +176,13 @@ export default {
 	},
 	methods: {
 		toggleHeading(show = null) {
-			if (!this.collapsed) {
+			if (this.collapsed === null) {
 				return;
 			}
 			this.showList = show === null ? !this.showList : show;
 			this.$emit('headingToggled', this.showList);
 			if (this.$parent) {
-				this.$parent.$emit('headingToggled', id, newState);
+				this.$parent.$emit('headingToggled', this.showList);
 			}
 		},
 		toggleDetails(id) {
@@ -182,9 +191,9 @@ export default {
 			}
 			let newState = !this.showDetails[id];
 			this.$set(this.showDetails, id, newState);
-			this.$emit('detailsToggled', id, newState);
+			this.$emit('detailsToggled', newState, id);
 			if (this.$parent) {
-				this.$parent.$emit('detailsToggled', id, newState);
+				this.$parent.$emit('detailsToggled', newState, id);
 			}
 		}
 	}

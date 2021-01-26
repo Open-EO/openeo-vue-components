@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component file-formats">
-		<SearchableList ref="list" :data="fileFormats" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
+		<SearchableList :data="fileFormats" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
 				<slot name="summary" v-bind="slot">
@@ -67,7 +67,7 @@ export default Utils.enableHtmlProps({
 		},
 		collapsed: {
 			type: Boolean,
-			default: false
+			default: null
 		}
 	},
 	computed: {
@@ -93,13 +93,6 @@ export default Utils.enableHtmlProps({
 				}
 			}
 			return data;
-		}
-	},
-	methods: {
-		toggleHeading(show = null) {
-			if (this.$refs.list) {
-				this.$refs.list.toggleHeading(show);
-			}
 		}
 	}
 })

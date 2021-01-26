@@ -151,7 +151,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 
 **Slots:**
@@ -166,11 +166,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
-
-**Methods:**
-
-- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
+- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
 
 
 ### `DeprecationNotice`
@@ -236,7 +232,7 @@ Visualizes all supported file formats of the back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
@@ -251,11 +247,7 @@ Visualizes all supported file formats of the back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
-
-**Methods:**
-
-- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
+- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
 
 
 ### `JsonSchema`
@@ -321,7 +313,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 
 **Slots:**
@@ -334,11 +326,7 @@ Shows an (expandable) list of all processes available at a back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
-
-**Methods:**
-
-- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
+- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
 
 
 ### `SearchableList`
@@ -354,7 +342,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `searchPlaceholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
 - `sort` (boolean): Sort the data by identifier. Defaults to `true`.
 - `offerDetails` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
-- `collapsed` (boolean): If set to `true`, the component is collapsible and only the heading is shown initially. Users can then click to expand and collapse the list. Defaults to `false`, which expands the list by default and doesn't offer to collapse it.
+- `collapsed` (boolean|null): If set to a boolean value, the component is collapsible. If it's set to `true` the component is collapsed and only the heading is shown initially. If set to `false` the component is expanded. Defaults to `null`, which expands the list and doesn't offer to collapse it.
 - `showSummaryOnExpand` (boolean): If set to `false`, the summary gets hidden for expanded elements. Defaults to `true`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `null`.
 - `searchMinLength` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
@@ -375,14 +363,9 @@ A template to implement searchable, sortable and collapsible lists (all optional
 
 - `headingToggled(expanded)`: Emits if the component has been expanded or collapsed by the user via the heading.
     - `expanded` (boolean): Is `true` if the component is expanded, `false` otherwise.
-- `detailsToggled(identifier, expanded)`: Emits if a list element has been expanded or collapsed by the user.
-    - `identifier` (boolean): Gives the identifier of the list element.
+- `detailsToggled(expanded, identifier)`: Emits if a list element has been expanded or collapsed by the user.
     - `expanded` (boolean): Is `true` if the component is expanded, `false` otherwise.
-
-**Methods:**
-
-- `toggleHeading(show)`: Expand/Collapse the component. Only applies if the property `collapsed` is set to `true`.
-    - `show` (boolean): `true` to expand, `false` to collapse, `null` to toggle between the two states. Defaults to `null`.
+    - `identifier` (boolean): Gives the identifier of the list element.
 
 
 ### `SearchBox`
@@ -427,7 +410,7 @@ Visualizes all secondary web services supported by the back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
 
 **Slots:**
@@ -440,11 +423,7 @@ Visualizes all secondary web services supported by the back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
-
-**Methods:**
-
-- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
+- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
 
 
 ### `SupportedFeatures`
@@ -655,7 +634,7 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
 
 **Slots:**
@@ -668,11 +647,7 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
-
-**Methods:**
-
-- `toggleHeading(show)`: See the corresponding method in `SearchableList`.
+- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
 
 
 ## Other features

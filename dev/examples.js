@@ -31,6 +31,10 @@ module.exports = {
 		"collapsed": {
 			"collections": collections,
 			"collapsed": true
+		},
+		"expanded-but-collapsible": {
+			"collections": collections,
+			"collapsed": false
 		}
 	},
 	"deprecation-notice": {
