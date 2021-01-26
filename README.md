@@ -103,6 +103,7 @@ In the Template of your SFC you can now include the component as shown in the ex
 Visualizes the billing information of the back-end.
 
 **Properties:**
+
 - `billing` (object, required): Billing information as defined by the openEO API (`GET /`, property `billing`).
 
 
@@ -111,6 +112,7 @@ Visualizes the billing information of the back-end.
 Visualizes fundamental server information of the back-end. Shows the URL, title, description, version numbers, links, the production flag, `SupportedFeatures` and `BillingPlans`.
 
 **Properties:**
+
 - `capabilities` (object, required): Capabilities response as defined by the openEO API (`GET /`).
 - `url` (string): URL to the API. If not set, the URL from the link with relation type `self` is shown. If neither is available, no URL is shown.
 
@@ -149,7 +151,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapse` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 
 **Slots:**
@@ -161,7 +163,13 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `collection-spatial-extents`: See the corresponding slot `spatial-extents` in `Collection`.
 - `collection-temporal-extents`: See the corresponding slot `temporal-extents` in `Collection`.
 
+**Events:**
+
+- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
+- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
+
 **Methods:**
+
 - `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 
@@ -228,7 +236,7 @@ Visualizes all supported file formats of the back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapse` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
@@ -240,7 +248,13 @@ Visualizes all supported file formats of the back-end.
 - `file-format-before-description`: See the corresponding slot `before-description` in `FileFormat`.
 - `file-format-end`: See the corresponding slot `end` in `FileFormat`.
 
+**Events:**
+
+- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
+- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
+
 **Methods:**
+
 - `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 
@@ -307,7 +321,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapse` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 
 **Slots:**
@@ -317,7 +331,13 @@ Shows an (expandable) list of all processes available at a back-end.
 - `process-before-description`: See the corresponding slot `before-description` in `Process`.
 - `process-end`: See the corresponding slot `end` in `Process`.
 
+**Events:**
+
+- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
+- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
+
 **Methods:**
+
 - `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 
@@ -334,7 +354,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `searchPlaceholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
 - `sort` (boolean): Sort the data by identifier. Defaults to `true`.
 - `offerDetails` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
-- `collapse` (boolean): If set to `true`, the component is collapsible and only the heading is shown initially. Users can then click to expand and collapse the list. Defaults to `false`, which expands the list by default and doesn't offer to collapse it.
+- `collapsed` (boolean): If set to `true`, the component is collapsible and only the heading is shown initially. Users can then click to expand and collapse the list. Defaults to `false`, which expands the list by default and doesn't offer to collapse it.
 - `showSummaryOnExpand` (boolean): If set to `false`, the summary gets hidden for expanded elements. Defaults to `true`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `null`.
 - `searchMinLength` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
@@ -351,7 +371,16 @@ A template to implement searchable, sortable and collapsible lists (all optional
 	- `summary` (object): An object with some high-level information for the list element: `identifier`, `summary`, `show` and `index`.
 	- `item` (object): The original object from `data` for the list element. This is what you usually want to show here.
 
+**Events:**
+
+- `headingToggled(expanded)`: Emits if the component has been expanded or collapsed by the user via the heading.
+    - `expanded` (boolean): Is `true` if the component is expanded, `false` otherwise.
+- `detailsToggled(identifier, expanded)`: Emits if a list element has been expanded or collapsed by the user.
+    - `identifier` (boolean): Gives the identifier of the list element.
+    - `expanded` (boolean): Is `true` if the component is expanded, `false` otherwise.
+
 **Methods:**
+
 - `toggleHeading(show)`: Expand/Collapse the component. Only applies if the property `collapsed` is set to `true`.
     - `show` (boolean): `true` to expand, `false` to collapse, `null` to toggle between the two states. Defaults to `null`.
 
@@ -361,11 +390,13 @@ A template to implement searchable, sortable and collapsible lists (all optional
 A simple input field for searching.
 
 **Properties:**
+
 - `value` / v-model (string, required): The search term given by the user.
 - `placeholder` (string): A placeholder string to show in the input field if no search term has been typed in. Defaults to `Search`.
 - `minLength` (number): Minimum length required for the search term. Defaults to `1`.
 
 **Events:**
+
 - `@input` / v-model: Fired when the value has changed.
 
 ### `ServiceType`
@@ -396,7 +427,7 @@ Visualizes all secondary web services supported by the back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapse` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
 
 **Slots:**
@@ -406,7 +437,13 @@ Visualizes all secondary web services supported by the back-end.
 - `service-type-before-description`: See the corresponding slot `before-description` in `ServiceType`.
 - `service-type-end`: See the corresponding slot `end` in `ServiceType`.
 
+**Events:**
+
+- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
+- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
+
 **Methods:**
+
 - `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 
@@ -618,7 +655,7 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
 - `sort` (boolean): See the corresponding prop in `SearchableList`. 
 - `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapse` (boolean): See the corresponding prop in `SearchableList`.
+- `collapsed` (boolean): See the corresponding prop in `SearchableList`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
 
 **Slots:**
@@ -628,7 +665,13 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `udf-runtime-badges`: See the corresponding slot `badges` in `UdfRuntime`.
 - `udf-runtime-before-description`: See the corresponding slot `before-description` in `UdfRuntime`.
 
+**Events:**
+
+- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
+- `detailsToggled(identifier, expanded)`: See the corresponding event in `SearchableList`.
+
 **Methods:**
+
 - `toggleHeading(show)`: See the corresponding method in `SearchableList`.
 
 

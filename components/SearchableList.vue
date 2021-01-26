@@ -171,12 +171,21 @@ export default {
 				return;
 			}
 			this.showList = show === null ? !this.showList : show;
+			this.$emit('headingToggled', this.showList);
+			if (this.$parent) {
+				this.$parent.$emit('headingToggled', id, newState);
+			}
 		},
 		toggleDetails(id) {
 			if (!this.offerDetails) {
 				return;
 			}
-			this.$set(this.showDetails, id, !this.showDetails[id]);
+			let newState = !this.showDetails[id];
+			this.$set(this.showDetails, id, newState);
+			this.$emit('detailsToggled', id, newState);
+			if (this.$parent) {
+				this.$parent.$emit('detailsToggled', id, newState);
+			}
 		}
 	}
 }

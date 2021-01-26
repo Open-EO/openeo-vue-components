@@ -8,13 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `SearchableList`: The item keys `experimental` and `deprecated` lead to a different rendering.
-- `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Method `toggleHeading` has been introduced
+- `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`:
+    - Method `toggleHeading` has been introduced
+    - Events `headingToggled` and `detailsToggled` have been introduced
 
 ### Fixed
 - `Process`: Fixed 'Download JSON' button
 - `SearchableList`:
-  - Do initial search if `externalSearchTerm` is given
-  - Correctly call expand/collapse function for heading
+    - Do initial search if `externalSearchTerm` is given
+    - Correctly call expand/collapse function for heading
 - `Utils.htmlentities` and `Utils.htmlentities_decode`: Always return a string
 
 ## [2.0.0-rc.1] - 2020-01-22
