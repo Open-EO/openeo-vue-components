@@ -1,7 +1,7 @@
 <template>
 	<article class="vue-component process">
 
-		<slot name="title">
+		<slot name="title" :v-bind="$props">
 			<a class="anchor" :name="process.id"></a>
 			<h2>{{ process.id }}</h2>
 		</slot>
@@ -28,7 +28,7 @@
 			</summary>
 		</template>
 
-		<slot name="before-description"></slot>
+		<slot name="before-description" :v-bind="$props"></slot>
 
 		<section class="description" v-if="process.description">
 			<h3>Description</h3>
@@ -75,7 +75,7 @@
 			<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
 		</section>
 
-		<slot name="end"></slot>
+		<slot name="end" :v-bind="$props"></slot>
 
 	</article>
 </template>

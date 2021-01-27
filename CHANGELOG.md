@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `SearchableList`: The item keys `experimental` and `deprecated` lead to a different rendering.
-- `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Events `headingToggled` and `detailsToggled` have been introduced
+- `Collection`, `FileFormat`, `Process`, `ServiceType` and `UdfRuntime`: Slots pass through the props from the component.
+- `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`:
+    - Events `headingToggled` and `detailsToggled` have been introduced
+	- Slot properties are passed through for slots that are made available in the sub-components (e.g. `Collection`)
 
 ### Fixed
 - `Process`: Fixed 'Download JSON' button

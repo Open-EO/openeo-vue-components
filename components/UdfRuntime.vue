@@ -1,7 +1,7 @@
 <template>
 	<article class="vue-component udf-runtime">
 
-		<slot name="title">
+		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="id"></a>
 			<h2>
 				<template v-if="runtime.title">
@@ -12,14 +12,14 @@
 			</h2>
 		</slot>
 
-		<slot name="badges">
+		<slot name="badges" v-bind="$props">
 			<ul class="badges">
 				<li v-if="isDocker" class="badge docker">Docker: {{ runtime.docker }}</li>
 				<li v-else class="badge">Programming Language</li>
 			</ul>
 		</slot>
 
-		<slot name="before-description"></slot>
+		<slot name="before-description" v-bind="$props"></slot>
 
 		<section class="description" v-if="runtime.description">
 			<Description :description="runtime.description"></Description>

@@ -1,7 +1,7 @@
 <template>
 	<article class="vue-component service-type">
 
-		<slot name="title">
+		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="id"></a>
 			<h2>
 				<template v-if="service.title">
@@ -12,7 +12,7 @@
 			</h2>
 		</slot>
 
-		<slot name="before-description"></slot>
+		<slot name="before-description" v-bind="$props"></slot>
 
 		<section class="description" v-if="service.description">
 			<h3>Description</h3>
@@ -37,7 +37,7 @@
 			<LinkList :links="service.links" heading="See Also" headingTag="h3" />
 		</section>
 
-		<slot name="end"></slot>
+		<slot name="end" v-bind="$props"></slot>
 
 	</article>
 </template>

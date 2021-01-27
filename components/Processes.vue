@@ -6,8 +6,8 @@
 			<template #details="slot">
 				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl">
 					<template #title><span class="hidden" /></template>
-					<template #before-description><slot name="process-before-description" /></template>
-					<template #end><slot name="process-end" /></template>
+					<template #before-description="scope"><slot name="process-before-description" v-bind="scope" /></template>
+					<template #end="scope"><slot name="process-end" v-bind="scope" /></template>
 				</Process>
 			</template>
 		</SearchableList>

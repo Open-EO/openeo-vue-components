@@ -1,14 +1,14 @@
 <template>
 	<article class="vue-component collection">
 
-		<slot name="title">
+		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="collection.id"></a>
 			<h2>{{ collection.id }}</h2>
 		</slot>
 
 		<summary v-if="collection.title">{{collection.title}}</summary>
 
-		<slot name="before-description"></slot>
+		<slot name="before-description" v-bind="$props"></slot>
 
 		<section class="description" v-if="collection.description">
 			<h3>Description</h3>
@@ -140,7 +140,7 @@
 			<LinkList :links="collection.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
 		</section>
 
-		<slot name="end"></slot>
+		<slot name="end" v-bind="$props"></slot>
 
 	</article>
 </template>

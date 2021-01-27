@@ -1,7 +1,7 @@
 <template>
 	<article class="vue-component file-format">
 
-		<slot name="title">
+		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="id"></a>
 			<h2>
 				<template v-if="format.title">
@@ -12,7 +12,7 @@
 			</h2>
 		</slot>
 
-		<slot name="badges">
+		<slot name="badges" v-bind="$props">
 			<ul class="badges">
 				<li class="badge option1" v-if="type === 'input'">Import</li>
 				<li class="badge option2" v-if="type === 'output'">Export</li>
@@ -22,7 +22,7 @@
 			</ul>
 		</slot>
 
-		<slot name="before-description"></slot>
+		<slot name="before-description" v-bind="$props"></slot>
 
 		<section class="description" v-if="format.description">
 			<h3>Description</h3>
@@ -41,7 +41,7 @@
 			<LinkList :links="format.links" heading="See Also" headingTag="h3" />
 		</section>
 
-		<slot name="end"></slot>
+		<slot name="end" v-bind="$props"></slot>
 
 	</article>
 </template>

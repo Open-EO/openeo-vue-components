@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is **2.0.0-rc.1** and supports **openEO API versions 1.0.x**.
+This library's version is [**2.0.0**](CHANGELOG.md) and supports **openEO API versions 1.0.x**.
 Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
 
 npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-components)
@@ -49,15 +49,15 @@ Directly as HTML tag in an HTML page or in a Vue environment as normal Single Fi
 To use the components in HTML (as so-called 'Web Components'), simply include the following into the `head` of your HTML page:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@openeo/vue-components@latest/assets/openeo.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@openeo/vue-components@2/assets/openeo.min.js"></script>
 ```
 
 All components can be used as HTML tags in kebab-case.
-For example, the component `BillingPlans` can be used as `<billing-plans></billing-plans>`.
+For example, the component [`BillingPlans`](#billingplans) can be used as `<billing-plans></billing-plans>`.
 Props can be passed as HTML attributes if the value is a scalar.
 For arrays and objects, you have to specify them as child `script` tags with the attributes `prop="..."` and `type="application/json"`.
 
-For example, the `Capabilities` component can be used as follows:
+For example, the [`Capabilities`](#capabilities) component can be used as follows:
 ```html
 <capabilities url="https://example.com/api">
 	<script prop="capabilities" type="application/json">
@@ -80,7 +80,7 @@ In a Vue environment, you can just import the Single File Components directly.
 First, you need to install the package: `npm install @openeo/vue-components --save`
 Now, you can import the Vue components with the `import` or `require`, depending on the module system you are using.
 
-For example, the `Capabilities` component can be imported as follows:
+For example, the [`Capabilities`](#capabilities) component can be imported as follows:
 * `const Capabilities = require('@openeo/vue-components/components/Capabilities.vue');` (Node.js require)
 * `import Capabilities from '@openeo/vue-components/components/Capabilities.vue';` (ES6 modules)
 
@@ -111,7 +111,7 @@ Visualizes the billing information of the back-end.
 
 ### `Capabilities`
 
-Visualizes fundamental server information of the back-end. Shows the URL, title, description, version numbers, links, the production flag, `SupportedFeatures` and `BillingPlans`.
+Visualizes fundamental server information of the back-end. Shows the URL, title, description, version numbers, links, the production flag, [`SupportedFeatures`](#supportedfeatures) and [`BillingPlans`](#billingplans).
 
 **Properties:**
 
@@ -135,9 +135,9 @@ Visualizes a single collection following the STAC-based collection description.
 
 **Slots:**
 
-- `title`: HTML to display as the main heading.
-- `before-description`: HTML to display before the description.
-- `end`: HTML to display after the component.
+- `title`: HTML to display as the main heading. The component properties are passed through as slot properties with the same names.
+- `before-description`: HTML to display before the description. The component properties are passed through as slot properties with the same names.
+- `end`: HTML to display after the component. The component properties are passed through as slot properties with the same names.
 - `spatial-extents`: HTML to display the spatial extents, e.g. a map. The slot property `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates.
 - `temporal-extents`: HTML to display the temporal extents. The slot property `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
 
@@ -149,26 +149,26 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 **Properties:**
 
 - `collections` (array, required): An array of STAC-based collection objects as defined by the openEO API (`GET /collections`, property `collections`).
-- `mapOptions` (object): See the corresponding prop in `Collection`.
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
-- `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
+- `mapOptions` (object): See the corresponding prop in [`Collection`](#collection).
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
+- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 
 **Slots:**
 
-- `heading`: See the corresponding slot in `SearchableList`.
-- `summary`: See the corresponding slot in `SearchableList`.
-- `collection-before-description`: See the corresponding slot `before-description` in `Collection`.
-- `collection-end`: See the corresponding slot `end` in `Collection`.
-- `collection-spatial-extents`: See the corresponding slot `spatial-extents` in `Collection`.
-- `collection-temporal-extents`: See the corresponding slot `temporal-extents` in `Collection`.
+- `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `collection-before-description`: See the corresponding slot `before-description` in [`Collection`](#collection).
+- `collection-end`: See the corresponding slot `end` in [`Collection`](#collection).
+- `collection-spatial-extents`: See the corresponding slot `spatial-extents` in [`Collection`](#collection).
+- `collection-temporal-extents`: See the corresponding slot `temporal-extents` in [`Collection`](#collection).
 
 **Events:**
 
-- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
+- `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `DeprecationNotice`
@@ -221,6 +221,8 @@ The properties must be filled with parts of the response for supported file form
 - `before-description`: HTML to display before the description.
 - `end`: HTML to display after the component.
 
+For all slots, the component properties are passed through as slot properties with the same names.
+
 
 ### `FileFormats`
 
@@ -231,25 +233,25 @@ Visualizes all supported file formats of the back-end.
 - `formats` (object, required): Supported file formats as defined by the openEO API (`GET /file_formats`).
 - `showInput` (boolean): Show the input file formats. Defaults to `true`.
 - `showOutput` (boolean): Show the output file formats. Defaults to `true`.
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
-- `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
+- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
 **Slots:**
 
-- `heading`: See the corresponding slot in `SearchableList`.
-- `summary`: See the corresponding slot in `SearchableList`.
-- `file-format-before-description`: See the corresponding slot `before-description` in `FileFormat`.
-- `file-format-end`: See the corresponding slot `end` in `FileFormat`.
+- `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `file-format-before-description`: See the corresponding slot `before-description` in [`FileFormat`](#fileformat).
+- `file-format-end`: See the corresponding slot `end` in [`FileFormat`](#fileformat).
 
 **Events:**
 
-- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
+- `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `JsonSchema`
@@ -259,7 +261,7 @@ Renders JSON Schemas in a way that it's a bit easier for humans to read.
 **Properties:**
 
 - `schema` (object|array\<object>, required): Either a single JSON Schema as object or an array of JSON Schema objects.
-- `processUrl` (string): See the corresponding prop in `Description`. 
+- `processUrl` (string): See the corresponding prop in [`Description`](#description). 
 
 ### `LinkList`
 
@@ -294,13 +296,15 @@ Visualizes a single process following the openEO process description.
 
 - `process` (object, required): Process specification as defined by the openEO API (Either one of the array elements in the property `processes` returned by `GET /process` or the response from `GET /process_graphs/{process_graph_id}`).
 - `provideDownload` (boolean): Provide a link to download the JSON file (defaults to `true`).
-- `processUrl` (string): See the corresponding prop in `Description`.
+- `processUrl` (string): See the corresponding prop in [`Description`](#description).
 
 **Slots:**
 
 - `title`: HTML to display the main heading.
 - `before-description`: HTML to display before the description.
 - `end`: HTML to display after the component.
+
+For all slots, the component properties are passed through as slot properties with the same names.
 
 
 ### `Processes`
@@ -310,25 +314,25 @@ Shows an (expandable) list of all processes available at a back-end.
 **Properties:**
 
 - `processes` (array, required): An array of processes as defined by the openEO API (`GET /processes` or `GET /process_graphs` although the latter is usually not complete).
-- `provideDownload` (boolean): See the corresponding prop in `Process`.
-- `processUrl` (string): See the corresponding prop in `Description`.
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
-- `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
+- `provideDownload` (boolean): See the corresponding prop in [`Process`](#process).
+- `processUrl` (string): See the corresponding prop in [`Description`](#description).
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
+- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 
 **Slots:**
 
-- `heading`: See the corresponding slot in `SearchableList`.
-- `summary`: See the corresponding slot in `SearchableList`.
-- `process-before-description`: See the corresponding slot `before-description` in `Process`.
-- `process-end`: See the corresponding slot `end` in `Process`.
+- `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `process-before-description`: See the corresponding slot `before-description` in [`Process`](#process).
+- `process-end`: See the corresponding slot `end` in [`Process`](#process).
 
 **Events:**
 
-- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
+- `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `SearchableList`
@@ -401,6 +405,8 @@ The properties must be filled with parts of the response for supported secondary
 - `before-description`: HTML to display before the description.
 - `end`: HTML to display after the component.
 
+For all slots, the component properties are passed through as slot properties with the same names.
+
 
 ### `ServiceTypes`
 
@@ -409,23 +415,23 @@ Visualizes all secondary web services supported by the back-end.
 **Properties:**
 
 - `services` (object, required): Supported secondary web services as defined by the openEO API (`GET /service_types`).
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
-- `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
+- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
 
 **Slots:**
 
-- `heading`: See the corresponding slot in `SearchableList`.
-- `summary`: See the corresponding slot in `SearchableList`.
-- `service-type-before-description`: See the corresponding slot `before-description` in `ServiceType`.
-- `service-type-end`: See the corresponding slot `end` in `ServiceType`.
+- `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `service-type-before-description`: See the corresponding slot `before-description` in [`ServiceType`](#servicetype).
+- `service-type-end`: See the corresponding slot `end` in [`ServiceType`](#servicetype).
 
 **Events:**
 
-- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
+- `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `SupportedFeatures`
@@ -464,15 +470,15 @@ Creates a tab interface.
 	- `hide` (function): Function that is called when the tab is about to be hidden. The tab is passed as a parameter to the function.
 	- `close` (function): Function that is called when the tab is about to be closed. The tab is passed as a parameter to the function.
 	- `allowShow` (function): Asynchronous function that determines whether a tab can be shown. The function must `true` to allow switching the active tab. If `false` is returned, switching the tab is prevented. The tab to be shown is passed as a parameter.
-- `getTab(id)`: Get the Vue `Tab` instance by id. Returns `null` if not found.
+- `getTab(id)`: Get the Vue [`Tab`](#tab) instance by id. Returns `null` if not found.
 - `getActiveTabId()`: Get the id of the tab that is currently active. 
-- `selectTab(tab)`: Set the currently active tab (asynchronously). `tab` can be either a Vue `Tab` instance or the id of a tab.
+- `selectTab(tab)`: Set the currently active tab (asynchronously). `tab` can be either a Vue [`Tab`](#tab) instance or the id of a tab.
 - `resetActiveTab(force = false)`: Selects the first tab if no tab is selected yet or `force` is set to `true`.
-- `closeTab(tab)`: Removes the specified tab. `tab` can be either a Vue `Tab` instance or the id of a tab.
+- `closeTab(tab)`: Removes the specified tab. `tab` can be either a Vue [`Tab`](#tab) instance or the id of a tab.
 
 **Slots:**
 
-- `default`: Place for `Tab` components to be added by default. Must only contain children of type `Tab` which contain the content for each of the tabs. The slot property `tabs` holds a reference to the `Tabs` component.
+- `default`: Place for [`Tab`](#tab) components to be added by default. Must only contain children of type [`Tab`](#tab) which contain the content for each of the tabs. The slot property `tabs` holds a reference to the `Tabs` component.
 - `tabName`: A slot that can be used to customize the appearance of the tab name for each tab. The slot applies to *all* tabs. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
 - `dynamic`: Default content for dynamic tabs. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
 - The content for each dynamic tab that is added programmatically via the `addTab` method can also be filled with a slot that has the id of the tab (see example below). Otherwise the content of the `dynamic` slot is used. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
@@ -501,7 +507,7 @@ window.addEventListener('resize', event => {
 
 **Slots:**
 
-- `default`: Place for the content of your tab. The slot property `tab` holds a reference to the `Tab` component.
+- `default`: Place for the content of your tab. The slot property `tab` holds a reference to this component.
 
 **Events:**
 
@@ -626,6 +632,8 @@ The properties must be filled with parts of the response for supported UDF runti
 - `badges`: HTML to display as the badges.
 - `before-description`: HTML to display before the description.
 
+For all slots, the component properties are passed through as slot properties with the same names.
+
 
 ### `UdfRuntimes`
 
@@ -634,23 +642,23 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 **Properties:**
 
 - `runtimes` (object, required): Supported UDF runtimes as defined by the openEO API (`GET /udf_runtimes`).
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in `SearchableList`. 
-- `sort` (boolean): See the corresponding prop in `SearchableList`. 
-- `offerDetails` (string): See the corresponding prop in `SearchableList`.
-- `collapsed` (boolean|null): See the corresponding prop in `SearchableList`.
+- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
+- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
 
 **Slots:**
 
-- `heading`: See the corresponding slot in `SearchableList`.
-- `summary`: See the corresponding slot in `SearchableList`.
-- `udf-runtime-badges`: See the corresponding slot `badges` in `UdfRuntime`.
-- `udf-runtime-before-description`: See the corresponding slot `before-description` in `UdfRuntime`.
+- `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `udf-runtime-badges`: See the corresponding slot `badges` in [`UdfRuntime`](#udfruntime).
+- `udf-runtime-before-description`: See the corresponding slot `before-description` in [`UdfRuntime`](#udfruntime).
 
 **Events:**
 
-- `headingToggled(expanded)`: See the corresponding event in `SearchableList`.
-- `detailsToggled(expanded, identifier)`: See the corresponding event in `SearchableList`.
+- `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ## Other features
@@ -659,7 +667,7 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 
 ### `FeatureList`
 
-A list of categorized features with their corresponding endpoints as used by the components `SupportedFeatures`.
+A list of categorized features with their corresponding endpoints as used by the components [`SupportedFeatures`](#supportedfeatures).
 
 ### `Utils`
 

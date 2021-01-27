@@ -6,8 +6,8 @@
 			<template #details="slot">
 				<ServiceType :id="slot.summary.identifier" :service="slot.item">
 					<template #title><span class="hidden" /></template>
-					<template #before-description><slot name="service-type-before-description" /></template>
-					<template #end><slot name="service-type-end" /></template>
+					<template #before-description="scope"><slot name="service-type-before-description" v-bind="scope" /></template>
+					<template #end="scope"><slot name="service-type-end" v-bind="scope" /></template>
 				</ServiceType>
 			</template>
 		</SearchableList>
