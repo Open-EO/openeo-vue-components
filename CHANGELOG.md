@@ -14,11 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 	- Slot properties are passed through for slots that are made available in the sub-components (e.g. `Collection`)
 
 ### Fixed
+- `Collection`: Map is rendered correctly in Jupyter Environments
 - `Process`: Fixed 'Download JSON' button
 - `SearchableList`:
     - Do initial search if `externalSearchTerm` is given
     - Correctly call expand/collapse function for heading
 - `Utils.htmlentities` and `Utils.htmlentities_decode`: Always return a string
+- Web Component examples can also be created with `npm run wc-examples` if the examples folder doesn't exist before
 
 ## [2.0.0-rc.1] - 2020-01-22
 

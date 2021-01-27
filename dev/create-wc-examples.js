@@ -1,6 +1,12 @@
 const fs = require('fs');
 const examples = require('./examples');
 
+const FOLDER = './examples';
+
+if (!fs.existsSync(FOLDER)){
+    fs.mkdirSync(FOLDER);
+}
+
 for(let component in examples) {
 	for(let id in examples[component]) {
 		createExampleFile(component, id, examples[component][id]);
@@ -43,5 +49,5 @@ function createExampleFile(component, id, props) {
 		</body>
 	</html>
 	`;
-	fs.writeFileSync(`./examples/${component}-${id}.html`, html);
+	fs.writeFileSync(`${FOLDER}/${component}-${id}.html`, html);
 }

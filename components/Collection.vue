@@ -278,6 +278,9 @@ export default Utils.enableHtmlProps({
 			return Array.isArray(asset.roles) && asset.roles.includes('thumbnail') && IMAGE_MEDIA_TYPES.includes(asset.type);
 		},
 		async initMap() {
+			if (!this.$refs.mapContainer) {
+				await this.$nextTick();
+			}
 			if (!this.$refs.mapContainer || this.map !== null || this.boundingBoxes.length === 0) {
 				return;
 			}
@@ -337,7 +340,7 @@ export default Utils.enableHtmlProps({
 			// Update map container in DOM
 			this.$refs.mapContainer.style.width = width;
 			this.$refs.mapContainer.style.height = height;
-			this.map.instance.invalidateSize(true);
+			this.map.instance.invalidateSize(false);
 			// Compute somewhat smart map extent and zoom level around bbox
 			var bounds = this.map.rectangles.getBounds();
 			var zoom = this.map.instance.getBoundsZoom(bounds);
@@ -353,6 +356,8 @@ export default Utils.enableHtmlProps({
 			}
 			this.map.instance.fitBounds(bounds);
 			this.map.instance.setZoom(newZoom);
+
+			this.map.instance.once('moveend zoomend', () => this.map.instance.invalidateSize(false));
 		},
 		scrollToBands() {
 			for(let field of ['eo:bands', 'sar:bands']) { // ToDo: sar:bands is deprecated => remove
