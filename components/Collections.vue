@@ -22,8 +22,8 @@ import Utils from '../utils';
 export default Utils.enableHtmlProps({
 	name: 'Collections',
 	components: {
-		Collection: () => import('./Collection.vue'),
-		SearchableList: () => import('./SearchableList.vue')
+		Collection: () => Utils.loadAsyncComponent(import('./Collection.vue')),
+		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue'))
 	},
 	props: {
 		collections: {

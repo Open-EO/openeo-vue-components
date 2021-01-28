@@ -20,8 +20,8 @@ import Utils from '../utils.js';
 export default Utils.enableHtmlProps({
 	name: 'ServiceTypes',
 	components: {
-		SearchableList: () => import('./SearchableList.vue'),
-		ServiceType: () => import('./ServiceType.vue')
+		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
+		ServiceType: () => Utils.loadAsyncComponent(import('./ServiceType.vue'))
 	},
 	props: {
 		services: {

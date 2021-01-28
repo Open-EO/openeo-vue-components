@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Events `headingToggled` and `detailsToggled` have been introduced
 	- Slot properties are passed through for slots that are made available in the sub-components (e.g. `Collection`)
 
+### Changes
+- Some components show loading and error details for sub-components instead of "No data available".
+
 ### Fixed
 - `Collection`: Map is rendered correctly in Jupyter Environments
 - `Process`: Fixed 'Download JSON' button

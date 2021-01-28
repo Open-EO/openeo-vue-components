@@ -1,5 +1,6 @@
 import { Utils as CommonUtils } from '@openeo/js-commons';
-import { types } from 'util';
+import Loading from './components/internal/Loading.vue';
+import Errored from './components/internal/Errored.vue';
 
 class Utils extends CommonUtils {
 
@@ -40,10 +41,12 @@ class Utils extends CommonUtils {
             let el = component.$slots.default.find(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.prop === prop && slot.data.attrs.type === 'application/json');
             if (el) {
                 try {
+                    // ToDo: It seems that sometimes (with WebComponents?) innerHTML is empty, especially when connections are slow. 
                     return JSON.parse(el.data.domProps.innerHTML);
                 }
                 catch (error) {
                     console.error(`Data passed to prop '${prop}' via script tag is invalid: ${error.message}`);
+                    return defaultValue;
                 }
             }
             // Read script tag containing all props as JSON
@@ -61,6 +64,16 @@ class Utils extends CommonUtils {
             }
         }
         return defaultValue;
+    }
+
+    static loadAsyncComponent(importer) {
+        return {
+            component: importer,
+            loading: Loading,
+            error: Errored,
+            delay: 0,
+            timeout: 10000
+        };
     }
 
     static dataType(schema, short = false, level = 0, type = undefined) {
