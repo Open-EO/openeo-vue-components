@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `SearchableList`: The item keys `experimental` and `deprecated` lead to a different rendering.
+- `Collection`: Slot property `mapOptions` added.
 - `Collection`, `FileFormat`, `Process`, `ServiceType` and `UdfRuntime`: Slots pass through the props from the component.
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`:
     - Events `headingToggled` and `detailsToggled` have been introduced

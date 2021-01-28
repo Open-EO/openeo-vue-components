@@ -52,7 +52,7 @@
 		
 			<template v-if="boundingBoxes.length">
 			<h3>Spatial Extent</h3>
-				<slot name="spatial-extents" :extents="boundingBoxes">
+				<slot name="spatial-extents" :extents="boundingBoxes" :mapOptions="mapOptions">
 					<div class="map" ref="mapContainer">
 						<template v-if="!map">
 							<ul v-for="(bbox, i) in boundingBoxes" :key="i">
