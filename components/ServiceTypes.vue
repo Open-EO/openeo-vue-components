@@ -20,8 +20,8 @@ import Utils from '../utils.js';
 export default Utils.enableHtmlProps({
 	name: 'ServiceTypes',
 	components: {
-		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
-		ServiceType: () => Utils.loadAsyncComponent(import('./ServiceType.vue'))
+		SearchableList: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "searchable-list" */'./SearchableList.vue')),
+		ServiceType: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "service-type" */'./ServiceType.vue'))
 	},
 	props: {
 		services: {

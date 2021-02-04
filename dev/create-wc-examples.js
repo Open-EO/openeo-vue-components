@@ -42,7 +42,7 @@ function createExampleFile(component, id, props) {
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<title>openEO ${component}</title>
 			<link href="../dev/examples.css" rel="stylesheet"></script>
-			<script src="../assets/openeo.js"></script>
+			<script src="../assets/openeo.umd.js"></script>
 		</head>
 		<body>
 			<openeo-${component}${attributes}>${jsonProps.join("\r\n")}</openeo-${component}>

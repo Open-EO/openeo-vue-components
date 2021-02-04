@@ -52,11 +52,11 @@ import Utils from '../utils.js';
 export default Utils.enableHtmlProps({
 	name: 'FileFormat',
 	components: {
-		DeprecationNotice: () => import('./DeprecationNotice.vue'),
-		Description: () => import('./Description.vue'),
-		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
-		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
-		LinkList: () => import('./LinkList.vue')
+		DeprecationNotice: () => import(/* webpackChunkName: "deprecation-notice" */'./DeprecationNotice.vue'),
+		Description: () => import(/* webpackChunkName: "description" */'./Description.vue'),
+		ExperimentalNotice: () => import(/* webpackChunkName: "experimental-notice" */'./ExperimentalNotice.vue'),
+		ProcessParameter: () => import(/* webpackChunkName: "process-parameter" */'./internal/ProcessParameter.vue'),
+		LinkList: () => import(/* webpackChunkName: "link-list" */'./LinkList.vue')
 	},
 	props: {
 		id: {
@@ -82,7 +82,3 @@ export default Utils.enableHtmlProps({
 	}
 })
 </script>
-
-<style>
-@import url('./base.css');
-</style>

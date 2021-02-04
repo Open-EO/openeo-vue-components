@@ -156,9 +156,9 @@ export default Utils.enableHtmlProps({
 	name: 'Collection',
 	components: {
 		CollectionSummary,
-		Description: () => import('./Description.vue'),
-		DeprecationNotice: () => import('./DeprecationNotice.vue'),
-		LinkList: () => import('./LinkList.vue')
+		Description: () => import(/* webpackChunkName: "description" */'./Description.vue'),
+		DeprecationNotice: () => import(/* webpackChunkName: "deprecation-notice" */'./DeprecationNotice.vue'),
+		LinkList: () => import(/* webpackChunkName: "link-list" */'./LinkList.vue')
 	},
 	props: {
 		collection: {

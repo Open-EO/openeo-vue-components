@@ -33,8 +33,8 @@ import Utils from '../utils.js';
 export default Utils.enableHtmlProps({
 	name: 'FileFormats',
 	components: {
-		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
-		FileFormat: () => Utils.loadAsyncComponent(import('./FileFormat.vue'))
+		SearchableList: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "searchable-list" */'./SearchableList.vue')),
+		FileFormat: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "file-formats" */'./FileFormat.vue'))
 	},
 	props: {
 		formats: {

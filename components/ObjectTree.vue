@@ -32,7 +32,7 @@ export default Utils.enableHtmlProps({
 	name: 'ObjectTree',
 	components: {
 		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
-		'openeo-object-tree': () => import('./ObjectTree.vue')
+		'openeo-object-tree': () => import(/* webpackChunkName: "object-tree" */'./ObjectTree.vue')
 	},
 	props: {
 		data: {

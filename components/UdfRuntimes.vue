@@ -34,8 +34,8 @@ import Utils from '../utils';
 export default Utils.enableHtmlProps({
 	name: 'UdfRuntimes',
 	components: {
-		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
-		UdfRuntime: () => Utils.loadAsyncComponent(import('./UdfRuntime.vue'))
+		SearchableList: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "searchable-list" */'./SearchableList.vue')),
+		UdfRuntime: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "udf-runtime" */'./UdfRuntime.vue'))
 	},
 	props: {
 		runtimes:  {

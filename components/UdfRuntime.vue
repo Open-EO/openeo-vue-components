@@ -71,12 +71,12 @@ import Utils from '../utils.js';
 export default Utils.enableHtmlProps({
 	name: 'UdfRuntime',
 	components: {
-		DeprecationNotice: () => import('./DeprecationNotice.vue'),
-		Description: () => import('./Description.vue'),
-		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
-		LinkList: () => import('./LinkList.vue'),
-		Tabs: () => import('./Tabs.vue'),
-		Tab: () => import('./Tab.vue')
+		DeprecationNotice: () => import(/* webpackChunkName: "deprecation-notice" */'./DeprecationNotice.vue'),
+		Description: () => import(/* webpackChunkName: "description" */'./Description.vue'),
+		ExperimentalNotice: () => import(/* webpackChunkName: "experimental-notice" */'./ExperimentalNotice.vue'),
+		LinkList: () => import(/* webpackChunkName: "link-list" */'./LinkList.vue'),
+		Tabs: () => import(/* webpackChunkName: "tabs" */'./Tabs.vue'),
+		Tab: () => import(/* webpackChunkName: "tabs" */'./Tab.vue')
 	},
 	props: {
 		id: {

@@ -87,13 +87,13 @@ import Utils from '../utils.js';
 export default Utils.enableHtmlProps({
 	name: 'Process',
 	components: {
-		JsonSchema: () => import('./JsonSchema.vue'),
-		DeprecationNotice: () => import('./DeprecationNotice.vue'),
-		Description: () => import('./Description.vue'),
-		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
+		JsonSchema: () => import(/* webpackChunkName: "json-schema" */'./JsonSchema.vue'),
+		DeprecationNotice: () => import(/* webpackChunkName: "deprecation-notice" */'./DeprecationNotice.vue'),
+		Description: () => import(/* webpackChunkName: "description" */'./Description.vue'),
+		ExperimentalNotice: () => import(/* webpackChunkName: "experimental-notice" */'./ExperimentalNotice.vue'),
 		ProcessExample,
-		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
-		LinkList: () => import('./LinkList.vue')
+		ProcessParameter: () => import(/* webpackChunkName: "process-parameter" */'./internal/ProcessParameter.vue'),
+		LinkList: () => import(/* webpackChunkName: "link-list" */'./LinkList.vue')
 	},
 	props: {
 		process: {

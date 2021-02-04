@@ -20,8 +20,8 @@ import Utils from '../utils';
 export default Utils.enableHtmlProps({
 	name: 'Processes',
 	components: {
-		Process: () => Utils.loadAsyncComponent(import('./Process.vue')),
-		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue'))
+		Process: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "process" */'./Process.vue')),
+		SearchableList: () => Utils.loadAsyncComponent(import(/* webpackChunkName: "searchable-list" */'./SearchableList.vue'))
 	},
 	props: {
 		processes: {

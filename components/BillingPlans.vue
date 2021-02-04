@@ -32,7 +32,7 @@ import Utils from '../utils';
 export default Utils.enableHtmlProps({
 	name: 'BillingPlans',
 	components: {
-		Description: () => import('./Description.vue')
+		Description: () => import(/* webpackChunkName: "description" */'./Description.vue')
 	},
 	props: {
 		billing: {

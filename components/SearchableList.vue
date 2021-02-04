@@ -41,7 +41,7 @@ import Vue from 'vue';
 export default {
 	name: 'SearchableList',
 	components: {
-		SearchBox: () => import('./SearchBox.vue')
+		SearchBox: () => import(/* webpackChunkName: "search-box" */'./SearchBox.vue')
 	},
 	props: {
 		data: {

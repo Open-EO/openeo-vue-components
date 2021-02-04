@@ -31,10 +31,10 @@ export default Utils.enableHtmlProps({
 		}
 	},
 	components: {
-		BillingPlans: () => import('./BillingPlans.vue'),
-		Description: () => import('./Description.vue'),
-		LinkList: () => import('./LinkList.vue'),
-		SupportedFeatures: () => import('./SupportedFeatures.vue')
+		BillingPlans: () => import(/* webpackChunkName: "billing-plan" */'./BillingPlans.vue'),
+		Description: () => import(/* webpackChunkName: "description" */'./Description.vue'),
+		LinkList: () => import(/* webpackChunkName: "link-list" */'./LinkList.vue'),
+		SupportedFeatures: () => import(/* webpackChunkName: "supported-features" */'./SupportedFeatures.vue')
 	},
 	computed: {
 		title() {

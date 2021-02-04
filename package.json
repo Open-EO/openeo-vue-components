@@ -20,12 +20,12 @@
     "url": "https://github.com/open-eo/openeo-vue-components.git"
   },
   "scripts": {
-    "build": "vue-cli-service build --report --target wc-async --inline-vue --name openeo \"./components/*.vue\"",
-    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --report --target lib --formats=umd,umd-min --inline-vue --name openeo main.js",
+    "serve": "vue-cli-service serve dev/entry.js",
     "wc-examples": "node ./dev/create-wc-examples.js",
     "wc-serve": "npm run build && npm run wc-examples && http-server -o /examples -c-1"
   },
-  "main": "assets/openeo.js",
+  "main": "assets/openeo.umd.min.js",
   "files": [
     "assets/*.js",
     "assets/*.map",
@@ -40,11 +40,13 @@
     "core-js": "^3.8.2",
     "leaflet": "^1.6.0",
     "leaflet.antimeridian": "^1.0.0",
-    "vue": "^2.6.0"
+    "vue": "^2.6.0",
+    "vue-custom-element": "^3.2.14"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.6",
     "@vue/cli-service": "~4.4.6",
+    "chunk-rename-webpack-plugin": "^1.1.1",
     "http-server": "^0.12.3",
     "vue-template-compiler": "^2.6.0"
   },

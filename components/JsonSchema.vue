@@ -124,9 +124,9 @@ export default Utils.enableHtmlProps({
 		};
 	},
 	components: {
-		Description: () => import('./Description.vue'),
+		Description: () => import(/* webpackChunkName: "description" */'./Description.vue'),
 		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
-		'openeo-json-schema': () => import('./JsonSchema.vue')
+		'openeo-json-schema': () => import(/* webpackChunkName: "json-schema" */'./JsonSchema.vue')
 	},
 	beforeCreate() {
 		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
