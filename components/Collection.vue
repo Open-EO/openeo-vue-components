@@ -291,6 +291,7 @@ export default Utils.enableHtmlProps({
 					return;
 				}
 	
+				import('leaflet/dist/leaflet.css');
 				var map = new L.Map(this.$refs.mapContainer, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
@@ -382,7 +383,6 @@ export default Utils.enableHtmlProps({
 
 <style>
 @import url('./base.css');
-@import url('../node_modules/leaflet/dist/leaflet.css');
 
 .vue-component.collection .map {
 	background: transparent;
