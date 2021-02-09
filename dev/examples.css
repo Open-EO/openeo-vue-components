@@ -1,4 +1,12 @@
 body {
 	font-family: sans-serif;
-	padding: 0.5em 20%;
+	margin: 0 auto;
+	padding: 0.5em 1em;
+	max-width: 1000px;
+}
+
+@media only screen and (min-width: 1400px) {
+	body {
+		padding: 0.5em 20%;
+	}
 }

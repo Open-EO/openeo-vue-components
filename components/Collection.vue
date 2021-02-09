@@ -36,8 +36,7 @@
 
 		<section class="license">
 			<h3>License</h3>
-			<a class="value" v-if="licenseUrl" :href="licenseUrl" target="_blank">{{ collection.license }}</a>
-			<span class="value" v-else>{{ collection.license }}</span>
+			<span v-html="license" />
 		</section>
 
 		<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
@@ -45,7 +44,7 @@
 				<h3>Temporal Extent</h3>
 				<slot name="temporal-extents" :extents="temporalIntervals">
 					<ul v-for="(interval, i) in temporalIntervals" :key="i">
-						<li>{{ stac.formatTemporalExtent(interval) }}</li>
+						<li>{{ stac.Formatters.formatTemporalExtent(interval) }}</li>
 					</ul>
 				</slot>
 			</template>
@@ -80,12 +79,12 @@
 			</ol>
 		</section>
 
-		<section class="providers" v-if="hasDimensions">
+		<section class="dimensions" v-if="hasDimensions">
 			<h3>Data Cube Dimensions</h3>
 			<ul>
 				<li v-for="(dim, name) in collection['cube:dimensions']" :key="name" class="dimension">
 					<h4>
-						<a v-if="dim.type === 'bands'" @click="scrollToBands()" class="name">{{ name }}</a>
+						<a v-if="dim.type === 'bands'" @click="scrollToBands" class="name" href="#summary_eo:bands">{{ name }}</a>
 						<span v-else class="name">{{ name }}</span>
 						<ul class="type badges small"><li class="badge">{{ dim.type }}</li></ul>
 					</h4>
@@ -97,12 +96,13 @@
 					<div class="tabular">
 						<label>Labels:</label>
 						<div v-if="dim.extent" class="value">
-							{{ stac.formatValue(dim.extent, "extent", 'cube:dimensions') }}
+							<template v-if="dim.type === 'temporal'">{{ stac.Formatters.formatTemporalExtent(dim.extent) }}</template>
+							<template v-else>{{ stac.Formatters.formatExtent(dim.extent) }}</template>
 						</div>
 						<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
 							<li v-for="(value, i) in dim.values" :key="i">{{ value }}</li>
 						</ul>
-						<div v-else class="value">N/A</div>
+						<div v-else class="value"><i>n/a</i></div>
 					</div>
 					<div class="tabular" v-if="typeof dim.step !== 'undefined'">
 						<label>Steps:</label>
@@ -112,7 +112,7 @@
 						</div>
 					</div>
 					<div class="tabular" v-if="typeof dim.reference_system !== 'undefined'">
-						<label :key="i">Reference System:</label>
+						<label>Reference System:</label>
 						<div class="value">
 							<template v-if="typeof dim.reference_system === 'number'">EPSG {{ dim.reference_system }}</template>
 							<template v-else>{{ dim.reference_system }}</template>
@@ -123,13 +123,30 @@
 		</section>
 
 		<section class="summaries" v-if="hasSummaries">
-			<h3>Additional information</h3>
-			<div v-for="(value, field) in summaries" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: stac.isTable(value) && value.isWide}">
-				<label>{{ stac.formatKey(field) }}:</label>
-				<div class="value">
-					<CollectionSummary :value="value" :field="field" />
+			<template v-for="group in summaries">
+				<h3 v-html="group.label" :key="group.extension" />
+				<div v-for="(prop, field) in group.properties" :key="'summary_' + field" :ref="'summary_' + field" class="tabular" :class="{wrap: Boolean(prop.custom || prop.items)}">
+					<label :title="field" v-html="stac.label(field)" />
+					<div v-if="prop.items" class="value">
+						<table v-for="(value, i) in prop.formatted" :key="i" class="table">
+							<thead>
+								<tr>
+									<th v-if="!Array.isArray(value)">&nbsp;</th>
+									<th v-for="(spec, col) in prop.items" :key="col" v-html="stac.label(col, prop.items)"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(row, i) in prop.formatted[i]" :key="i">
+									<th v-if="!Array.isArray(value)">{{ i }}</th>
+									<td v-for="(spec, col) in prop.items" :key="col" v-html="row[col]" />
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div v-else-if="prop.formatted" class="value" v-html="prop.formatted" />
+					<div class="value" v-else>{{ prop.value }}</div>
 				</div>
-			</div>
+			</template>
 		</section>
 
 		<section class="assets">
@@ -146,16 +163,28 @@
 </template>
 
 <script>
-import CollectionSummary from './internal/CollectionSummary.vue';
-import StacCollectionUtils from '../stacutils';
+import StacFields from '@radiantearth/stac-fields';
 import Utils from '../utils';
 
 const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 
+StacFields.Registry.externalRenderer = true;
+StacFields.Registry.addMetadataFields({
+	"eo:platform": {
+		alias: "platform"
+	},
+	"eo:instrument": {
+		alias: "instruments"
+	},
+	"gee:type": {
+		label: "Collection Type",
+		formatter: StacFields.label
+	}
+});
+
 export default Utils.enableHtmlProps({
 	name: 'Collection',
 	components: {
-		CollectionSummary,
 		Description: () => import('./Description.vue'),
 		DeprecationNotice: () => import('./DeprecationNotice.vue'),
 		LinkList: () => import('./LinkList.vue')
@@ -186,7 +215,7 @@ export default Utils.enableHtmlProps({
 	data() {
 		return {
 			map: null,
-			stac: StacCollectionUtils
+			stac: StacFields
 		}
 	},
 	computed: {
@@ -200,14 +229,8 @@ export default Utils.enableHtmlProps({
 				}
 			}
 
-			// ToDo: Use visualizations for something useful
-			delete summaries['gee:visualizations'];
-
-			for(let key in summaries) {
-				summaries[key] = StacCollectionUtils.restructure(summaries[key], key);
-			}
-
-			return summaries;
+			let collection = Object.assign({}, this.collection, {summaries});
+			return StacFields.formatSummaries(collection);
 		},
 		temporalIntervals() {
 			let e = this.collection.extent;
@@ -259,15 +282,12 @@ export default Utils.enableHtmlProps({
 			}
 			return Object.values(this.collection.assets).filter(this.assetIsImage);
 		},
-		licenseUrl() {
-			if (Array.isArray(this.collection.links)) {
-				for(let link of this.collection.links) {
-					if (link.rel === 'license' && link.href) {
-						return link.href;
-					}
-				}
+		license() {
+			if (typeof this.collection.license !== 'string' || this.collection.license.length === 0) {
+				return false;
 			}
-			return false;
+			
+			return this.stac.Formatters.formatLicense(this.collection.license, null, null, this.collection);
 		}
 	},
 	mounted() {
@@ -360,19 +380,17 @@ export default Utils.enableHtmlProps({
 
 			this.map.instance.once('moveend zoomend', () => this.map.instance.invalidateSize(false));
 		},
-		scrollToBands() {
-			for(let field of ['eo:bands', 'sar:bands']) { // ToDo: sar:bands is deprecated => remove
-				let id = 'summary_' + field;
-				if (Array.isArray(this.$refs[id]) && this.$refs[id].length) {
-					var elem = this.$refs[id][0];
-					elem.scrollIntoView();
-					elem.classList.add('highlight-box');
-					setTimeout(() => {
-						elem.classList.remove('highlight-box');
-					}, 5000);
-					break;
-				}
+		scrollToBands(evt) {
+			let id = 'summary_eo:bands';
+			if (Array.isArray(this.$refs[id]) && this.$refs[id].length) {
+				var elem = this.$refs[id][0];
+				elem.scrollIntoView();
+				elem.classList.add('highlight-box');
+				setTimeout(() => {
+					elem.classList.remove('highlight-box');
+				}, 5000);
 			}
+			evt.preventDefault();
 		},
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
@@ -394,6 +412,9 @@ export default Utils.enableHtmlProps({
 	font-weight: normal;
 	font-size: 90%;
 	margin-left: 0.5em;
+}
+.vue-component.collection .dimension label {
+	font-weight: normal;
 }
 .vue-component.collection .provider-role {
 	text-transform: capitalize;
@@ -434,5 +455,31 @@ export default Utils.enableHtmlProps({
 	max-height: 200px;
 	border: 2px solid white;
 	vertical-align: middle;
+}
+
+.vue-component.collection .summaries .table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.vue-component.collection .summaries .table th {
+	text-align: left;
+	background-color: #eee;
+}
+.vue-component.collection .summaries .table td,
+.vue-component.collection .summaries .table th {
+	border: 1px solid #ccc;
+	padding: 3px;
+}
+.vue-component.collection .summaries .table td {
+	vertical-align: top;
+}
+.vue-component.collection .summaries .descrption p:first-of-type {
+	margin-top: 0;
+}
+.vue-component.collection .summaries .descrption p:last-of-type {
+	margin-bottom: 0;
+}
+.vue-component.collection .summaries .table tr:hover {
+	background-color: #f9f9f9;
 }
 </style>

@@ -1,3 +1,4 @@
+let collection = require('./examples/collection-gee-s2.json');
 let collections = require('./examples/collections-gee.json');
 let processes = require('./examples/processes-gee.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
@@ -21,7 +22,7 @@ module.exports = {
 	},
 	"collection": {
 		"gee": {
-			"collection": collections[0]
+			"collection": collection
 		}
 	},
 	"collections": {
