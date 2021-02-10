@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-rc.3] - 2020-02-10
+
+### Changed
+- Migrated from custom StacUtils to new package `@radiantearth/stac-fields` to format Collection metadata
+
+### Fixed
+- Leaflet CSS import issue
 
 ## [2.0.0-rc.2] - 2020-01-29
 
@@ -17,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Events `headingToggled` and `detailsToggled` have been introduced
 	- Slot properties are passed through for slots that are made available in the sub-components (e.g. `Collection`)
 
-### Changes
+### Changed
 - Some components show loading and error details for sub-components instead of "No data available".
 
 ### Fixed
@@ -126,7 +133,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.2...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.3...HEAD
+[2.0.0-rc.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.2...v2.0.0-rc.3
 [2.0.0-rc.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.1...v2.0.0-rc.2
 [2.0.0-rc.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-beta.2...v2.0.0-rc.1
 [2.0.0-beta.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-beta.1...v2.0.0-beta.2
