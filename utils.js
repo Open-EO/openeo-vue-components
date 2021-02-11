@@ -4,66 +4,78 @@ import Errored from './components/internal/Errored.vue';
 
 class Utils extends CommonUtils {
 
-    static enableHtmlProps(vue) {
-        if (Utils.isObject(vue) && Utils.isObject(vue.props)) {
-            for(let key in vue.props) {
-                if (!Utils.isObject(vue.props[key])) {
-                    vue.props[key] = {
-                        type: vue.props[key],
-                        default: undefined
-                    }
-                }
-                let types = Array.isArray(vue.props[key].type) ? vue.props[key].type : [vue.props[key].type];
-                types = types.filter(t => typeof t === 'function').map(t => t.name);
-                if (types.includes('Function')) {
-                    continue;
-                }
-                else if (types.includes('Boolean')) {
-                    // Functions for default are not executed for Boolean, so remove the type
-                    // PR to solve this issue: https://github.com/vuejs/vue-web-component-wrapper/pull/58
-                    delete vue.props[key].type;
-                }
-                let defaultValue = vue.props[key].default;
-                if (typeof defaultValue === 'function') {
-                    defaultValue = defaultValue();
-                }
-                vue.props[key].default = function() {
-                    return Utils.readHtmlProp(key, this, defaultValue);
-                };
-            }
-        }
-        return vue;
+    static kebabToCamelCase(str) {
+        return str.replace(/-(\w)/g, (_, c) => c ? c.toUpperCase() : '');
     }
 
-    static readHtmlProp(prop, component, defaultValue = undefined) {
-        if (Utils.isObject(component) && Utils.isObject(component.$slots) && Array.isArray(component.$slots.default)) {
-            // Read script tag for specific prop
-            let el = component.$slots.default.find(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.prop === prop && slot.data.attrs.type === 'application/json');
-            if (el) {
-                try {
-                    // ToDo: It seems that sometimes (with WebComponents?) innerHTML is empty, especially when connections are slow. 
-                    return JSON.parse(el.data.domProps.innerHTML);
-                }
-                catch (error) {
-                    console.error(`Data passed to prop '${prop}' via script tag is invalid: ${error.message}`);
-                    return defaultValue;
-                }
-            }
-            // Read script tag containing all props as JSON
-            let elAll = component.$slots.default.find(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.type === 'application/json');
-            if (elAll) {
-                try {
-                    let data = JSON.parse(elAll.data.domProps.innerHTML);
-                    if (Utils.isObject(data) && typeof data[prop] !== 'undefined') {
-                        return data[prop];
-                    }
-                }
-                catch (error) {
-                    console.error(`Data passed via script tag is invalid: ${error.message}`);
+    static camelToKebabCase(str) {
+        return str.replace(/\B([A-Z])/g, '-$1').toLowerCase();
+    }
+
+    static enableHtmlProps(vm) {
+        // Don't execute if not in web-component mode (i.e. check for the shadow root)
+        if (!Utils.isObject(vm.$parent) || !vm.$parent.$options.shadowRoot) {
+            return;
+        }
+
+        // Workaround for bug https://github.com/vuejs/vue-web-component-wrapper/issues/3
+        // PR: https://github.com/vuejs/vue-web-component-wrapper/pull/58
+        if (Utils.isObject(vm.$options.props)) {
+            for(let prop in vm.$options.props) {
+                let schema = vm.$options.props[prop];
+                let hasAttribute = vm.$parent.$options.shadowRoot.host.hasAttribute(Utils.camelToKebabCase(prop));
+                if (schema.default === true && !hasAttribute) {
+                    vm.$options.propsData[prop] = true;
                 }
             }
         }
-        return defaultValue;
+
+        // Read the HTML props once the page is completely loaded and all props are completely available
+        if(document.readyState === 'complete') {
+            Utils.readHtmlProps(vm);
+        }
+        else {
+            window.addEventListener('load', () => Utils.readHtmlProps(vm));
+        }
+    }
+
+    static readHtmlProps(vm) {
+        if (!Utils.isObject(vm) || !Utils.isObject(vm.$slots) || !Array.isArray(vm.$slots.default)) {
+            return;
+        }
+
+        // Read script tag for specific prop
+        let slots = vm.$slots.default.filter(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.type === 'application/json');
+        for(let slot of slots) {
+            let prop = null;
+            try {
+                if (typeof slot.data.attrs.prop === 'string' && slot.data.attrs.prop.length > 0) {
+                    prop = Utils.kebabToCamelCase(slot.data.attrs.prop);
+                }
+                let value = JSON.parse(slot.data.domProps.innerHTML);
+                if (prop) {
+                    // Single prop
+                    vm.$set(vm.$props, prop, value);
+                }
+                else if (Utils.isObject(value)) {
+                    // All props
+                    for(let key in value) {
+                        vm.$set(vm.$props, Utils.kebabToCamelCase(key), value[key]);
+                    }
+                }
+                else {
+                    console.error(`Props passed via script tag must be contained in an object.`);
+                }
+            }
+            catch (error) {
+                if (prop) {
+                    console.error(`Prop '${prop}' passed via script tag is invalid: ${error.message}`);
+                }
+                else {
+                    console.error(`Props passed via script tag are invalid: ${error.message}`);
+                }
+            }
+        }
     }
 
     static loadAsyncComponent(importer) {

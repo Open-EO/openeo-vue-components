@@ -52,7 +52,7 @@ To use the components in HTML (as so-called 'Web Components'), simply include th
 <script src="https://cdn.jsdelivr.net/npm/@openeo/vue-components@2/assets/openeo.min.js"></script>
 ```
 
-All components can be used as HTML tags in kebab-case.
+All components can be used as HTML tags in kebab-case. Also, ALL parameters must be converted to kebab-case!
 For example, the component [`BillingPlans`](#billingplans) can be used as `<billing-plans></billing-plans>`.
 Props can be passed as HTML attributes if the value is a scalar.
 For arrays and objects, you have to specify them as child `script` tags with the attributes `prop="..."` and `type="application/json"`.
@@ -106,7 +106,7 @@ Visualizes the billing information of the back-end.
 
 - `billing` (object, required): Billing information as defined by the openEO API (`GET /`, property `billing`).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Billing`.
-- `headingTag` (string): HTML Tag to use for the heading. Defaults to `h2`.
+- `headingTag` / `heading-tag` (string): HTML Tag to use for the heading. Defaults to `h2`.
 
 
 ### `Capabilities`
@@ -126,7 +126,7 @@ Visualizes a single collection following the STAC-based collection description.
 **Properties:**
 
 - `collection` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collection_id}`).
-- `mapOptions` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
+- `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
@@ -149,10 +149,10 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 **Properties:**
 
 - `collections` (array, required): An array of STAC-based collection objects as defined by the openEO API (`GET /collections`, property `collections`).
-- `mapOptions` (object): See the corresponding prop in [`Collection`](#collection).
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `mapOptions` / `map-options` (object): See the corresponding prop in [`Collection`](#collection).
+- `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
-- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `offerDetails` / `odder-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 
@@ -188,9 +188,9 @@ A simple text renderer, which supports CommonMark.
 - `description` (string, required): The text to show.
 - `preprocessor` (function|null): A function that further processes the text, *before* CommonMark is parsed. Defaults to `null`.
 - `processor` (function|null): A function that further processes the text, *after* CommonMark is parsed. Defaults to `null`.
-- `processUrl` (string): The URL to point process references (` ``process_id()`` `) to. `${}` gets replaced with the process id. Set to `null` (default) to disable process links. Example: `https://processes.openeo.org/#${}`
+- `processUrl` / `process-url` (string): The URL to point process references (` ``process_id()`` `) to. `${}` gets replaced with the process id. Set to `null` (default) to disable process links. Example: `https://processes.openeo.org/#${}`
 - `compact` (boolean): Renders the description more compact if set to `true`. Defaults to `false`.
-- `allowHTML` (boolean): By default (`false`), HTML is removed from the rendered version. To show HTML set this to `true`. Only set to `true` if you trust the content, it may contain insecure elements.
+- `allowHTML` / `allow-html` (boolean): By default (`false`), HTML is removed from the rendered version. To show HTML set this to `true`. Only set to `true` if you trust the content, it may contain insecure elements.
 
 
 ### `ExperimentalNotice`
@@ -231,11 +231,11 @@ Visualizes all supported file formats of the back-end.
 **Properties:**
 
 - `formats` (object, required): Supported file formats as defined by the openEO API (`GET /file_formats`).
-- `showInput` (boolean): Show the input file formats. Defaults to `true`.
-- `showOutput` (boolean): Show the output file formats. Defaults to `true`.
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `showInput` / `show-input` (boolean): Show the input file formats. Defaults to `true`.
+- `showOutput` / `show-output` (boolean): Show the output file formats. Defaults to `true`.
+- `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
-- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 
@@ -261,7 +261,7 @@ Renders JSON Schemas in a way that it's a bit easier for humans to read.
 **Properties:**
 
 - `schema` (object|array\<object>, required): Either a single JSON Schema as object or an array of JSON Schema objects.
-- `processUrl` (string): See the corresponding prop in [`Description`](#description). 
+- `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description). 
 
 ### `LinkList`
 
@@ -272,9 +272,9 @@ A simple list of links.
 - `links` (array\<object>, required): An array of objects, each describing a link as defined by the openEO API.
 - `sort` (boolean): Sort the links by title. Defaults to `true`.
 - `heading` (string|null): If given, a heading is shown above the list. Defaults to `null` (no heading shown).
-- `headingTag` (string): HTML Tag to use for the heading. Defaults to `strong`.
-- `ignoreRel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
-- `showRel`: (boolean): If set to `true`, shows the `rel` types. Defaults to `false`.
+- `headingTag` / `heading-tag` (string): HTML Tag to use for the heading. Defaults to `strong`.
+- `ignoreRel` / `ignore-rel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
+- `showRel` / `show-rel`: (boolean): If set to `true`, shows the `rel` types. Defaults to `false`.
 
 
 ### `ObjectTree`
@@ -285,7 +285,7 @@ Often used as a fallback if no other form of presentation is known by the client
 **Properties:**
 
 - `data` (object): Any object (i.e. object, array or null)
-- `collapseAfter` (integer|null): The number of elements to display for each object or array until a "show all" button is shown. Set to `null` to show all elements. Defaults to `10`.
+- `collapseAfter` / `collapse-after` (integer|null): The number of elements to display for each object or array until a "show all" button is shown. Set to `null` to show all elements. Defaults to `10`.
 
 
 ### `Process`
@@ -295,8 +295,8 @@ Visualizes a single process following the openEO process description.
 **Properties:**
 
 - `process` (object, required): Process specification as defined by the openEO API (Either one of the array elements in the property `processes` returned by `GET /process` or the response from `GET /process_graphs/{process_graph_id}`).
-- `provideDownload` (boolean): Provide a link to download the JSON file (defaults to `true`).
-- `processUrl` (string): See the corresponding prop in [`Description`](#description).
+- `provideDownload` / `provide-download` (boolean): Provide a link to download the JSON file (defaults to `true`).
+- `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
 
 **Slots:**
 
@@ -314,11 +314,11 @@ Shows an (expandable) list of all processes available at a back-end.
 **Properties:**
 
 - `processes` (array, required): An array of processes as defined by the openEO API (`GET /processes` or `GET /process_graphs` although the latter is usually not complete).
-- `provideDownload` (boolean): See the corresponding prop in [`Process`](#process).
-- `processUrl` (string): See the corresponding prop in [`Description`](#description).
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `provideDownload` / `provide-download (boolean): See the corresponding prop in [`Process`](#process).
+- `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
+- `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
-- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 
@@ -342,16 +342,16 @@ A template to implement searchable, sortable and collapsible lists (all optional
 **Properties:**
 
 - `data` (array\<object>|object, required): The data to show in the list. Usually an array, but if an object is given the key of the elements is used as the default identifier. Each value of the array or object must be an object.
-- `identifierKey` (string|null): The key in the object to use as identifiers (first line of the list). If not `null`, overrides the default identifier set from object keys. Defaults to `id`.
-- `summaryKey` (string|null): The key in the object to use as summary (second line of the list). If set to `null`, no summary is shown. Defaults to `summary`.
-- `externalSearchTerm` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Default to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
-- `searchPlaceholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
+- `identifierKey` / `identifier-key` (string|null): The key in the object to use as identifiers (first line of the list). If not `null`, overrides the default identifier set from object keys. Defaults to `id`.
+- `summaryKey` / `summary-key` (string|null): The key in the object to use as summary (second line of the list). If set to `null`, no summary is shown. Defaults to `summary`.
+- `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Default to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
+- `searchPlaceholder` / `search-placeholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
 - `sort` (boolean): Sort the data by identifier. Defaults to `true`.
-- `offerDetails` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
+- `offerDetails` / `offer-details` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
 - `collapsed` (boolean|null): If set to a boolean value, the component is collapsible. If it's set to `true` the component is collapsed and only the heading is shown initially. If set to `false` the component is expanded. Defaults to `null`, which expands the list and doesn't offer to collapse it.
-- `showSummaryOnExpand` (boolean): If set to `false`, the summary gets hidden for expanded elements. Defaults to `true`.
+- `showSummaryOnExpand` / `show-summary-on-expand` (boolean): If set to `false`, the summary gets hidden for expanded elements. Defaults to `true`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `null`.
-- `searchMinLength` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
+- `searchMinLength` / `search-min-length` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
 
 **Slots:**
 
@@ -382,7 +382,7 @@ A simple input field for searching.
 
 - `value` / v-model (string, required): The search term given by the user.
 - `placeholder` (string): A placeholder string to show in the input field if no search term has been typed in. Defaults to `Search`.
-- `minLength` (number): Minimum length required for the search term. Defaults to `1`.
+- `minLength` / `min-length` (number): Minimum length required for the search term. Defaults to `1`.
 
 **Events:**
 
@@ -415,9 +415,9 @@ Visualizes all secondary web services supported by the back-end.
 **Properties:**
 
 - `services` (object, required): Supported secondary web services as defined by the openEO API (`GET /service_types`).
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
-- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
 
@@ -442,7 +442,7 @@ Visualizes the supported functionalities of the back-end.
 
 - `endpoints` (array, required): Supported endpoints as defined by the openEO API (`GET /capabilities`, property `endpoints`).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Supported Functionalities`.
-- `headingTag` (string): HTML Tag to use for the heading. Defaults to `h2`.
+- `headingTag` / `heading-tag` (string): HTML Tag to use for the heading. Defaults to `h2`.
 
 
 ### `Tabs` and `Tab`
@@ -503,7 +503,7 @@ window.addEventListener('resize', event => {
 - `selected` (boolean, default `false`): A single tab of a group should be selected by default by setting this property to `true`.
 - `enabled` (boolean, default `true`): Set to `false` to hide the tab completely from the user.
 - `closable` (boolean, default `false`): Set to `true` to show a close symbol, which can be used to close/remove the tab.
-- `allowShow` (function, default `null`): Asynchronous function that determines whether a tab can be shown. The function must `true` to allow switching the active tab. If `false` is returned, switching the tab is prevented. The tab to be shown is passed as a parameter.
+- `allowShow` / `allow-show` (function, default `null`): Asynchronous function that determines whether a tab can be shown. The function must `true` to allow switching the active tab. If `false` is returned, switching the tab is prevented. The tab to be shown is passed as a parameter.
 
 **Slots:**
 
@@ -642,9 +642,9 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 **Properties:**
 
 - `runtimes` (object, required): Supported UDF runtimes as defined by the openEO API (`GET /udf_runtimes`).
-- `searchTerm` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
-- `offerDetails` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
 

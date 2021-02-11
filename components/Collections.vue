@@ -19,7 +19,7 @@
 <script>
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'Collections',
 	components: {
 		Collection: () => Utils.loadAsyncComponent(import('./Collection.vue')),
@@ -54,6 +54,9 @@ export default Utils.enableHtmlProps({
 			type: Boolean,
 			default: null
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>

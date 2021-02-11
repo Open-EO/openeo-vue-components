@@ -182,7 +182,7 @@ StacFields.Registry.addMetadataFields({
 	}
 });
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'Collection',
 	components: {
 		Description: () => import('./Description.vue'),
@@ -290,6 +290,9 @@ export default Utils.enableHtmlProps({
 			return this.stac.Formatters.formatLicense(this.collection.license, null, null, this.collection);
 		}
 	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	},
 	mounted() {
 		this.initMap();
 	},
@@ -396,7 +399,7 @@ export default Utils.enableHtmlProps({
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
 		}
 	}
-})
+}
 </script>
 
 <style>

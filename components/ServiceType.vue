@@ -45,7 +45,7 @@
 <script>
 import Utils from '../utils.js';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'ServiceType',
 	components: {
 		DeprecationNotice: () => import('./DeprecationNotice.vue'),
@@ -81,8 +81,11 @@ export default Utils.enableHtmlProps({
 	},
 	filters: {
 		abbrev: Utils.prettifyAbbreviation
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>

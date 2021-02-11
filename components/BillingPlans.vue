@@ -29,7 +29,7 @@
 <script>
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'BillingPlans',
 	components: {
 		Description: () => import('./Description.vue')
@@ -58,8 +58,11 @@ export default Utils.enableHtmlProps({
 		plans() {
 			return Array.isArray(this.billing.plans) ? this.billing.plans : [];
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>

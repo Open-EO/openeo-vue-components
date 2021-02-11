@@ -66,8 +66,6 @@ No HTML:
 
 #### H4
 
-~Strikethrough~
-
 \`\`\`js
 if (a == b) console.log("Hello World");
 \`\`\`
@@ -120,11 +118,11 @@ if (a == b) console.log("Hello World");
 		},
 		"api-input": {
 			"formats": fileFormats,
-			"showOutput": false
+			"show-output": false
 		},
 		"api-output": {
 			"formats": fileFormats,
-			"showInput": false
+			"show-input": false
 		}
 	},
 	"json-schema": {
@@ -136,8 +134,8 @@ if (a == b) console.log("Hello World");
 		"gee-capabilities-links": {
 			"links": capabilities.links,
 			"heading": "Google Earth Engine Links",
-			"headingTag": "h3",
-			"ignoreRel": ['self', 'conformance']
+			"heading-tag": "h1",
+			"ignore-rel": ['self', 'conformance']
 		}
 	},
 	"object-tree": {
@@ -167,7 +165,7 @@ if (a == b) console.log("Hello World");
 			"processes": processes
 		}
 	},
-	// ToDo: SearchableList
+	// ToDo: SearchableList - see other implementing components for examples, e.g. Collections or Processes
 	"searchable-list": {
 		"empty": {}
 	},
@@ -191,7 +189,7 @@ if (a == b) console.log("Hello World");
 			"endpoints": capabilities.endpoints
 		}
 	},
-	// ToDo: Tab, Tabs
+	// ToDo: Tab, Tabs - see UdfRuntime component for an example
 	"udf-runtime": {
 		"api": {
 			"id": "R",

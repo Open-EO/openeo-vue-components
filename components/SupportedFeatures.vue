@@ -16,7 +16,7 @@
 import FeatureList from '../featurelist';
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'SupportedFeatures',
 	props: {
 		endpoints: {
@@ -98,8 +98,11 @@ export default Utils.enableHtmlProps({
                 }
             }
         }
-    }
-})
+    },
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	}
+}
 </script>
 
 <style>

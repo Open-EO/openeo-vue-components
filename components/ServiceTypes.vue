@@ -17,7 +17,7 @@
 <script>
 import Utils from '../utils.js';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'ServiceTypes',
 	components: {
 		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
@@ -48,8 +48,11 @@ export default Utils.enableHtmlProps({
 			type: Boolean,
 			default: null
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>

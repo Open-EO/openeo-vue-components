@@ -13,7 +13,7 @@
 <script>
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'LinkList',
 	props: {
 		links: {
@@ -45,8 +45,11 @@ export default Utils.enableHtmlProps({
 		friendlyLinks() {
 			return Utils.friendlyLinks(this.links, this.sort, this.ignoreRel);
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>

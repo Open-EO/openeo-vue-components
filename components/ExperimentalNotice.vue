@@ -8,12 +8,15 @@
 <script>
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'ExperimentalNotice',
 	props: {
 		entity: String
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>

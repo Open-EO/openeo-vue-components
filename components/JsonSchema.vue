@@ -100,8 +100,13 @@
 <script>
 import Utils from '../utils.js';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'JsonSchema',
+	components: {
+		Description: () => import('./Description.vue'),
+		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
+		'openeo-json-schema': () => import('./JsonSchema.vue')
+	},
 	props: {
 		schema: {
 			type: [Object, Array],
@@ -123,17 +128,10 @@ export default Utils.enableHtmlProps({
 			filteredObjectSchema: null
 		};
 	},
-	components: {
-		Description: () => import('./Description.vue'),
-		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
-		'openeo-json-schema': () => import('./JsonSchema.vue')
-	},
 	beforeCreate() {
+		Utils.enableHtmlProps(this);
 		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
-		this.$options.components.ProcessParameter = require('./internal/ProcessParameter.vue').default
-	},
-	created() {
-        this.updateData();
+		this.$options.components.ProcessParameter = require('./internal/ProcessParameter.vue').default;
 	},
 	computed: {
 		showSchema() {
@@ -168,27 +166,28 @@ export default Utils.enableHtmlProps({
 		}
 	},
 	watch: {
-		initShown(newVal, oldVal) {
+		initShown(newVal) {
 			this.visible = newVal;
 		},
-		schema() {
-			this.updateData();
+		schema: {
+			immediate: true,
+			handler(newSchema) {
+				var filtered = null;
+				for(var key in newSchema) {
+					if (key == 'required' || key == 'properties' || key == 'parameters' || key === 'returns') {
+						continue;
+					}
+					if (filtered === null) {
+						filtered = {};
+					}
+					filtered[key] = newSchema[key];
+				}
+				this.filteredObjectSchema = filtered;
+				this.visible = this.initShown;
+			}
 		}
 	},
 	methods: {
-		updateData() {
-			var filtered = null;
-			for(var key in this.schema) {
-				if (key == 'required' || key == 'properties' || key == 'parameters' || key === 'returns') {
-					continue;
-				}
-				if (filtered === null) {
-					filtered = {};
-				}
-				filtered[key] = this.schema[key];
-			}
-			this.filteredObjectSchema = filtered;
-		},
 		show() {
 			this.visible = true;
 		},
@@ -254,7 +253,7 @@ export default Utils.enableHtmlProps({
 			return true;
 		}
 	}
-})
+}
 </script>
 
 <style>

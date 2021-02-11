@@ -28,7 +28,7 @@
 <script>
 import Utils from '../utils.js';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'ObjectTree',
 	components: {
 		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
@@ -74,6 +74,9 @@ export default Utils.enableHtmlProps({
 			return [...arr.keys()];
 		}
 	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	},
     methods: {
 		prettifyKey(key) {
 			return Utils.prettifyString(key);
@@ -110,7 +113,7 @@ export default Utils.enableHtmlProps({
 			return false;
 		}
     }
-})
+}
 </script>
 
 <style>

@@ -84,7 +84,7 @@
 import ProcessExample from './internal/ProcessExample.vue';
 import Utils from '../utils.js';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'Process',
 	components: {
 		JsonSchema: () => import('./JsonSchema.vue'),
@@ -154,6 +154,9 @@ export default Utils.enableHtmlProps({
 			return [];
 		}
 	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	},
 	methods: {
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
@@ -171,7 +174,7 @@ export default Utils.enableHtmlProps({
 			downloadAnchorNode.remove();
 		}
 	}
-})
+}
 </script>
 
 <style>

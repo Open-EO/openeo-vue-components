@@ -20,7 +20,7 @@
 import Tab from './Tab.vue';
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: "Tabs",
 	components: {
 		Tab
@@ -86,6 +86,9 @@ export default Utils.enableHtmlProps({
 		activeTab() {
 			this.adjustSizes();
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	},
 	methods: {
 		addTab(name, icon = null, data = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null) {
@@ -208,7 +211,7 @@ export default Utils.enableHtmlProps({
 			}
 		}
 	}
-})
+}
 </script>
 
 <style>

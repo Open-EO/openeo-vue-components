@@ -7,7 +7,7 @@
 <script>
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'Tab',
 	props: {
 		id: {
@@ -45,6 +45,9 @@ export default Utils.enableHtmlProps({
 			active: false
 		};
 	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	},
 	mounted() {
 		this.active = this.selected;
 		this.$on('hide', () => this.active = false);
@@ -70,5 +73,5 @@ export default Utils.enableHtmlProps({
 			}
 		}
 	}
-})
+}
 </script>

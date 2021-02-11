@@ -68,7 +68,7 @@
 <script>
 import Utils from '../utils.js';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'UdfRuntime',
 	components: {
 		DeprecationNotice: () => import('./DeprecationNotice.vue'),
@@ -107,8 +107,11 @@ export default Utils.enableHtmlProps({
 				return this.runtime.default;
 			}
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>

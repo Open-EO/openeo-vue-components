@@ -6,7 +6,7 @@
 import * as commonmark from 'commonmark';
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'Description',
 	props: {
 		description: {
@@ -33,6 +33,9 @@ export default Utils.enableHtmlProps({
 			type: Boolean,
 			default: false
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	},
 	methods: {
 		markup(text) {
@@ -73,7 +76,7 @@ export default Utils.enableHtmlProps({
 			return `<code><a href="${url}" target="${target}" class="process-link">${processId}</a></code>`;
 		}
 	}
-})
+}
 </script>
 
 <style>

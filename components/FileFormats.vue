@@ -30,7 +30,7 @@
 <script>
 import Utils from '../utils.js';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'FileFormats',
 	components: {
 		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
@@ -94,8 +94,11 @@ export default Utils.enableHtmlProps({
 			}
 			return data;
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>

@@ -19,7 +19,7 @@
 <script>
 import Utils from '../utils';
 
-export default Utils.enableHtmlProps({
+export default {
 	name: 'Capabilities',
 	props: {
 		capabilities: {
@@ -62,8 +62,11 @@ export default Utils.enableHtmlProps({
 			}
 			return null;
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
-})
+}
 </script>
 
 <style>
