@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Web Components: With slow connections sometimes the data passed in `script` tags is not available (re-implementation of `Utils.enableHtmlProps`)
+- Web Components: Fixed README with regards to how the props must be used (kebab-case instead of camelCase)
+- Initial state for Tab(s) and JsonSchema components is correctly registered
+
 ## [2.0.0-rc.3] - 2020-02-10
 
 ### Changed
