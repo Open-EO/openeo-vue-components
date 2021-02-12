@@ -49,18 +49,35 @@ export default {
 		Utils.enableHtmlProps(this);
 	},
 	mounted() {
-		this.active = this.selected;
+		this.updateState();
 		this.$on('hide', () => this.active = false);
 		this.$on('show', () => this.active = true);
 	},
 	watch: {
-		enabled(newVal) {
-			if (!newVal && this.active && this.$parent && this.$parent.$options.name === 'Tabs') {
-				this.$parent.resetActiveTab(true);
-			}
+		selected() {
+			this.updateState();
+		},
+		enabled() {
+			this.updateState();
 		}
 	},
 	methods: {
+		updateState() {
+			this.active = this.selected;
+			if (this.enabled && this.active) {
+				this.getTabs().selectTab(this);
+			}
+			else {
+				this.getTabs().resetActiveTab(true);
+			}
+		},
+		getTabs() {
+			let parent = this.$parent;
+			while(parent && parent.$options.name !== 'Tabs') {
+				parent = parent.$parent;
+			}
+			return parent;
+		},
 		async canShow() {
 			if (this.active) {
 				return true;
