@@ -290,6 +290,11 @@ export default {
 			return this.stac.Formatters.formatLicense(this.collection.license, null, null, this.collection);
 		}
 	},
+	watch: {
+		boundingBoxes() {
+			this.initMap();
+		}
+	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
 	},
@@ -314,7 +319,12 @@ export default {
 					return;
 				}
 	
-				import('leaflet/dist/leaflet.css');
+				let css = await import('leaflet/dist/leaflet.css');
+				// In Web Component mode inject the CSS into the shadowroot
+				if (this.$root && this.$root.$options.shadowRoot && css.__inject__) {
+					css.__inject__(this.$root.$options.shadowRoot);
+				}
+
 				var map = new L.Map(this.$refs.mapContainer, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',

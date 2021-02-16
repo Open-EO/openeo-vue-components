@@ -15,7 +15,7 @@ class Utils extends CommonUtils {
 
     static enableHtmlProps(vm) {
         // Don't execute if not in web-component mode (i.e. check for the shadow root)
-        if (!Utils.isObject(vm.$parent) || !vm.$parent.$options.shadowRoot) {
+        if (!Utils.isObject(vm.$root) || !vm.$root.$options.shadowRoot) {
             return;
         }
 
@@ -26,7 +26,7 @@ class Utils extends CommonUtils {
 /*      if (Utils.isObject(vm.$options.props)) {
             for(let prop in vm.$options.props) {
                 let schema = vm.$options.props[prop];
-                let hasAttribute = vm.$parent.$options.shadowRoot.host.hasAttribute(Utils.camelToKebabCase(prop));
+                let hasAttribute = vm.$root.$options.shadowRoot.host.hasAttribute(Utils.camelToKebabCase(prop));
                 if (schema.default === true && !hasAttribute) {
                     vm.$options.propsData[prop] = true;
                 }
