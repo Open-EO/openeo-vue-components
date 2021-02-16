@@ -8,9 +8,10 @@ class Utils extends CommonUtils {
         return str.replace(/-(\w)/g, (_, c) => c ? c.toUpperCase() : '');
     }
 
-    static camelToKebabCase(str) {
-        return str.replace(/\B([A-Z])/g, '-$1').toLowerCase();
-    }
+    // Only required for the bugfix below
+/*  static camelToKebabCase(str) {
+      return str.replace(/\B([A-Z])/g, '-$1').toLowerCase();
+    } */
 
     static enableHtmlProps(vm) {
         // Don't execute if not in web-component mode (i.e. check for the shadow root)
@@ -20,7 +21,9 @@ class Utils extends CommonUtils {
 
         // Workaround for bug https://github.com/vuejs/vue-web-component-wrapper/issues/3
         // PR: https://github.com/vuejs/vue-web-component-wrapper/pull/58
-        if (Utils.isObject(vm.$options.props)) {
+        // I'm leaving this code here until we are sure this will not be reverted from the Vue Team
+        // camelToKebabCase
+/*      if (Utils.isObject(vm.$options.props)) {
             for(let prop in vm.$options.props) {
                 let schema = vm.$options.props[prop];
                 let hasAttribute = vm.$parent.$options.shadowRoot.host.hasAttribute(Utils.camelToKebabCase(prop));
@@ -28,7 +31,7 @@ class Utils extends CommonUtils {
                     vm.$options.propsData[prop] = true;
                 }
             }
-        }
+        } */
 
         // Read the HTML props once the page is completely loaded and all props are completely available
         if(document.readyState === 'complete') {
