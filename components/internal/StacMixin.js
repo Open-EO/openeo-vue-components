@@ -35,7 +35,7 @@ export default {
 	data() {
 		return {
 			map: null
-		}
+		};
 	},
 	computed: {
 		leafletOptions() {
@@ -72,6 +72,11 @@ export default {
 	watch: {
 		data() {
 			this.initMap();
+		},
+		showMap(val) {
+			if (val) {
+				this.initMap();
+			}
 		}
 	},
 	beforeCreate() {
@@ -97,7 +102,7 @@ export default {
 					console.warn("Leaflet is not available");
 					return;
 				}
-	
+
 				let css = await import('leaflet/dist/leaflet.css');
 				// In Web Component mode inject the CSS into the shadowroot
 				if (this.$root && this.$root.$options.shadowRoot && css.__inject__) {

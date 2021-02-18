@@ -145,6 +145,9 @@ import StacMixin from './internal/StacMixin.js';
 export default {
 	name: 'Collection',
 	mixins: [StacMixin],
+	// Mixins don't work properly in web components,
+	// see https://github.com/vuejs/vue-web-component-wrapper/issues/30
+	props: {...StacMixin.props},
 	data() {
 		return {
 			stac: Formatters

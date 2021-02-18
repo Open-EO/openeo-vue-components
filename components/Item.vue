@@ -60,6 +60,9 @@ import Utils from '../utils';
 export default {
 	name: 'Item',
 	mixins: [StacMixin],
+	// Mixins don't work properly in web components,
+	// see https://github.com/vuejs/vue-web-component-wrapper/issues/30
+	props: {...StacMixin.props},
 	data() {
 		return {
 			ignoredFields: ['title', 'description', 'deprecated']

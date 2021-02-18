@@ -8,37 +8,18 @@ class Utils extends CommonUtils {
         return str.replace(/-(\w)/g, (_, c) => c ? c.toUpperCase() : '');
     }
 
-    // Only required for the bugfix below
-/*  static camelToKebabCase(str) {
-      return str.replace(/\B([A-Z])/g, '-$1').toLowerCase();
-    } */
-
     static enableHtmlProps(vm) {
         // Don't execute if not in web-component mode (i.e. check for the shadow root)
         if (!Utils.isObject(vm.$root) || !vm.$root.$options.shadowRoot) {
             return;
         }
 
-        // Workaround for bug https://github.com/vuejs/vue-web-component-wrapper/issues/3
-        // PR: https://github.com/vuejs/vue-web-component-wrapper/pull/58
-        // I'm leaving this code here until we are sure this will not be reverted from the Vue Team
-        // camelToKebabCase
-/*      if (Utils.isObject(vm.$options.props)) {
-            for(let prop in vm.$options.props) {
-                let schema = vm.$options.props[prop];
-                let hasAttribute = vm.$root.$options.shadowRoot.host.hasAttribute(Utils.camelToKebabCase(prop));
-                if (schema.default === true && !hasAttribute) {
-                    vm.$options.propsData[prop] = true;
-                }
-            }
-        } */
-
         // Read the HTML props once the page is completely loaded and all props are completely available
-        if(document.readyState === 'complete') {
+        if(document.readyState !== 'loading') {
             Utils.readHtmlProps(vm);
         }
         else {
-            window.addEventListener('load', () => Utils.readHtmlProps(vm));
+            document.addEventListener('readystatechange', () => Utils.enableHtmlProps(vm), {once: true});
         }
     }
 
@@ -47,7 +28,7 @@ class Utils extends CommonUtils {
             return;
         }
 
-        // Read script tag for specific prop
+        // Read script tags
         let slots = vm.$slots.default.filter(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.type === 'application/json');
         for(let slot of slots) {
             let prop = null;
@@ -57,13 +38,11 @@ class Utils extends CommonUtils {
                 }
                 let value = JSON.parse(slot.data.domProps.innerHTML);
                 if (prop) {
-                    // Single prop
-                    vm.$set(vm.$props, prop, value);
+                    Utils.setProp(vm, prop, value); // Set a single prop
                 }
                 else if (Utils.isObject(value)) {
-                    // All props
-                    for(let key in value) {
-                        vm.$set(vm.$props, Utils.kebabToCamelCase(key), value[key]);
+                    for(let key in value) { // Set all props
+                        Utils.setProp(vm, key, value[key]);
                     }
                 }
                 else {
@@ -79,6 +58,14 @@ class Utils extends CommonUtils {
                 }
             }
         }
+    }
+
+    static setProp(vm, prop, value) {
+        // Depending on when during the page load this is executed, we
+        // need either to populate propsData (initially available) or
+        // $props (available after propsData has been read).
+        let propsRef = Utils.isObject(vm.$props) ? vm.$props : vm.$options.propsData;
+        vm.$set(propsRef, Utils.kebabToCamelCase(prop), value);
     }
 
     static loadAsyncComponent(importer) {

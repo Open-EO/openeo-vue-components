@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-rc.4] - 2020-02-18
+
 ### Added
 - Add component `Item` to render Batch Job Results and STAC Items
 
@@ -144,7 +146,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.3...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.4...HEAD
+[2.0.0-rc.4]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.3...v2.0.0-rc.4
 [2.0.0-rc.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.2...v2.0.0-rc.3
 [2.0.0-rc.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.1...v2.0.0-rc.2
 [2.0.0-rc.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-beta.2...v2.0.0-rc.1
