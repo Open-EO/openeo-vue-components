@@ -4,6 +4,9 @@
 .vue-component code.id {
 	color: maroon;
 }
+.vue-component abbr {
+	text-decoration: underline dotted 1px;
+}
 
 /* Comma separated list */
 .vue-component .comma-separated-list {
@@ -149,6 +152,48 @@
 	overflow: auto;
 }
 .vue-component .tabular .value > ul, .vue-component .tabular ul.value, .vue-component .tabular .value td > div {
-	max-height: 15em;
+	max-height: 20em;
 	overflow: auto;
+}
+
+/* STAC Collections and Items */
+.vue-component.stac .map {
+	background: transparent;
+}
+.vue-component.stac .tabular {
+	margin: 0.5em 0;
+}
+.vue-component.stac .tabular.wrap {
+	display: block;
+}
+.vue-component.stac .tabular.wrap .value {
+	margin-top: 0.5em;
+	margin-left: 1em;
+	margin-bottom: 0.5em;
+}
+.vue-component.stac .tabular .value ul {
+	padding-left: 20px;
+}
+.vue-component.stac .links:empty, .assets.empty {
+	display: none;
+}
+.vue-component.stac .thumbnails {
+	overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    white-space: nowrap;
+	padding: 5px;
+}
+.vue-component.stac .thumbnails a {
+	border: 5px solid transparent;
+	display: inline-block;
+}
+
+.vue-component.stac .thumbnails a:hover img {
+	border: 2px solid black;
+}
+.vue-component.stac .thumbnails a img {
+	max-height: 200px;
+	border: 2px solid white;
+	vertical-align: middle;
 }

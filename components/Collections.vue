@@ -4,7 +4,7 @@
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
-				<Collection :collection="slot.item" :mapOptions="mapOptions">
+				<Collection :data="slot.item" :mapOptions="mapOptions">
 					<template #title><span class="hidden" /></template>
 					<template #before-description="scope"><slot name="collection-before-description" v-bind="scope" /></template>
 					<template #end="scope"><slot name="collection-end" v-bind="scope" /></template>

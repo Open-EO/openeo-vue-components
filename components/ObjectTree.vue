@@ -36,7 +36,6 @@ export default {
 	},
 	props: {
 		data: {
-			type: [Object, Array],
 			default: null
 		},
 		// Set to null to disable collapsing

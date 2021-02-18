@@ -22,6 +22,7 @@ npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-componen
 	* [ExperimentalNotice](#experimentalnotice)
 	* [FileFormat](#fileformat)
 	* [FileFormats](#fileformats)
+	* [Item](#item)
 	* [JsonSchema](#jsonschema)
 	* [LinkList](#linklist)
 	* [ObjectTree](#objecttree)
@@ -125,13 +126,13 @@ Visualizes a single collection following the STAC-based collection description.
 
 **Properties:**
 
-- `collection` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collection_id}`).
+- `data` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collection_id}`).
 - `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"300px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.
-  - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `rectangles` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).
+  - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `geometries` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).
 
 **Slots:**
 
@@ -261,7 +262,31 @@ Renders JSON Schemas in a way that it's a bit easier for humans to read.
 **Properties:**
 
 - `schema` (object|array\<object>, required): Either a single JSON Schema as object or an array of JSON Schema objects.
-- `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description). 
+- `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
+
+### `Item`
+
+Visualizes a single STAC Item, e.g. a batch job result.
+
+**Warning:** This component is experimental and may change in future releases!
+
+**Properties:**
+
+- `data` (object, required): A single STAC-based Item object as defined by the openEO API (`GET /jobs/{job_id}/results`).
+- `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the item's geometry. Entirely optional. Possible keys:
+  - `height` (string): Height of the map container div. Defaults to `"300px"`.
+  - `width` (string): Width of the map container div. Defaults to `"auto"`.
+  - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
+  - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.
+  - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `geometries` (Geometry as Leaflet Geometry or Leaflet Wrapped Geometry in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).
+
+**Slots:**
+
+- `title`: HTML to display as the main heading. The component properties are passed through as slot properties with the same names.
+- `before-description`: HTML to display before the description. The component properties are passed through as slot properties with the same names.
+- `end`: HTML to display after the component. The component properties are passed through as slot properties with the same names.
+- `location`: HTML to display the geometry and/or bbox, e.g. a map. The slot property `geometry` provides a GeoJSON geometry and the slot property `bbox` contains an array with four elements (west, south, east, north) with the WGS84 coordinates. The component property `mapOptions` is also available as slot property.
+
 
 ### `LinkList`
 

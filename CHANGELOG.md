@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Add component `Item` to render Batch Job Results and STAC Items
+
+### Changed
+- `Collection`: Property `collection` has been renamed to `data`
+
 ### Fixed
 - Web Components: With slow connections sometimes the data passed in `script` tags is not available (re-implementation of `Utils.enableHtmlProps`)
 - Web Components: Fixed README with regards to how the props must be used (kebab-case instead of camelCase)

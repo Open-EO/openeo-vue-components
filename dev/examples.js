@@ -1,5 +1,6 @@
 let collection = require('./examples/collection-gee-s2.json');
 let collections = require('./examples/collections-gee.json');
+let item = require('./examples/item.json');
 let processes = require('./examples/processes-gee.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
@@ -22,7 +23,7 @@ module.exports = {
 	},
 	"collection": {
 		"gee": {
-			"collection": collection
+			"data": collection
 		}
 	},
 	"collections": {
@@ -98,7 +99,7 @@ if (a == b) console.log("Hello World");
 	"file-format": {
 		"output-gtiff": {
 			"id": "GTIFF",
-			"format": fileFormats.output.GTIFF,
+			"format": fileFormats.output.GTiff,
 			"type": "output"
 		},
 		"output-gpkg": {
@@ -123,6 +124,11 @@ if (a == b) console.log("Hello World");
 		"api-output": {
 			"formats": fileFormats,
 			"show-input": false
+		}
+	},
+	"item": {
+		"batch-job": {
+			"data": item
 		}
 	},
 	"json-schema": {
