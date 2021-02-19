@@ -205,7 +205,7 @@ export default {
 				features.addLayer(geom);
 			}
 		},
-		scrollToBands() {
+		scrollToBands(evt) {
 			let elem = this.$el.querySelector('#field_eo\\:bands');
 			if (elem) {
 				elem.scrollIntoView();

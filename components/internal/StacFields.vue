@@ -3,13 +3,13 @@
 		<template v-for="group in fields">
 			<component :is="headingTag" v-html="group.label" :key="group.extension" />
 			<div v-for="(prop, field) in group.properties" :key="group.extension + field" :id="'field_' + field" class="tabular" :class="{wrap: Boolean(prop.custom || prop.items)}">
-				<label :title="field" v-html="label(field)" />
+				<label :title="field" v-html="prop.label" />
 				<div v-if="prop.items" class="value">
 					<table v-for="(value, i) in normalize(prop.formatted)" :key="i" class="table">
 						<thead>
 							<tr>
 								<th v-if="!Array.isArray(value)">&nbsp;</th>
-								<th v-for="col in prop.itemOrder" :key="col" v-html="label(col, prop.items)"></th>
+								<th v-for="col in prop.itemOrder" :key="col" v-html="prop.items[col].label"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -135,7 +135,7 @@ export default {
 .vue-component.stac-fields .descrption p:last-of-type {
 	margin-bottom: 0;
 }
-.vue-component.stac-fields .table tr:hover, .vue-component.stac-fields .table tr:hover th {
+.vue-component.stac-fields .table tbody tr:hover, .vue-component.stac-fields .table tbody tr:hover th {
 	background-color: rgba(0, 0, 0, 0.1);
 }
 </style>
