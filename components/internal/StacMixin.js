@@ -1,6 +1,7 @@
 import Utils from '../../utils';
 
 const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
+const IMAGE_EXTENSIONS = ['gif', 'png', 'jpg', 'jpeg', 'webp'];
 
 export default {
 	components: {
@@ -87,7 +88,10 @@ export default {
 	},
 	methods: {
 		assetIsImage(asset) {
-			return Array.isArray(asset.roles) && asset.roles.includes('thumbnail') && IMAGE_MEDIA_TYPES.includes(asset.type);
+			let ext = typeof asset.href === 'string' ? asset.href.split('.').pop() : '';
+			return Array.isArray(asset.roles) && 
+				(asset.roles.includes('thumbnail') || asset.roles.includes('overview')) && 
+				(IMAGE_MEDIA_TYPES.includes(asset.type) || IMAGE_EXTENSIONS.includes(ext));
 		},
 		async initMap() {
 			if (!this.$refs.mapContainer) {

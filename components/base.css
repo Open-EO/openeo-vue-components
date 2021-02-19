@@ -182,18 +182,18 @@
     overflow-y: hidden;
     width: 100%;
     white-space: nowrap;
-	padding: 5px;
 }
 .vue-component.stac .thumbnails a {
-	border: 5px solid transparent;
+	margin: 5px;
 	display: inline-block;
 }
 
-.vue-component.stac .thumbnails a:hover img {
-	border: 2px solid black;
-}
 .vue-component.stac .thumbnails a img {
+	padding: 2px;
 	max-height: 200px;
-	border: 2px solid white;
 	vertical-align: middle;
+	border: 2px solid transparent;
+}
+.vue-component.stac .thumbnails a:hover img {
+	border: 2px solid rgba(0,0,0,0.5);
 }
