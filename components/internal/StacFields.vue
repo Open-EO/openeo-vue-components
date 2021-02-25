@@ -5,16 +5,16 @@
 			<div v-for="(prop, field) in group.properties" :key="group.extension + field" :id="'field_' + field" class="tabular" :class="{wrap: Boolean(prop.custom || prop.items)}">
 				<label :title="field" v-html="prop.label" />
 				<div v-if="prop.items" class="value">
-					<table v-for="(value, i) in normalize(prop.formatted)" :key="i" class="table">
+					<table class="table">
 						<thead>
 							<tr>
-								<th v-if="!Array.isArray(value)">&nbsp;</th>
+								<th v-if="!Array.isArray(prop.formatted)">&nbsp;</th>
 								<th v-for="col in prop.itemOrder" :key="col" v-html="prop.items[col].label"></th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(row, r) in value" :key="r">
-								<th v-if="!Array.isArray(value)">{{ r }}</th>
+							<tr v-for="(row, r) in prop.formatted" :key="r">
+								<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
 								<td v-for="col in prop.itemOrder" :key="col" v-html="row[col]" />
 							</tr>
 						</tbody>
