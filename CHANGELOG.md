@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0-rc.5] - 2020-02-26
+
+### Added
+- `DataTable` component
+- `SearchBox`: Property `compact` added
+
+### Changed
+- Upgraded to stac-fields v1.0.0-beta.3
+
+### Fixed
+- Label formatting in Collections
+- Scroll to bands in Collections
+- Previews in Items and Collections are shown correctly
+
 ## [2.0.0-rc.4] - 2020-02-18
 
 ### Added
@@ -146,7 +160,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.4...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.5...HEAD
+[2.0.0-rc.5]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.4...v2.0.0-rc.5
 [2.0.0-rc.4]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.3...v2.0.0-rc.4
 [2.0.0-rc.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.2...v2.0.0-rc.3
 [2.0.0-rc.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.1...v2.0.0-rc.2
