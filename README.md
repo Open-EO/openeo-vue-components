@@ -408,6 +408,7 @@ A simple input field for searching.
 - `value` / v-model (string, required): The search term given by the user.
 - `placeholder` (string): A placeholder string to show in the input field if no search term has been typed in. Defaults to `Search`.
 - `minLength` / `min-length` (number): Minimum length required for the search term. Defaults to `1`.
+- `compact` (boolean): Renders the search box more compact if set to `true`. Defaults to `false`.
 
 **Events:**
 

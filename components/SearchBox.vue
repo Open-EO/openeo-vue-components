@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-component search-box">
+	<div class="vue-component search-box" :class="{compact}">
 		<span class="icon">🔎</span>
 		<input type="search" v-model="searchTerm" :placeholder="placeholder" :minlength="minLength" :title="searchHint" />
 	</div>
@@ -20,6 +20,10 @@ export default {
 		minLength: {
 			type: Number,
 			default: 1
+		},
+		compact: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -53,11 +57,19 @@ export default {
     margin: 0 1px 1em 0;
     position: relative;
 }
+.vue-component.search-box.compact {
+	font-size: 0.9em;
+	margin-bottom: 0;
+}
 .vue-component.search-box input,
 .vue-component.search-box .icon {
 	height: 1.5em;
 	font-size: 1em;
 	margin: 0;
+}
+.vue-component.search-box.compact input {
+    padding-top: 0;
+    padding-bottom: 0;
 }
 .vue-component.search-box input {
     padding: 0.25em 0.3em;
@@ -78,5 +90,9 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+}
+.vue-component.search-box.compact .icon {
+    margin-top: 0.1em;
+    margin-left: 0.3em;
 }
 </style>
