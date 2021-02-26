@@ -172,6 +172,24 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
+### `DataTable`
+
+A relatively simple table component to show a list of data.
+
+**Warning:** This component is experimental and may change in future releases!
+
+**Properties:**
+
+- `columns` (object, required): The columns to show in the table.
+- `data` (array, required): An array of objects containing the data to show.
+
+**Slots:**
+
+- `toolbar`: A place on the top left to show a toolbar, e.g. for "Add" buttons.
+- *column-id*: A slot for the column with the name being the column identifer. Can be used to better visualize the values in the column. Passes the slot properties `row`, `col` and `id`.
+- `footer`: Show something after the table.
+
+
 ### `DeprecationNotice`
 
 Show a message that something has been deprecated.

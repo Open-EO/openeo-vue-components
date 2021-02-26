@@ -26,6 +26,7 @@ import BillingPlans from '../components/BillingPlans.vue';
 import Capabilities from '../components/Capabilities.vue';
 import Collection from '../components/Collection.vue';
 import Collections from '../components/Collections.vue';
+import DataTable from '../components/DataTable.vue';
 import DeprecationNotice from '../components/DeprecationNotice.vue';
 import Description from '../components/Description.vue';
 import ExperimentalNotice from '../components/ExperimentalNotice.vue';
@@ -53,6 +54,7 @@ export default {
 		Capabilities,
 		Collection,
 		Collections,
+		DataTable,
 		DeprecationNotice,
 		Description,
 		ExperimentalNotice,
