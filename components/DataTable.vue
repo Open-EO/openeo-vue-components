@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-components data-table">
+	<div class="vue-component data-table">
 		<div class="menu">
 			<div class="toolbar">
 				<slot name="toolbar"></slot>
@@ -107,9 +107,11 @@ export default {
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
+		console.log(this.$slots);
 	},
 	created() {
 		this.determinePrimaryKey();
+		console.log(this.$slots);
 	},
 	methods: {
 		canEdit(col) {
@@ -298,69 +300,69 @@ export default {
 </script>
 
 <style>
-.vue-components.data-table table {
+.vue-component.data-table table {
 	width: 100%;
     border-collapse: collapse;
 }
-.vue-components.data-table table td, .vue-components.data-table table th {
+.vue-component.data-table table td, .vue-component.data-table table th {
 	border: 1px solid #ddd;
 	padding: 0.2em;
 }
-.vue-components.data-table .filter-icon {
+.vue-component.data-table .filter-icon {
 	margin-right: 3px;
 }
-.vue-components.data-table th {
+.vue-component.data-table th {
 	text-align: left !important;
 }
-.vue-components.data-table th.sortable {
+.vue-component.data-table th.sortable {
 	cursor: pointer;
 }
-.vue-components.data-table th.sortable:hover {
+.vue-component.data-table th.sortable:hover {
 	cursor: pointer;
 	background-color: #eee;
 }
-.vue-components.data-table th.sort-asc:after, .vue-components.data-table th.sortable:after {
+.vue-component.data-table th.sort-asc:after, .vue-component.data-table th.sortable:after {
 	visibility: hidden;
 	margin-left: 5px;
 	font-weight: 100;
 	content: "⇑";
 }
-.vue-components.data-table th.sort-asc:after, .vue-components.data-table th.sortable:hover:after {
+.vue-component.data-table th.sort-asc:after, .vue-component.data-table th.sortable:hover:after {
 	visibility: visible;
 }
-.vue-components.data-table th.sort-desc:after {
+.vue-component.data-table th.sort-desc:after {
 	visibility: visible;
 	margin-left: 5px;
 	font-weight: 100;
 	content: "⇓";
 }
-.vue-components.data-table th.sort-asc:hover:after, .vue-components.data-table th.sort-desc:hover:after {
+.vue-component.data-table th.sort-asc:hover:after, .vue-component.data-table th.sort-desc:hover:after {
 	visibility: visible;
 	margin-left: 5px;
 	font-weight: 100;
 	content: "⇕";
 }
 
-.vue-components.data-table .no-results td {
+.vue-component.data-table .no-results td {
 	text-align: center;
 }
-.vue-components.data-table .menu {
+.vue-component.data-table .menu {
 	margin-bottom: 5px;
 	display: flex;
 	justify-content: space-between;
 }
-.vue-components.data-table .filter {
+.vue-component.data-table .filter {
 	flex-grow: 1;
 	text-align: right;
 	padding-left: 1em;
 	min-width: 4em;
 	max-width: 20em;
 }
-.vue-components.data-table .filter .edit {
+.vue-component.data-table .filter .edit {
 	cursor: pointer;
 }
 
-.vue-components.data-table .unit {
+.vue-component.data-table .unit {
 	opacity: 0.6;
 }
 </style>
