@@ -188,7 +188,6 @@ A relatively simple table component to show a list of data.
 
 - `toolbar`: A place on the top left to show a toolbar, e.g. for "Add" buttons.
 - *column-id*: A slot for the column with the name being the column identifer. Can be used to better visualize the values in the column. Passes the slot properties `row`, `col` and `id`.
-- `footer`: Show something after the table.
 
 
 ### `DeprecationNotice`

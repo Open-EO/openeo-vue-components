@@ -33,9 +33,6 @@
 			</tr>
 		</table>
 		<div class="no-data" v-else>{{ noDataMessage }}</div>
-		<div class="footer">
-			<slot name="footer"></slot>
-		</div>
 	</div>
 </template>
 
@@ -107,11 +104,9 @@ export default {
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
-		console.log(this.$slots);
 	},
 	created() {
 		this.determinePrimaryKey();
-		console.log(this.$slots);
 	},
 	methods: {
 		canEdit(col) {

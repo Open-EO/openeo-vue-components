@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `Collection`: Allow to pass `mapOptions` through to `Collection` component
 
+### Removed
+- `DataTable`: Slot `footer`
+
 ### Fixed
 - Fixed `DataTable` CSS
 
