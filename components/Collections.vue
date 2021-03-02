@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component collections">
-		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
+		<SearchableList :data="collections" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :mapOptions="mapOptions">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
@@ -53,6 +53,10 @@ export default {
 		collapsed: {
 			type: Boolean,
 			default: null
+		},
+		mapOptions: {
+			type: Object,
+			default: () => ({})
 		}
 	},
 	beforeCreate() {

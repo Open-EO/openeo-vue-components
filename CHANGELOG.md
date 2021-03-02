@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `Collection`: Allow to pass `mapOptions` through to `Collection` component
+
+### Fixed
+- Fixed `DataTable` CSS
+
 ## [2.0.0-rc.5] - 2020-02-26
 
 ### Added
@@ -29,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Collection`: Property `collection` has been renamed to `data`
 
 ### Fixed
-- Web Components: With slow connections sometimes the data passed in `script` tags is not available (re-implementation of `Utils.enableHtmlProps`)
+- Web Components: With slow connections sometimes the data passed in `script` tags was not available (re-implementation of `Utils.enableHtmlProps`)
 - Web Components: Fixed README with regards to how the props must be used (kebab-case instead of camelCase)
 - Initial state for Tab(s) and JsonSchema components is correctly registered
 

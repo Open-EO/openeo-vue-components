@@ -18,6 +18,7 @@ export default {
 		mapOptions: {
 			// It's not possible to specify defaults for the individual properties, therefore this prop is only accessed through a computed property which adds them in.
 			type: Object,
+			// Default values will be set in computed.leafletOptions
 			default: () => ({}),
 			validator: function(value) {
 				const allowedTypes = {  // keep in sync with Readme
