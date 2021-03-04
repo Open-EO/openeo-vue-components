@@ -1,6 +1,7 @@
 let collection = require('./examples/collection-gee-s2.json');
 let collections = require('./examples/collections-gee.json');
 let item = require('./examples/item.json');
+let items = require('./examples/items-ard-eodc.json');
 let processes = require('./examples/processes-gee.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
@@ -159,6 +160,12 @@ if (a == b) console.log("Hello World");
 	"item": {
 		"batch-job": {
 			"data": item
+		}
+	},
+	"items": {
+		"ard-eodc": {
+			"items": items,
+			"show-map": true
 		}
 	},
 	"json-schema": {

@@ -53,10 +53,6 @@ export default {
 		collapsed: {
 			type: Boolean,
 			default: null
-		},
-		mapOptions: {
-			type: Object,
-			default: () => ({})
 		}
 	},
 	beforeCreate() {

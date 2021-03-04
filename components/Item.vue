@@ -88,13 +88,13 @@ export default {
 		}
 	},
 	methods: {
-		addFeatures(features) {
-			let geom = L.geoJSON(this.data);
+		addFeatures() {
+			let geom = this.map.leaflet.geoJSON(this.data);
 			geom.setStyle({
 				color: '#3388ff',
 				fillOpacity: 0.2
 			});
-			features.addLayer(geom);
+			return geom;
 		}
 	}
 }

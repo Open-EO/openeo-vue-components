@@ -33,6 +33,7 @@ import ExperimentalNotice from '../components/ExperimentalNotice.vue';
 import FileFormat from '../components/FileFormat.vue';
 import FileFormats from '../components/FileFormats.vue';
 import Item from '../components/Item.vue';
+import Items from '../components/Items.vue';
 import JsonSchema from '../components/JsonSchema.vue';
 import LinkList from '../components/LinkList.vue';
 import ObjectTree from '../components/ObjectTree.vue';
@@ -61,6 +62,7 @@ export default {
 		FileFormat,
 		FileFormats,
 		Item,
+		Items,
 		JsonSchema,
 		LinkList,
 		ObjectTree,

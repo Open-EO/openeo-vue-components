@@ -99,14 +99,20 @@ export default {
 				await this.$nextTick();
 			}
 			if (!this.$refs.mapContainer || this.map !== null || !this.showMap) {
-				return;
+				return false;
 			}
 			try {
+				this.map = {
+					leaflet: null,
+					instance: null,
+					geometries: null
+				};
 				var L = require('leaflet');
 				if (!L) {
 					console.warn("Leaflet is not available");
-					return;
+					return false;
 				}
+				this.map.leaflet = L;
 
 				let css = await import('leaflet/dist/leaflet.css');
 				// In Web Component mode inject the CSS into the shadowroot
@@ -115,6 +121,7 @@ export default {
 				}
 
 				var map = new L.Map(this.$refs.mapContainer, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
+				this.map.instance = map;
 				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
 					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
@@ -122,31 +129,33 @@ export default {
 				});
 				osm.addTo(map);
 
-				let features = L.featureGroup();
-				features.addTo(map);
-
 				if (typeof this.addFeatures === 'function') {
-					this.addFeatures(features);
+					this.map.geometries = this.addFeatures();
+					if (this.map.geometries) {
+						this.map.geometries.addTo(map);
+					}
 				}
 
-				this.map = {
-					instance: map,
-					geometries: features
-				};
+				// Update map container in DOM
+				this.$refs.mapContainer.style.width = this.leafletOptions.width;
+				this.$refs.mapContainer.style.height = this.leafletOptions.height;
+				map.invalidateSize(false);
+				this.updateMapView();
 
-				this.setMapSize(this.leafletOptions.height, this.leafletOptions.width);
 				if (typeof this.mapOptions.onAfterMapInit === 'function') {
-					typeof this.mapOptions.onAfterMapInit(map, features);
+					typeof this.mapOptions.onAfterMapInit(map, this.map.geometries);
 				}
+				return true;
 			} catch (e) {
 				console.error(e);
+				return false;
 			}
 		},
-		setMapSize(height, width) {
-			// Update map container in DOM
-			this.$refs.mapContainer.style.width = width;
-			this.$refs.mapContainer.style.height = height;
-			this.map.instance.invalidateSize(false);
+		updateMapView() {
+			if (!this.map || !this.map.geometries) {
+				return;
+			}
+
 			// Compute somewhat smart map extent and zoom level around bbox
 			var bounds = this.map.geometries.getBounds();
 			var zoom = this.map.instance.getBoundsZoom(bounds);

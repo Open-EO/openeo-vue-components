@@ -13,6 +13,7 @@
 			</template>
 			<template v-else>
 				<SearchBox v-if="externalSearchTerm === null" v-model="searchTerm" :placeholder="searchPlaceholder" :minLength="searchMinLength" />
+				<slot name="after-search-box" :filteredCount="filteredCount" :summaries="summaries"></slot>
 				<p v-if="filteredCount === 0">No search results found.</p>
 				<ul v-else class="list" :class="{expandable: offerDetails}">
 					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i]}">
@@ -121,6 +122,7 @@ export default {
 				else {
 					this.summaries.forEach(item => this.$set(item, 'show', true));
 				}
+				this.$emit('summaries', this.summaries);
 			}
 		},
 		collapsed(newState) {
@@ -185,11 +187,16 @@ export default {
 				this.$parent.$emit('headingToggled', this.showList);
 			}
 		},
-		toggleDetails(id) {
+		toggleDetails(id, newState) {
 			if (!this.offerDetails) {
 				return;
 			}
-			let newState = !this.showDetails[id];
+			if (typeof newState === 'undefined') {
+				newState = !this.showDetails[id];
+			}
+			if (typeof this.showDetails[id] === 'undefined' && newState === false) {
+				return;
+			}
 			this.$set(this.showDetails, id, newState);
 			this.$emit('detailsToggled', newState, id);
 			if (this.$parent) {

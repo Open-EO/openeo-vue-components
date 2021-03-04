@@ -24,6 +24,7 @@ npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-componen
 	* [FileFormat](#fileformat)
 	* [FileFormats](#fileformats)
 	* [Item](#item)
+	* [Items](#items)
 	* [JsonSchema](#jsonschema)
 	* [LinkList](#linklist)
 	* [ObjectTree](#objecttree)
@@ -306,6 +307,37 @@ Visualizes a single STAC Item, e.g. a batch job result.
 - `location`: HTML to display the geometry and/or bbox, e.g. a map. The slot property `geometry` provides a GeoJSON geometry and the slot property `bbox` contains an array with four elements (west, south, east, north) with the WGS84 coordinates. The component property `mapOptions` is also available as slot property.
 
 
+### `Items`
+
+Shows an (expandable) list of STAC-based Items.
+
+**Warning:** This component is experimental and may change in future releases!
+
+**Properties:**
+
+- `items` (array|object, required): An array of STAC-based Item objects or a GeoJSON FeatureCollection containins STAC Items.
+- `showMap` / `show-map` (boolean): Show an overview map with all items. Default to `false`.
+- `mapOptions` / `map-options` (object): See the corresponding prop in [`Item`](#item).
+- `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
+- `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
+- `offerDetails` / `odder-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Items`.
+
+**Slots:**
+
+- `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `item-before-description`: See the corresponding slot `before-description` in [`Item`](#item).
+- `item-end`: See the corresponding slot `end` in [`Item`](#item).
+- `item-location`: See the corresponding slot `location` in [`Item`](#item).
+
+**Events:**
+
+- `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+
+
 ### `LinkList`
 
 A simple list of links.
@@ -401,6 +433,9 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `heading`: HTML to display the heading, which by default consists of a title (see property `heading`) and the count of elements available in total. Will also show the count of elements matching the search term, if a search term has been given. The following slot properties are made available:
 	- `filteredCount` (integer|null): The count of elements matching the search term. `null` if no search term has been specified and all elements are shown.
 	- `totalCount` (integer): The total count of elements.
+- `after-search-box`:
+	- `filteredCount` (integer|null): see above
+	- `summaries` (array\<object>): The list of summaries.
 - `summary`: HTML to display for the overview of the list element (includes identifier and summary). The following slot properties are made available:
 	- `summary` (object): An object with some high-level information for the list element: `identifier`, `summary`, `show` and `index`. This is what you usually want to show here.
 	- `item` (object): The original object from `data` for the list element.
@@ -415,6 +450,8 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `detailsToggled(expanded, identifier)`: Emits if a list element has been expanded or collapsed by the user.
     - `expanded` (boolean): Is `true` if the component is expanded, `false` otherwise.
     - `identifier` (boolean): Gives the identifier of the list element.
+- `summaries(summaries)`: Emits if the summaries have changed.
+	- `summaries` (array\<object>): The list of summaries.
 
 
 ### `SearchBox`
