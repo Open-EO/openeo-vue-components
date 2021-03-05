@@ -1,0 +1,96 @@
+{
+  "WMS": {
+    "title": "OGC Web Map Service",
+    "configuration": {
+      "version": {
+        "type": "string",
+        "description": "The WMS version offered to consumers of the service.",
+        "default": "1.3.0",
+        "enum": [
+          "1.1.1",
+          "1.3.0"
+        ]
+      }
+    },
+    "process_parameters": [
+      {
+        "name": "layer",
+        "description": "The layer name.",
+        "schema": {
+          "type": "string"
+        },
+        "default": "roads"
+      },
+      {
+        "name": "spatial_extent_west",
+        "description": "The lower left corner for coordinate axis 1 of the extent currently shown to the consumer.",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "spatial_extent_south",
+        "description": "The lower left corner for coordinate axis 2 of the extent currently shown to the consumer.",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "spatial_extent_east",
+        "description": "The upper right corner for coordinate axis 1 of the extent currently shown to the consumer.",
+        "schema": {
+          "type": "number"
+        }
+      },
+      {
+        "name": "spatial_extent_north",
+        "description": "The upper right corner for coordinate axis 2 of the extent currently shown to the consumer.",
+        "schema": {
+          "type": "number"
+        }
+      }
+    ],
+    "links": [
+      {
+        "href": "https://www.opengeospatial.org/standards/wms",
+        "rel": "about",
+        "title": "OGC Web Map Service Standard"
+      }
+    ]
+  },
+  "OGCAPI-FEATURES": {
+    "title": "OGC API - Features",
+    "description": "Exposes a OGC API - Features in version 1.0 of the specification (successor of OGC WFS 3.0).",
+    "configuration": {
+      "title": {
+        "type": "string",
+        "description": "The title for the OGC API - Features landing page"
+      },
+      "description": {
+        "type": "string",
+        "description": "The description for the OGC API - Features landing page"
+      },
+      "conformsTo": {
+        "type": "array",
+        "description": "The OGC API - Features conformance classes to enable for this service.\n\n`http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/core` is always enabled.",
+        "items": {
+          "type": "string",
+          "enum": [
+            "http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/oas30",
+            "http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/html",
+            "http://www.opengis.net/spec/ogcapi-features-1/1.0/conf/geojson",
+            "http://www.opengis.net/spec/ogcapi-features-2/1.0/conf/crs"
+          ]
+        }
+      }
+    },
+    "process_parameters": [],
+    "links": [
+      {
+        "href": "https://www.opengeospatial.org/standards/wfs",
+        "rel": "about",
+        "title": "OGC Web Feature Service Standard"
+      }
+    ]
+  }
+}

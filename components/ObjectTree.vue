@@ -1,51 +1,146 @@
 <template>
-	<em v-if="isEmpty">None</em>
-	<em v-else-if="collapsed">... (<a @click="toggle()">show all {{ data.length }} entries</a>)</em>
-	<ul v-else>
-		<li v-for="(value, key) in data" :key="key">
-			<template v-if="shouldShowKey"><em>{{ prettifyKey(key) }}</em>: </template>
-			<ObjectTree v-if="showObjectTree(value)" :data="value"></ObjectTree>
-			<template v-else>{{ value }}</template>
-		</li>
-	</ul>
+	<div class="vue-component object-tree" :class="{inline: size === 0}">
+		<em v-if="size === 0">{{ format(data) }}</em>
+		<template v-else-if="Array.isArray(data)">
+			<ol>
+				<li v-for="i in indicesShown" :key="i">
+					<openeo-object-tree v-if="isStructured(data[i])" :data="data[i]"></openeo-object-tree>
+					<a v-else-if="isUrl(data[i])" :href="data[i]" target="_blank">{{ data[i] }}</a>
+					<em v-else-if="format(data[i])">{{ format(data[i]) }}</em>
+					<template v-else>{{ data[i] }}</template>
+				</li>
+			</ol>
+			<button type="button" @click="show" v-if="size !== indicesShown.length">Show all {{ data.length }} entries</button>
+		</template>
+		<ul v-else-if="typeof data === 'object'">
+			<li v-for="(value, key) in data" :key="key">
+				<template><strong>{{ prettifyKey(key) }}</strong>: </template>
+				<openeo-object-tree v-if="isStructured(value)" :data="value"></openeo-object-tree>
+				<a v-else-if="isUrl(value)" :href="value" target="_blank">{{ value }}</a>
+				<em v-else-if="format(value)">{{ format(value) }}</em>
+				<template v-else>{{ value }}</template>
+			</li>
+		</ul>
+		<template v-else>{{ data }}</template>
+	</div>
 </template>
 
 <script>
 import Utils from '../utils.js';
 
 export default {
-    name: 'ObjectTree',
-	props: ['data'],
+	name: 'ObjectTree',
+	components: {
+		// Workaround for issue https://github.com/vuejs/vue-cli/issues/6225
+		'openeo-object-tree': () => import('./ObjectTree.vue')
+	},
+	props: {
+		data: {
+			default: null
+		},
+		// Set to null to disable collapsing
+		collapseAfter: {
+			type: Number,
+			default: 10
+		}
+	},
+	
 	data() {
 		return {
-			collapsed: false,
-			isObjectTree: true
+			expand: false
 		};
 	},
-	created() {
-		this.collapsed = (Array.isArray(this.data) && this.data.length > 50 && this.$parent.isObjectTree);
-	},
 	computed: {
-		shouldShowKey() {
-            // the first item's type is regarded as representative for the whole array despite arrays of mixed types being possible in JS
-            return !(Array.isArray(this.data) && this.data.length > 0 && typeof this.data[0] !== 'object');
+		isSingleValue() {
+			return (Array.isArray(this.data) && this.data.length === 1 && Utils.size(this.data[0]) === 0);
 		},
-        isEmpty() {
-            return this.data == null
-                || Array.isArray(this.data) && this.data.length == 0
-                || typeof this.data == 'object' && Object.keys(this.data).length == 0;
+		size() {
+            if (typeof this.data === 'object') {
+				return Utils.size(this.data);
+			}
+			else {
+				return 1; // One scalar value
+			}
 		},
+		indicesShown() {
+			if (!Array.isArray(this.data)) {
+				return [];
+			}
+			let arr = this.data;
+			if (!this.expand && this.collapseAfter !== null && this.size > this.collapseAfter) {
+				arr = Array(this.collapseAfter);
+			}
+			return [...arr.keys()];
+		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	},
     methods: {
 		prettifyKey(key) {
 			return Utils.prettifyString(key);
 		},
-		toggle() {
-			this.collapsed = !this.collapsed;
+		show() {
+			this.expand = true;
 		},
-		showObjectTree(value) {
-			return (typeof value === 'object') && !this.collapsed;
+		isStructured(value) {
+			return Utils.size(value) > 0;
+		},
+		format(value) {
+			if (value === null) {
+				return 'N/A';
+			}
+			else if (value === true) {
+				return 'TRUE';
+			}
+			else if (value === false) {
+				return 'FALSE';
+			}
+			else if (typeof value === 'object' && Utils.size(value) === 0) {
+				return 'Empty';
+			}
+
+			return null;
+		},
+		isUrl(url) {
+			if (typeof url === 'string') {
+				try {
+					new URL(url);
+					return true;
+				} catch (error) {}
+			}
+			return false;
 		}
     }
-};
+}
 </script>
+
+<style>
+@import url('./base.css');
+</style>
+
+<style scoped>
+.inline {
+	display: inline-block;
+}
+ol {
+	padding-left: 2em;
+	margin-bottom: 0.5em;
+}
+ul {
+	padding-left: 1em;
+}
+ol > li > div > ul {
+	padding-left: 0;
+}
+li {
+	margin-bottom: 0.25em;
+}
+ul > li {
+	list-style-type: none;
+}
+ol > li:only-child {
+	list-style-type: none;
+	margin-left: -2em;
+}
+</style>

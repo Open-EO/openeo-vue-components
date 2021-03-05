@@ -1,54 +1,74 @@
 <template>
-	<ul class="vue-component udf-runtimes">
-		<li v-for="(env, name) in udfRuntimes" :key="name">
-			<strong>{{ name }}</strong>
-			<template v-if="env.title"> - {{ env.title }}</template>
-			<ul class="badges small">
-				<template v-if="env.type === 'docker' || (env.docker && env.tags)">
-					<li class="badge docker">Docker: {{ env.docker }}</li>
-					<li class="badge version" :class="{default: tag === env.default}" v-for="tag in env.tags" :key="tag">{{ tag }}</li>
-				</template>
-				<template v-else>
-					<li class="badge version" :class="{default: version === env.default}" v-for="(lang, version) in env.versions" :key="version">{{ version }}</li>
-				</template>
-			</ul>
-		</li>
-	</ul>
+	<div class="vue-component udf-runtimes">
+		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
+			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
+			<template #summary="slot">
+				<slot name="summary" v-bind="slot">
+					<strong class="inline">{{ slot.summary.identifier }}</strong>
+					<ul class="badges small inline">
+						<template v-if="slot.item.type === 'docker' || (slot.item.docker && slot.item.tags)">
+							<li class="badge docker">Docker</li>
+							<li class="badge version" :class="{default: tag === slot.item.default}" v-for="tag in slot.item.tags" :key="tag">{{ tag }}</li>
+						</template>
+						<template v-else>
+							<li class="badge version" :class="{default: version === slot.item.default}" v-for="(lang, version) in slot.item.versions" :key="version">{{ version }}</li>
+						</template>
+					</ul><br />
+					<small>{{ slot.summary.summary }}</small>
+				</slot>
+			</template>
+			<template #details="slot">
+				<UdfRuntime :id="slot.summary.identifier" :runtime="slot.item">
+					<template #title><span class="hidden" /></template>
+					<template #badges="scope"><slot name="udf-runtime-badges" v-bind="scope" /></template>
+					<template #before-description="scope"><slot name="udf-runtime-before-description" v-bind="scope" /></template>
+				</UdfRuntime>
+			</template>
+		</SearchableList>
+	</div>
 </template>
 
 <script>
-import Utils from '../utils.js';
-import { Utils as CommonUtils } from '@openeo/js-commons';
-import BaseMixin from './BaseMixin.vue';
-import { MigrateCapabilities } from '@openeo/js-commons';
-import './base.css';
+import Utils from '../utils';
 
 export default {
 	name: 'UdfRuntimes',
-	mixins: [BaseMixin],
+	components: {
+		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
+		UdfRuntime: () => Utils.loadAsyncComponent(import('./UdfRuntime.vue'))
+	},
 	props: {
-		runtimes: Object
-	},
-	computed: {
-		udfRuntimes() {
-			return MigrateCapabilities.convertUdfRuntimesToLatestSpec(this.runtimes, this.version);
+		runtimes:  {
+			type: Object,
+			default: () => ({})
+		},
+		searchTerm: {
+			type: String,
+			default: null
+		},
+		sort: {
+			type: Boolean,
+			default: true
+		},
+		offerDetails: {
+			type: Boolean,
+			default: true
+		},
+		heading: {
+			type: String,
+			default: 'UDF Runtimes'
+		},
+		collapsed: {
+			type: Boolean,
+			default: null
 		}
 	},
-	methods: {
-		getCount() {
-			return CommonUtils.size(this.udfRuntimes);
-		}
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
 }
 </script>
 
-<style scoped>
-ul.udf-runtimes:empty::after {
-	content: 'None';
-	font-style: italic;
-}
-
-.badges {
-	margin-left: 0.5em;
-}
+<style>
+@import url('./base.css');
 </style>

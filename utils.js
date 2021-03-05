@@ -1,6 +1,82 @@
 import { Utils as CommonUtils } from '@openeo/js-commons';
+import Loading from './components/internal/Loading.vue';
+import Errored from './components/internal/Errored.vue';
 
 class Utils extends CommonUtils {
+
+    static kebabToCamelCase(str) {
+        return str.replace(/-(\w)/g, (_, c) => c ? c.toUpperCase() : '');
+    }
+
+    static enableHtmlProps(vm) {
+        // Don't execute if not in web-component mode (i.e. check for the shadow root)
+        if (!Utils.isObject(vm.$root) || !vm.$root.$options.shadowRoot) {
+            return;
+        }
+
+        // Read the HTML props once the page is completely loaded and all props are completely available
+        if(document.readyState !== 'loading') {
+            Utils.readHtmlProps(vm);
+        }
+        else {
+            document.addEventListener('readystatechange', () => Utils.enableHtmlProps(vm), {once: true});
+        }
+    }
+
+    static readHtmlProps(vm) {
+        if (!Utils.isObject(vm) || !Utils.isObject(vm.$slots) || !Array.isArray(vm.$slots.default)) {
+            return;
+        }
+
+        // Read script tags
+        let slots = vm.$slots.default.filter(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.type === 'application/json');
+        for(let slot of slots) {
+            let prop = null;
+            try {
+                if (typeof slot.data.attrs.prop === 'string' && slot.data.attrs.prop.length > 0) {
+                    prop = Utils.kebabToCamelCase(slot.data.attrs.prop);
+                }
+                let value = JSON.parse(slot.data.domProps.innerHTML);
+                if (prop) {
+                    Utils.setProp(vm, prop, value); // Set a single prop
+                }
+                else if (Utils.isObject(value)) {
+                    for(let key in value) { // Set all props
+                        Utils.setProp(vm, key, value[key]);
+                    }
+                }
+                else {
+                    console.error(`Props passed via script tag must be contained in an object.`);
+                }
+            }
+            catch (error) {
+                if (prop) {
+                    console.error(`Prop '${prop}' passed via script tag is invalid: ${error.message}`);
+                }
+                else {
+                    console.error(`Props passed via script tag are invalid: ${error.message}`);
+                }
+            }
+        }
+    }
+
+    static setProp(vm, prop, value) {
+        // Depending on when during the page load this is executed, we
+        // need either to populate propsData (initially available) or
+        // $props (available after propsData has been read).
+        let propsRef = Utils.isObject(vm.$props) ? vm.$props : vm.$options.propsData;
+        vm.$set(propsRef, Utils.kebabToCamelCase(prop), value);
+    }
+
+    static loadAsyncComponent(importer) {
+        return {
+            component: importer,
+            loading: Loading,
+            error: Errored,
+            delay: 0,
+            timeout: 10000
+        };
+    }
 
     static dataType(schema, short = false, level = 0, type = undefined) {
         if (Utils.isAnyType(schema)) {
@@ -58,21 +134,17 @@ class Utils extends CommonUtils {
     }
 
     static htmlentities_decode(str) {
-        if (typeof str === 'string') {
-            return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+        if (typeof str !== 'string') {
+            str = String(str);
         }
-        else {
-            return str;
-        }
+        return str.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'");
     }
 
     static htmlentities(str) {
-        if (typeof str === 'string') {
-            return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, '&apos;');
+        if (typeof str !== 'string') {
+            str = String(str);
         }
-        else {
-            return str;
-        }
+        return str.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, '&apos;');
     }
     
     static countObjectKeys(data) {
@@ -221,7 +293,28 @@ class Utils extends CommonUtils {
 			default:
 				return false;
 		}
-	}
+    }
+    
+    static toProcessParameters(parameters) {
+        if (Utils.isObject(parameters)) {
+            let processParameters = [];
+            for(let name in parameters) {
+                let param = parameters[name];
+                let schema = Utils.omitFromObject(param, ['description', 'required', 'default']);
+                processParameters.push({
+                    name,
+                    description: param.description,
+                    optional: !param.required,
+                    default: param.default,
+                    schema
+                });
+            }
+            return processParameters.sort((a,b) => Utils.compareStringCaseInsensitive(a.name, b.name));
+        }
+        else {
+            return [];
+        }
+    }
 
 
 };

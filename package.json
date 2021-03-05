@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -20,34 +20,33 @@
     "url": "https://github.com/open-eo/openeo-vue-components.git"
   },
   "scripts": {
-    "build": "vue-cli-service build --report --target lib --name openeo-vue main.js"
+    "build": "vue-cli-service build --report --target wc-async --inline-vue --name openeo \"./components/*.vue\"",
+    "serve": "vue-cli-service serve",
+    "wc-examples": "node ./dev/create-wc-examples.js",
+    "wc-serve": "npm run build && npm run wc-examples && http-server -o /examples -c-1"
   },
-  "main": "main.js",
+  "main": "assets/openeo.js",
   "files": [
     "assets/*.js",
-    "assets/*.css",
+    "assets/*.map",
     "components/*",
     "featurelist.js",
-    "main.js",
-    "stacutils.js",
     "utils.js"
   ],
   "dependencies": {
     "@openeo/js-commons": "^1.2.0",
+    "@radiantearth/stac-fields": "^1.0.0-beta.5",
     "commonmark": "^0.29.3",
-    "core-js": "^3.6.5"
-  },
-  "optionalDependencies": {
+    "core-js": "^3.8.2",
     "leaflet": "^1.6.0",
-    "leaflet.antimeridian": "^1.0.0"
+    "leaflet.antimeridian": "^1.0.0",
+    "vue": "^2.6.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.6",
     "@vue/cli-service": "~4.4.6",
+    "http-server": "^0.12.3",
     "vue-template-compiler": "^2.6.0"
-  },
-  "peerDependencies": {
-    "vue": "^2.6.0"
   },
   "browserslist": [
     "> 1%",

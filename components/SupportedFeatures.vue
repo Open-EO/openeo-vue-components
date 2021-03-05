@@ -1,22 +1,36 @@
 <template>
-	<ul class="vue-component features">
-		<li v-for="(status, feature) in supportedFeatures" :key="feature">
-            <span v-text="status.icon" :class="status.className" :title="status.tooltip"></span> {{ feature }}
-        </li>
-	</ul>
+    <div class="vue-component features">
+		<component v-if="heading" :is="headingTag">
+            {{ heading }}
+            ({{ supportedFeatureCount }}/{{ totalCount }})
+        </component>
+        <ul>
+            <li v-for="(status, feature) in supportedFeatures" :key="feature">
+                <span v-text="status.icon" :class="status.className" :title="status.tooltip"></span> {{ feature }}
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
 import FeatureList from '../featurelist';
-import { MigrateCapabilities, Versions } from '@openeo/js-commons';
-import './base.css';
+import Utils from '../utils';
 
 export default {
 	name: 'SupportedFeatures',
-	mixins: [BaseMixin],
 	props: {
-		endpoints: Array
+		endpoints: {
+			type: Array,
+			default: () => ([])
+		},
+		heading: {
+			type: String,
+			default: 'Supported Functionalities'
+		},
+		headingTag: {
+			type: String,
+			default: 'h2'
+		}
     },
     data() {
         return {
@@ -24,97 +38,89 @@ export default {
             supportedFeatureCount: 0
         };
     },
-    watch: {
-        endpoints() {
-            this.updateData();
+    computed: {
+        totalCount() {
+            return Utils.size(this.supportedFeatures);
         }
     },
-    methods: {
-        updateData() {
-            // Migrate endpoints to latest version (also update paths)
-            let migratedEndpoints = MigrateCapabilities.convertEndpointsToLatestSpec(this.endpoints, this.version, true);
-            
-            // Flatten list of supported endpoints
-            let supportedEndpointList = [];
-            for(let endpoint of migratedEndpoints) {
-                for(let method of endpoint.methods) {
-                    let request = method + ' ' + endpoint.path;
-                    supportedEndpointList.push(request.toLowerCase());
+    watch: {
+        endpoints: {
+            immediate: true,
+            handler(endpoints) {
+                // Flatten list of supported endpoints
+                let supportedEndpointList = [];
+                for(let endpoint of endpoints) {
+                    for(let method of endpoint.methods) {
+                        let request = method + ' ' + endpoint.path;
+                        supportedEndpointList.push(request.toLowerCase());
+                    }
                 }
-            }
 
-            // Reset variables
-            this.supportedFeatureCount = 0;
-            this.supportedFeatures = {};
-    
-            // Create report
-            for(let feature in FeatureList.features) {
-                let requiredEndpointsWithDescriptions = FeatureList.features[feature];
-                let requiredEndpoints = Object.keys(requiredEndpointsWithDescriptions);
-                // Get a list of unsupported, but required endpoints
-                let unsupported = requiredEndpoints.filter(requiredEndpoint => !supportedEndpointList.includes(requiredEndpoint));
-                let icon;
-                let className;
-                let tooltip;
-                switch(unsupported.length) {
-                    case 0:
-                        // No unsupported endpoints => fully supported
-                        this.supportedFeatureCount++;
-                        icon = '✔️';
-                        className = 'supported';
-                        tooltip = 'fully supported';
-                        break;
-                    case requiredEndpoints.length:
-                        // All endpoints are unsupported
-                        icon = '❌';
-                        className = 'unsupported';
-                        tooltip = 'not supported';
-                        break;
-                    default:
-                        // Some endpoints are supported => partially supported
-                        icon = '⚠️';
-                        className = 'partial';
-                        tooltip = 'partially supported, missing: ' + unsupported.map(ep => requiredEndpointsWithDescriptions[ep]).join(', ');
-                }
-                this.supportedFeatures[feature] = {
-                    icon: icon,
-                    className: className,
-                    tooltip: tooltip,
-                    missingEndpoints: unsupported
+                // Reset variables
+                this.supportedFeatureCount = 0;
+                this.supportedFeatures = {};
+        
+                // Create report
+                for(let feature in FeatureList.features) {
+                    let requiredEndpointsWithDescriptions = FeatureList.features[feature];
+                    let requiredEndpoints = Object.keys(requiredEndpointsWithDescriptions);
+                    // Get a list of unsupported, but required endpoints
+                    let unsupported = requiredEndpoints.filter(requiredEndpoint => !supportedEndpointList.includes(requiredEndpoint));
+                    let icon;
+                    let className;
+                    let tooltip;
+                    switch(unsupported.length) {
+                        case 0:
+                            // No unsupported endpoints => fully supported
+                            this.supportedFeatureCount++;
+                            icon = '✔️';
+                            className = 'supported';
+                            tooltip = 'fully supported';
+                            break;
+                        case requiredEndpoints.length:
+                            // All endpoints are unsupported
+                            icon = '❌';
+                            className = 'unsupported';
+                            tooltip = 'not supported';
+                            break;
+                        default:
+                            // Some endpoints are supported => partially supported
+                            icon = '⚠️';
+                            className = 'partial';
+                            tooltip = 'partially supported, missing: ' + unsupported.map(ep => requiredEndpointsWithDescriptions[ep]).join(', ');
+                    }
+                    this.supportedFeatures[feature] = {
+                        icon: icon,
+                        className: className,
+                        tooltip: tooltip,
+                        missingEndpoints: unsupported
+                    };
                 }
             }
-        },    
-        getFeatures() {
-            return Object.keys(FeatureList.features);
-        },
-        getFeatureCount() {
-            return this.getFeatures().length;
-        },
-        getSupportedFeatures() {
-            return this.supportedFeatures;
-        },
-        getSupportedFeatureCount() {
-            return this.supportedFeatureCount;
         }
-
-    }
+    },
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	}
 }
 </script>
 
-<style scoped>
-.features {
+<style>
+@import url('./base.css');
+
+.vue-component.features ul {
     padding: 0;
 }
-.features li {
+.vue-component.features ul li {
     list-style-type: none;
 }
-.supported {
+.vue-component.features .supported {
     color: darkgreen;
 }
-.unsupported {
+.vue-component.features .unsupported {
     color: maroon;
 }
-.partial {
+.vue-component.features .partial {
     color: darkgoldenrod;
 }
 </style>

@@ -1,6 +1,12 @@
 .vue-component .highlight-box {
 	box-shadow: 0 0 0 0.2em #c8e1ff;
 }
+.vue-component code.id {
+	color: maroon;
+}
+.vue-component abbr {
+	text-decoration: underline dotted 1px;
+}
 
 /* Comma separated list */
 .vue-component .comma-separated-list {
@@ -73,9 +79,15 @@
 	color: #fff;
 	background-color: #6c757d;
 }
+.vue-component .badges .badge:first-of-type {
+	margin-left: 0;
+}
 .vue-component .badges.small .badge {
 	padding: 0.2em 0.3em;
 	font-size: 0.75em;
+}
+.vue-component .badges.inline {
+	margin-left: 0.5em;
 }
 .vue-component .badges .badge a {
 	color: #fff;
@@ -96,12 +108,33 @@
 	color: #fff;
 	border-bottom-style: solid;
 }
+.vue-component .badges .default {
+	background-color: black;
+}
+.vue-component .badges .green {
+	background-color: green;
+}
+.vue-component .badges .red {
+	background-color: maroon;
+}
+.vue-component .badges .option1 {
+	background-color: #369;
+}
+.vue-component .badges .option2 {
+	background-color: #693;
+}
+.vue-component .badges .option3 {
+	background-color: #936;
+}
+.vue-component .badges .deprecated {
+	background-color: red;
+}
+.vue-component .badges .experimental {
+	background-color: blueviolet;
+}
 /* Badges for UDFs */
 .vue-component .badges .docker {
 	background-color: #0db7ed;
-}
-.vue-component .badges .default {
-	background-color: black;
 }
 
 /* Table like lists */
@@ -119,29 +152,48 @@
 	overflow: auto;
 }
 .vue-component .tabular .value > ul, .vue-component .tabular ul.value, .vue-component .tabular .value td > div {
-	max-height: 15em;
+	max-height: 20em;
 	overflow: auto;
 }
 
-/* Collapsible panels */
-
-.vue-component .collapsible {
-	margin-left: 1.5em;
+/* STAC Collections and Items */
+.vue-component.stac .map {
+	background: transparent;
 }
-.vue-component .collapsible h2 {
-	margin-left: -1.5em;
-	cursor: pointer;
-	border-bottom: 0;
+.vue-component.stac .tabular {
+	margin: 0.5em 0;
 }
-.vue-component h2 .toggle {
+.vue-component.stac .tabular.wrap {
+	display: block;
+}
+.vue-component.stac .tabular.wrap .value {
+	margin-top: 0.5em;
+	margin-left: 1em;
+	margin-bottom: 0.5em;
+}
+.vue-component.stac .tabular .value ul {
+	padding-left: 20px;
+}
+.vue-component.stac .links:empty, .assets.empty {
 	display: none;
 }
-.vue-component .collapsible h2 .toggle {
-	display: inline-block;
-	width: 0.5em;
-	margin: 0 0.5em;
+.vue-component.stac .thumbnails {
+	overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    white-space: nowrap;
 }
-.vue-component .collapsible.expanded h2 .toggle {
-	top: 1em;
-	transform: rotate(90deg);
+.vue-component.stac .thumbnails a {
+	margin: 5px;
+	display: inline-block;
+}
+
+.vue-component.stac .thumbnails a img {
+	padding: 2px;
+	max-height: 200px;
+	vertical-align: middle;
+	border: 2px solid transparent;
+}
+.vue-component.stac .thumbnails a:hover img {
+	border: 2px solid rgba(0,0,0,0.5);
 }

@@ -1,96 +1,74 @@
 <template>
 	<div class="vue-component capabilities">
-		<h2>{{ document.title || hostName }}</h2>
+		<h2>{{ title }}</h2>
 		<section class="base-data">
-			<div class="tabular"><label>URL:</label><span class="value">{{ url }}</span></div>
-			<div class="tabular"><label>openEO-Version:</label><span class="value">{{ version }}</span></div>
+			<div class="tabular" v-if="url2"><label>URL:</label><span class="value">{{ url2 }}</span></div>
+			<div class="tabular" v-if="capabilities.api_version"><label>openEO-Version:</label><span class="value">{{ capabilities.api_version }}</span></div>
 			<div class="tabular"><label>Production:</label><span class="value">
-				<template v-if="document.production">✔️</template>
+				<template v-if="capabilities.production">✔️</template>
 				<template v-else>❌</template>
 			</span></div>
 		</section>
-		<Description v-if="document.description" :description="document.description" />
-		<h3>Supported functionalities</h3>
-		<SupportedFeatures :endpoints="document.endpoints" />
-		<template v-if="document.billing">
-			<h3>Billing</h3>
-			<BillingPlans :billing="document.billing" />
-		</template>	
-		<h3>File formats for Import</h3>
-		<FileFormats :version="version" :formats="fileFormats" :showInput="true" />
-		<h3>File formats for Export</h3>
-		<FileFormats :version="version" :formats="fileFormats" :showOutput="true" />
-		<h3>Secondary web services</h3>
-		<ServiceTypes :version="version" :services="serviceTypes" />
-		<h3>Runtimes for User-Defined Functions (UDF)</h3>
-		<UdfRuntimes :version="version" :runtimes="udfRuntimes" />
-		<LinkList :links="document.links" :billing="document.billing" heading="More information" headingTag="h3" />
+		<Description v-if="capabilities.description" :description="capabilities.description" />
+		<SupportedFeatures :endpoints="capabilities.endpoints" headingTag="h3" />
+		<BillingPlans v-if="capabilities.billing" :billing="capabilities.billing" headingTag="h3" />
+		<LinkList :links="capabilities.links" heading="More information" headingTag="h3" />
 	</div>
 </template>
 
 <script>
-import BillingPlans from './BillingPlans.vue';
-import Description from './Description.vue';
-import LinkList from './LinkList.vue';
-import SupportedFeatures from './SupportedFeatures.vue';
-import FileFormats from './FileFormats.vue';
-import ServiceTypes from './ServiceTypes.vue';
-import UdfRuntimes from './UdfRuntimes.vue';
-import { MigrateCapabilities, Utils as CommonUtils } from '@openeo/js-commons';
-import './base.css';
+import Utils from '../utils';
 
 export default {
 	name: 'Capabilities',
 	props: {
-		capabilities: Object,
-		url: String,
-		serviceTypes: {
+		capabilities: {
 			type: Object,
-			default: () => null
+			default: () => ({})
 		},
-		fileFormats: {
-			type: Object,
-			default: () => null
-		},
-		udfRuntimes: {
-			type: Object,
-			default: () => null
+		url: {
+			type: String
 		}
 	},
 	components: {
-		BillingPlans,
-		Description,
-		LinkList,
-		SupportedFeatures,
-		FileFormats,
-		ServiceTypes,
-		UdfRuntimes
-	},
-	data() {
-		return {
-			version: "",
-			document: {}
-		};
+		BillingPlans: () => import('./BillingPlans.vue'),
+		Description: () => import('./Description.vue'),
+		LinkList: () => import('./LinkList.vue'),
+		SupportedFeatures: () => import('./SupportedFeatures.vue')
 	},
 	computed: {
-		hostName() {
-			var url = new URL(this.url);
-			return url.hostname;
+		title() {
+			if (typeof this.capabilities.title === 'string' && this.capabilities.title.length > 0) {
+				return this.capabilities.title;
+			}
+			else {
+				try {
+					var url = new URL(this.url);
+					return url.hostname;
+				} catch (error) {
+					return '';
+				}
+			}
+		},
+		url2() {
+			if (typeof this.url === 'string') {
+				return this.url;
+			}
+			else if (Array.isArray(this.capabilities.links)) {
+				let self = this.capabilities.links.find(link => link.rel === 'self');
+				if (self) {
+					return self.href;
+				}
+			}
+			return null;
 		}
 	},
-    created() {
-        this.updateData();
-    },
-    watch: {
-        version() {
-            this.updateData();
-        }
-    },
-	methods: {
-        updateData() {
-            this.version = MigrateCapabilities.guessApiVersion(this.capabilities);
-            this.document = MigrateCapabilities.convertCapabilitiesToLatestSpec(this.capabilities, this.version, false, true);
-        }
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
 }
 </script>
+
+<style>
+@import url('./base.css');
+</style>

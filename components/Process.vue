@@ -1,12 +1,10 @@
 <template>
-	<article class="vue-component process"><div :class="{collapsible: initiallyCollapsed, expanded: !collapsed}">
+	<article class="vue-component process">
 
-		<a class="anchor" :name="process.id"></a>
-		<h2 @click="toggle()">
-			<span class="toggle">▸</span>{{ process.id }}
-		</h2>
-
-		<slot name="process-before-summary"></slot>
+		<slot name="title" :v-bind="$props">
+			<a class="anchor" :name="process.id"></a>
+			<h2>{{ process.id }}</h2>
+		</slot>
 
 		<template v-if="provideDownload || hasElements(process.categories)">
 			<div class="process-bar">
@@ -30,117 +28,105 @@
 			</summary>
 		</template>
 
-		<slot name="process-after-summary"></slot>
+		<slot name="before-description" :v-bind="$props"></slot>
 
-		<div v-if="!collapsed">
+		<section class="description" v-if="process.description">
+			<h3>Description</h3>
+			<code class="signature" v-html="signature"></code>
+			<Description :description="process.description" :processUrl="processUrl" />
+			<DeprecationNotice v-if="process.deprecated" entity="process" />
+			<ExperimentalNotice v-if="process.experimental" entity="process" />
+		</section>
 
-			<slot name="process-before-details"></slot>
+		<section class="parameters">
+			<h3>Parameters</h3>
+			<ProcessParameter v-for="(param, i) in parameters" :key="i" :parameter="param" :processUrl="processUrl" />
+			<p v-if="parameters.length === 0">This process has no parameters.</p>
+		</section>
 
-			<section class="description" v-if="process.description">
-				<h3>Description</h3>
-				<code class="signature" v-html="signature"></code>
-				<Description :description="process.description" :processUrl="processUrl" />
-				<DeprecationNotice v-if="process.deprecated" entity="process" />
-				<ExperimentalNotice v-if="process.experimental" entity="process" />
-			</section>
+		<section class="returns">
+			<h3>Return Value</h3>
+			<Description v-if="returns.description" :description="returns.description" :processUrl="processUrl" />
+			<div class="json-schema-container" v-if="returns.schema">
+				<JsonSchema :schema="returns.schema" />
+			</div>
+		</section>
 
-			<section class="parameters">
-				<h3>Parameters</h3>
-				<ProcessParameter v-for="(param, i) in process.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
-				<p v-if="process.parameters.length === 0">This process has no parameters.</p>
-			</section>
+		<section class="exceptions" v-if="hasElements(process.exceptions)">
+			<h3>Errors/Exceptions</h3>
+			<ul>
+				<li class="exception" v-for="(exception, name) in process.exceptions" :key="name">
+					<code>{{ name }}</code>
+					<span class="http-code" v-if="exception.http"> — HTTP {{ exception.http }}</span>
+					<span class="error-code" v-if="exception.code"> — {{ exception.code }}</span>
+					<Description v-if="exception.description" :description="exception.description" :processUrl="processUrl" :compact="true" />
+					<div v-if="exception.message" class="message">Message: <em>{{ exception.message }}</em></div>
+				</li>
+			</ul>
+		</section>
 
-			<section class="returns">
-				<h3>Return Value</h3>
-				<Description v-if="process.returns.description" :description="process.returns.description" :processUrl="processUrl" />
-				<div class="json-schema-container" v-if="process.returns.schema">
-					<JsonSchema :schema="process.returns.schema" />
-				</div>
-			</section>
+		<section class="examples" v-if="hasElements(process.examples)">
+			<h3>Examples</h3>
+			<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="parameters" :processUrl="processUrl" />
+			<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
+		</section>
 
-			<section class="exceptions" v-if="hasElements(process.exceptions)">
-				<h3>Errors/Exceptions</h3>
-				<ul>
-					<li class="exception" v-for="(exception, name) in process.exceptions" :key="name">
-						<code>{{ name }}</code>
-						<span class="http-code" v-if="exception.http"> — HTTP {{ exception.http }}</span>
-						<span class="error-code" v-if="exception.code"> — {{ exception.code }}</span>
-						<Description v-if="exception.description" :description="exception.description" :processUrl="processUrl" :compact="true" />
-						<div v-if="exception.message" class="message">Message: <em>{{ exception.message }}</em></div>
-					</li>
-				</ul>
-			</section>
+		<section class="links">
+			<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
+		</section>
 
-			<section class="examples" v-if="hasElements(process.examples)">
-				<h3>Examples</h3>
-				<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="process.parameters" :processUrl="processUrl" />
-				<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
-			</section>
+		<slot name="end" :v-bind="$props"></slot>
 
-			<section class="links">
-				<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
-			</section>
-
-			<slot name="process-after-details"></slot>
-
-		</div>
-
-	</div></article>
+	</article>
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
-import DeprecationNotice from './DeprecationNotice.vue';
-import Description from './Description.vue';
-import ExperimentalNotice from './ExperimentalNotice.vue';
-import JsonSchema from './JsonSchema.vue';
-import LinkList from './LinkList.vue';
-import ProcessExample from './ProcessExample.vue';
-import ProcessParameter from './ProcessParameter.vue';
+import ProcessExample from './internal/ProcessExample.vue';
 import Utils from '../utils.js';
-import { MigrateProcesses } from '@openeo/js-commons';
-import './base.css';
 
 export default {
 	name: 'Process',
-	mixins: [BaseMixin],
 	components: {
-		JsonSchema,
-		DeprecationNotice,
-		Description,
-		ExperimentalNotice,
+		JsonSchema: () => import('./JsonSchema.vue'),
+		DeprecationNotice: () => import('./DeprecationNotice.vue'),
+		Description: () => import('./Description.vue'),
+		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
 		ProcessExample,
-		ProcessParameter,
-		LinkList
+		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
+		LinkList: () => import('./LinkList.vue')
 	},
 	props: {
-		processData: Object,
+		process: {
+			type: Object,
+			default: () => ({})
+		},
 		provideDownload: {
 			type: Boolean,
 			default: true
 		},
-		initiallyCollapsed: {
-			type: Boolean,
-			default: false
-		},
 		processUrl: String
 	},
-	data() {
-		return {
-			collapsed: false,
-			process: {}
-		}
-	},
-	watch: {
-		processData() {
-			this.updateData();
-		}
-	},
 	computed: {
+		parameters() {
+			if (Array.isArray(this.process.parameters)) {
+				return this.process.parameters;
+			}
+			else {
+				return [];
+			}
+		},
+		returns() {
+			if (Utils.isObject(this.process.returns)) {
+				return this.process.returns;
+			}
+			else {
+				return {};
+			}
+		},
 		signature(html = true) {
 			let params = [];
-			for(let i in this.process.parameters) {
-				let p = this.process.parameters[i];
+			for(let i in this.parameters) {
+				let p = this.parameters[i];
 				let pType = Utils.dataType(p.schema, true);
 				let req = p.optional ? '?' : '';
 				let pStr;
@@ -152,7 +138,7 @@ export default {
 				}
 				params.push(pStr);
 			}
-			let returns = Utils.dataType(this.process.returns.schema, true);
+			let returns = Utils.dataType(this.returns.schema, true);
 			let paramStr = "(" + params.join(", ") + ") : ";
 			if (html) {
 				return '<span class="process-name">' + this.process.id + '</span>' + paramStr + '<span class="data-type">' + Utils.htmlentities(returns) + "</span>";
@@ -168,31 +154,21 @@ export default {
 			return [];
 		}
 	},
-	beforeMount() {
-		if (this.initiallyCollapsed) {
-			this.collapsed = !this.collapsed;
-		}
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	},
 	methods: {
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
 		},
-		updateData() {
-			this.process = MigrateProcesses.convertProcessToLatestSpec(this.processData, this.version);
-		},
-		toggle() {
-			if (this.initiallyCollapsed) {
-				this.collapsed = !this.collapsed;
-			}
-		},
 		formatCategory(name) {
 			return name.replace('_', ' ');
 		},
 		download() {
-			let dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.processData, null, 2));
+			let dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.process, null, 2));
 			let downloadAnchorNode = document.createElement('a');
 			downloadAnchorNode.setAttribute("href", dataStr);
-			downloadAnchorNode.setAttribute("download", this.processData.id + ".json");
+			downloadAnchorNode.setAttribute("download", this.process.id + ".json");
 			document.body.appendChild(downloadAnchorNode);
 			downloadAnchorNode.click();
 			downloadAnchorNode.remove();
@@ -201,51 +177,53 @@ export default {
 }
 </script>
 
-<style scoped>
-.process-bar {
+<style>
+@import url('./base.css');
+
+.vue-component.process .process-bar {
 	display: flex;
 	align-items: baseline;
 }
-.badges {
+.vue-component.process .badges {
 	margin-bottom: 0.75em;
 }
-.categories {
+.vue-component.process .categories {
 	flex: 3;
 }
-.actions {
+.vue-component.process .actions {
 	flex: 1;
 	text-align: right;
 }
-.actions .action {
+.vue-component.process .actions .action {
 	background-color: chocolate;
 }
-.actions .action:hover {
+.vue-component.process .actions .action:hover {
 	background-color: black;
 }
-strong.deprecated {
+.vue-component.process strong.deprecated {
 	color: red;
 }
-strong.experimental {
+.vue-component.process strong.experimental {
 	color: blueviolet;
 }
-.exception {
+.vue-component.process .exception {
 	margin-top: 0.5em;
 }
-.exception code {
+.vue-component.process .exception code {
 	font-weight: bold;
 }
-.exception .styled-description {
+.vue-component.process .exception .styled-description {
 	margin: 0.5em 0;
 }
-.exception .message {
+.vue-component.process .exception .message {
 	margin: 0.5em 0;
 	font-size: 0.8em;
 }
-.process .signature {
+.vue-component.process .process .signature {
 	display: block;
 	margin: 1em 0;
 }
-.links:empty {
+.vue-component.process .links:empty {
 	display: none;
 }
 </style>

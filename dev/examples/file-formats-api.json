@@ -1,0 +1,114 @@
+{
+  "output": {
+    "GTiff": {
+      "title": "GeoTiff",
+      "description": "Export to GeoTiff. Doesn't support cloud-optimized GeoTiffs (COGs) yet.",
+      "gis_data_types": [
+        "raster"
+      ],
+      "parameters": {
+        "tiled": {
+          "type": "boolean",
+          "description": "This option can be used to force creation of tiled TIFF files [true]. By default [false] stripped TIFF files are created.",
+          "default": false
+        },
+        "compress": {
+          "type": "string",
+          "description": "Set the compression to use.",
+          "default": "none",
+          "enum": [
+            "JPEG",
+            "LZW",
+            "DEFLATE",
+            "NONE"
+          ]
+        },
+        "jpeg_quality": {
+          "type": "integer",
+          "description": "Set the JPEG quality when using JPEG.",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 75
+        }
+      },
+      "links": [
+        {
+          "href": "https://www.gdal.org/frmt_gtiff.html",
+          "rel": "about",
+          "title": "GDAL on the GeoTiff file format and storage options"
+        }
+      ]
+    },
+    "GPKG": {
+      "title": "OGC GeoPackage",
+      "gis_data_types": [
+        "raster",
+        "vector"
+      ],
+      "parameters": {
+        "version": {
+          "type": "string",
+          "description": "Set GeoPackage version. In AUTO mode, this will be equivalent to 1.2 starting with GDAL 2.3.",
+          "enum": [
+            "auto",
+            "1",
+            "1.1",
+            "1.2"
+          ],
+          "default": "auto"
+        }
+      },
+      "links": [
+        {
+          "href": "https://www.gdal.org/drv_geopackage_raster.html",
+          "rel": "about",
+          "title": "GDAL on GeoPackage for raster data"
+        },
+        {
+          "href": "https://www.gdal.org/drv_geopackage.html",
+          "rel": "about",
+          "title": "GDAL on GeoPackage for vector data"
+        }
+      ]
+    }
+  },
+  "input": {
+    "GPKG": {
+      "title": "OGC GeoPackage",
+      "gis_data_types": [
+        "raster",
+        "vector"
+      ],
+      "parameters": {
+        "table": {
+          "type": "string",
+          "required": true,
+          "description": "Name of the table containing the tiles (called “Tile Pyramid User Data Table” in the GeoPackage specification language)."
+        },
+        "version": {
+          "type": "string",
+          "description": "Set GeoPackage version. In AUTO mode, this will be equivalent to 1.2 starting with GDAL 2.3.",
+          "enum": [
+            "auto",
+            "1",
+            "1.1",
+            "1.2"
+          ],
+          "default": "auto"
+        }
+      },
+      "links": [
+        {
+          "href": "https://www.gdal.org/drv_geopackage_raster.html",
+          "rel": "about",
+          "title": "GDAL on GeoPackage for raster data"
+        },
+        {
+          "href": "https://www.gdal.org/drv_geopackage.html",
+          "rel": "about",
+          "title": "GDAL on GeoPackage for vector data"
+        }
+      ]
+    }
+  }
+}

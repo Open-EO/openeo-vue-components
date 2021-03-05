@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import Tab from './Tab.vue'
+import Tab from './Tab.vue';
+import Utils from '../utils';
 
 export default {
 	name: "Tabs",
@@ -50,7 +51,13 @@ export default {
 	mounted() {
 		if (Array.isArray(this.$children)) {
 			this.tabs = this.$children;
-			this.resetActiveTab();
+			let activeTabs = this.tabs.filter(tab => tab.active === true);
+			if (activeTabs.length === 1) {
+				this.activeTab = activeTabs[0];
+			}
+			else {
+				this.resetActiveTab();
+			}
 		}
 
 		this.$root.$on('windowResized', this.adjustSizes);
@@ -79,6 +86,9 @@ export default {
 		activeTab() {
 			this.adjustSizes();
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	},
 	methods: {
 		addTab(name, icon = null, data = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null) {
@@ -201,7 +211,7 @@ export default {
 			}
 		}
 	}
-};
+}
 </script>
 
 <style>

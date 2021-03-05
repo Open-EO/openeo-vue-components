@@ -1,52 +1,60 @@
 <template>
-	<ul class="vue-component service-types">
-		<li v-for="service in serviceTypes" :key="service.id">
-			<strong>{{ service.id | abbrev }}</strong>
-			<template v-if="service.title"> - {{ service.title }}</template>
-		</li>
-	</ul>
+	<div class="vue-component service-types">
+		<SearchableList :data="services" summaryKey="title" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
+			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
+			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
+			<template #details="slot">
+				<ServiceType :id="slot.summary.identifier" :service="slot.item">
+					<template #title><span class="hidden" /></template>
+					<template #before-description="scope"><slot name="service-type-before-description" v-bind="scope" /></template>
+					<template #end="scope"><slot name="service-type-end" v-bind="scope" /></template>
+				</ServiceType>
+			</template>
+		</SearchableList>
+	</div>
 </template>
 
 <script>
-import BaseMixin from './BaseMixin.vue';
 import Utils from '../utils.js';
-import { Utils as CommonUtils } from '@openeo/js-commons';
-import { MigrateCapabilities } from '@openeo/js-commons';
-import './base.css';
 
 export default {
 	name: 'ServiceTypes',
-	mixins: [BaseMixin],
+	components: {
+		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
+		ServiceType: () => Utils.loadAsyncComponent(import('./ServiceType.vue'))
+	},
 	props: {
-		services: Object
-	},
-	computed: {
-		serviceTypes() {
-			let serviceTypes = MigrateCapabilities.convertServiceTypesToLatestSpec(this.services, this.version);
-			let data = [];
-			for(var name in serviceTypes) {
-				let service = Object.assign({}, serviceTypes[name]);
-				service.id = name;
-				// Don't show title if equal to identifier
-				if (Utils.compareStringCaseInsensitive(service.id, service.title) === 0) {
-					delete service.title;
-				}
-				data.push(service);
-			}
-			return data.sort((a,b) => Utils.compareStringCaseInsensitive(a.id, b.id));
+		services: {
+			type: Object,
+			default: () => ({})
+		},
+		searchTerm: {
+			type: String,
+			default: null
+		},
+		sort: {
+			type: Boolean,
+			default: true
+		},
+		offerDetails: {
+			type: Boolean,
+			default: true
+		},
+		heading: {
+			type: String,
+			default: 'Secondary Web Services'
+		},
+		collapsed: {
+			type: Boolean,
+			default: null
 		}
 	},
-	methods: {
-		getCount() {
-			return CommonUtils.size(this.serviceTypes);
-		}
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
 }
 </script>
 
-<style scoped>
-ul.service-types:empty::after {
-	content: 'None';
-	font-style: italic;
-}
+<style>
+@import url('./base.css');
 </style>
