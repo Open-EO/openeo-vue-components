@@ -60,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `SearchableList`: The item keys `experimental` and `deprecated` lead to a different rendering.
 - `Collection`: Slot property `mapOptions` added.
-- `Collection`, `FileFormat`, `Process`, `ServiceType` and `UdfRuntime`: Slots pass through the props from the component.
+- `Collection`, `FileFormat`, `Process`, `ServiceType` and `UdfRuntime`: Slots pass through all the props from the component (except `spatial-extents` and `temporal-extents` in `Collection`).
 - `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`:
     - Events `headingToggled` and `detailsToggled` have been introduced
 	- Slot properties are passed through for slots that are made available in the sub-components (e.g. `Collection`)
@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - `SearchBox` component
-- `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `collapse` has been introduced
+- `Collections`, `FileFormats`, `Processes`, `SearchableList`, `ServiceTypes` and `UdfRuntimes`: Property `collapsed` has been introduced
 - `Collections`: Added slots `collection-before-description`, `collection-end`, `collection-spatial-extents`, `collection-temporal-extents` and `summary`
 - `FileFormats`: Added slots `file-format-before-description`, `file-format-end` and `summary`
 - `Processes`: Added slots `process-before-description`, `process-end` and `summary`
