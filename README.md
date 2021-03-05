@@ -78,7 +78,7 @@ The components are async web components, which means only the components you are
 
 ### Vue
 
-In a Vue environment, you can just import the Single File Components directly.
+In a Vue environment, you can just import the Single File Components (SFC) directly. I.e., they must be imported from the `components` folder as demonstrated below.
 
 First, you need to install the package: `npm install @openeo/vue-components --save`
 Now, you can import the Vue components with the `import` or `require`, depending on the module system you are using.
@@ -89,10 +89,10 @@ For example, the [`Capabilities`](#capabilities) component can be imported as fo
 
 Afterwards, you need to declare the component in the `components` section of your SFC, e.g. `components: { Capabilities }`.
 
-In the Template of your SFC you can now include the component as shown in the example below. Please note that `url` and `capabilities` must be defined in the SFC, e.g. in `data` property or as `computed` property.
+In the Template of your SFC you can now include the component as shown in the example below. Please note that the values `myUrl` and `myCapabilities` must be defined in the SFC, e.g. in the `data` property or as a `computed` property.
 
 ```html
-<Capabilities :url="url" :capabilities="capabilities"></Capabilities>
+<Capabilities :url="myUrl" :capabilities="myCapabilities"></Capabilities>
 ```
 
 *Note for Contributors*: This usage mode doesn't require the initial build step `npm run build`. The Vue Components can simply be imported from the `components` folder. You can also serve examples via HTTP with the command `npm run serve`.
@@ -188,7 +188,7 @@ A relatively simple table component to show a list of data.
 **Slots:**
 
 - `toolbar`: A place on the top left to show a toolbar, e.g. for "Add" buttons.
-- *column-id*: A slot for the column with the name being the column identifer. Can be used to better visualize the values in the column. Passes the slot properties `row`, `col` and `id`.
+- `column-id`: A slot for the column with the name being the column identifer. Can be used to better visualize the values in the column. Passes the slot properties `row`, `col` and `id`.
 
 
 ### `DeprecationNotice`
@@ -419,7 +419,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `data` (array\<object>|object, required): The data to show in the list. Usually an array, but if an object is given the key of the elements is used as the default identifier. Each value of the array or object must be an object.
 - `identifierKey` / `identifier-key` (string|null): The key in the object to use as identifiers (first line of the list). If not `null`, overrides the default identifier set from object keys. Defaults to `id`.
 - `summaryKey` / `summary-key` (string|null): The key in the object to use as summary (second line of the list). If set to `null`, no summary is shown. Defaults to `summary`.
-- `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Default to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
+- `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Setting to the empty string `""` effectively disables searching. Defaults to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
 - `searchPlaceholder` / `search-placeholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
 - `sort` (boolean): Sort the data by identifier. Defaults to `true`.
 - `offerDetails` / `offer-details` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
