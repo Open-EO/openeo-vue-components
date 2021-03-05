@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `Collection`: Allow to pass `mapOptions` through to `Collection` component
 - `Items` component
-- `SearchableList`: Slot `after-search-box` and event `summaries`
+- `SearchableList`: Slot `after-search-box` and event `summaries`
 
 ### Removed
 - `DataTable`: Slot `footer`
@@ -75,7 +75,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Do initial search if `externalSearchTerm` is given
     - Correctly call expand/collapse function for heading
 - `Utils.htmlentities` and `Utils.htmlentities_decode`: Always return a string
-- Web Component examples can also be created with `npm run wc-examples` if the examples folder doesn't exist before
+- Web Component examples can also be created with `npm run wc-examples`
 
 
 ## [2.0.0-rc.1] - 2020-01-22
