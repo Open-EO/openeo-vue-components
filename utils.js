@@ -29,7 +29,7 @@ class Utils extends CommonUtils {
         }
 
         // Read script tags
-        let slots = vm.$slots.default.filter(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.type.includes('application/json'));
+        let slots = vm.$slots.default.filter(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && typeof slot.data.attrs.type === 'string' && slot.data.attrs.type.includes('application/json'));
         // We are using `includes` here as for some strange reasons in Jupyter Notebooks subsequent re-renders of the cell
         // result in the attribute value being prefixed by a "true/", i.e.the value in slot.data.attrs.type is "true/application/json".
         for(let slot of slots) {
