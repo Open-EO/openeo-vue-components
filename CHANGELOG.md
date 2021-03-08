@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2020-03-08
+
+### Fixed
+
+- Fixed a rare issue in some environments (e.g. Jupyter Notebooks) in which the HTML props were not taken into account on subsequent calls. The type attribute for the slots is `true/application/json` for an unknown reason.
+
 ## [2.0.0] - 2020-03-04
 
 ### Added
