@@ -1,4 +1,4 @@
-import { Utils as CommonUtils } from '@openeo/js-commons';
+import CommonUtils from '@openeo/js-commons/src/utils';
 import Loading from './components/internal/Loading.vue';
 import Errored from './components/internal/Errored.vue';
 
@@ -15,7 +15,7 @@ class Utils extends CommonUtils {
         }
 
         // Read the HTML props once the page is completely loaded and all props are completely available
-        if(document.readyState !== 'loading') {
+        if(document.readyState === 'complete') {
             Utils.readHtmlProps(vm);
         }
         else {
