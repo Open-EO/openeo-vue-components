@@ -1,4 +1,5 @@
 import Utils from '../../utils';
+import Versions from '@openeo/js-commons/src/versions';
 
 const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 const IMAGE_EXTENSIONS = ['gif', 'png', 'jpg', 'jpeg', 'webp'];
@@ -94,6 +95,9 @@ export default {
 				(asset.roles.includes('thumbnail') || asset.roles.includes('overview')) && 
 				(IMAGE_MEDIA_TYPES.includes(asset.type) || IMAGE_EXTENSIONS.includes(ext));
 		},
+		initLeafletPlugins() {
+			// To be implemented in Collection/Item, if required.
+		},
 		async initMap() {
 			if (!this.$refs.mapContainer) {
 				await this.$nextTick();
@@ -101,18 +105,26 @@ export default {
 			if (!this.$refs.mapContainer || this.map !== null || !this.showMap) {
 				return false;
 			}
+			// Only use the L for leaflet temporarily and release it later again
+			let oldL = window.L;
 			try {
 				this.map = {
 					leaflet: null,
 					instance: null,
 					geometries: null
 				};
-				var L = require('leaflet');
-				if (!L) {
+				// Leaflet no conflict fix: Try to re-use an already available instance of Leaflet to avoid
+				// conflicts with other libraries such as ipyleaflet. Also, use L variable as long as initMap
+				// is running. For all other cases store Leaflet in this.map.leaflet, which can be used in other places.
+				let hasLeaflet = () => Utils.isObject(window.L) && Versions.compare(window.L.version, "1.x.x", "=");
+				if (!hasLeaflet()) {
+					window.L = require('leaflet');
+				}
+				if (!hasLeaflet()) {
 					console.warn("Leaflet is not available");
 					return false;
 				}
-				this.map.leaflet = L;
+				this.map.leaflet = window.L;
 
 				let css = await import('leaflet/dist/leaflet.css');
 				// In Web Component mode inject the CSS into the shadowroot
@@ -120,9 +132,9 @@ export default {
 					css.__inject__(this.$root.$options.shadowRoot);
 				}
 
-				var map = new L.Map(this.$refs.mapContainer, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
+				var map = this.map.leaflet.map(this.$refs.mapContainer, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
 				this.map.instance = map;
-				var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				var osm = this.map.leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					name: 'OpenStreetMap',
 					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
 					noWrap: this.leafletOptions.noWrap
@@ -145,9 +157,13 @@ export default {
 				if (typeof this.mapOptions.onAfterMapInit === 'function') {
 					typeof this.mapOptions.onAfterMapInit(map, this.map.geometries);
 				}
+				// Leaflet no conflict fix: Release L global variable again
+				window.L = oldL;
 				return true;
 			} catch (e) {
 				console.error(e);
+				// Leaflet no conflict fix: Release L global variable again
+				window.L = oldL;
 				return false;
 			}
 		},
