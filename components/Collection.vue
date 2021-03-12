@@ -185,11 +185,11 @@ export default {
 	methods: {
 		addFeatures() {
 			try {
-				this.map.leaflet.Wrapped = require('leaflet.antimeridian');
-			} catch (e) {
-				console.warn("Leaflet Antimeridian plugin is not available");
+				L.Wrapped = require('leaflet.antimeridian');
+			} catch (error) {
+				console.warn(`Leaflet Antimeridian plugin is not available: ${error.message}`);
 			}
-			let features = this.map.leaflet.featureGroup();
+			let features = L.featureGroup();
 			for(let bbox of this.boundingBoxes) {
 				let p = [[bbox[1], bbox[0]], [bbox[3], bbox[0]], [bbox[3], bbox[2]], [bbox[1], bbox[2]]];
 				let geom;
@@ -197,7 +197,7 @@ export default {
 					geom = new L.Wrapped.Polygon(p);
 				}
 				else {
-					geom = this.map.leaflet.polygon(p);
+					geom = L.polygon(p);
 				}
 				geom.setStyle({
 					color: '#3388ff',

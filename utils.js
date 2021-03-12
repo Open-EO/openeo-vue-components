@@ -1,4 +1,4 @@
-import { Utils as CommonUtils } from '@openeo/js-commons';
+import CommonUtils from '@openeo/js-commons/src/utils';
 import Loading from './components/internal/Loading.vue';
 import Errored from './components/internal/Errored.vue';
 
@@ -15,7 +15,7 @@ class Utils extends CommonUtils {
         }
 
         // Read the HTML props once the page is completely loaded and all props are completely available
-        if(document.readyState !== 'loading') {
+        if(document.readyState === 'complete') {
             Utils.readHtmlProps(vm);
         }
         else {
@@ -29,7 +29,7 @@ class Utils extends CommonUtils {
         }
 
         // Read script tags
-        let slots = vm.$slots.default.filter(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && slot.data.attrs.type.includes('application/json'));
+        let slots = vm.$slots.default.filter(slot => typeof slot.tag === 'string' && slot.tag.toUpperCase() === 'SCRIPT' && typeof slot.data.attrs.type === 'string' && slot.data.attrs.type.includes('application/json'));
         // We are using `includes` here as for some strange reasons in Jupyter Notebooks subsequent re-renders of the cell
         // result in the attribute value being prefixed by a "true/", i.e.the value in slot.data.attrs.type is "true/application/json".
         for(let slot of slots) {

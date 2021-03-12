@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component items">
-		<SearchableList :data="data" identfierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :mapOptions="mapOptions" @summaries="updateFeatures" ref="list">
+		<SearchableList :data="data" identifierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @summaries="updateFeatures" ref="list">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #after-search-box>
 				<slot v-if="showMap" name="map" :geojson="geojson" :mapOptions="mapOptions">
@@ -133,7 +133,7 @@ export default {
 				style: geoJsonStyle
 			});
 			geom.on('click', e => {
-  				var pt = L.latLngBounds(e.latlng, e.latlng);
+  				var pt = this.map.leaflet.latLngBounds(e.latlng, e.latlng);
 				geom.eachLayer(layer => {
 					let bounds = layer.getBounds();
 					let index = this.summaries.findIndex(d => d.identifier === layer.feature.id);

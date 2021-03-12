@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.2] - 2020-03-12
+
+### Changed
+
+- Conflicts with other Leaflet instances (e.g. from ipyleaflet) are mitigated
+
+### Fixed
+
+- Item and Collection metadata must be migrated with stac-migrate before passing the data to stac-fields
+- Fix some prop-related issues such as typos in the prop name
+- In some cases Web Components were not able to load the data passed via script tags
+- Event `summaries` was not emitted for all changes
+
 ## [2.0.1] - 2020-03-08
 
 ### Fixed
@@ -180,7 +193,9 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.2...HEAD
+[2.0.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.1...v2.0.2
+[2.0.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.5...v2.0.0
 [2.0.0-rc.5]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.4...v2.0.0-rc.5
 [2.0.0-rc.4]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.3...v2.0.0-rc.4

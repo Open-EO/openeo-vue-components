@@ -29,6 +29,7 @@
 
 <script>
 import StacFields from '@radiantearth/stac-fields';
+import StacMigrate from '@radiantearth/stac-migrate';
 
 StacFields.Registry.externalRenderer = true;
 StacFields.Registry.addMetadataFields({
@@ -72,21 +73,19 @@ export default {
 
 		},
 		fields() {
+			let data = JSON.parse(JSON.stringify(this.metadata));
 			if (this.isCollection) {
-				let summaries = Object.assign({}, this.metadata.summaries);
-
-				for(let key in this.metadata) {
-					// Move all custom top-level fields to summaries for easier visualization
+				data = StacMigrate.collection(data);
+				for(let key in data) {
+					// Copy all custom top-level fields to summaries for easier visualization
 					if (key === 'version' || (key !== 'cube:dimensions' && key.includes(':'))) {
-						summaries[key] = [this.metadata[key]];
+						data.summaries[key] = [data[key]];
 					}
 				}
-
-				let collection = Object.assign({}, this.metadata, {summaries});
-				return StacFields.formatSummaries(collection, this.ignoreFn);
+				return StacFields.formatSummaries(data, this.ignoreFn);
 			}
 			else {
-				return StacFields.formatItemProperties(this.metadata, this.ignoreFn);
+				return StacFields.formatItemProperties(StacMigrate.item(data), this.ignoreFn);
 			}
 		}
 	},
