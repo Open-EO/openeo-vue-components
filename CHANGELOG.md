@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Item and Collection metadata must be migrated with stac-migrate before passing the data to stac-fields
 - Fix some prop-related issues such as typos in the prop name
 - In some cases Web Components were not able to load the data passed via script tags
+- Event `summaries` was not emitted for all changes
 
 ## [2.0.1] - 2020-03-08
 

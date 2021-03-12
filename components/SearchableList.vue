@@ -109,6 +109,12 @@ export default {
 				this.searchTerm = typeof value === 'string' ? value : '';
 			}
 		},
+		summaries: {
+			immediate: true,
+			handler() {
+				this.$emit('summaries', this.summaries);
+			}
+		},
 		searchTerm: {
 			immediate: true,
 			handler(value) {
