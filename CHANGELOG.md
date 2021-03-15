@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.3] - 2020-03-15
+
+### Changed
+
+- Don't show margin for `pre` tag in Items and Collections.
+- Better format spatial reference systems for data cubes.
+
+### Fixed
+
+- Fix version check issue when Leaflet should be replaced by another mapping library.
+
 ## [2.0.2] - 2020-03-12
 
 ### Changed
@@ -193,7 +204,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.3...HEAD
+[2.0.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.0-rc.5...v2.0.0

@@ -116,7 +116,7 @@ export default {
 				// Leaflet no conflict fix: Try to re-use an already available instance of Leaflet to avoid
 				// conflicts with other libraries such as ipyleaflet. Also, use L variable as long as initMap
 				// is running. For all other cases store Leaflet in this.map.leaflet, which can be used in other places.
-				let hasLeaflet = () => Utils.isObject(window.L) && Versions.compare(window.L.version, "1.x.x", "=");
+				let hasLeaflet = () => Utils.isObject(window.L) && Versions.validate(window.L.version) && Versions.compare(window.L.version, "1.x.x", "=");
 				if (!hasLeaflet()) {
 					window.L = require('leaflet');
 				}
