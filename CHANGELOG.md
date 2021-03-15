@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Don't show margin for `pre` tag in Items and Collections.
+- Better format spatial reference systems for data cubes.
+
+### Fixed
+
+- Fix version check issue when Leaflet should be replaced by another mapping library.
+
 ## [2.0.2] - 2020-03-12
 
 ### Changed

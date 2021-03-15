@@ -155,6 +155,9 @@
 	max-height: 20em;
 	overflow: auto;
 }
+.vue-component .tabular .value pre {
+	margin: 0;
+}
 
 /* STAC Collections and Items */
 .vue-component.stac .map {

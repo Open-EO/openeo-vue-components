@@ -114,7 +114,9 @@
 					<div class="tabular" v-if="typeof dim.reference_system !== 'undefined'">
 						<label>Reference System:</label>
 						<div class="value">
-							<template v-if="typeof dim.reference_system === 'number'">EPSG {{ dim.reference_system }}</template>
+							<div class="epsg" v-if="typeof dim.reference_system === 'number'" v-html="stac.formatEPSG(dim.reference_system)" />
+							<div class="wkt2" v-else-if="typeof dim.reference_system === 'string'" v-html="stac.formatWKT2(dim.reference_system)" />
+							<ObjectTree v-else-if="typeof dim.reference_system === 'object'" :data="dim.reference_system" />
 							<template v-else>{{ dim.reference_system }}</template>
 						</div>
 					</div>
@@ -144,6 +146,9 @@ import StacMixin from './internal/StacMixin.js';
 
 export default {
 	name: 'Collection',
+	components: {
+		ObjectTree: () => import('./ObjectTree.vue')
+	},
 	mixins: [StacMixin],
 	// Mixins don't work properly in web components,
 	// see https://github.com/vuejs/vue-web-component-wrapper/issues/30
