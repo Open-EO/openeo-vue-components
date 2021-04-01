@@ -1,4 +1,5 @@
 module.exports = {
+	publicPath: process.env.CLIENT_URL || '/',
     outputDir: './assets/',
     configureWebpack: {
         devtool: 'source-map',

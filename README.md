@@ -7,6 +7,8 @@ Legacy versions supporting API version 0.x are available as [releases](https://g
 
 npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-components)
 
+Examples (dev): <https://open-eo.github.io/openeo-vue-components/>
+
 **Table of Contents:**
 
 1. [Usage](#usage)

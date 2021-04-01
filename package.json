@@ -21,6 +21,7 @@
   },
   "scripts": {
     "build": "vue-cli-service build --report --target wc-async --inline-vue --name openeo \"./components/*.vue\"",
+    "build-examples": "vue-cli-service build",
     "serve": "vue-cli-service serve",
     "wc-examples": "node ./dev/create-wc-examples.js",
     "wc-serve": "npm run build && npm run wc-examples && http-server -o /examples -c-1"
