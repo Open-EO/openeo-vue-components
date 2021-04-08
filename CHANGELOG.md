@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `UdfRuntime`: Full support for experimental and deprecated flags
+
 ## [2.0.3] - 2020-03-15
 
 ### Changed

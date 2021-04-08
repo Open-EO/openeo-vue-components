@@ -47,12 +47,15 @@
 					<ul v-if="version === runtime.default" class="badges">
 						<li class="badge default">default</li>
 					</ul>
+					<DeprecationNotice v-if="env.deprecated" entity="UDF runtime version" />
+					<ExperimentalNotice v-if="env.experimental" entity="UDF runtime version" />
 					<p>This runtime includes support for:</p>
 					<ul>
 						<li class="library" v-for="(library, name) in env.libraries" :key="name">
 							{{ name }}
 							<ul class="badges small">
 								<span class="badge">{{ library.version }}</span>
+								<span v-if="library.experimental" class="badge experimental">experimental</span>
 								<span v-if="library.deprecated" class="badge deprecated">deprecated</span>
 							</ul>
 							<LinkList :links="library.links" />
