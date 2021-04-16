@@ -538,6 +538,7 @@ Creates a tab interface.
 
 - `id` (string, required): A unique identifier for the tab container.
 - `pills` (boolean, default `false`): Switch between [normal boxed tabs and tabs with pills styling](https://www.w3schools.com/bootstrap/bootstrap_tabs_pills.asp).
+- `pillsMultiline` / `pills-multiline` (boolean, default `false`): If pills are active, the pills in the tabs header can be shown in multiple lines instead of squeezing all pills into a single line.
 - `position` (string, default `top`): Position of the tabs/pills, either `top` or `bottom`.
 
 **Methods:**
@@ -565,6 +566,10 @@ Creates a tab interface.
 - `tabName`: A slot that can be used to customize the appearance of the tab name for each tab. The slot applies to *all* tabs. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
 - `dynamic`: Default content for dynamic tabs. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
 - The content for each dynamic tab that is added programmatically via the `addTab` method can also be filled with a slot that has the id of the tab (see example below). Otherwise the content of the `dynamic` slot is used. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
+
+**Events:**
+
+- `@selected`: Fired when a Tab has been selected. The selected tab is passed as a parameter to the listener.
 
 **Notes:**
 

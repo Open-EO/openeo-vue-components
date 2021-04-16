@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Tabs`:
+  - Event `selected`
+  - Prop `pillsMultiline` to show pills in multiple rows
+
 ### Changed
 
 - `UdfRuntime`: Full support for experimental and deprecated flags

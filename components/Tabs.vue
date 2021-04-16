@@ -34,6 +34,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		pillsMultiline: {
+			type: Boolean,
+			default: false
+		},
 		position: {
 			type: String,
 			default: 'top'
@@ -78,6 +82,9 @@ export default {
 			}
 			if (this.spaceLimited) {
 				classes.push('spaceLimited');
+			}
+			if (this.pills && this.pillsMultiline) {
+				classes.push('multiline');
 			}
 			return classes;
 		}
@@ -176,6 +183,7 @@ export default {
 				}
 				this.activeTab = selectedTab;
 				this.activeTab.active = true;
+				this.$emit('selected', selectedTab);
 				// Make sure the component is really shown by using nextTick...
 				this.$nextTick(() => this.activeTab.$emit('show', this.activeTab));
 			}
@@ -235,6 +243,9 @@ export default {
 }
 .tabs.boxed > .tabsHeader {
 	background-color: #f9f9f9;
+}
+.tabs.pills.multiline > .tabsHeader {
+	display: block;
 }
 .tabs .tabsBody {
 	flex-grow: 1;
@@ -320,6 +331,9 @@ export default {
 	border-radius: 5px;
 	color: #000;
 	opacity: 0.6;
+}
+.tabs.pills.multiline > .tabsHeader > .tabItem {
+	display: inline-block;
 }
 .tabs .tabItem:focus {
 	outline: none;
