@@ -374,11 +374,13 @@ Visualizes a single process following the openEO process description.
 - `process` (object, required): Process specification as defined by the openEO API (Either one of the array elements in the property `processes` returned by `GET /process` or the response from `GET /process_graphs/{process_graph_id}`).
 - `provideDownload` / `provide-download` (boolean): Provide a link to download the JSON file (defaults to `true`).
 - `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
+- `showGraph` / `show-graph` (object): Show and visualize the process graph (defaults to `false`).
 
 **Slots:**
 
 - `title`: HTML to display the main heading.
 - `before-description`: HTML to display before the description.
+- `process-graph`: HTML to visualize the process graph.
 - `end`: HTML to display after the component.
 
 For all slots, the component properties are passed through as slot properties with the same names.

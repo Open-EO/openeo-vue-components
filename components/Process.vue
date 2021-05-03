@@ -46,10 +46,13 @@
 
 		<section class="returns">
 			<h3>Return Value</h3>
-			<Description v-if="returns.description" :description="returns.description" :processUrl="processUrl" />
-			<div class="json-schema-container" v-if="returns.schema">
-				<JsonSchema :schema="returns.schema" />
-			</div>
+			<template v-if="returns.description || returns.schema">
+				<Description v-if="returns.description" :description="returns.description" :processUrl="processUrl" />
+				<div class="json-schema-container" v-if="returns.schema">
+					<JsonSchema :schema="returns.schema" />
+				</div>
+			</template>
+			<p v-if="parameters.length === 0">The return value has not been defined.</p>
 		</section>
 
 		<section class="exceptions" v-if="hasElements(process.exceptions)">
@@ -75,6 +78,15 @@
 			<LinkList :links="process.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'example']" />
 		</section>
 
+		<section class="process-graph" v-if="showGraph && process.process_graph">
+			<h3>Processing Instructions</h3>
+			<div class="graph">
+				<slot name="process-graph" :v-bind="$props">
+					<ObjectTree :data="process.process_graph" />
+				</slot>
+			</div>
+		</section>
+
 		<slot name="end" :v-bind="$props"></slot>
 
 	</article>
@@ -93,7 +105,8 @@ export default {
 		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
 		ProcessExample,
 		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
-		LinkList: () => import('./LinkList.vue')
+		LinkList: () => import('./LinkList.vue'),
+		ObjectTree: () => import('./ObjectTree.vue')
 	},
 	props: {
 		process: {
@@ -104,7 +117,11 @@ export default {
 			type: Boolean,
 			default: true
 		},
-		processUrl: String
+		processUrl: String,
+		showGraph: {
+			type: Boolean,
+			default: false
+		}
 	},
 	computed: {
 		parameters() {
@@ -222,6 +239,15 @@ export default {
 .vue-component.process .process .signature {
 	display: block;
 	margin: 1em 0;
+}
+.vue-component.process .process-graph .graph {
+	overflow: auto;
+	max-width: 100%;
+	max-height: 50vh;
+}
+.vue-component.process .process-graph .graph > .object-tree > ul {
+	margin: 0;
+	padding: 0;
 }
 .vue-component.process .links:empty {
 	display: none;
