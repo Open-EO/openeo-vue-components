@@ -91,10 +91,10 @@ export default {
 				return 'N/A';
 			}
 			else if (value === true) {
-				return 'TRUE';
+				return '✔️';
 			}
 			else if (value === false) {
-				return 'FALSE';
+				return '❌';
 			}
 			else if (typeof value === 'object' && Utils.size(value) === 0) {
 				return 'Empty';
