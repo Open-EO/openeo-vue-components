@@ -317,7 +317,27 @@ class Utils extends CommonUtils {
             return [];
         }
     }
+	
+	static formatCurrency(amount, currency) {
+		if (typeof amount !== 'number' || typeof currency !== 'string') {
+			return '';
+		}
 
+		try {
+			return amount.toLocaleString(undefined, { style: 'currency', currency: currency });
+		} catch(error) {
+			return `${amount.toLocaleString()} ${currency}`.trim();
+		}
+	}
+
+    static formatBudget(budget, currency) {
+        if (budget === null) {
+			return "Unlimited";
+        }
+		else {
+            return Utils.formatCurrency(budget, currency);
+		}
+    }
 
 };
 

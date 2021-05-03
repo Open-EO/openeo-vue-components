@@ -1,0 +1,42 @@
+{
+	"id": "PGqyCtRQ9CwMR7CG",
+	"title": "Example Job",
+	"description": "This is an **example**.",
+	"status": "running",
+	"progress": 75.5,
+	"created": "2021-03-05T15:47:15Z",
+	"updated": "2021-03-05T15:47:15Z",
+	"plan": "premium",
+	"costs": 12.28,
+	"budget": null,
+	"process": {
+		"process_graph": {
+			"load": {
+				"process_id": "load_collection",
+				"arguments": {
+					"id": "COPERNICUS/S2",
+					"spatial_extent": null,
+					"temporal_extent": null
+				}
+			},
+			"ndvi": {
+				"process_id": "ndvi",
+				"arguments": {
+					"data": {
+						"from_node": "load"
+					}
+				}
+			},
+			"save": {
+				"process_id": "save_result",
+				"arguments": {
+					"data": {
+						"from_node": "ndvi"
+					},
+					"format": "GTiff"
+				},
+				"result": true
+			}
+		}
+	}
+}

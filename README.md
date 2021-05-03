@@ -27,6 +27,7 @@ Examples (dev): <https://open-eo.github.io/openeo-vue-components/>
 	* [FileFormats](#fileformats)
 	* [Item](#item)
 	* [Items](#items)
+	* [Job](#job)
 	* [JsonSchema](#jsonschema)
 	* [LinkList](#linklist)
 	* [ObjectTree](#objecttree)
@@ -338,6 +339,25 @@ Shows an (expandable) list of STAC-based Items.
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
 - `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+
+
+### `Job`
+
+Visualizes a single batch job.
+
+**Properties:**
+
+- `job` (object, required): Batch Job details as defined by the openEO API (Either one of the array elements in the property `jobs` returned by `GET /jobs` or the response from `GET /jobs/{job_id}`).
+- `currency` (string|null): The currency of the service (see openEO API endpoint `GET /`).
+
+**Slots:**
+
+- `title`: HTML to display the main heading.
+- `before-description`: HTML to display before the description.
+- `process-graph`: See the corresponding slot `process-graph` in [`Process`](#process).
+- `end`: HTML to display after the component.
+
+For all slots, the component properties are passed through as slot properties with the same names.
 
 
 ### `LinkList`
