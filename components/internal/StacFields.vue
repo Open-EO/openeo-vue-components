@@ -4,24 +4,27 @@
 			<component :is="headingTag" v-html="group.label" :key="group.extension" />
 			<div v-for="(prop, field) in group.properties" :key="group.extension + field" :id="'field_' + field" class="tabular" :class="{wrap: Boolean(prop.custom || prop.items)}">
 				<label :title="field" v-html="prop.label" />
-				<div v-if="prop.items" class="value">
-					<table class="table">
-						<thead>
-							<tr>
-								<th v-if="!Array.isArray(prop.formatted)">&nbsp;</th>
-								<th v-for="col in prop.itemOrder" :key="col" v-html="prop.items[col].label"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="(row, r) in prop.formatted" :key="r">
-								<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
-								<td v-for="col in prop.itemOrder" :key="col" v-html="row[col]" />
-							</tr>
-						</tbody>
-					</table>
+				<div class="value">
+					<slot :name="field" :prop="prop" :field="field">
+						<table v-if="prop.items" class="table">
+							<thead>
+								<tr>
+									<th v-if="!Array.isArray(prop.formatted)">&nbsp;</th>
+									<th v-for="col in prop.itemOrder" :key="col" v-html="prop.items[col].label"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(row, r) in prop.formatted" :key="r">
+									<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
+									<td v-for="col in prop.itemOrder" :key="col" v-html="row[col]" />
+								</tr>
+							</tbody>
+						</table>
+						<Process v-else-if="field === 'card4l:processing_chain'" class="inline" :process="prop.value" :provideDownload="false" :showGraph="true" />
+						<div class="formatted" v-else-if="prop.formatted" v-html="prop.formatted" />
+						<template v-else>{{ prop.value }}</template>
+					</slot>
 				</div>
-				<div v-else-if="prop.formatted" class="value" v-html="prop.formatted" />
-				<div class="value" v-else>{{ prop.value }}</div>
 			</div>
 		</template>
 	</section>
@@ -47,6 +50,9 @@ StacFields.Registry.addMetadataFields({
 
 export default {
 	name: 'StacFields',
+	components: {
+		Process: () => import('../Process.vue')
+	},
 	props: {
 		metadata: {
 			type: Object,

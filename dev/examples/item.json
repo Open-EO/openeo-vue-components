@@ -94,7 +94,37 @@
 		  "FORCE": "3.6.2"
 		},
 		"processing:lineage": "FORCE Level 2 Processing System",
-		"processing:level": "L2"
+		"processing:level": "L2",
+		"card4l:processing_chain": {
+			"process_graph": {
+				"load": {
+					"process_id": "load_collection",
+					"arguments": {
+						"id": "COPERNICUS/S2",
+						"spatial_extent": null,
+						"temporal_extent": null
+					}
+				},
+				"ndvi": {
+					"process_id": "ndvi",
+					"arguments": {
+						"data": {
+							"from_node": "load"
+						}
+					}
+				},
+				"save": {
+					"process_id": "save_result",
+					"arguments": {
+						"data": {
+							"from_node": "ndvi"
+						},
+						"format": "GTiff"
+					},
+					"result": true
+				}
+			}
+		}
 	},
 	"assets": {
 		"ANG": {
