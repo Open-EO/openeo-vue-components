@@ -8,6 +8,45 @@
 	text-decoration: underline dotted 1px;
 }
 
+/* Job Status */
+.vue-component .status[data-value="submitted"] {
+	color: black;
+}
+.vue-component .status[data-value="running"] {
+	color: darkorange;
+}
+.vue-component .status[data-value="queued"] {
+	color: darkblue;
+}
+.vue-component .status[data-value="finished"] {
+	color: darkgreen;
+}
+.vue-component .status[data-value="canceled"] {
+	color: darkgrey;
+}
+.vue-component .status[data-value="error"] {
+	color: red;
+}
+
+/* Inline headers */
+.vue-component.inline.process {
+	margin-left: 1em;
+}
+.vue-component.inline h1 {
+	font-size: 1.17em;
+}
+.vue-component.inline h2 {
+	font-size: 1.1em;
+}
+.vue-component.inline h3 {
+	font-size: 1.05em;
+}
+.vue-component.inline h4,
+.vue-component.inline h5,
+.vue-component.inline h6 {
+	font-size: 1em;
+}
+
 /* Comma separated list */
 .vue-component .comma-separated-list {
 	display: inline;
