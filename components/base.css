@@ -84,16 +84,16 @@
 }
 
 /* Styling process signatures (incl. examples) */
-.vue-component .param-name, .process-name {
+.vue-component .param-name, .vue-component .process-name {
 	color: #369;
 }
-.vue-component .argument, .return-value {
+.vue-component .param-argument, .vue-component .return-value {
 	color: #936;
 }
 .vue-component .data-type {
 	color: #693;
 }
-.vue-component .optional {
+.vue-component .param-optional {
 	font-weight: bold;
 }
 

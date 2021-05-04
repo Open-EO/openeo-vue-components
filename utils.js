@@ -361,6 +361,46 @@ class Utils extends CommonUtils {
         return `${size} ${units[i]}`;
 	}
 
+    static formatProcessSignature(process, html = true) {
+        let params = [];
+        if (Array.isArray(process.parameters)) {
+            for(let i in process.parameters) {
+                let p = process.parameters[i];
+                let pType = Utils.dataType(p.schema, true);
+                let req = p.optional ? '?' : '';
+                let pDefault = '';
+                if (p.optional && typeof p.default !== 'undefined') {
+                    pDefault = JSON.stringify(p.default);
+                }
+                let pStr;
+                if (html) {
+                    pStr = `<span class="param-optional">${req}</span><span class="data-type">${ Utils.htmlentities(pType) }</span> <span class="param-name">${ Utils.htmlentities(p.name) }</span>`;
+                    if (pDefault) {
+                        if (pDefault.length > 15) {
+                            pDefault = `<span title="${ Utils.htmlentities(pDefault) }">…</span>`;
+                        }
+                        pStr += ` = <span class="param-argument">${pDefault}</span>`;
+                    }
+                }
+                else {
+                    pStr = req + pType + " " + p.name + pDefault;
+                }
+                params.push(pStr);
+            }
+        }
+        let paramStr = "(" + params.join(", ") + ") : ";
+
+        let returnSchema = Utils.isObject(process.returns) && Utils.isObject(process.returns.schema) ? process.returns.schema : {};
+        let returns = Utils.dataType(returnSchema, true);
+
+        if (html) {
+            return `<span class="process-name">${ Utils.htmlentities(process.process.id) }</span>${paramStr}<span class="data-type">${ Utils.htmlentities(returns) }</span>`;
+        }
+        else {
+            return process.process.id + paramStr + returns;
+        }
+    }
+
 };
 
 export default Utils;

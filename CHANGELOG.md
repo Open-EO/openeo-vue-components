@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `UdfRuntime`: Full support for `experimental` and `deprecated` flags
 - `ObjectTree`: Visualize boolean values with symbols instead of text
 - `Item` and `Collection`: Better visualization for openEO processes
+- `Process`: Show default values in process signature
 
 ### Fixed
 

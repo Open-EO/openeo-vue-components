@@ -141,28 +141,7 @@ export default {
 			}
 		},
 		signature(html = true) {
-			let params = [];
-			for(let i in this.parameters) {
-				let p = this.parameters[i];
-				let pType = Utils.dataType(p.schema, true);
-				let req = p.optional ? '?' : '';
-				let pStr;
-				if (html) {
-					pStr = '<span class="optional">' + req + '</span><span class="data-type">' + Utils.htmlentities(pType) + '</span> <span class="param-name">' + p.name + "</span>";
-				}
-				else {
-					pStr = req + pType + " " + p.name;
-				}
-				params.push(pStr);
-			}
-			let returns = Utils.dataType(this.returns.schema, true);
-			let paramStr = "(" + params.join(", ") + ") : ";
-			if (html) {
-				return '<span class="process-name">' + this.process.id + '</span>' + paramStr + '<span class="data-type">' + Utils.htmlentities(returns) + "</span>";
-			}
-			else {
-				return this.process.id + paramStr + returns;
-			}
+			return Utils.formatProcessSignature(this, html);
 		},
 		exampleLinks() {
 			if (Array.isArray(this.process.links)) {
