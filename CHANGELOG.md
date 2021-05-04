@@ -25,8 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* `Collections`: Don't pass `mapOptions` to `SearchableList`
-* `Process`: Show better text if return value has not been declared
+- `Collections`: Don't pass `mapOptions` to `SearchableList`
+- `Process`:
+  - Show better text if return value has not been declared
+  - Fix spacing around process signature
 
 ## [2.0.3] - 2020-03-15
 

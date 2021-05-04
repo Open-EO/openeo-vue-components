@@ -236,7 +236,7 @@ export default {
 	margin: 0.5em 0;
 	font-size: 0.8em;
 }
-.vue-component.process .process .signature {
+.vue-component.process .signature {
 	display: block;
 	margin: 1em 0;
 }
