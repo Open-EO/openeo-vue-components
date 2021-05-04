@@ -31,6 +31,7 @@ Examples (dev): <https://open-eo.github.io/openeo-vue-components/>
 	* [JobEstimate](#jobestimate)
 	* [JsonSchema](#jsonschema)
 	* [LinkList](#linklist)
+	* [Logs](#logs)
 	* [ObjectTree](#objecttree)
 	* [Process](#process)
 	* [Processes](#processes)
@@ -384,6 +385,15 @@ A simple list of links.
 - `headingTag` / `heading-tag` (string): HTML Tag to use for the heading. Defaults to `strong`.
 - `ignoreRel` / `ignore-rel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
 - `showRel` / `show-rel`: (boolean): If set to `true`, shows the `rel` types. Defaults to `false`.
+
+
+### `Logs`
+
+Show log messages.
+
+**Properties:**
+
+- `logs` (array\<object>): A list of logs as defined by the openEO API (e.g. response from `GET /jobs/{job_id}/logs`, property `logs`).
 
 
 ### `ObjectTree`

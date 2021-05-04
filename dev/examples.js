@@ -3,6 +3,7 @@ let collections = require('./examples/collections-gee.json');
 let item = require('./examples/item.json');
 let items = require('./examples/items-ard-eodc.json');
 let job = require('./examples/job.json');
+let logs = require('./examples/logs.json');
 let processes = require('./examples/processes-gee.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
@@ -203,6 +204,14 @@ if (a == b) console.log("Hello World");
 			"heading": "Google Earth Engine Links",
 			"heading-tag": "h1",
 			"ignore-rel": ['self', 'conformance']
+		}
+	},
+	"logs": {
+		"empty": {
+			"logs": []
+		},
+		"example": {
+			"logs": logs.logs
 		}
 	},
 	"object-tree": {

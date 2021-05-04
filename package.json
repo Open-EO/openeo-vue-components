@@ -43,7 +43,8 @@
     "core-js": "^3.8.2",
     "leaflet": "^1.6.0",
     "leaflet.antimeridian": "^1.0.0",
-    "vue": "^2.6.0"
+    "vue": "^2.6.0",
+    "vue-multiselect": "^2.1.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.6",

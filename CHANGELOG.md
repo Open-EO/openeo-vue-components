@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - New `Job` component
 - New `JobEstimate` component
+- New `Logs` component
 - New `Service` component
 - `Tabs`:
   - Event `selected`
