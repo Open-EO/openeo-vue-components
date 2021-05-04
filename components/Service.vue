@@ -137,6 +137,9 @@ export default {
 			}
 		}
 	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	},
 	methods: {
 		prettifyKey(key) {
 			return Utils.prettifyString(key);

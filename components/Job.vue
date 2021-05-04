@@ -117,6 +117,9 @@ export default {
 				return "0%";
 			}
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
 }
 </script>

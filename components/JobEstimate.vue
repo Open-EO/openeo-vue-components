@@ -72,6 +72,9 @@ export default {
 				return 'n/a';
 			}
 		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	}
 }
 </script>
