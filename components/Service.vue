@@ -3,16 +3,15 @@
 
 		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="service.id"></a>
-			<h2>{{ title }}</h2>
+			<h2>{{ service.title || service.id }}</h2>
 		</slot>
 
-		<slot name="before-description" v-bind="$props"></slot>
-
-		<summary class="description" v-if="service.description">
-			<Description :description="service.description" />
-		</summary>
-
 		<section class="basedata">
+			<div class="tabular">
+				<label>ID:</label>
+				<code class="value">{{ service.id }}</code>
+			</div>
+
 			<div class="tabular">
 				<label>Type:</label>
 				<span class="value">{{ type }}</span>
@@ -24,10 +23,7 @@
 					<a :href="service.url" target="_blank">{{ service.url }}</a>
 				</code>
 			</div>
-		</section>
 
-		<section class="basedata">
-			<h3>Status</h3>
 			<div class="tabular">
 				<label>Enabled:</label>
 				<span class="value boolean">
@@ -41,19 +37,27 @@
 				<label>Created:</label>
 				<span class="value">{{ created }}</span>
 			</div>
+		</section>
 
-			<template class="attributes" v-if="hasAttributes">
-				<div class="tabular" v-for="(value, key) in service.attributes" :key="key">
-					<label>{{ prettifyKey(key) }}:</label>
-					<ObjectTree class="value" :data="value" />
-				</div>
-			</template>
+		<slot name="before-description" v-bind="$props"></slot>
+
+		<summary class="description" v-if="service.description">
+			<h3>Description</h3>
+			<Description :description="service.description" />
+		</summary>
+
+		<section class="attributes" v-if="hasAttributes">
+			<h3>Exposed Capabilities from {{ type }}</h3>
+			<div class="tabular" v-for="(value, key) in service.attributes" :key="key">
+				<label>{{ prettifyKey(key) }}:</label>
+				<ObjectTree class="value" :data="value" />
+			</div>
 		</section>
 
 		<section class="parameters" v-if="hasConfig">
-			<h3>Settings for {{ type }}</h3>
+			<h3>Custom Settings for {{ type }}</h3>
 			<div class="tabular" v-for="(value, key) in service.configuration" :key="key">
-				<label>{{ key }}:</label>
+				<label>{{ prettifyKey(key) }}:</label>
 				<ObjectTree class="value" :data="value" />
 			</div>
 		</section>
@@ -66,7 +70,7 @@
 			</div>
 
 			<div class="tabular" v-if="costs">
-				<label>Costs:</label>
+				<label>Incurred Costs:</label>
 				<span class="value">{{ costs }}</span>
 			</div>
 
@@ -114,14 +118,6 @@ export default {
 		},
 		costs() {
 			return Utils.formatCurrency(this.service.costs, this.currency);
-		},
-		title() {
-			if (this.service.title) {
-				return `${this.service.title} (${this.service.id})`;
-			}
-			else {
-				return this.service.id;
-			}
 		},
 		created() {
 			return Utils.formatTimestamp(this.service.created);

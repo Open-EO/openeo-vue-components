@@ -3,17 +3,14 @@
 
 		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="job.id"></a>
-			<h2>{{ title }}</h2>
+			<h2>{{ job.title || job.id }}</h2>
 		</slot>
 
-		<slot name="before-description" v-bind="$props"></slot>
-
-		<summary class="description" v-if="job.description">
-			<Description :description="job.description" />
-		</summary>
-
 		<section class="progress">
-			<h3>Progress</h3>
+			<div class="tabular">
+				<label>ID:</label>
+				<code class="value">{{ job.id }}</code>
+			</div>
 
 			<div class="tabular">
 				<label>Submitted:</label>
@@ -43,6 +40,13 @@
 			</div>
 		</section>
 
+		<slot name="before-description" v-bind="$props"></slot>
+
+		<summary class="description" v-if="job.description">
+			<h3>Description</h3>
+			<Description :description="job.description" />
+		</summary>
+
 		<section class="billing" v-if="job.plan || costs || budget">
 			<h3>Billing</h3>
 			<div class="tabular" v-if="job.plan">
@@ -51,7 +55,7 @@
 			</div>
 
 			<div class="tabular" v-if="costs">
-				<label>Costs:</label>
+				<label>Incurred Costs:</label>
 				<span class="value">{{ costs }}</span>
 			</div>
 
@@ -98,14 +102,6 @@ export default {
 		},
 		costs() {
 			return Utils.formatCurrency(this.job.costs, this.currency);
-		},
-		title() {
-			if (this.job.title) {
-				return `${this.job.title} (${this.job.id})`;
-			}
-			else {
-				return this.job.id;
-			}
 		},
 		created() {
 			return Utils.formatTimestamp(this.job.created, 'n/a');
