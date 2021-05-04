@@ -14,7 +14,7 @@
 		</template>
 		<ul v-else-if="typeof data === 'object'">
 			<li v-for="(value, key) in data" :key="key">
-				<template><strong>{{ prettifyKey(key) }}</strong>: </template>
+				<strong>{{ prettifyKey(key) }}</strong>: 
 				<openeo-object-tree v-if="isStructured(value)" :data="value"></openeo-object-tree>
 				<a v-else-if="isUrl(value)" :href="value" target="_blank">{{ value }}</a>
 				<em v-else-if="format(value)">{{ format(value) }}</em>

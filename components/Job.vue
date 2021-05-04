@@ -9,7 +9,7 @@
 		<slot name="before-description" v-bind="$props"></slot>
 
 		<summary class="description" v-if="job.description">
-			<Description :description="job.description"></Description>
+			<Description :description="job.description" />
 		</summary>
 
 		<section class="progress">
