@@ -11,10 +11,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Tabs`:
   - Event `selected`
   - Prop `pillsMultiline` to show pills in multiple rows
+- Job Status is now shown in different colors
+- `Process`: Add option and slot to visualize process graph for processes
+- New `Job` component
 
 ### Changed
 
-- `UdfRuntime`: Full support for experimental and deprecated flags
+- `UdfRuntime`: Full support for `experimental` and `deprecated` flags
+- `ObjectTree`: Visualize boolean values with symbols instead of text
+- `Item` and `Collection`: Better visualization for openEO processes
+
+### Fixed
+
+* `Collections`: Don't pass `mapOptions` to `SearchableList`
+* `Process`: Show better text if return value has not been declared
 
 ## [2.0.3] - 2020-03-15
 
