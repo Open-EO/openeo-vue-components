@@ -35,6 +35,7 @@
     "utils.js"
   ],
   "dependencies": {
+    "@musement/iso-duration": "^1.0.0",
     "@openeo/js-commons": "^1.2.0",
     "@radiantearth/stac-fields": "^1.0.0-beta.6",
     "@radiantearth/stac-migrate": "^1.0.0-rc.2",

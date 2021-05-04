@@ -35,6 +35,7 @@ import FileFormats from '../components/FileFormats.vue';
 import Item from '../components/Item.vue';
 import Items from '../components/Items.vue';
 import Job from '../components/Job.vue';
+import JobEstimate from '../components/JobEstimate.vue';
 import JsonSchema from '../components/JsonSchema.vue';
 import LinkList from '../components/LinkList.vue';
 import ObjectTree from '../components/ObjectTree.vue';
@@ -65,6 +66,7 @@ export default {
 		Item,
 		Items,
 		Job,
+		JobEstimate,
 		JsonSchema,
 		LinkList,
 		ObjectTree,

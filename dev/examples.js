@@ -175,6 +175,22 @@ if (a == b) console.log("Hello World");
 			"currency": "EUR"
 		}
 	},
+	"job-estimate": {
+		"minimal": {
+			estimate: {},
+			currency: "EUR"
+		},
+		"full": {
+			estimate: {
+				costs: 12.98,
+				duration: "P1Y2M10DT2H30M",
+				size: 157286400,
+				downloads_included: 5,
+				expires: "2020-11-01T00:00:00Z"
+			},
+			currency: "DKK"
+		}
+	},
 	"json-schema": {
 		"callback": {
 			"schema": reduceApi.parameters[1].schema

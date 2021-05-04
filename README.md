@@ -28,6 +28,7 @@ Examples (dev): <https://open-eo.github.io/openeo-vue-components/>
 	* [Item](#item)
 	* [Items](#items)
 	* [Job](#job)
+	* [JobEstimate](#jobestimate)
 	* [JsonSchema](#jsonschema)
 	* [LinkList](#linklist)
 	* [ObjectTree](#objecttree)
@@ -358,6 +359,16 @@ Visualizes a single batch job.
 - `end`: HTML to display after the component.
 
 For all slots, the component properties are passed through as slot properties with the same names.
+
+
+### `JobEstimate`
+
+Visualizes an estimate for a batch job.
+
+**Properties:**
+
+- `estimate` (object, required): Batch Job estimate as defined by the openEO API (response from `GET /jobs/{job_id}/estimate`).
+- `currency` (string|null): The currency of the service (see openEO API endpoint `GET /`).
 
 
 ### `LinkList`

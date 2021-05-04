@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Job Status is now shown in different colors
 - `Process`: Add option and slot to visualize process graph for processes
 - New `Job` component
+- New `JobEstimate` component
 
 ### Changed
 

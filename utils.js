@@ -318,9 +318,9 @@ class Utils extends CommonUtils {
         }
     }
 	
-	static formatCurrency(amount, currency) {
+	static formatCurrency(amount, currency, fallback = '') {
 		if (typeof amount !== 'number' || typeof currency !== 'string') {
-			return '';
+			return fallback;
 		}
 
 		try {
@@ -330,14 +330,36 @@ class Utils extends CommonUtils {
 		}
 	}
 
-    static formatBudget(budget, currency) {
+    static formatBudget(budget, currency, unlimited = "Unlimited") {
         if (budget === null) {
-			return "Unlimited";
+			return unlimited;
         }
 		else {
             return Utils.formatCurrency(budget, currency);
 		}
     }
+
+	static formatTimestamp(value, fallback = 'n/a') {
+		if (typeof value === 'string') {
+			try {
+				return new Date(value).toLocaleString([], {
+					timeZone: "UTC",
+					timeZoneName: "short"
+				});
+			} catch (error) {}
+		}
+		return fallback;
+	}
+
+	static formatFileSize(value, fallback = 'n/a') {
+	    let units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB'];
+		if (typeof value !== 'number') {
+			return fallback;
+		}
+		let i = value == 0 ? 0 : Math.floor( Math.log(value) / Math.log(1024) );
+        let size = ( value / Math.pow(1024, i) ).toFixed(2) * 1;
+        return `${size} ${units[i]}`;
+	}
 
 };
 

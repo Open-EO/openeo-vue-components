@@ -75,7 +75,6 @@
 
 <script>
 import Utils from '../utils';
-import { Formatters } from '@radiantearth/stac-fields';
 
 export default {
 	name: 'Job',
@@ -109,10 +108,10 @@ export default {
 			}
 		},
 		created() {
-			return Formatters.formatTimestamp(this.job.created);
+			return Utils.formatTimestamp(this.job.created, 'n/a');
 		},
 		updated() {
-			return Formatters.formatTimestamp(this.job.updated);
+			return Utils.formatTimestamp(this.job.updated, '');
 		},
 		progress() {
 			if (typeof this.job.progress === 'number') {
