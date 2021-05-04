@@ -42,6 +42,7 @@ import ObjectTree from '../components/ObjectTree.vue';
 import Process from '../components/Process.vue';
 import Processes from '../components/Processes.vue';
 import SearchableList from '../components/SearchableList.vue';
+import Service from '../components/Service.vue';
 import ServiceType from '../components/ServiceType.vue';
 import ServiceTypes from '../components/ServiceTypes.vue';
 import SupportedFeatures from '../components/SupportedFeatures.vue';
@@ -73,6 +74,7 @@ export default {
 		Process,
 		Processes,
 		SearchableList,
+		Service,
 		ServiceType,
 		ServiceTypes,
 		SupportedFeatures,

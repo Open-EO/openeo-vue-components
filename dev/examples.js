@@ -8,6 +8,7 @@ let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
 let fileFormats = require('./examples/file-formats-api.json');
 let serviceTypes = require('./examples/service-types-api.json');
+let service = require('./examples/service.json');
 let reduceApi = require('./examples/reduce-api-new.json');
 let longArray = [...Array(1000).keys()];
 
@@ -234,6 +235,16 @@ if (a == b) console.log("Hello World");
 	// ToDo: SearchableList - see other implementing components for examples, e.g. Collections or Processes
 	"searchable-list": {
 		"empty": {}
+	},
+	"service": {
+		"empty": {
+			"service": {},
+			"currency": "EUR"
+		},
+		"example": {
+			"service": service,
+			"currency": "EUR"
+		}
 	},
 	"service-type": {
 		"wms": {

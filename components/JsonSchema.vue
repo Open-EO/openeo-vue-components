@@ -227,7 +227,7 @@ export default {
 					return "Each property";
 				default:
 					if (key.length > 1) {
-						return key.charAt(0).toUpperCase() + key.slice(1);
+						return Utils.prettifyString(key);
 					}
 			}
 			return key;

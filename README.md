@@ -36,6 +36,7 @@ Examples (dev): <https://open-eo.github.io/openeo-vue-components/>
 	* [Processes](#processes)
 	* [SearchableList](#searchablelist)
 	* [SearchBox](#searchbox)
+	* [Service](#service)
 	* [ServiceType](#servicetype)
 	* [ServiceTypes](#servicetypes)
 	* [SupportedFeatures](#supportedfeatures)
@@ -504,9 +505,29 @@ A simple input field for searching.
 
 - `@input` / v-model: Fired when the value has changed.
 
+
+### `Service`
+
+Visualizes a single secondary web service.
+
+**Properties:**
+
+- `service` (object, required): Service details as defined by the openEO API (Either one of the array elements in the property `services` returned by `GET /services` or the response from `GET /services/{service_id}`).
+- `currency` (string|null): The currency of the service (see openEO API endpoint `GET /`).
+
+**Slots:**
+
+- `title`: HTML to display the main heading.
+- `before-description`: HTML to display before the description.
+- `process-graph`: See the corresponding slot `process-graph` in [`Process`](#process).
+- `end`: HTML to display after the component.
+
+For all slots, the component properties are passed through as slot properties with the same names.
+
+
 ### `ServiceType`
 
-Visualizes a single secondary web service supported by the back-end.
+Visualizes a single secondary web service type supported by the back-end.
 
 **Properties:**
 
@@ -526,7 +547,7 @@ For all slots, the component properties are passed through as slot properties wi
 
 ### `ServiceTypes`
 
-Visualizes all secondary web services supported by the back-end.
+Visualizes all secondary web service types supported by the back-end.
 
 **Properties:**
 

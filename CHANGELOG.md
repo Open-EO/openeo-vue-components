@@ -8,13 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- New `Job` component
+- New `JobEstimate` component
+- New `Service` component
 - `Tabs`:
   - Event `selected`
   - Prop `pillsMultiline` to show pills in multiple rows
 - Job Status is now shown in different colors
 - `Process`: Add option and slot to visualize process graph for processes
-- New `Job` component
-- New `JobEstimate` component
 
 ### Changed
 
