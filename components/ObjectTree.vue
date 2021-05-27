@@ -99,6 +99,12 @@ export default {
 			else if (typeof value === 'object' && Utils.size(value) === 0) {
 				return 'Empty';
 			}
+			else if (typeof value === 'function') {
+				return 'JavaScript Function';
+			}
+			else if (typeof value === 'symbol') {
+				return 'JavaScript Symbol';
+			}
 
 			return null;
 		},
