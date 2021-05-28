@@ -193,21 +193,21 @@ export default {
 				this.$parent.$emit('headingToggled', this.showList);
 			}
 		},
-		toggleDetails(index, newState) {
+		toggleDetails(i, newState) {
 			if (!this.offerDetails) {
 				return;
 			}
 			if (typeof newState === 'undefined') {
-				newState = !this.showDetails[index];
+				newState = !this.showDetails[i];
 			}
-			if (typeof this.showDetails[index] === 'undefined' && newState === false) {
+			if (typeof this.showDetails[i] === 'undefined' && newState === false) {
 				return;
 			}
-			this.$set(this.showDetails, index, newState);
-			let summary = this.summaries[index];
-			this.$emit('detailsToggled', newState, summary.identifier);
+			this.$set(this.showDetails, i, newState);
+			let summary = this.summaries[i];
+			this.$emit('detailsToggled', newState, summary.index, summary.identifier, this.data[summary.index]);
 			if (this.$parent) {
-				this.$parent.$emit('detailsToggled', newState, summary.identifier);
+				this.$parent.$emit('detailsToggled', newState, summary.index, summary.identifier, this.data[summary.index]);
 			}
 		}
 	}

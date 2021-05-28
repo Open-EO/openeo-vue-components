@@ -9,10 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - `ObjectTree`: Don't spit out functions and symbols, use a placeholder instead.
-
-### Fixed
-
-- `detailsToggled` event were passed the index as `identifier` instead of the real identifier.
+- `detailsToggled` event clarified behavior of the parameters and passes more data.
 
 ## [2.1.0] - 2020-05-05
 

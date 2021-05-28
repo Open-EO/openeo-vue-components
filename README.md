@@ -177,7 +177,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
-- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `DataTable`
@@ -277,7 +277,7 @@ Visualizes all supported file formats of the back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
-- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `JsonSchema`
@@ -341,7 +341,7 @@ Shows an (expandable) list of STAC-based Items.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
-- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `Job`
@@ -453,7 +453,7 @@ Shows an (expandable) list of all processes available at a back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
-- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `SearchableList`
@@ -486,16 +486,18 @@ A template to implement searchable, sortable and collapsible lists (all optional
 	- `summary` (object): An object with some high-level information for the list element: `identifier`, `summary`, `show` and `index`. This is what you usually want to show here.
 	- `item` (object): The original object from `data` for the list element.
 - `details`: HTML to display for the details of the list element. This is what is shown after an element has been expanded. The following slot properties are made available:
-	- `summary` (object): An object with some high-level information for the list element: `identifier`, `summary`, `show` and `index`.
+	- `summary` (object): An object with saome high-level information for the list element: `identifier`, `summary`, `show` and `index`.
 	- `item` (object): The original object from `data` for the list element. This is what you usually want to show here.
 
 **Events:**
 
 - `headingToggled(expanded)`: Emits if the component has been expanded or collapsed by the user via the heading.
     - `expanded` (boolean): Is `true` if the component is expanded, `false` otherwise.
-- `detailsToggled(expanded, identifier)`: Emits if a list element has been expanded or collapsed by the user.
+- `detailsToggled(expanded, key, identifier, data)`: Emits if an element has been expanded or collapsed by the user.
     - `expanded` (boolean): Is `true` if the component is expanded, `false` otherwise.
-    - `identifier` (boolean): Gives the identifier of the list element.
+    - `key` (integer): Gives the index (for arrays) or the key (for objects) of the toggled element in the array or object given in the prop `data`.
+    - `identifier` (number|string): Gives the identifier of the toggled element (corresponds to the values selected via the prop `identifierKey`).
+    - `data` (object): Gives the toggled element from the array or object given in the prop `data`. This is equal to accessing the array/object given in `data` with the `key` from above directly.
 - `summaries(summaries)`: Emits if the summaries have changed.
 	- `summaries` (array\<object>): The list of summaries.
 
@@ -578,7 +580,7 @@ Visualizes all secondary web service types supported by the back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
-- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ### `SupportedFeatures`
@@ -810,7 +812,7 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 **Events:**
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
-- `detailsToggled(expanded, identifier)`: See the corresponding event in [`SearchableList`](#searchablelist).
+- `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
 
 ## Other features
