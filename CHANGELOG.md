@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1] - 2020-05-31
+
 ### Changed
 
 - `ObjectTree`: Don't spit out functions and symbols, use a placeholder instead.
-- `detailsToggled` event clarified behavior of the parameters and passes more data.
+- `detailsToggled` event clarified behavior of the parameters and passes more parameters.
 - `SearchableList` regenerates summaries only if the object is actually a different one (in memory), not just the same with modified content.
 
 ### Fixed
@@ -246,7 +248,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.1...HEAD
+[2.1.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.3...v2.1.0
 [2.0.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.1...v2.0.2
