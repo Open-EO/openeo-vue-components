@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Collection`:
   - Correctly render steps in temporal dimensions
   - Correctly render (empty) temporal extents
+  - Fix error when no summaries were present in the Collection
 - `Collection` and `Item`: Improve consistency of how units get shown
 
 ## [2.1.0] - 2020-05-05

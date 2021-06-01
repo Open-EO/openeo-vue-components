@@ -33,6 +33,7 @@
 <script>
 import StacFields from '@radiantearth/stac-fields';
 import StacMigrate from '@radiantearth/stac-migrate';
+import Utils from '../../utils'
 
 StacFields.Registry.externalRenderer = true;
 StacFields.Registry.addMetadataFields({
@@ -82,6 +83,9 @@ export default {
 			let data = JSON.parse(JSON.stringify(this.metadata));
 			if (this.isCollection) {
 				data = StacMigrate.collection(data);
+				if (!Utils.isObject(data.summaries)) {
+					data.summaries = {};
+				}
 				for(let key in data) {
 					// Copy all custom top-level fields to summaries for easier visualization
 					if (key === 'version' || (key !== 'cube:dimensions' && key.includes(':'))) {
