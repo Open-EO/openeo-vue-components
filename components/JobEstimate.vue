@@ -65,8 +65,7 @@ export default {
 		duration() {
 			if (typeof this.estimate.duration === 'string') {
 				isoDuration.setLocales({en});
-				const duration = isoDuration(this.estimate.duration);
-				return duration.humanize('en');
+				return isoDuration(this.estimate.duration).humanize('en');
 			}
 			else {
 				return 'n/a';

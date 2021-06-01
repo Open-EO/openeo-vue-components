@@ -114,7 +114,7 @@ export default {
 <style>
 @import url('../base.css');
 
-.vue-component.stac-fields .table .unit {
+.vue-component.stac-fields .unit {
 	opacity: 0.6;
 }
 .vue-component.stac-fields .table {

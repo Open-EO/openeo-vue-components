@@ -526,7 +526,8 @@
       "extent": [
         "2015-06-23T00:00:00Z",
         null
-      ]
+      ],
+      "step": "P5D"
     },
     "bands": {
       "type": "bands",

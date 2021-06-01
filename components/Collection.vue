@@ -44,7 +44,7 @@
 				<h3>Temporal Extent</h3>
 				<slot name="temporal-extents" :extents="temporalIntervals">
 					<ul v-for="(interval, i) in temporalIntervals" :key="i">
-						<li>{{ stac.formatTemporalExtent(interval) }}</li>
+						<li v-html="stac.formatTemporalExtent(interval)" />
 					</ul>
 				</slot>
 			</template>
@@ -96,8 +96,8 @@
 					<div class="tabular">
 						<label>Labels:</label>
 						<div v-if="dim.extent" class="value">
-							<template v-if="dim.type === 'temporal'">{{ stac.formatTemporalExtent(dim.extent) }}</template>
-							<template v-else>{{ stac.formatExtent(dim.extent) }}</template>
+							<span v-if="dim.type === 'temporal'" v-html="stac.formatTemporalExtent(dim.extent)" />
+							<span v-else v-html="stac.formatExtent(dim.extent)" />
 						</div>
 						<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
 							<li v-for="(value, i) in dim.values" :key="i">{{ value }}</li>
@@ -108,6 +108,7 @@
 						<label>Steps:</label>
 						<div class="value">
 							<template v-if="dim.step === null">irregularly spaced</template>
+							<template v-else-if="dim.type === 'temporal'">{{ formatDuration(dim.step) }}</template>
 							<template v-else>{{ dim.step }}</template>
 						</div>
 					</div>
@@ -143,6 +144,7 @@
 import Utils from '../utils';
 import { Formatters } from '@radiantearth/stac-fields';
 import StacMixin from './internal/StacMixin.js';
+import { isoDuration, en } from '@musement/iso-duration';
 
 export default {
 	name: 'Collection',
@@ -225,6 +227,15 @@ export default {
 		},
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
+		},
+		formatDuration(duration) {
+			if (typeof duration === 'string') {
+				isoDuration.setLocales({en});
+				return isoDuration(duration).humanize('en');
+			}
+			else {
+				return 'n/a';
+			}
 		}
 	}
 }

@@ -1,4 +1,5 @@
-let collection = require('./examples/collection-gee-s2.json');
+let collectionGee = require('./examples/collection-gee-s2.json');
+let collectionEurac = require('./examples/collection-eurac.json');
 let collections = require('./examples/collections-gee.json');
 let item = require('./examples/item.json');
 let items = require('./examples/items-ard-eodc.json');
@@ -27,7 +28,10 @@ module.exports = {
 	},
 	"collection": {
 		"gee": {
-			"data": collection
+			"data": collectionGee
+		},
+		"eurac": {
+			"data": collectionEurac
 		}
 	},
 	"collections": {

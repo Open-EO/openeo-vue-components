@@ -1,0 +1,110 @@
+{
+  "stac_version": "0.9.0",
+  "stac_extensions": [
+    "datacube"
+  ],
+  "id": "ADO_CORINE_100m_3035",
+  "title": "Corine Land Cover (CLC) 2018",
+  "description": "CLC2018 is one of the Corine Land Cover (CLC) datasets produced within the frame the Copernicus Land Monitoring Service referring to land cover / land use status of year 2018. CLC service has a long-time heritage (formerly known as \"CORINE Land Cover Programme\"), coordinated by the European Environment Agency (EEA). It provides consistent and thematically detailed information on land cover and land cover changes across Europe.",
+  "keywords": [
+    "Copernicus",
+    "Land",
+    "Satellite Image Interpretation",
+    "2018",
+    "Corine",
+    "Corine Land Cover"
+  ],
+  "version": "v1",
+  "license": "CC-BY-4.0",
+  "citation": "Copyright holder: European Environment Agency (EEA)",
+  "providers": [
+    {
+      "name": "Eurac EO WCS",
+      "url": "http://www.eurac.edu",
+      "roles": [
+        "host"
+      ]
+    },
+    {
+      "name": "European Environment Agency (EEA)",
+      "url": "copernicus@eea.europa.eu",
+      "roles": [
+        "producer"
+      ]
+    }
+  ],
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          4.007710199040072,
+          42.8856831393187,
+          17.506871070250423,
+          50.319480285426245
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          null,
+          null
+        ]
+      ]
+    }
+  },
+  "cube:dimensions": {
+    "X": {
+      "type": "spatial",
+      "axis": "x",
+      "extent": [
+        4.007710199040072,
+        17.506871070250423
+      ],
+      "reference_system": 3035
+    },
+    "Y": {
+      "type": "spatial",
+      "axis": "y",
+      "extent": [
+        42.8856831393187,
+        50.319480285426245
+      ],
+      "reference_system": 3035
+    },
+    "T": {
+      "type": "temporal",
+      "extent": [
+        null,
+        null
+      ],
+      "step": null
+    },
+    "bands": {
+      "type": "bands",
+      "values": [
+        "CLC2018_WM"
+      ]
+    }
+  },
+  "summaries": {
+    "rows": 8332,
+    "columns": 10240,
+    "eo:cloud cover": {
+      "min": 0,
+      "max": 0
+    },
+    "gsd": [
+      100
+    ],
+    "eo:bands": [
+      {
+        "name": "CLC2018_WM",
+        "common_name": "Corine Land Cover ID",
+        "center_wavelength": 0,
+        "gsd": 100
+      }
+    ]
+  },
+  "assets": {}
+}
