@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `ObjectTree`: Don't spit out functions and symbols, use a placeholder instead.
 - `detailsToggled` event clarified behavior of the parameters and passes more data.
+- `SearchableList` regenerates summaries only if the object is actually a different one (in memory), not just the same with modified content.
 
 ### Fixed
 

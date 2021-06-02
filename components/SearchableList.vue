@@ -99,10 +99,50 @@ export default {
 			// true = expanded
 			// This allows with a combination of v-if and v-show to not render by default (=> null), but keep rendered versions in cache (=> false)
 			showDetails: {},
-			showList: this.collapsed ? null : true
+			showList: this.collapsed ? null : true,
+			summaries: []
 		};
 	},
 	watch: {
+		data: {
+			immediate: true,
+			handler(data, oldData) {
+				// Don't re-generate summaries if the same object (in memory) has been passed.
+				// We don't need to re-generate if just a random child has been updated, e.g. in detailsToggled.
+				// Thus the check with === instead of deepEquals or so.
+				if (data === oldData) {
+					return;
+				}
+				let summaries = [];
+				for(let index in this.data) {
+					let entry = this.data[index];
+					let summary = {
+						identifier: index,
+						summary: '',
+						show: true,
+						index: index,
+						experimental: entry.experimental,
+						deprecated: entry.deprecated
+					};
+
+					if (typeof entry[this.identifierKey] === 'string') {
+						summary.identifier = entry[this.identifierKey];
+					}
+					if (typeof entry[this.summaryKey] === 'string') {
+						summary.summary = entry[this.summaryKey];
+					}
+
+					summaries.push(Vue.observable(summary));
+				}
+				if (this.sort) {
+					if (Utils.isObject(this.data)) {
+						summaries = Object.values(summaries);
+					}
+					summaries.sort((a,b) => Utils.compareStringCaseInsensitive(a.identifier, b.identifier));
+				}
+				this.summaries = summaries;
+			}
+		},
 		externalSearchTerm: {
 			immediate: true,
 			handler(value) {
@@ -150,36 +190,6 @@ export default {
 				return this.summaries.filter(item => item.show === true).length;
 			}
 			return null;
-		},
-		summaries() {
-			let summaries = [];
-			for(let index in this.data) {
-				let entry = this.data[index];
-				let summary = {
-					identifier: index,
-					summary: '',
-					show: true,
-					index: index,
-					experimental: entry.experimental,
-					deprecated: entry.deprecated
-				};
-
-				if (typeof entry[this.identifierKey] === 'string') {
-					summary.identifier = entry[this.identifierKey];
-				}
-				if (typeof entry[this.summaryKey] === 'string') {
-					summary.summary = entry[this.summaryKey];
-				}
-
-				summaries.push(Vue.observable(summary));
-			}
-			if (this.sort) {
-				if (Utils.isObject(this.data)) {
-					summaries = Object.values(summaries);
-				}
-				summaries.sort((a,b) => Utils.compareStringCaseInsensitive(a.identifier, b.identifier));
-			}
-			return summaries;
 		}
 	},
 	methods: {
