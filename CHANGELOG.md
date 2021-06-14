@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.2] - 2020-06-14
+
 ### Fixed
 
 - `Collection` and `JobEstimate`: Don't throw an exception when a duration or temporal step is invalid.
@@ -254,7 +256,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.2...HEAD
+[2.1.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.3...v2.1.0
 [2.0.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.0.2...v2.0.3
