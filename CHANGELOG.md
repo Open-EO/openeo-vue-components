@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `Collection` and `JobEstimate`: Don't throw an exception when a duration or temporal step is invalid.
+
 ## [2.1.1] - 2020-05-31
 
 ### Changed

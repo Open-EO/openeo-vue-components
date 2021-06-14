@@ -64,12 +64,15 @@ export default {
 		},
 		duration() {
 			if (typeof this.estimate.duration === 'string') {
-				isoDuration.setLocales({en});
-				return isoDuration(this.estimate.duration).humanize('en');
+				try {
+					isoDuration.setLocales({en});
+					return isoDuration(this.estimate.duration).humanize('en');
+				} catch (error) {
+					console.warn(error);
+				}
 			}
-			else {
-				return 'n/a';
-			}
+			
+			return 'n/a';
 		}
 	},
 	beforeCreate() {

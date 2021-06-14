@@ -230,12 +230,15 @@ export default {
 		},
 		formatDuration(duration) {
 			if (typeof duration === 'string') {
-				isoDuration.setLocales({en});
-				return isoDuration(duration).humanize('en');
+				try {
+					isoDuration.setLocales({en});
+					return isoDuration(duration).humanize('en');
+				} catch (error) {
+					console.warn(error);
+				}
 			}
-			else {
-				return 'n/a';
-			}
+			
+			return 'n/a';
 		}
 	}
 }
