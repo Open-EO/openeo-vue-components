@@ -33,7 +33,7 @@
 
 		<section class="parameters">
 			<h3>Parameters</h3>
-			<ProcessParameter v-for="(param, i) in parameters" :key="i" :parameter="param" />
+			<ProcessParameter v-for="param in parameters" :key="param.name" :parameter="param" />
 			<p v-if="parameters.length === 0">This file format has no parameters.</p>
 		</section>
 

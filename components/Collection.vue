@@ -20,7 +20,7 @@
 			<div v-if="hasElements(data.keywords)">
 				<strong>Keywords:</strong>&nbsp;
 				<ul class="comma-separated-list">
-					<li v-for="(keyword, i) in data.keywords" :key="i">{{ keyword }}</li>
+					<li v-for="keyword in data.keywords" :key="keyword">{{ keyword }}</li>
 				</ul>
 			</div>
 		</section>
@@ -34,7 +34,7 @@
 		<section class="preview" v-show="thumbnails.length">
 			<h3>Previews</h3>
 			<div class="thumbnails">
-				<a v-for="(img, i) in thumbnails" :key="i" :href="img.href" target="_blank">
+				<a v-for="img in thumbnails" :key="img.href" :href="img.href" target="_blank">
 					<img :src="img.href" :title="img.title" :alt="img.title || 'Preview'" />
 				</a>
 			</div>
@@ -51,7 +51,7 @@
 			</template>
 		
 			<template v-if="boundingBoxes.length">
-			<h3>Spatial Extent</h3>
+				<h3>Spatial Extent</h3>
 				<slot name="spatial-extents" :extents="boundingBoxes" :mapOptions="mapOptions">
 					<div class="map" ref="mapContainer">
 						<template v-if="!map">
@@ -67,12 +67,12 @@
 		<section class="providers" v-if="data.providers">
 			<h3>Providers</h3>
 			<ol>
-				<li v-for="(provider, key) in data.providers" :key="key">
+				<li v-for="provider in data.providers" :key="provider.name">
 					<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
 					<template v-else>{{ provider.name }}</template>
 					<template v-if="hasElements(provider.roles)">
 						(<ul class="comma-separated-list">
-							<li v-for="(role, r) in provider.roles" :key="r" class="provider-role">{{ role }}</li>
+							<li v-for="role in provider.roles" :key="role" class="provider-role">{{ role }}</li>
 						</ul>)
 					</template>
 					<Description v-if="provider.description" :description="provider.description" :compact="true" />
@@ -101,7 +101,7 @@
 							<span v-else v-html="stac.formatExtent(dim.extent)" />
 						</div>
 						<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
-							<li v-for="(value, i) in dim.values" :key="i">{{ value }}</li>
+							<li v-for="value in dim.values" :key="value">{{ value }}</li>
 						</ul>
 						<div v-else class="value"><i>n/a</i></div>
 					</div>

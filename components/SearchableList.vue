@@ -16,7 +16,7 @@
 				<slot name="after-search-box" :filteredCount="filteredCount" :summaries="summaries"></slot>
 				<p v-if="filteredCount === 0">No search results found.</p>
 				<ul v-else class="list" :class="{expandable: offerDetails}">
-					<li v-for="(summary, i) in summaries" :key="i" v-show="summary.show" :class="{expanded: showDetails[i]}">
+					<li v-for="(summary, i) in summaries" :key="summary.identifier" v-show="summary.show" :class="{expanded: showDetails[i]}">
 						<summary @click="toggleDetails(i)" class="summary" :class="{experimental: summary.experimental, deprecated: summary.deprecated}">
 							<slot name="summary" :summary="summary" :item="data[summary.index]">
 								<strong>{{ summary.identifier }}</strong>

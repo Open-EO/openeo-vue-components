@@ -17,7 +17,7 @@
 		<section class="preview" v-if="thumbnails.length">
 			<h3>Previews</h3>
 			<div class="thumbnails">
-				<a v-for="(img, i) in thumbnails" :key="i" :href="img.href" target="_blank">
+				<a v-for="img in thumbnails" :key="img.href" :href="img.href" target="_blank">
 					<img :src="img.href" :title="img.title" :alt="img.title || 'Preview'" />
 				</a>
 			</div>

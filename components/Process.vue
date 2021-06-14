@@ -9,7 +9,7 @@
 		<template v-if="provideDownload || hasElements(process.categories)">
 			<div class="process-bar">
 				<ul class="badges categories" v-if="hasElements(process.categories)">
-					<li class="badge category" v-for="(value, key) in process.categories" :key="key" v-text="formatCategory(value)"></li>
+					<li class="badge category" v-for="value in process.categories" :key="value" v-text="formatCategory(value)"></li>
 				</ul>
 				<ul class="badges actions" v-if="provideDownload">
 					<li class="badge action download"><a class="badge-fill" @click="download">Download JSON</a></li>
@@ -40,7 +40,7 @@
 
 		<section class="parameters">
 			<h3>Parameters</h3>
-			<ProcessParameter v-for="(param, i) in parameters" :key="i" :parameter="param" :processUrl="processUrl" />
+			<ProcessParameter v-for="param in parameters" :key="param.name" :parameter="param" :processUrl="processUrl" />
 			<p v-if="parameters.length === 0">This process has no parameters.</p>
 		</section>
 

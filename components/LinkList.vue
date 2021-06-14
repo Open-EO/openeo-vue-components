@@ -2,7 +2,7 @@
 	<div class="vue-component link-list" v-if="friendlyLinks.length > 0">
 		<component v-if="heading" :is="headingTag">{{ heading }}</component>
 		<ul>
-			<li v-for="(link, key) in friendlyLinks" :key="key">
+			<li v-for="(link, i) in friendlyLinks" :key="i">
 				<a :href="link.href" target="_blank" :rel="link.rel">{{ link.title }}</a>
 				<span class="relation" v-if="showRel && link.rel"> ({{ link.rel }})</span>
 			</li>

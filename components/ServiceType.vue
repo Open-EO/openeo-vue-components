@@ -23,13 +23,13 @@
 
 		<section class="configuration">
 			<h3>Configuration Settings</h3>
-			<ProcessParameter v-for="(param, i) in configuration" :key="i" :parameter="param" />
+			<ProcessParameter v-for="param in configuration" :key="param.name" :parameter="param" />
 			<p v-if="configuration.length === 0">This service has no configuration settings.</p>
 		</section>
 
 		<section class="parameters">
 			<h3>Process Parameters</h3>
-			<ProcessParameter v-for="(param, i) in parameters" :key="i" :parameter="param" />
+			<ProcessParameter v-for="param in parameters" :key="param.name" :parameter="param" />
 			<p v-if="parameters.length === 0">This service has no process parameters.</p>
 		</section>
 

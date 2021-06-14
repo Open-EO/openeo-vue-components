@@ -3,7 +3,7 @@
 		<component v-if="heading" :is="headingTag">{{ heading }}</component>
 		<strong>Plans</strong>
 		<ul v-if="currency !== null && plans.length">
-			<li v-for="(plan, key) in plans" :key="key">
+			<li v-for="plan in plans" :key="plan.name">
 				<strong class="plan-name">
 					<a v-if="plan.url" :href="plan.url" target="_blank">{{ plan.name }}</a>
 					<template v-else>{{ plan.name }}</template>

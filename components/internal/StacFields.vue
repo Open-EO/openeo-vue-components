@@ -16,7 +16,7 @@
 							<tbody>
 								<tr v-for="(row, r) in prop.formatted" :key="r">
 									<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
-									<td v-for="col in prop.itemOrder" :key="col" v-html="row[col]" />
+									<td v-for="col in prop.itemOrder" :key="`${col}_${r}`" v-html="row[col]" />
 								</tr>
 							</tbody>
 						</table>

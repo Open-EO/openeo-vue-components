@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `Collection` and `JobEstimate`: Don't throw an exception when a duration or temporal step is invalid.
-- `Collection`: Prevent map from incorrectly relocating to the preview section when data is altered externally
+- `Collection`: Prevent map from incorrectly relocating to the preview section when data is altered externally.
+- Better keys in Vue loops.
 
 ## [2.1.1] - 2020-05-31
 

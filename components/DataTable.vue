@@ -10,10 +10,10 @@
 		</div>
 		<table v-if="hasData">
 			<tr>
-				<th v-for="(col, id) in columns" v-show="!col.hide" :key="id" :class="thClasses(id)" @click="enableSort(id)" :title="thTitle(id)">{{ col.name }}</th>
+				<th v-for="(col, id) in columns" v-show="!col.hide" :key="col.name" :class="thClasses(id)" @click="enableSort(id)" :title="thTitle(id)">{{ col.name }}</th>
 			</tr>
 			<tr v-for="(row, i) in view" :key="i">
-				<td v-for="(col, id) in columns" v-show="!col.hide" :key="id" 
+				<td v-for="(col, id) in columns" v-show="!col.hide" :key="`${col.name}_${i}`" 
 					:class="[id, {'edit': canEdit(col)}]"
 					:title="canEdit(col) ? 'Double-click to change the value' : false"
 					@dblclick="onDblClick($event, row, col, id)"
