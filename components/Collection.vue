@@ -30,7 +30,8 @@
 			<span v-html="license" />
 		</section>
 
-		<section class="preview" v-if="thumbnails.length">
+		<!-- v-show to prevent issue with thumbnails and Leaflet map, see https://github.com/Open-EO/openeo-vue-components/issues/44 -->
+		<section class="preview" v-show="thumbnails.length">
 			<h3>Previews</h3>
 			<div class="thumbnails">
 				<a v-for="(img, i) in thumbnails" :key="i" :href="img.href" target="_blank">
