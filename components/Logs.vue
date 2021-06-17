@@ -86,6 +86,8 @@ export default {
 </style>
 
 <style>
+@import url('./base.css');
+
 .vue-component.logs .badges {
 	white-space: nowrap;
 }
