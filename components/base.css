@@ -7,6 +7,9 @@
 .vue-component abbr {
 	text-decoration: underline dotted 1px;
 }
+.vue-component .unit {
+	opacity: 0.6;
+}
 
 /* Job Status */
 .vue-component .status[data-value="submitted"] {

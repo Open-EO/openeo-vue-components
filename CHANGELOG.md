@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Logs`: supports time and usage metrics
+
+### Changed
+
+- `Logs`:
+  - New style
+  - Show more details for stac trace / path
+
+### Fixed
+
+- `Logs`: Correctly distinguish "non-existing" and "null" for `data`
+
 ## [2.1.2] - 2020-06-14
 
 ### Fixed

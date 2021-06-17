@@ -1,18 +1,34 @@
 {
   "logs": [
     {
+      "id": "000000000003375184813931386",
+      "message": "Queueing batch job",
+      "level": "info",
+      "time": "2019-08-24T14:15:22Z"
+    },
+    {
+      "id": "000000000003375184814235626",
+      "message": "Starting batch job",
+      "level": "info",
+      "time": "2019-08-24T16:15:00Z"
+    },
+    {
+      "id": "000000000003375184952807670",
+      "message": "Executing node 1",
+      "level": "debug",
+      "time": "2019-08-24T16:15:00.123Z"
+    },
+    {
       "id": "1",
       "code": "SampleError",
       "level": "error",
       "message": "Can't load the UDF file from the URL `https://example.com/invalid/file.txt`. Server responded with error 404.",
-      "time": "2019-08-24T14:15:22Z",
-      "data": null,
+      "time": "2019-08-24T16:18:55Z",
       "path": [
         {
           "node_id": "runudf1",
           "process_id": "ndvi",
-          "namespace": null,
-          "parameter": "udf"
+          "namespace": "user"
         },
         {
           "node_id": "reduce1",
@@ -21,6 +37,32 @@
           "parameter": "process"
         }
       ],
+      "usage": {
+        "cpu": {
+          "value": 40668,
+          "unit": "cpu-seconds"
+        },
+        "duration": {
+          "value": 2611,
+          "unit": "seconds"
+        },
+        "memory": {
+          "value": 108138811,
+          "unit": "mb-seconds"
+        },
+        "network": {
+          "value": 0,
+          "unit": "kb"
+        },
+        "storage": {
+          "value": 55,
+          "unit": "mb"
+        },
+        "creditsConsumed": {
+          "value": 0.12,
+          "unit": "€"
+        }
+      },
       "links": [
         {
           "href": "https://example.openeo.org/docs/errors/SampleError",
@@ -29,95 +71,59 @@
       ]
     },
     {
-      "id": "000000000003375184813931386",
-      "message": "Queueing batch job",
-      "level": "info",
-      "data": null
-    },
-    {
-      "id": "000000000003375184814235626",
-      "message": "Starting batch job",
-      "level": "info",
-      "data": null
-    },
-    {
-      "id": "000000000003375184952807670",
-      "message": "Executing node 1",
-      "level": "debug",
-      "path": [
-        "1"
-      ],
-      "data": null
-    },
-    {
       "id": "000000000003375184954962248",
       "message": "Executing node 3",
-      "level": "debug",
-      "path": [
-        "3"
-      ],
-      "data": null
+      "level": "debug"
     },
     {
       "id": "000000000003375184955192006",
       "message": "Executing node 2",
-      "level": "debug",
-      "path": [
-        "3",
-        "2"
-      ],
-      "data": null
+      "level": "debug"
     },
     {
       "id": "000000000003375184957617960",
       "message": "Executing node 2",
-      "level": "debug",
-      "path": [
-        "2"
-      ],
-      "data": null
+      "level": "debug"
     },
     {
       "id": "000000000003375184957919719",
       "message": "Bounding Box has been reduced to the maximum bounding box supported by the target CRS.",
-      "level": "warning",
-      "data": null
+      "level": "warning"
     },
     {
       "id": "000000000003375184958432484",
       "message": "No bands are specified in the output parameter settings. The first band will be used for a gray-value visualisation.",
       "level": "warning",
-      "data": null
+      "data": "B01"
     },
     {
       "id": "000000000003375184958508815",
       "message": "Output CRS is EPSG:3857",
-      "level": "info",
-      "data": null
+      "level": "info"
     },
     {
       "id": "000000000003375184958584104",
       "message": "Compositing the image collection to a single image.",
-      "level": "warning",
-      "data": null
+      "level": "warning"
     },
     {
       "id": "000000000003375185897008729",
       "message": "Downloading data from Google: https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/thumbnails/a2a815cfe98bd14208d6ffad889bcc46-ed5127bb74d62cfa0d70765800441bd4:getPixels",
       "level": "debug",
-      "data": null
+      "data": "https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/thumbnails/a2a815cfe98bd14208d6ffad889bcc46-ed5127bb74d62cfa0d70765800441bd4:getPixels"
     },
     {
       "id": "000000000003375187335821562",
       "message": "Storing result to: storage/job_files/mrzFnnApHC0rwxJu/da35a7dbe202a49c.png",
       "level": "debug",
-      "data": null
+      "data": [
+        "storage/job_files/mrzFnnApHC0rwxJu/da35a7dbe202a49c.png"
+      ]
     },
     {
       "id": "000000000003375187707095466",
       "message": "Finished",
-      "level": "info",
-      "data": null
+      "level": "info"
     },
     {
       "id": "000000000005475711919131907",
