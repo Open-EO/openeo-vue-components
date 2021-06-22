@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `Process`: *'The return value has not been defined.'* was shown for processes that had no parameters regardless of the actual return value.
+
 ## [2.2.0] - 2020-06-17
 
 ### Added
@@ -16,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Logs`:
   - New style
-  - Show more details for stac trace / path
+  - Show more details for stack trace / path
 
 ### Fixed
 
@@ -50,7 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New `Job` component
+- New `Job` component
 - New `JobEstimate` component
 - New `Logs` component
 - New `Service` component

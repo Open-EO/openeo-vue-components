@@ -52,7 +52,7 @@
 					<JsonSchema :schema="returns.schema" />
 				</div>
 			</template>
-			<p v-if="parameters.length === 0">The return value has not been defined.</p>
+			<p v-else>The return value has not been defined.</p>
 		</section>
 
 		<section class="exceptions" v-if="hasElements(process.exceptions)">
