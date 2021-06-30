@@ -82,7 +82,7 @@
 			<h3>Processing Instructions</h3>
 			<div class="graph">
 				<slot name="process-graph" :v-bind="$props">
-					<ObjectTree :data="process.process_graph" />
+					<ModelBuilder :id="process.id" :value="process" />
 				</slot>
 			</div>
 		</section>
@@ -103,10 +103,10 @@ export default {
 		DeprecationNotice: () => import('./DeprecationNotice.vue'),
 		Description: () => import('./Description.vue'),
 		ExperimentalNotice: () => import('./ExperimentalNotice.vue'),
+		ModelBuilder: () => import('./ModelBuilder.vue'),
 		ProcessExample,
 		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
-		LinkList: () => import('./LinkList.vue'),
-		ObjectTree: () => import('./ObjectTree.vue')
+		LinkList: () => import('./LinkList.vue')
 	},
 	props: {
 		process: {

@@ -16,7 +16,7 @@
 			</ul>
 		</div>
 		<div v-else-if="Array.isArray(logs) && !logs.length" class="noDataMessage">No logs available.</div>
-		<div v-else class="noDataMessage"><i class="fas fa-spinner fa-spin"></i> Loading logs...</div>
+		<div v-else class="noDataMessage"><FontAwesomeIcon icon="fa-spinner" spin /> Loading logs...</div>
 	</div>
 </template>
 
@@ -24,9 +24,16 @@
 import Utils from '../utils';
 import Log from './internal/Log.vue';
 
+
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+library.add(faSpinner);
+
 export default {
 	name: 'Logs',
 	components: {
+		FontAwesomeIcon,
 		Log,
 		MultiSelect: () => import('vue-multiselect')
 	},

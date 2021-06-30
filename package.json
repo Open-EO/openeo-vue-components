@@ -35,12 +35,17 @@
     "utils.js"
   ],
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
     "@musement/iso-duration": "^1.0.0",
-    "@openeo/js-commons": "^1.2.0",
+    "@openeo/js-commons": "Open-EO/openeo-js-commons#dev",
+    "@openeo/js-processgraphs": "^1.1.0",
     "@radiantearth/stac-fields": "^1.0.0-beta.7",
     "@radiantearth/stac-migrate": "^1.0.0",
     "commonmark": "^0.29.3",
     "core-js": "^3.8.2",
+    "intersects": "^2.7.2",
     "leaflet": "^1.6.0",
     "leaflet.antimeridian": "^1.0.0",
     "vue": "^2.6.0",

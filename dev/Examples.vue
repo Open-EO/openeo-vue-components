@@ -39,6 +39,7 @@ import JobEstimate from '../components/JobEstimate.vue';
 import JsonSchema from '../components/JsonSchema.vue';
 import LinkList from '../components/LinkList.vue';
 import Logs from '../components/Logs.vue';
+import ModelBuilder from '../components/ModelBuilder.vue';
 import ObjectTree from '../components/ObjectTree.vue';
 import Process from '../components/Process.vue';
 import Processes from '../components/Processes.vue';
@@ -72,6 +73,7 @@ export default {
 		JsonSchema,
 		LinkList,
 		Logs,
+		ModelBuilder,
 		ObjectTree,
 		Process,
 		Processes,

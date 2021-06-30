@@ -4,7 +4,7 @@
 			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
 				<span class="tabName"><slot name="tabName" :tab="tab">{{ tab.name }}</slot></span>
-				<span class="tabClose" v-if="tab.closable" title="Close" @click.prevent.stop="closeTab(tab)"><i class="far fa-times-circle"></i></span>
+				<span class="tabClose" v-if="tab.closable" title="Close" @click.prevent.stop="closeTab(tab)"><FontAwesomeIcon icon="times-circle" /></span>
 			</button>
 		</div>
 		<div class="tabsBody">
@@ -20,9 +20,15 @@
 import Tab from './Tab.vue';
 import Utils from '../utils';
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+library.add(faTimesCircle);
+
 export default {
 	name: "Tabs",
 	components: {
+		FontAwesomeIcon,
 		Tab
 	},
 	props: {
