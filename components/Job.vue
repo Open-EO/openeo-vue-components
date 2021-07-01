@@ -65,6 +65,14 @@
 			</div>
 		</section>
 
+		<section class="usage" v-if="hasUsageMetrics">
+			<h3>Usage Metrics</h3>
+			<div v-for="(metric, key) in usage" :key="key" class="tabular">
+				<label class="metric">{{ key | usageLabel }}</label>
+				<span class="value">{{ metric.value }} <span class="unit">{{ metric.unit }}</span></span>
+			</div>
+		</section>
+
 		<section class="process">
 			<h3>Process</h3>
 			<Process class="inline" :process="job.process" :provideDownload="false" :showGraph="true">
@@ -79,9 +87,13 @@
 
 <script>
 import Utils from '../utils';
+import UsageMixin from './internal/UsageMixin.js';
 
 export default {
 	name: 'Job',
+	mixins: [
+		UsageMixin
+	],
 	components: {
 		Description: () => import('./Description.vue'),
 		Process: () => import('./Process.vue')
@@ -116,6 +128,9 @@ export default {
 			else {
 				return "0%";
 			}
+		},
+		usage() {
+			return this.job.usage;
 		}
 	},
 	beforeCreate() {

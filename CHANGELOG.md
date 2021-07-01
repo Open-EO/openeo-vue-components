@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Job` and `Service`: supports usage metrics
+
 ### Fixed
 
 - Fixed an error that was thrown in the case that no time is present in the logs

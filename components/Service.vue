@@ -49,7 +49,7 @@
 		<section class="attributes" v-if="hasAttributes">
 			<h3>Exposed Capabilities from {{ type }}</h3>
 			<div class="tabular" v-for="(value, key) in service.attributes" :key="key">
-				<label>{{ prettifyKey(key) }}:</label>
+				<label>{{ key | prettifyKey }}:</label>
 				<ObjectTree class="value" :data="value" />
 			</div>
 		</section>
@@ -57,7 +57,7 @@
 		<section class="parameters" v-if="hasConfig">
 			<h3>Custom Settings for {{ type }}</h3>
 			<div class="tabular" v-for="(value, key) in service.configuration" :key="key">
-				<label>{{ prettifyKey(key) }}:</label>
+				<label>{{ key | prettifyKey }}:</label>
 				<ObjectTree class="value" :data="value" />
 			</div>
 		</section>
@@ -80,6 +80,14 @@
 			</div>
 		</section>
 
+		<section class="usage" v-if="hasUsageMetrics">
+			<h3>Usage Metrics</h3>
+			<div v-for="(metric, key) in usage" :key="key" class="tabular">
+				<label class="metric">{{ key | usageLabel }}</label>
+				<span class="value">{{ metric.value }} <span class="unit">{{ metric.unit }}</span></span>
+			</div>
+		</section>
+
 		<section class="process">
 			<h3>Process</h3>
 			<Process class="inline" :process="service.process" :provideDownload="false" :showGraph="true">
@@ -94,9 +102,13 @@
 
 <script>
 import Utils from '../utils';
+import UsageMixin from './internal/UsageMixin.js';
 
 export default {
 	name: 'Service',
+	mixins: [
+		UsageMixin
+	],
 	components: {
 		Description: () => import('./Description.vue'),
 		ObjectTree: () => import('./ObjectTree.vue'),
@@ -135,12 +147,15 @@ export default {
 			else {
 				return 'Unknown';
 			}
+		},
+		usage() {
+			return this.service.usage;
 		}
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
 	},
-	methods: {
+	filters: {
 		prettifyKey(key) {
 			return Utils.prettifyString(key);
 		}

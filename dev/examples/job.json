@@ -9,6 +9,32 @@
 	"plan": "premium",
 	"costs": 12.28,
 	"budget": null,
+	"usage": {
+	  "cpu": {
+		"value": 40668,
+		"unit": "cpu-seconds"
+	  },
+	  "duration": {
+		"value": 2611,
+		"unit": "seconds"
+	  },
+	  "memory": {
+		"value": 108138811,
+		"unit": "mb-seconds"
+	  },
+	  "network": {
+		"value": 0,
+		"unit": "kb"
+	  },
+	  "storage": {
+		"value": 55,
+		"unit": "mb"
+	  },
+	  "creditsConsumed": {
+		"value": 0.12,
+		"unit": "€"
+	  }
+	},
 	"process": {
 		"process_graph": {
 			"load": {
