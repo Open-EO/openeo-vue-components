@@ -204,8 +204,8 @@ class Utils extends CommonUtils {
 
 	static domBoundingBox(el) {
 		var rect = el.getBoundingClientRect();
-		rect.offsetTop = rect.top + document.body.scrollTop;
-		rect.offsetLeft = rect.left + document.body.scrollLeft;
+		rect.offsetTop = rect.top + Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+		rect.offsetLeft = rect.left + Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
 		return rect;
     }
     

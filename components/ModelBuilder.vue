@@ -2,7 +2,7 @@
     <div ref="div" :id="id" :class="classes" tabindex="0"
         @mousemove="onMouseMove($event)"
         @mousedown="onMouseDown($event)"
-        @wheel.prevent="onMouseWheel($event)"
+        @wheel="onMouseWheel($event)"
         @keydown="onKeyDown($event)"
         @focus="hasFocus = true"
         @blur="hasFocus = false">
@@ -16,7 +16,7 @@
             <line v-if="linkingLine" v-bind="linkingLine" />
             <rect v-if="selectRect" v-bind="selectRect" />
         </svg>
-        <div class="blocks">
+        <div ref="blocks" class="blocks">
             <Block v-for="block in blocks" :key="block.type + block.id"
                 :id="block.id" :type="block.type" :value="block.value" :spec="block.spec" :state="state" :selected.sync="block.selected"
                 @input="commit()" @parameterRemoved="parameterRemoved"
@@ -73,7 +73,7 @@ const selectionChangeWatcher = function (newVal, oldVal) {
 };
 
 export default {
-    name: 'Blocks',
+    name: 'ModelBuilder',
     components: {
         Block,
         Edge,
@@ -135,6 +135,7 @@ export default {
 
             activeTransactions: 0,
             hasFocus: false,
+            linkingLine: null,
             parameterViewer: null,
             
             // State specific to this blocks instance including all children
@@ -160,35 +161,24 @@ export default {
                 return null;
             }
             return {
-                x: Math.min(this.state.mouse[0], this.state.selecting[0]),
-                y: Math.min(this.state.mouse[1], this.state.selecting[1]),
-                width: Math.abs(this.state.mouse[0] - this.state.selecting[0]),
-                height: Math.abs(this.state.mouse[1] - this.state.selecting[1]),
+                x: Math.min(this.state.selecting.current[0], this.state.selecting.start[0]),
+                y: Math.min(this.state.selecting.current[1], this.state.selecting.start[1]),
+                width: Math.abs(this.state.selecting.current[0] - this.state.selecting.start[0]),
+                height: Math.abs(this.state.selecting.current[1] - this.state.selecting.start[1]),
                 'stroke': 'rgba(0,0,0,0.8)',
                 'stroke-width': 1,
                 'fill': 'rgba(0,0,0,0.05)'
             };
         },
-        linkingLine() {
-            if (this.state.linkFrom) {
-                var position = this.state.linkFrom.getCirclePosition();
-                return {
-                    x1: position[0],
-                    y1: position[1],
-                    x2: this.state.mouse[0],
-                    y2: this.state.mouse[1],
-                    'stroke': 'rgba(0,0,0,0.4)',
-                    'stroke-width': 3*this.state.scale
-                };
-            }
-            return null;
-        },
         processRegistry() {
             if (this.processes instanceof ProcessRegistry) {
                 return this.processes;
             }
-            else {
+            else if (Array.isArray(this.processes)) {
                 return new ProcessRegistry(this.processes);
+            }
+            else {
+                throw new Error('');
             }
         },
         hasProcesses() {
@@ -285,10 +275,10 @@ export default {
                 }
             }
         },
-        startDragBlock() {
+        startDragBlock(event) {
             for(let i in this.blocks) {
                 if (this.blocks[i].$el) {
-                    this.blocks[i].$el.startDrag();
+                    this.blocks[i].$el.startDrag(event);
                 }
             }
         },
@@ -318,11 +308,13 @@ export default {
                 }
                 else if (this.state.linkFrom == parameter) {
                     this.state.linkFrom = null;
+                    this.linkingLine = null;
                 }
             }
             else {
                 this.state.linkTo = null;
                 this.state.linkFrom = null;
+                this.linkingLine = null;
             }
         },
         multiSelect() {
@@ -341,8 +333,11 @@ export default {
                 .map(e => e.selected = true);
         },
         async onDocumentMouseUp(event) {
+            if (this.parameterViewer) {
+                return;
+            }
             if (this.selectedSideEdge) {
-                this.selectEdge(this.selectedSideEdge, null, null, null); // Reset selectedParameter / selectedPosition, but don't change selected state.
+                this.selectEdge(this.selectedSideEdge, null); // Reset selectedParameter, but don't change selected state.
             }
             if (this.state.selecting) {
                 this.multiSelect();
@@ -363,6 +358,9 @@ export default {
             }
         },
         onKeyDown(event) {
+            if (this.parameterViewer) {
+                return;
+            }
             var allInputs = document.querySelectorAll('input, textarea, button, select, datalist');
             for(let el of allInputs) {
                 if (el === document.activeElement) {
@@ -376,22 +374,34 @@ export default {
             }
         },
         onMouseWheel(event) {
-            var dX = this.state.mouse[0] - this.state.center[0];
-            var dY = this.state.mouse[1] - this.state.center[1];
+            if (this.parameterViewer) {
+                return;
+            }
+            let mouse = this.getMousePos(event);
+            var dX = mouse[0] - this.state.center[0];
+            var dY = mouse[1] - this.state.center[1];
             var deltaScale = Math.pow(1.1, Math.sign(event.deltaY)*-1);
             this.moveCenter(-dX*(deltaScale-1), -dY*(deltaScale-1));
             this.state.scale *= deltaScale;
+            event.preventDefault();
+        },
+        getMousePos(event) {
+            let root = this.$refs.div.getBoundingClientRect();
+            return [
+                event.clientX - root.left,
+                event.clientY - root.top
+            ];
         },
         onMouseMove(event) {
+            if (this.parameterViewer) {
+                return;
+            }
             try {
-                var rect = this.getDimensions(); // This sometimes fails in web editor if the ref is not defined anymore after logout
-                var mouseX = event.pageX - rect.offsetLeft;
-                var mouseY = event.pageY - rect.offsetTop;
-                this.state.mouse = [mouseX, mouseY];
+                let mousePos = this.getMousePos(event);
 
                 if (this.state.editable && this.selectedSideEdge) {
-                    var origin = this.selectedSideEdge.selectedPosition;
-                    var distance = Math.sqrt(Math.pow(mouseX-origin[0], 2)+Math.pow(mouseY-origin[1], 2));
+                    var origin = this.selectedSideEdge.selectedParameter.getCirclePosition();
+                    var distance = Math.sqrt(Math.pow(mousePos[0]-origin[0], 2)+Math.pow(mousePos[1]-origin[1], 2));
                     if (distance > 10) {
                         this.link(this.selectedSideEdge.selectedParameter);
                         this.removeEdge(this.selectedSideEdge);
@@ -399,28 +409,56 @@ export default {
                     }
                 }
 
+                if (this.state.selecting) {
+                    this.state.selecting.current = mousePos;
+                }
+
                 if (this.state.moving) {
-                    this.moveCenter((mouseX-this.state.moving[0]), (mouseY-this.state.moving[1]));
-                    this.state.moving = this.state.mouse;
+                    this.moveCenter((mousePos[0]-this.state.moving[0]), (mousePos[1]-this.state.moving[1]));
+                    this.state.moving = mousePos;
+                }
+
+                if (this.state.linkFrom) {
+                    var position = this.state.linkFrom.getCirclePosition();
+                    this.linkingLine = {
+                        x1: position[0],
+                        y1: position[1],
+                        x2: mousePos[0],
+                        y2: mousePos[1],
+                        'stroke': 'rgba(0,0,0,0.4)',
+                        'stroke-width': 3 * this.state.scale
+                    };
                 }
             } catch (error) {
-                console.log(error);
+                this.$emit("error", error);
             }
         },
         onMouseDown(event) {
-            let sideSelected = null;
-
-            if (event.which == 1 && event.shiftKey) {
-                this.state.selecting = this.state.mouse;
+            if (this.parameterViewer) {
+                return;
             }
-            else if (event.which == 1) {
-                this.unselectAll(event);
+            let sideSelected = null;
+            let mousePos = this.getMousePos(event);
 
+            if (event.which == 1) {
+                if (event.shiftKey) {
+                    // Start multi select via box
+                    this.state.selecting = {
+                        start: mousePos,
+                        current: mousePos
+                    }
+                }
+                else {
+                    // No multiselect: unselect all
+                    this.unselectAll();
+                }
+
+                // Select edges
                 for (var k in this.$refs.edges) {
                     var edge = this.$refs.edges[k];
-                    var collide = edge.collide(this.state.mouse[0], this.state.mouse[1]);
+                    var collide = edge.collide(mousePos[0], mousePos[1]);
                     if (collide != false) {
-                        if (this.selectedEdges.length === 0) {
+                        if (this.selectedEdges.length === 0 && !event.shiftKey) {
                             if (collide < 0.3) {
                                 sideSelected = edge.parameter2;
                             }
@@ -428,7 +466,7 @@ export default {
                                 sideSelected = edge.parameter1;
                             }
                         }
-                        this.selectEdge(k, true, event, sideSelected);
+                        this.selectEdge(k, true, sideSelected);
                         event.preventDefault();
                         break;
                     }
@@ -436,7 +474,7 @@ export default {
             }
 
             if (event.which == 2 || (event.which == 1 && !sideSelected && !event.shiftKey)) {
-                this.state.moving = this.state.mouse;
+                this.state.moving = mousePos;
             }
 
             this.focus();
@@ -633,22 +671,16 @@ export default {
             this.newBlockOffset = 0;
         },
 
-        unselectAll(event = null) {
-            if (event && event.shiftKey) {
-                return; // Allow multi select
-            }
-            for(var i in this.blocks) {
-                this.$set(this.blocks[i], "selected", false);
+        unselectAll() {
+            for(var block of this.blocks) {
+                this.$set(block, "selected", false);
             }
             for(var i in this.edges) {
                 this.selectEdge(i, false);
             }
         },
 
-        selectEdge(edge, select = true, event = null, parameter = null) {
-            if (event) {
-                this.unselectAll(event);
-            }
+        selectEdge(edge, select = true, parameter = null) {
             if (!Utils.isObject(edge)) {
                 edge = this.edges[edge];
             }
@@ -656,7 +688,6 @@ export default {
                 this.$set(edge, "selected", select);
             }
             this.$set(edge, "selectedParameter", parameter);
-            this.$set(edge, "selectedPosition", parameter ? this.state.mouse : null);
         },
 
         /**
@@ -913,13 +944,11 @@ export default {
             } catch (error) {
                 // If an error occured: show it and restore the last working state from history.
                 this.$emit('error', error, "Model is invalid");
-                console.log(error);
                 if (options.undoOnError !== false) {
                     try {
                         await this.undo();
                     } catch (error2) {
                         this.$emit('error', error, "Revert failed");
-                        console.log(error);
                     }
                 }
                 success = false;

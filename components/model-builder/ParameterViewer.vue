@@ -7,9 +7,6 @@
 		<p v-if="data.length === 0">No parameters available.</p>
 		<section v-else v-for="param in data" :key="param.name" :class="param.classes">
 			<h3>{{ param.name }}</h3>
-			<div v-if="param.description" class="description">
-				<Description :description="param.description" />
-			</div>
 			<div v-if="param.isObject && param.value.from_node" class="externalData fromNode">
 				<em>Output of <tt>#{{ param.value.from_node }}</tt></em>
 			</div>
@@ -18,6 +15,10 @@
 			</div>
 			<ModelBuilder v-else-if="param.isObject && param.value.process_graph" :id="param.name" :value="param.value" />
 			<ObjectTree v-else :data="param.value" />
+			<div v-if="param.description" class="description">
+				<FontAwesomeIcon icon="info-circle" />
+				<Description :description="param.description" :compact="true" />
+			</div>
 		</section>
 	</div>
 </template>
@@ -25,10 +26,16 @@
 <script>
 import Utils from '../../utils';
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+library.add(faInfoCircle);
+
 export default {
 	name: 'ParameterViewer',
 	components: {
 		Description: () => import('../Description.vue'),
+		FontAwesomeIcon,
 		ModelBuilder: () => import('../ModelBuilder.vue'),
 		ObjectTree: () => import('../ObjectTree.vue')
 	},
@@ -65,6 +72,18 @@ export default {
 				};
 			});
 		}
+	},
+	mounted() {
+		if (this.selectParameterName) {
+			let elem = this.$el.querySelector('section.highlight');
+			if (elem) {
+				let top = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+				let left = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+				elem.scrollIntoView();
+				document.documentElement.scrollTop = document.body.scrollTop = top;
+				document.documentElement.scrollLeft = document.body.scrollLeft = left;
+			}
+		}
 	}
 }
 </script>
@@ -80,6 +99,27 @@ export default {
 	box-sizing: border-box;
 	background-color: white;
 }
+.parameter-viewer > section {
+	border-top: 1px dotted gray;
+	margin: 1em 0;
+}
+.parameter-viewer > section > .description {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1em;
+}
+.parameter-viewer > section > .description > svg {
+	margin-right: 0.5em;
+	color: gray;
+}
+.parameter-viewer > section > .description > .styled-description {
+	flex-grow: 1;
+	font-size: 0.9em;
+	border-left: 1px solid gray;
+	padding-left: 0.5em;
+	color: gray;
+}
 .close {
 	position: absolute;
 	top: 1.1em;
@@ -92,7 +132,7 @@ header h2 {
 h3 {
 	font-size: 1.1em;
 }
-.highlight {
-	outline: 1px dotted red;
+.highlight h3 {
+	color: red;
 }
 </style>

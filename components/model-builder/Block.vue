@@ -1,6 +1,6 @@
 <template>
-    <div :id="'block' + this.id" ref="div" :class="containerClasses" @mousedown.prevent.stop.left="onMouseDown($event)" :style="styles">
-        <div class="blockTitle" @mousedown.prevent.stop.left="emitDrag($event)">
+    <div :id="'block' + this.id" ref="div" :class="containerClasses" @mousedown.prevent.stop.left="onMouseDown" :style="styles">
+        <div class="blockTitle" @mousedown.prevent.stop.left="emitDrag">
             <span class="titleText" :title="plainTitle">
                 <span v-show="invalid" class="invalid" title="Process or Collection not supported!">
                     <FontAwesomeIcon icon="exclamation-triangle" />
@@ -31,8 +31,7 @@
                 <BlockParameter ref="output" :state="state" :label="outputLabel" v-bind="output" />
             </div>
         </div>
-        <textarea ref="commentField" v-if="hasComment" v-model.lazy="comment" :readonly="!state.editable" class="editComment" placeholder="Type comment here..."
-            @blur="updateComment($event)" @mousedown.stop=""></textarea>
+        <textarea ref="commentField" v-if="hasComment" v-model.lazy="comment" :readonly="!state.editable" class="editComment" placeholder="Type comment here..." @blur="updateComment" @mousedown.stop=""></textarea>
     </div>
 </template>
 
@@ -394,12 +393,14 @@ export default {
             this.$parent.focus();
         },
         async onMouseDown(event) {
-            this.$parent.unselectAll(event);
+            if (!event.shiftKey) {
+                this.$parent.unselectAll(event);
+            }
             return await this.select(!this.selected, false);
         },
         async select(selected = true, unselectOthers = true) {
             if (unselectOthers) {
-                this.$parent.unselectAll();
+                this.$parent.unselectAll(null);
             }
             this.$emit('update:selected', selected);
             this.focus();
@@ -446,35 +447,43 @@ export default {
         },
         async emitDrag(event) {
             this.focus();
-            let selected = await this.onMouseDown(event);
-            if (selected) {
-                this.$emit('move');
+            if (!this.selected) {
+                await this.onMouseDown(event);
             }
+            this.$emit('move', event);
         },
-        getDragPos(pos) {
-            return [this.state.mouse[0]/this.state.scale-pos[0], this.state.mouse[1]/this.state.scale-pos[1]];
+        getDragPos(pos, mouse) {
+            return [mouse[0]/this.state.scale-pos[0], mouse[1]/this.state.scale-pos[1]];
         },
-        startDrag() {
-            if (this.selected) {
-                this.drag = {
-                    origin: this.position,
-                    mouse: this.getDragPos(this.position)
-                };
+        startDrag(event) {
+            if (!this.selected) {
+                return;
             }
+
+            let mousePos = this.$parent.getMousePos(event);
+            this.drag = {
+                origin: this.position,
+                mouse: this.getDragPos(this.position, mousePos)
+            };
         },
-        stopDrag() {
-            if (this.drag) {
-                var delta = 5 / this.state.scale; // Only store History if block was moved enough
-                if (Math.abs(this.drag.origin[0] - this.position[0]) > delta || Math.abs(this.drag.origin[1] - this.position[1]) > delta) {
-                    this.commit();
-                }
-                this.drag = null;
+        stopDrag(event) {
+            if (!this.drag) {
+                return;
             }
+
+            var delta = 5 / this.state.scale; // Only store History if block was moved enough
+            if (Math.abs(this.drag.origin[0] - this.position[0]) > delta || Math.abs(this.drag.origin[1] - this.position[1]) > delta) {
+                this.commit();
+            }
+            this.drag = null;
         },
-        dragging() {
-            if (this.drag) {
-                this.position = this.getDragPos(this.drag.mouse);
+        dragging(event) {
+            if (!this.drag) {
+                return;
             }
+            
+            let mousePos = this.$parent.getMousePos(event);
+            this.position = this.getDragPos(this.drag.mouse, mousePos);
         },
 
         hasOutputEdges() {
