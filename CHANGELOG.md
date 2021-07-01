@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed an error that was thrown in the case that no time is present in the logs
+
 ## [2.2.1] - 2020-06-24
 
 ### Fixed

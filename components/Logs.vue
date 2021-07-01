@@ -39,7 +39,10 @@ export default {
 	computed: {
 		startTime() {
 			if (Array.isArray(this.logs)) {
-				return this.logs.find(log => typeof log.time === 'string' && log.time.length > 10).time || null;
+				let startTime = this.logs.find(log => Utils.isObject(log) && typeof log.time === 'string' && log.time.length > 10);
+				if (Utils.isObject(startTime) && startTime.time) {
+					return startTime.time;
+				}
 			}
 			return null;
 		}
