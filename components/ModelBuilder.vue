@@ -31,7 +31,7 @@
 import Block from './model-builder/Block.vue';
 import Edge from './model-builder/Edge.vue';
 import Utils from '../utils.js';
-import { JsonSchemaValidator, ProcessGraph, ProcessRegistry, Utils as PgUtils } from '@openeo/js-processgraphs';
+import { JsonSchemaValidator, ProcessGraph, ProcessRegistry } from '@openeo/js-processgraphs';
 import Vue from 'vue';
 import boxIntersectsBox from 'intersects/box-box';
 import boxIntersectsLine from 'intersects/box-line';
@@ -175,14 +175,14 @@ export default {
             };
         },
         processRegistry() {
-            if (this.processes instanceof ProcessRegistry) {
+            if (this.processes instanceof ProcessRegistry || (Utils.isObject(this.processes) && this.processes.constructor.name === 'ProcessRegistry')) { // Sometimes instanceof ProcessRegistry doesn't work (thanks webpack?)
                 return this.processes;
             }
             else if (Array.isArray(this.processes)) {
                 return new ProcessRegistry(this.processes);
             }
             else {
-                throw new Error('');
+                throw new Error('Invalid processes specified, must be ProcessRegistry or Array');
             }
         },
         hasProcesses() {

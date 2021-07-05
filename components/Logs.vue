@@ -16,7 +16,7 @@
 			</ul>
 		</div>
 		<div v-else-if="Array.isArray(logs) && !logs.length" class="noDataMessage">No logs available.</div>
-		<div v-else class="noDataMessage"><FontAwesomeIcon icon="fa-spinner" spin /> Loading logs...</div>
+		<div v-else class="noDataMessage"><FontAwesomeIcon icon="spinner" spin /> Loading logs...</div>
 	</div>
 </template>
 
