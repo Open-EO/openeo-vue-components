@@ -100,10 +100,14 @@ export default {
             type: [Array, Object],
             default: () => []
         },
-        pgParameters: {
-            type: Array,
-            default: () => []
-        },
+		parent: {
+			type: Object,
+			default: null
+		},
+		parentSchema: {
+			type: Object,
+			default: null
+		},
         historySize: {
             type: Number,
             default: 30
@@ -198,11 +202,30 @@ export default {
                 return this.selectedEdges[0];
             }
             return null;
+        },
+        processParametersFromSchemas() {
+            // Get all process parameters from the parent process
+            // this.parent.$parent => ModelBuilder instance
+			let parentParams = [];
+			if (this.parent && this.parent.$parent && typeof this.parent.$parent.getPgParameters === 'function') {
+				parentParams = this.parent.$parent.getPgParameters().map(block => block.spec);
+			}
+
+            let callbackParams = [];
+            // If we have a parameter schema given, go through the parameter schema and get the available process parameters from there.
+            if (this.parentSchema) {
+			    callbackParams = this.parentSchema.getCallbackParameters();
+            }
+
+            // Remove all parameters from the parent that are overridden by the more specific parameters.
+            let filteredParentParams = parentParams.filter(p1 => !callbackParams.find(p2 => p1.name === p2.name));
+            // Add the filtered parameters from the parent to the more specific parameters
+            return callbackParams.concat(filteredParentParams);
         }
     },
     watch: {
-        pgParameters(value) {
-            this.importPgParameters(value, 'prop');
+        parentSchema() {
+            this.importPgParameters(this.processParametersFromSchemas, 'schema');
         },
         async value(value) {
             // Only run if component has been mounted
@@ -242,7 +265,7 @@ export default {
         this.onDocumentMouseUpFn = this.onDocumentMouseUp.bind(this)
         document.addEventListener('mouseup', this.onDocumentMouseUpFn);
 
-        await this.importPgParameters(this.pgParameters, 'prop');
+        await this.importPgParameters(this.processParametersFromSchemas, 'schema');
         if (!await this.import(this.value, { propagate: false, undoOnError: false })) {
             this.perfectScale();
         }
@@ -488,7 +511,7 @@ export default {
             return await this.startTransaction(async () => {
                 this.edges = [];
                 // Don't remove parameters injected by props (fixed callback parameters)
-                this.blocks = this.blocks.filter(b => b.type === 'parameter' && Utils.isObject(b.spec) && b.spec.origin === 'prop');
+                this.blocks = this.blocks.filter(b => b.type === 'parameter' && Utils.isObject(b.spec) && b.spec.origin === 'schema');
                 this.nextBlockId = 1;
                 this.nextEdgeId = 1;
                 this.process = {};
@@ -698,22 +721,6 @@ export default {
             edge.parameter2.eraseEdge(edge);
             this.$delete(this.edges, this.edges.indexOf(edge));
         },
-
-        hiddenParameterRefs(block, parameterName) {
-            if (block.type !== 'process') {
-                return null;
-            }
-            for (let param in block.value.arguments) {
-                let value = block.value.arguments[param];
-                if (Utils.isObject(value) && Utils.isObject(value.process_graph)) {
-                    let refs = PgUtils.getRefs(value, true, true);
-                    if (refs.find(r => r.from_parameter === parameterName)) {
-                        return param;
-                    }
-                }
-            }
-            return null;
-        },
             
         /**
          * Remove a block
@@ -723,8 +730,8 @@ export default {
             // Then don't delete, but give error instead.
             if (block.type === 'parameter') {
                 let param = null;
-                let conflictBlock = this.blocks.find(sub => {
-                    param = this.hiddenParameterRefs(sub, block.id);
+                let conflictBlock = this.blocks.find(otherBlock => {
+                    param = otherBlock.hiddenParameterRef(block);
                     return (param !== null);
                 });
                 if (conflictBlock) {
@@ -989,7 +996,7 @@ export default {
                 this.processGraph.allowEmpty();
                 this.processGraph.parse();
 
-                await this.importPgParameters(this.processGraph.getProcessParameters(), 'pg', options.clear !== false);
+                await this.importPgParameters(this.processGraph.getProcessParameters(true), 'user', options.clear !== false);
                 await this.importNodes(this.processGraph.getStartNodes());
                 await this.importEdges(this.processGraph);
 
@@ -1176,12 +1183,13 @@ export default {
             this.newBlockOffset = 0;
         },
 
-        showParameterViewer(parameters, values, title, isEditable, selectParameterName) {
+        showParameterViewer(parameters, values, title, isEditable, selectParameterName, saveCallback, parent) {
             this.parameterViewer = {
                 parameters,
                 values,
                 title,
-                selectParameterName
+                selectParameterName,
+                parent
             };
         }
     }

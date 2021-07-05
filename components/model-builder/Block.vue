@@ -39,6 +39,7 @@
 import BlockParameter from './BlockParameter.vue';
 import Utils from '../../utils.js';
 import { ProcessParameter } from '@openeo/js-commons';
+import { Utils as PgUtils } from '@openeo/js-processgraphs';
 import Vue from 'vue';
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -289,7 +290,7 @@ export default {
             return (this.parameters.filter(p => p.isEditable()).length > 0 && this.type !== 'parameter');
         },
         allowsDelete() {
-            return (this.state.editable && (!this.spec || (Utils.isObject(this.spec) && this.spec.origin !== 'prop')));
+            return (this.state.editable && (!this.spec || (Utils.isObject(this.spec) && this.spec.origin !== 'schema')));
         },
         allowsInfo() {
             if (this.collectionId) {
@@ -418,7 +419,7 @@ export default {
             parameter.refs = edges.map(edge => edge.parameter1.value);
         },
         showParameters(parameterName = null) {
-            this.$parent.$emit('editParameters', this.parameters.filter(p => p.isEditable()), this.args, this.plainTitle, this.state.editable, parameterName, data => this.args = data, this.$parent);
+            this.$parent.$emit('editParameters', this.parameters.filter(p => p.isEditable()), this.args, this.plainTitle, this.state.editable, parameterName, data => this.args = data, this);
         },
         showInfo() {
             if(this.collectionId) {
@@ -508,7 +509,22 @@ export default {
                 }
             }
             return null;
-        }
+        },
+        hiddenParameterRef(parameterBlock) {
+            if (this.type !== 'process') {
+                return null;
+            }
+            for (let param in this.value.arguments) {
+                let value = this.value.arguments[param];
+                if (Utils.isObject(value) && Utils.isObject(value.process_graph)) {
+                    let refs = PgUtils.getRefs(value, true, true);
+                    if (refs.find(r => r.from_parameter === parameterBlock.id)) {
+                        return param;
+                    }
+                }
+            }
+            return null;
+        },
     }
 
 }

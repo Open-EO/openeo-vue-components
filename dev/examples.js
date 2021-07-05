@@ -225,11 +225,16 @@ if (a == b) console.log("Hello World");
 		"empty": {
 			"id": "empty"
 		},
-		"sample-viewer": {
+		"sample-viewer-without-metadata": {
 			"id": "sample",
 			"value": mbSample
 		},
-		"sample-editable": {
+		"sample-editable-without-metadata": {
+			"id": "sample",
+			"editable": true,
+			"value": mbSample
+		},
+		"sample-editable-with-metadata": {
 			"id": "sample",
 			"editable": true,
 			"value": mbSample,
