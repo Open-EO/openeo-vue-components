@@ -248,6 +248,9 @@ export default {
         selectedEdges: selectionChangeWatcher,
         selectedBlocks: selectionChangeWatcher
     },
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
+	},
     async created() {
         if (!this.supports('error')) {
             // Print error to console if event is not supported by implementing context
