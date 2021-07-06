@@ -36,7 +36,6 @@ export default {
 	components: {
 		Description: () => import('../Description.vue'),
 		FontAwesomeIcon,
-		ModelBuilder: () => import('../ModelBuilder.vue'),
 		ObjectTree: () => import('../ObjectTree.vue')
 	},
 	props: {
@@ -76,6 +75,11 @@ export default {
 				};
 			});
 		}
+	},
+	beforeCreate() {
+		// Circular dependency leads to errors when building with target wc(-async)
+		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
+		this.$options.components.ModelBuilder = require('../ModelBuilder.vue').default;
 	},
 	mounted() {
 		if (this.selectParameterName) {

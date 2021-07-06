@@ -130,6 +130,7 @@ export default {
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
+		// Circular dependency leads to errors when building with target wc(-async)
 		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
 		this.$options.components.ProcessParameter = require('./internal/ProcessParameter.vue').default;
 	},
