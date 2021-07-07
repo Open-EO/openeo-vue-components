@@ -4,7 +4,7 @@
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
-				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl">
+				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl" :showGraph="showGraph">
 					<template #title><span class="hidden" /></template>
 					<template #before-description="scope"><slot name="process-before-description" v-bind="scope" /></template>
 					<template #end="scope"><slot name="process-end" v-bind="scope" /></template>
@@ -52,6 +52,10 @@ export default {
 		collapsed: {
 			type: Boolean,
 			default: null
+		},
+		showGraph: {
+			type: Boolean,
+			default: false
 		}
 	},
 	beforeCreate() {

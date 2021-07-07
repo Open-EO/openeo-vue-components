@@ -43,9 +43,13 @@ function createExampleFile(component, id, props) {
 			<title>openEO ${component}</title>
 			<link href="../dev/examples.css" rel="stylesheet"></script>
 			<script src="../assets/openeo.js"></script>
+			<link rel="preload" as="font" type="font/woff2" crossorigin href="https://use.fontawesome.com/releases/v5.13.0/webfonts/fa-solid-900.woff2" />
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" type="text/css" media="all" />
 		</head>
-		<body>
-			<openeo-${component}${attributes}>${jsonProps.join("\r\n")}</openeo-${component}>
+		<body class="wc">
+			<div class="component">
+				<openeo-${component}${attributes}>${jsonProps.join("\r\n")}</openeo-${component}>
+			</div>
 		</body>
 	</html>
 	`;

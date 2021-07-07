@@ -265,7 +265,7 @@ if (a == b) console.log("Hello World");
 		},
 		"udp": {
 			"process": udp,
-			"showGraph": true
+			"show-graph": true
 		}
 	},
 	"processes": {

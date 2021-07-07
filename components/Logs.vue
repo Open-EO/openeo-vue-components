@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component logs">
-		<div class="log-container" v-if="Array.isArray(logs) && logs.length">
+		<div class="log-container" v-if="hasLogs">
 			<div class="log-header">
 				<MultiSelect v-model="levelsShown" :multiple="true" :options="levels" :allowEmpty="false" :taggable="true" :closeOnSelect="false" placeholder="Select the log levels shown">
 					<template slot="tag" slot-scope="props">
@@ -15,8 +15,7 @@
 				<Log v-for="(log, i) in logs" v-show="levelsShown.includes(log.level)" :log="log" :startTime="startTime" :key="i" />
 			</ul>
 		</div>
-		<div v-else-if="Array.isArray(logs) && !logs.length" class="noDataMessage">No logs available.</div>
-		<div v-else class="noDataMessage"><FontAwesomeIcon icon="spinner" spin /> Loading logs...</div>
+		<div v-else class="log-empty">No logs available.</div>
 	</div>
 </template>
 
@@ -24,16 +23,9 @@
 import Utils from '../utils';
 import Log from './internal/Log.vue';
 
-
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-library.add(faSpinner);
-
 export default {
 	name: 'Logs',
 	components: {
-		FontAwesomeIcon,
 		Log,
 		MultiSelect: () => import('vue-multiselect')
 	},
@@ -45,10 +37,16 @@ export default {
 	},
 	computed: {
 		startTime() {
-			if (Array.isArray(this.logs)) {
-				return this.logs.find(log => typeof log.time === 'string' && log.time.length > 10).time || null;
+			if (this.hasLogs) {
+				let startTime = this.logs.find(log => Utils.isObject(log) && typeof log.time === 'string' && log.time.length > 10);
+				if (Utils.isObject(startTime) && startTime.time) {
+					return startTime.time;
+				}
 			}
 			return null;
+		},
+		hasLogs() {
+			return Array.isArray(this.logs) && this.logs.length > 0;
 		}
 	},
 	data() {
@@ -89,6 +87,9 @@ export default {
 	margin: 0;
 	padding: 0;
 	line-height: 1.25em;
+}
+.log-empty {
+	text-align: center;
 }
 </style>
 

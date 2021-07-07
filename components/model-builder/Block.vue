@@ -3,23 +3,23 @@
         <div class="blockTitle" @mousedown.prevent.stop.left="emitDrag">
             <span class="titleText" :title="plainTitle">
                 <span v-show="invalid" class="invalid" title="Process or Collection not supported!">
-                    <FontAwesomeIcon icon="exclamation-triangle" />
+                    <i class="fas fa-exclamation-triangle"></i>
                 </span>
                 {{ name }}
                 <span v-if="showId" class="blockId">#{{ id }}</span>
             </span>
             <div class="blockicon" @mousedown.prevent.stop.left="focus()">
                 <span v-show="allowsComment && !hasComment" class="addComment" title="Add comment" @click.stop.prevent="addComment()">
-                    <FontAwesomeIcon icon="comment-medical" />
+                    <i class="fas fa-comment-medical"></i>
                 </span>
                 <span v-show="allowsDelete" class="delete" title="Remove (DEL)" @click.stop.prevent="remove()">
-                    <FontAwesomeIcon icon="trash" />
+                    <i class="fas fa-trash"></i>
                 </span>
                 <span v-show="allowsInfo" class="info" title="Details" @click.stop.prevent="showInfo()">
-                    <FontAwesomeIcon icon="info" />
+                    <i class="fas fa-info"></i>
                 </span>
                 <span v-show="allowsParameterChange" class="settings" title="Change parameter values" @click.stop.prevent="showParameters()">
-                    <FontAwesomeIcon icon="sliders-h" />
+                    <i class="fas fa-sliders-h"></i>
                 </span>
             </div>
         </div>
@@ -42,11 +42,6 @@ import { ProcessParameter } from '@openeo/js-commons';
 import { Utils as PgUtils } from '@openeo/js-processgraphs';
 import Vue from 'vue';
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faExclamationTriangle, faCommentMedical, faTrash, faInfo, faSlidersH } from '@fortawesome/free-solid-svg-icons';
-library.add(faExclamationTriangle, faCommentMedical, faTrash, faInfo, faSlidersH);
-
 /*
 Events:
 
@@ -63,8 +58,7 @@ const defaultFontSize = 10;
 export default {
     name: 'Block',
     components: {
-        BlockParameter,
-        FontAwesomeIcon
+        BlockParameter
     },
     props: {
         id: {
@@ -587,14 +581,14 @@ export default {
 }
 
 
-.block .blockicon svg {
+.block .blockicon i {
     min-width: 1.4em;
     cursor: pointer;
     opacity: 0.5;
     margin-left: 0.1em;
 }
 
-.block .blockicon svg:hover {
+.block .blockicon i:hover {
     opacity:1.0;
 }
 

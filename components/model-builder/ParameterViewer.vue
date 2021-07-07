@@ -16,7 +16,7 @@
 			<ModelBuilder v-else-if="param.isObject && param.value.process_graph" :id="param.name" :value="param.value" :parent="parent" />
 			<ObjectTree v-else :data="param.value" />
 			<div v-if="param.description" class="description">
-				<FontAwesomeIcon icon="info-circle" />
+				<i class="fas fa-info-circle"></i>
 				<Description :description="param.description" :compact="true" />
 			</div>
 		</section>
@@ -26,16 +26,10 @@
 <script>
 import Utils from '../../utils';
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-library.add(faInfoCircle);
-
 export default {
 	name: 'ParameterViewer',
 	components: {
 		Description: () => import('../Description.vue'),
-		FontAwesomeIcon,
 		ObjectTree: () => import('../ObjectTree.vue')
 	},
 	props: {
@@ -107,6 +101,9 @@ export default {
 	box-sizing: border-box;
 	background-color: white;
 }
+.parameter-viewer > .model-builder {
+	height: 400px;
+}
 .parameter-viewer > section {
 	border-top: 1px dotted gray;
 	margin: 1em 0;
@@ -117,7 +114,7 @@ export default {
 	justify-content: center;
 	margin-top: 1em;
 }
-.parameter-viewer > section > .description > svg {
+.parameter-viewer > section > .description > i.fas {
 	margin-right: 0.5em;
 	color: gray;
 }

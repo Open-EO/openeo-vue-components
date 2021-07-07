@@ -62,6 +62,34 @@ class Utils extends CommonUtils {
         }
     }
 
+    static loadFontAwesome(vm) {
+        let webComponent = Utils.isObject(vm.$root) && vm.$root.$options.shadowRoot;
+
+        let stylesheets = Array.from((webComponent || document).styleSheets);
+        for(let css of stylesheets) {
+            if (typeof css.href === 'string' && css.href.includes('fontawesome')) {
+                return;
+            }
+        }
+
+        // Don't execute if not in web-component mode (browsers don't support loading fonts in shadowroot)
+        if (!webComponent) {
+            let font = document.createElement('link');
+            font.as = "font";
+            font.type = "font/woff2";
+            font.crossOrigin = true;
+            font.href = "https://use.fontawesome.com/releases/v5.13.0/webfonts/fa-solid-900.woff2";
+            document.head.appendChild(font);
+        }
+
+        let css = document.createElement('link');
+        css.rel = "stylesheet";
+        css.type = "text/css";
+        css.media = "all";
+        css.href = "https://use.fontawesome.com/releases/v5.13.0/css/all.css";
+        (webComponent || document.head).appendChild(css);
+    }
+
     static setProp(vm, prop, value) {
         // Depending on when during the page load this is executed, we
         // need either to populate propsData (initially available) or

@@ -1,16 +1,22 @@
+html {
+	height: 100%;
+	width: 100%;
+}
+
 body {
 	font-family: sans-serif;
 	margin: 0 auto;
-	padding: 0.5em 1em;
 	max-width: 1000px;
+	height: 100%;
 }
 
-.vue-component.model-builder {
-	height: 400px;	
+.component {
+	margin: 1em 0;
+	border: 1px solid white;
+	outline: 1px solid black;
 }
 
-@media only screen and (min-width: 1400px) {
-	body {
-		padding: 0.5em 20%;
-	}
+body.wc .component {
+	margin: 0;
+	height: 100%;
 }

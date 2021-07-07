@@ -3,7 +3,7 @@
         <div v-if="!output" ref="circle" :class="circleClasses" v-on="circleListeners"></div>
         <span class="text">
             <span v-show="unspecified" class="unspecified" title="Parameter is likely unsupported!">
-                <FontAwesomeIcon icon="exclamation-triangle" />
+                <i class="fas fa-exclamation-triangle"></i>
             </span>
             <span class="label">{{ displayLabel }}</span><template v-if="displayValue.length">: </template>
             <span class="value" v-html="displayValue"></span>
@@ -17,16 +17,8 @@ import { ProcessSchema } from '@openeo/js-commons';
 import { ProcessGraph } from '@openeo/js-processgraphs';
 import Utils from '../../utils.js';
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-library.add(faExclamationTriangle);
-
 export default {
     name: 'BlockParameter',
-    components: {
-        FontAwesomeIcon
-    },
     props: {
         name: {
             type: String,

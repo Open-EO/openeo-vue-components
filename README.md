@@ -611,7 +611,7 @@ Creates a tab interface.
 
 - `addTab(name, icon = null, data = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null)`: Adds a new dynamic tab programatically, which is enabled by default.
 	- `name` (string): The title of the tab.
-	- `icon` (string): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. `null` to show no icon. Font Awesome 5 Free needs to be made available before!
+	- `icon` (string): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. `null` to show no icon.
 	- `data` (any): Additional data that is passed to the tab.
 	- `id` (string): An id for the tab. Specifying `null` generates an id.
 	- `selected` (boolean): If set to `true`, the tab is getting selected and the active tab is set hidden.

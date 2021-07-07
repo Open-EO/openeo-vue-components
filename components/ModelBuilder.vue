@@ -36,20 +36,6 @@ import Vue from 'vue';
 import boxIntersectsBox from 'intersects/box-box';
 import boxIntersectsLine from 'intersects/box-line';
 
-/*
-Events:
-
-Emits:
-- error(message, title = null): Show error message
-- showProcess(id): Show process by id
-- showCollection(id): Show collection by id
-- showSchema(name, schema): Show JSON schema
-- editParameters(parameters, values, title = "Edit", isEditable = true, selectParameterName = null, saveCallback(data) = null, parentBlock = null): Show the parameter editor
-- compactMode(enable): Informs about the current state of compact mode.
-- input(value) - The value has been updated
-- historyChanged(history, undoIndex = null, redoIndex = null) - The history has been changed
-*/
-
 const getDefaultState = function(blocks) {
     return Vue.observable({
         root: blocks,
@@ -261,6 +247,21 @@ export default {
         }
     },
     async mounted() {
+        // If the parent element doesn't have a height (or width) assigned, the
+        // model builder will not show up as it has a width and height of 100% assigned.
+        // So we fall back to 400px here so that users at least see something.
+        let size = this.$el.getBoundingClientRect();
+        let check = dimension => {
+            if (!size[dimension]) {
+                console.error(`Model builder has a ${dimension} of 0, please set a ${dimension} for the parent element in CSS. Falling back to 400px.`);
+                this.$el.style[dimension] = '400px';
+            }
+        };
+        check('height');
+        check('width');
+
+        Utils.loadFontAwesome(this);
+
         // Setting up default viewer center
         this.moveCenter(0, 0, true);
 

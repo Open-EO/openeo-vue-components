@@ -52,6 +52,9 @@ export default {
 		this.updateState();
 		this.$on('hide', () => this.active = false);
 		this.$on('show', () => this.active = true);
+		if (this.icon) {
+			Utils.loadFontAwesome(this);
+		}
 	},
 	watch: {
 		selected() {
