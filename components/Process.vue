@@ -220,10 +220,8 @@ export default {
 	margin: 1em 0;
 }
 .vue-component.process .process-graph .graph {
-	overflow: auto;
 	max-width: 100%;
 	min-height: 300px;
-	max-height: 50vh;
 }
 .vue-component.process .process-graph .graph > .object-tree > ul {
 	margin: 0;

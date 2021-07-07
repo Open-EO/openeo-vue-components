@@ -16,6 +16,7 @@ let reduceApi = require('./examples/reduce-api-new.json');
 let longArray = [...Array(1000).keys()];
 
 let mbSample = require('./examples/model-builder/sample.json');
+let maskScl = require('./examples/model-builder/mask_scl_dilation.json');
 
 module.exports = {
 	"billing-plans": {
@@ -240,6 +241,11 @@ if (a == b) console.log("Hello World");
 			"value": mbSample,
 			"collections": collections,
 			"processes": processes
+		},
+		"mask-scl-dilation": {
+			"id": "mask",
+			"editable": true,
+			"value": maskScl
 		}
 	},
 	"object-tree": {
@@ -263,8 +269,12 @@ if (a == b) console.log("Hello World");
 		"api-reduce-new": {
 			"process": reduceApi
 		},
-		"udp": {
+		"udp-array-find-nodata": {
 			"process": udp,
+			"show-graph": true
+		},
+		"udp-mask-scl-dilation": {
+			"process": maskScl,
 			"show-graph": true
 		}
 	},

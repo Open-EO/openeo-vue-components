@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ModelBuilder` component to nicely visualize process graphs (migrated over from Web Editor)
+- `Processes`: Make `showGraph` prop from `Process` component  available
+
+### Changed
+
+- `Logs`: Don't allow passing `null` (to show a loading state) any longer, which was an undocumented left-over from the Web Editor.
+- `Process`: Use `ModelBuilder` instead of `ObjectTree` to visualize the processing instructions.
+- `Tab` / `Tabs`: Load FontAwesome automatically if not available (Vue environments only).
+
+### Fixed
+
+- FontAwesome support in Web Components improved
+- Better instructions on FontAwesome usage in Web Components
+- Updates dependencies
+
 ## [2.2.1] - 2020-06-24
 
 ### Fixed
