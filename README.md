@@ -32,6 +32,7 @@ Examples (dev): <https://open-eo.github.io/openeo-vue-components/>
 	* [JsonSchema](#jsonschema)
 	* [LinkList](#linklist)
 	* [Logs](#logs)
+	* [ModelBuilder](#modelbuilder)
 	* [ObjectTree](#objecttree)
 	* [Process](#process)
 	* [Processes](#processes)
@@ -82,6 +83,20 @@ The components are async web components, which means only the components you are
 
 *Note for Contributors:* Web Components must be built via `npm run build` and will be placed in the `assets` folder. Examples can be generated using `npm run wc-examples` and will be placed in the `examples` folder. You can also serve the examples via HTTP with the command `npm run wc-serve`.
 
+### FontAwesome
+
+To display a nice user interface, some components use icons from the project [Font Awesome](https://fontawesome.com).
+Unfortunately, fonts can't be loaded in Web Components so you need to embed them directly in the `head` of your HTML page as follows:
+
+```html
+<link rel="preload" as="font" type="font/woff2" crossorigin href="https://use.fontawesome.com/releases/v5.13.0/webfonts/fa-solid-900.woff2" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" type="text/css" media="all" />
+```
+
+The components that use such icons and need these additional files mention it in their descriptions below.
+
+**Note:** This is not required in Vue environments, which will load the required files automatically.
+
 ### Vue
 
 In a Vue environment, you can just import the Single File Components (SFC) directly. I.e., they must be imported from the `components` folder as demonstrated below.
@@ -105,7 +120,7 @@ In the Template of your SFC you can now include the component as shown in the ex
 
 ## Components
 
-*Note: Methods, properties and slots not listed here are not meant to be used as public and stable API.*
+*Note: Methods, properties and slots not listed here are not meant to be used as public and stable API. They can change at any time without prior notice.*
 
 ### `BillingPlans`
 
@@ -416,7 +431,7 @@ Visualizes a single process following the openEO process description.
 - `process` (object, required): Process specification as defined by the openEO API (Either one of the array elements in the property `processes` returned by `GET /process` or the response from `GET /process_graphs/{process_graph_id}`).
 - `provideDownload` / `provide-download` (boolean): Provide a link to download the JSON file (defaults to `true`).
 - `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
-- `showGraph` / `show-graph` (object): Show and visualize the process graph (defaults to `false`).
+- `showGraph` / `show-graph` (boolean): Show and visualize the process graph (defaults to `false`).
 
 **Slots:**
 
@@ -427,6 +442,49 @@ Visualizes a single process following the openEO process description.
 
 For all slots, the component properties are passed through as slot properties with the same names.
 
+
+### `ModelBuilder`
+
+Show a process (graph) nicely visualized, includes support for basic editing.
+
+**Note**: This may require to load [FontAwesome](#fontawesome). Also, you should assign the height and width for the Model Builder in the parent HTML tag.
+
+**Warning:** This component is experimental and may change in future releases!
+
+**Properties:**
+
+- `id` (string, required): A document-wide unique identifier for the ModelBuilder instance.
+- `editable` (boolean): Allows to edit the model (defaults to `false`). You need to use the `editParameters` event to implement parameter editing.
+- `value` / v-model (boolean): The process to show/edit (defaults to an empty object).
+- `collections` (array): Allows to add the collections from the API for better visualizations (defaults to an empty array).
+- `processes` (array|ProcessRegistry): Allows to add the processes from the API for better visualizations (defaults to an empty array). Can be given as a [`ProcessRegistry`](https://open-eo.github.io/openeo-js-processgraphs/1.2.0/ProcessRegistry.html).
+- `parent` (object): The parent `Block` if a Model Builder is shown for a child process (defaults to `null`).
+- `parentSchema` (object): The schema for the parent parameter if a Model Builder is shown for a child process (defaults to `null`).
+- `historySize` (integer): The amount of steps for undo/redo (defaults to `30`)
+
+**Events:**
+
+- `input(value)` / v-model: The process has been updated
+- `error(message, title = null)`: Show error message
+- `showProcess(id)`: Show process by id
+- `showCollection(id)`: Show collection by id
+- `showSchema(name, schema)`: Show JSON schema for parameters
+- `editParameters(parameters, values, title = "Edit", isEditable = true, selectParameterName = null, saveCallback(data) = null, parentBlock = null)`: Show the parameter editor
+- `compactMode(enabled)`: Informs about the current state of compact mode.
+- `historyChanged(history, undoIndex = null, redoIndex = null)`: The history has been changed, e.g. using `redo`, `undo` or by editing the process in the model builder.
+
+**Methods:**
+
+- `async clear() -> boolean`: Clears the process shown (similar effect as setting v-model to `{}`, but also reset edge/block counters).
+- `async undo()`: Go one step back in history if available. Otherwise does nothing.
+- `async redo()`: Go one step forward in history if available. Otherwise does nothing.
+- `async deleteSelected() -> boolean`: Deletes all selected blocks and edges. Returns `true` on success and `false` on faile or if nothing has been selected.
+- `async toggleCompact()`: Toggles compact mode (e.g. doesn't show parameter values).
+- `perfectScale()`: Fits the view to the blocks and edges so that it is fully shown.
+- `getPgParameters() -> array<object>`: Returns all process parameters.
+- `addPgParameter(param, origin = 'user', position = null)`: Adds a process parameter block to the model builder.
+- `getPositionForPageXY(x, y) -> array<number>`: Get's the local position in the model builder from the page coordinates (`pageX`, `pageY`) of a Browser event (e.g. mouse). Useful e.g. for the `position` parameters of `addPgParameter` or `addProcess`.
+- `addProcess(name, args = {}, position = [], node = {}) -> object`: Adds a process block to the model builder.
 
 ### `Processes`
 
@@ -442,6 +500,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
+- `showGraph` / `show-graph` (boolean): See the corresponding prop in [`Process`](#process).
 
 **Slots:**
 
@@ -611,7 +670,7 @@ Creates a tab interface.
 
 - `addTab(name, icon = null, data = null, id = null, selected = false, closable = false, show = null, hide = null, close = null, allowShow = null)`: Adds a new dynamic tab programatically, which is enabled by default.
 	- `name` (string): The title of the tab.
-	- `icon` (string): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. `null` to show no icon. Font Awesome 5 Free needs to be made available before!
+	- `icon` (string): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. This may require to load [FontAwesome](#fontawesome). Defaults to `null`, which shows no icon.
 	- `data` (any): Additional data that is passed to the tab.
 	- `id` (string): An id for the tab. Specifying `null` generates an id.
 	- `selected` (boolean): If set to `true`, the tab is getting selected and the active tab is set hidden.
@@ -620,9 +679,10 @@ Creates a tab interface.
 	- `hide` (function): Function that is called when the tab is about to be hidden. The tab is passed as a parameter to the function.
 	- `close` (function): Function that is called when the tab is about to be closed. The tab is passed as a parameter to the function.
 	- `allowShow` (function): Asynchronous function that determines whether a tab can be shown. The function must `true` to allow switching the active tab. If `false` is returned, switching the tab is prevented. The tab to be shown is passed as a parameter.
-- `getTab(id)`: Get the Vue [`Tab`](#tab) instance by id. Returns `null` if not found.
-- `getActiveTabId()`: Get the id of the tab that is currently active. 
-- `selectTab(tab)`: Set the currently active tab (asynchronously). `tab` can be either a Vue [`Tab`](#tab) instance or the id of a tab.
+- `getTab(id) -> object|null`: Get the Vue [`Tab`](#tab) instance by id. Returns `null` if not found.
+- `getActiveTab() -> object`: Get the Vue [`Tab`](#tab) instance that is currently active. 
+- `getActiveTabId() -> string`: Get the id of the tab that is currently active. 
+- `async selectTab(tab)`: Set the currently active tab. `tab` can be either a Vue [`Tab`](#tab) instance or the id of a tab.
 - `resetActiveTab(force = false)`: Selects the first tab if no tab is selected yet or `force` is set to `true`.
 - `closeTab(tab)`: Removes the specified tab. `tab` can be either a Vue [`Tab`](#tab) instance or the id of a tab.
 
@@ -653,7 +713,7 @@ window.addEventListener('resize', event => {
 
 - `id` (string, required): A unique identifier for the tab.
 - `name` (string, required): The title of the tab.
-- `icon` (string, default `null`): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. `null` to show no icon. Font Awesome 5 Free needs to be made available before!
+- `icon` (string, default `null`): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. This may require to load [FontAwesome](#fontawesome). Defaults to `null`, which shows no icon.
 - `selected` (boolean, default `false`): A single tab of a group should be selected by default by setting this property to `true`.
 - `enabled` (boolean, default `true`): Set to `false` to hide the tab completely from the user.
 - `closable` (boolean, default `false`): Set to `true` to show a close symbol, which can be used to close/remove the tab.

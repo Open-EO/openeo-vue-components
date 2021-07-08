@@ -19,14 +19,15 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
 .vue-component.experimental-notice {
 	background-color: rgb(138,43,226,0.1);
 	border: 1px solid blueviolet;
-}
-.vue-component.experimental-notice strong {
-	color: blueviolet;
+
+	strong {
+		color: blueviolet;
+	}
 }
 </style>

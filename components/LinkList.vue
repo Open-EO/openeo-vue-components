@@ -52,6 +52,6 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 </style>

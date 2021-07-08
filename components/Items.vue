@@ -149,8 +149,12 @@ export default {
 }
 </script>
 
-<style scoped>
-.map.overview {
-	margin-bottom: 1em;
+<style lang="scss">
+@import './base.scss';
+
+.vue-component.items {
+	.map.overview {
+		margin-bottom: 1em;
+	}
 }
 </style>

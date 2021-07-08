@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<h1>Examples</h1>
-		<div class="compomnent" v-for="(examples, component) in data" :key="component">
+		<div class="container" v-for="(examples, component) in data" :key="component">
 			<h2>{{ component }}</h2>
 			<div class="example" v-for="(props, id) in examples" :key="id">
 				<h3>
@@ -11,7 +11,7 @@
 						<template v-else>Load Component</template>
 					</button>
 				</h3>
-				<div class="rendered" v-if="show[component + id]">
+				<div class="component" v-if="show[component + id]">
 					<component :is="component" v-bind="props"></component>
 				</div>
 			</div>
@@ -39,6 +39,7 @@ import JobEstimate from '../components/JobEstimate.vue';
 import JsonSchema from '../components/JsonSchema.vue';
 import LinkList from '../components/LinkList.vue';
 import Logs from '../components/Logs.vue';
+import ModelBuilder from '../components/ModelBuilder.vue';
 import ObjectTree from '../components/ObjectTree.vue';
 import Process from '../components/Process.vue';
 import Processes from '../components/Processes.vue';
@@ -72,6 +73,7 @@ export default {
 		JsonSchema,
 		LinkList,
 		Logs,
+		ModelBuilder,
 		ObjectTree,
 		Process,
 		Processes,
@@ -102,12 +104,8 @@ export default {
 
 <style>
 @import url('./examples.css');
-</style>
 
-<style scoped>
-.rendered {
-	margin: 1em 0;
-	border: 1px solid white;
-	outline: 1px solid black;
+.component > .model-builder {
+	height: 400px;
 }
 </style>

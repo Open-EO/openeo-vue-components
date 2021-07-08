@@ -6,6 +6,7 @@ let items = require('./examples/items-ard-eodc.json');
 let job = require('./examples/job.json');
 let logs = require('./examples/logs.json');
 let processes = require('./examples/processes-gee.json');
+let udp = require('./examples/process-array-find-nodata.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
 let fileFormats = require('./examples/file-formats-api.json');
@@ -13,6 +14,9 @@ let serviceTypes = require('./examples/service-types-api.json');
 let service = require('./examples/service.json');
 let reduceApi = require('./examples/reduce-api-new.json');
 let longArray = [...Array(1000).keys()];
+
+let mbSample = require('./examples/model-builder/sample.json');
+let maskScl = require('./examples/model-builder/mask_scl_dilation.json');
 
 module.exports = {
 	"billing-plans": {
@@ -218,6 +222,32 @@ if (a == b) console.log("Hello World");
 			"logs": logs.logs
 		}
 	},
+	"model-builder": {
+		"empty": {
+			"id": "empty"
+		},
+		"sample-viewer-without-metadata": {
+			"id": "sample",
+			"value": mbSample
+		},
+		"sample-editable-without-metadata": {
+			"id": "sample",
+			"editable": true,
+			"value": mbSample
+		},
+		"sample-editable-with-metadata": {
+			"id": "sample",
+			"editable": true,
+			"value": mbSample,
+			"collections": collections,
+			"processes": processes
+		},
+		"mask-scl-dilation": {
+			"id": "mask",
+			"editable": true,
+			"value": maskScl
+		}
+	},
 	"object-tree": {
 		"array": {
 			"data": collections
@@ -238,6 +268,14 @@ if (a == b) console.log("Hello World");
 		},
 		"api-reduce-new": {
 			"process": reduceApi
+		},
+		"udp-array-find-nodata": {
+			"process": udp,
+			"show-graph": true
+		},
+		"udp-mask-scl-dilation": {
+			"process": maskScl,
+			"show-graph": true
 		}
 	},
 	"processes": {

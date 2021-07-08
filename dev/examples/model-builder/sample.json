@@ -1,0 +1,97 @@
+{
+  "process_graph": {
+    "load_collection": {
+      "process_id": "load_collection",
+      "arguments": {
+        "id": "COPERNICUS/S2",
+        "spatial_extent": null,
+        "temporal_extent": [
+          "2018-01-01",
+          "2018-01-31"
+        ],
+        "bands": [
+          "B4",
+          "B8"
+        ]
+      },
+      "description": "Loading the data; The order of the specified bands is important for the following reduce operation."
+    },
+    "reduce_bands": {
+      "process_id": "reduce_dimension",
+      "arguments": {
+        "data": {
+          "from_node": "load_collection"
+        },
+        "reducer": {
+          "process_graph": {
+            "red": {
+              "process_id": "array_element",
+              "arguments": {
+                "data": {
+                  "from_parameter": "data"
+                },
+                "label": "B4"
+              }
+            },
+            "nir": {
+              "process_id": "array_element",
+              "arguments": {
+                "data": {
+                  "from_parameter": "data"
+                },
+                "label": "B8"
+              }
+            },
+            "ndvi": {
+              "process_id": "normalized_difference",
+              "arguments": {
+                "x": {
+                  "from_node": "nir"
+                },
+                "y": {
+                  "from_node": "red"
+                }
+              },
+              "result": true
+            }
+          }
+        },
+        "dimension": "bands"
+      },
+      "description": "Compute the NDVI: (NIR - RED) / (NIR + RED)"
+    },
+    "reduce_time": {
+      "process_id": "reduce_dimension",
+      "arguments": {
+        "data": {
+          "from_node": "reduce_bands"
+        },
+        "reducer": {
+          "process_graph": {
+            "max": {
+              "process_id": "max",
+              "arguments": {
+                "data": {
+                  "from_parameter": "data"
+                }
+              },
+              "result": true
+            }
+          }
+        },
+        "dimension": "t"
+      },
+      "description": "Compute a minimum time composite by reducing the temporal dimension"
+    },
+    "save": {
+      "process_id": "save_result",
+      "arguments": {
+        "data": {
+          "from_node": "reduce_time"
+        },
+        "format": "GTIFF-THUMB"
+      },
+      "result": true
+    }
+  }
+}

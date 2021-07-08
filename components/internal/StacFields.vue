@@ -115,33 +115,39 @@ export default {
 }
 </script>
 
-<style>
-@import url('../base.css');
+<style lang="scss">
+@import '../base.scss';
+.vue-component.stac-fields {
+	.table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.9em;
 
-.vue-component.stac-fields .table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 0.9em;
-}
-.vue-component.stac-fields .table th {
-	text-align: left;
-	background-color: rgba(0, 0, 0, 0.05);
-}
-.vue-component.stac-fields .table td,
-.vue-component.stac-fields .table th {
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	padding: 3px;
-}
-.vue-component.stac-fields .table td {
-	vertical-align: top;
-}
-.vue-component.stac-fields .descrption p:first-of-type {
-	margin-top: 0;
-}
-.vue-component.stac-fields .descrption p:last-of-type {
-	margin-bottom: 0;
-}
-.vue-component.stac-fields .table tbody tr:hover, .vue-component.stac-fields .table tbody tr:hover th {
-	background-color: rgba(0, 0, 0, 0.1);
+		th {
+			text-align: left;
+			background-color: rgba(0, 0, 0, 0.05);
+		}
+		td, th {
+			border: 1px solid rgba(0, 0, 0, 0.2);
+			padding: 3px;
+		}
+		td {
+			vertical-align: top;
+		}
+		tbody tr:hover,
+		tbody tr:hover th {
+			background-color: rgba(0, 0, 0, 0.1);
+		}
+	}
+	.description {
+		p {
+			&:first-of-type {
+				margin-top: 0;
+			}
+			&:last-of-type {
+				margin-bottom: 0;
+			}
+		}
+	}
 }
 </style>

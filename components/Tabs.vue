@@ -4,7 +4,11 @@
 			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
 				<span class="tabName"><slot name="tabName" :tab="tab">{{ tab.name }}</slot></span>
-				<span class="tabClose" v-if="tab.closable" title="Close" @click.prevent.stop="closeTab(tab)"><i class="far fa-times-circle"></i></span>
+				<svg v-if="tab.closable" xmlns="http://www.w3.org/2000/svg" class="tabClose" title="Close" @click.prevent.stop="closeTab(tab)" viewBox="0 0 24 24">
+					<circle cx="12" cy="12" r="11" stroke="black" stroke-width="2" fill="none" />
+					<path stroke="black" stroke-width="2" fill="none" d="M7,7,17,17" />
+					<path stroke="black" stroke-width="2" fill="none" d="M7,17,17,7" />
+				</svg>
 			</button>
 		</div>
 		<div class="tabsBody">
@@ -73,6 +77,7 @@ export default {
 		},
 		classes() {
 			var classes = [
+				'vue-component',
 				'tabs',
 				this.pills ? 'pills' : 'boxed',
 				this.position
@@ -222,154 +227,186 @@ export default {
 }
 </script>
 
-<style>
-.tabs {
+<style lang="scss">
+@import './base.scss';
+
+.vue-component.tabs {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-}
-.tabs.bottom {
-	flex-direction: column-reverse;
-}
-.tabs.boxed {
-	border-radius: 3px;
-	border: 1px solid #aaa;
-}
-.tabs .tabsHeader {
-	display: flex;
-}
-.tabs.boxed > .tabsHeader {
-	padding-left: 5px;
-}
-.tabs.boxed > .tabsHeader {
-	background-color: #f9f9f9;
-}
-.tabs.pills.multiline > .tabsHeader {
-	display: block;
-}
-.tabs .tabsBody {
-	flex-grow: 1;
-	height: 100%;
-	overflow: hidden;
-}
-.tabs.hide {
-	display: none;
-}
-.tabs .tabName, .tabs .tabIcon, .tabs .tabClose {
-	display: inline-block;
-	vertical-align: middle;
-}
-.tabs .tabName {
-	text-overflow: ellipsis;
-	overflow: hidden;
-	min-width: 2em;
-	flex-grow: 1;
-}
-.tabs .tabHasIcon .tabName {
-	margin-left: 5px;
-}
-.tabs.spaceLimited .tabHasIcon:not(.tabActive) .tabName {
-	display: none;
-}
-.tabs.spaceLimited .tabItem:not(.tabActive) .tabClose {
-	display: none;
-}
-.tabs.boxed > .tabsBody > .tabContent {
-	background-color: white;
-	overflow: auto;
-	height: 100%;
-}
-.tabs.boxed.top > .tabsBody > .tabContent {
-	border-top: 1px solid #ddd;
-	height: calc(100% - 2px);
-}
-.tabs.boxed.bottom > .tabsBody > .tabContent {
-	border-bottom: 1px solid #ddd;
-	padding-bottom: 1px;
-	height: calc(100% - 2px);
-}
-.tabs.pills > .tabsBody > .tabContent {
-	height: 100%;
-}
-.tabs .tabContent.tabActive {
-	display: block;
-}
 
-.tabs .tabItem {
-	display: flex;
-	background-color: transparent;
-	border: 0;
-	padding: 5px 10px;
-	min-width: 6em;
-	white-space: nowrap;
-	cursor: pointer;
-}
-.tabs.top .tabItem {
-	margin: 5px 5px 0 0;
-}
-.tabs.bottom .tabItem {
-	margin: 0 5px 5px 0;
-}
-.tabs .tabItem::-moz-focus-inner {
-	border: 0;
-}
-.tabs.boxed > .tabsHeader > .tabItem {
-	border: 1px solid #aaa;
-	color: #666;
-	background-color: #eee;
-}
-.tabs.boxed.top > .tabsHeader > .tabItem {
-	border-bottom: 0;
-	border-radius: 5px 5px 0 0;
-}
-.tabs.boxed.bottom > .tabsHeader > .tabItem {
-	border-top: 0;
-	border-radius: 0 0 5px 5px;
-}
-.tabs.pills > .tabsHeader > .tabItem {
-	border: 1px solid #000;
-	border-radius: 5px;
-	color: #000;
-	opacity: 0.6;
-}
-.tabs.pills.multiline > .tabsHeader > .tabItem {
-	display: inline-block;
-}
-.tabs .tabItem:focus {
-	outline: none;
-}
-.tabs.spaceLimited .tabItem {
-	min-width: auto;
-}
-.tabs.boxed > .tabsHeader > .tabItem:hover .fas, .tabs.boxed > .tabsHeader > .tabItem:hover .tabName {
-	color: black;
-}
-.tabs.pills > .tabsHeader > .tabItem:hover {
-	opacity: 1;
-}
-.tabs.boxed > .tabsHeader > .tabItem.tabActive {
-	background-color: white;
-	color: black;
-	z-index: 1;
-}
-.tabs.boxed.top > .tabsHeader > .tabItem.tabActive {
-	padding-bottom: 6px;
-	margin-bottom: -1px;
-}
-.tabs.boxed.bottom > .tabsHeader > .tabItem.tabActive {
-	padding-top: 6px;
-	margin-top: -1px;
-}
-.tabs.pills > .tabsHeader > .tabItem.tabActive {
-	opacity: 1;
-	border-width: 2px;
-	padding: 4px 9px;
-}
-.tabs .tabItem .tabClose {
-	display: inline-block;
-	margin-left: 5px;
-}
-.tabs .tabItem .tabClose:hover {
-	color: red;
+	.tabsHeader {
+		display: flex;
+
+		.tabName,
+		.tabClose,
+		.tabClose {
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.tabName {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			min-width: 2em;
+			flex-grow: 1;
+		}
+		.tabHasIcon .tabName {
+			margin-left: 5px;
+		}
+	}
+	.tabsBody {
+		flex-grow: 1;
+		height: 100%;
+		overflow: hidden;
+	}
+	.tabContent.tabActive {
+		display: block;
+	}
+	.tabItem {
+		display: flex;
+		background-color: transparent;
+		border: 0;
+		padding: 5px 10px;
+		min-width: 6em;
+		white-space: nowrap;
+		cursor: pointer;
+		
+		&::-moz-focus-inner {
+			border: 0;
+		}
+		&:focus {
+			outline: none;
+		}
+		.tabClose {
+			display: inline-block;
+			margin-left: 5px;
+			height: 1em;
+			width: 1em;
+
+			* {
+				stroke: black;
+			}
+			&:hover * {
+				stroke: red;
+			}
+		}
+	}
+	&.top .tabItem {
+		margin: 5px 5px 0 0;
+	}
+	&.bottom {
+		flex-direction: column-reverse;
+
+		.tabItem {
+			margin: 0 5px 5px 0;
+		}
+	}
+	&.boxed {
+		border-radius: 3px;
+		border: 1px solid #aaa;
+
+		> .tabsHeader {
+			padding-left: 5px;
+			background-color: #f9f9f9;
+
+			> .tabItem {
+				border: 1px solid #aaa;
+				color: #666;
+				background-color: #eee;
+
+				&:hover .fas,
+				&:hover .tabName {
+					color: black;
+				}
+				&.tabActive {
+					background-color: white;
+					color: black;
+					z-index: 1;
+				}
+			}
+		}
+		> .tabsBody > .tabContent {
+			background-color: white;
+			overflow: auto;
+			height: 100%;
+		}
+		&.top {
+			> .tabsBody > .tabContent {
+				border-top: 1px solid #ddd;
+				height: calc(100% - 2px);
+			}
+			> .tabsHeader {
+				> .tabItem {
+					border-bottom: 0;
+					border-radius: 5px 5px 0 0;
+
+					&.tabActive {
+						padding-bottom: 6px;
+						margin-bottom: -1px;
+					}
+				}
+			}
+		}
+		&.bottom {
+			> .tabsBody > .tabContent {
+				border-bottom: 1px solid #ddd;
+				padding-bottom: 1px;
+				height: calc(100% - 2px);
+			}
+			> .tabsHeader > .tabItem {
+				border-top: 0;
+				border-radius: 0 0 5px 5px;
+
+				&.tabActive {
+					padding-top: 6px;
+					margin-top: -1px;
+				}
+			}
+		}
+	}
+	&.pills {
+		&.multiline > .tabsHeader {
+			display: block;
+
+			> .tabItem {
+				display: inline-block;
+			}
+		}
+		> .tabsBody > .tabContent {
+			height: 100%;
+		}
+		> .tabsHeader {
+			> .tabItem {
+				border: 1px solid #000;
+				border-radius: 5px;
+				color: #000;
+				opacity: 0.6;
+
+				&:hover {
+					opacity: 1;
+				}
+				&.tabActive {
+					opacity: 1;
+					border-width: 2px;
+					padding: 4px 9px;
+				}
+			}
+		}
+	}
+	&.hide {
+		display: none;
+	}
+	&.spaceLimited {
+		.tabHasIcon:not(.tabActive) .tabName {
+			display: none;
+		}
+		.tabItem:not(.tabActive) .tabClose {
+			display: none;
+		}
+		.tabItem {
+			min-width: auto;
+		}
+	}
 }
 </style>

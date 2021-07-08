@@ -100,10 +100,12 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
-.vue-component.stac .metadata .map.value {
-	overflow: hidden;
+.vue-component.stac {
+	.metadata .map.value {
+		overflow: hidden;
+	}
 }
 </style>

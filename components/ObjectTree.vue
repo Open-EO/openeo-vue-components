@@ -121,32 +121,36 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
-</style>
+<style lang="scss">
+@import './base.scss';
 
-<style scoped>
-.inline {
-	display: inline-block;
+.vue-component.object-tree {
+	.inline {
+		display: inline-block;
+	}
+	ol {
+		padding-left: 2em;
+		margin-bottom: 0.5em;
+
+		> li:only-child {
+			list-style-type: none;
+			margin-left: -2em;
+		}
+
+		> li > div > ul {
+			padding-left: 0;
+		}
+	}
+	ul {
+		padding-left: 1em;
+
+		> li {
+			list-style-type: none;
+		}
+	}
+	li {
+		margin-bottom: 0.25em;
+	}
 }
-ol {
-	padding-left: 2em;
-	margin-bottom: 0.5em;
-}
-ul {
-	padding-left: 1em;
-}
-ol > li > div > ul {
-	padding-left: 0;
-}
-li {
-	margin-bottom: 0.25em;
-}
-ul > li {
-	list-style-type: none;
-}
-ol > li:only-child {
-	list-style-type: none;
-	margin-left: -2em;
-}
+
 </style>

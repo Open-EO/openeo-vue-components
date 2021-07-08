@@ -294,70 +294,71 @@ export default {
 }
 </script>
 
-<style>
-.vue-component.data-table table {
-	width: 100%;
-    border-collapse: collapse;
-}
-.vue-component.data-table table td, .vue-component.data-table table th {
-	border: 1px solid #ddd;
-	padding: 0.2em;
-}
-.vue-component.data-table .filter-icon {
-	margin-right: 3px;
-}
-.vue-component.data-table th {
-	text-align: left !important;
-}
-.vue-component.data-table th.sortable {
-	cursor: pointer;
-}
-.vue-component.data-table th.sortable:hover {
-	cursor: pointer;
-	background-color: #eee;
-}
-.vue-component.data-table th.sort-asc:after, .vue-component.data-table th.sortable:after {
-	visibility: hidden;
-	margin-left: 5px;
-	font-weight: 100;
-	content: "⇑";
-}
-.vue-component.data-table th.sort-asc:after, .vue-component.data-table th.sortable:hover:after {
-	visibility: visible;
-}
-.vue-component.data-table th.sort-desc:after {
-	visibility: visible;
-	margin-left: 5px;
-	font-weight: 100;
-	content: "⇓";
-}
-.vue-component.data-table th.sort-asc:hover:after, .vue-component.data-table th.sort-desc:hover:after {
-	visibility: visible;
-	margin-left: 5px;
-	font-weight: 100;
-	content: "⇕";
-}
+<style lang="scss">
+.vue-component.data-table {
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		td, th {
+			border: 1px solid #ddd;
+			padding: 0.2em;
+		}
+		th {
+			text-align: left !important;
+			
+			&.sortable {
+				cursor: pointer;
 
-.vue-component.data-table .no-results td {
-	text-align: center;
-}
-.vue-component.data-table .menu {
-	margin-bottom: 5px;
-	display: flex;
-	justify-content: space-between;
-}
-.vue-component.data-table .filter {
-	flex-grow: 1;
-	text-align: right;
-	padding-left: 1em;
-	min-width: 4em;
-	max-width: 20em;
-}
-.vue-component.data-table .filter .edit {
-	cursor: pointer;
-}
-
-.vue-component.data-table .unit {
-	opacity: 0.6;
+				&:hover {
+					background-color: #eee;
+				}
+			}
+			&.sort-asc:after,
+			&.sortable:after {
+				visibility: hidden;
+				margin-left: 5px;
+				font-weight: 100;
+				content: "⇑";
+			}
+			&.sort-asc:after,
+			&.sortable:hover:after {
+				visibility: visible;
+			}
+			&.sort-desc:after {
+				visibility: visible;
+				margin-left: 5px;
+				font-weight: 100;
+				content: "⇓";
+			}
+			&.sort-asc:hover:after,
+			&.sort-desc:hover:after {
+				visibility: visible;
+				margin-left: 5px;
+				font-weight: 100;
+				content: "⇕";
+			}
+		}
+	}
+	.filter-icon {
+		margin-right: 3px;
+	}
+	.no-results td {
+		text-align: center;
+	}
+	.menu {
+		margin-bottom: 5px;
+		display: flex;
+		justify-content: space-between;
+	}
+	.filter {
+		flex-grow: 1;
+		text-align: right;
+		padding-left: 1em;
+		min-width: 4em;
+		max-width: 20em;
+		.edit {
+			cursor: pointer;
+		}
+	}
 }
 </style>

@@ -245,21 +245,25 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
-.vue-component.collection .dimension h4 {
-	margin: 0;
-}
-.vue-component.collection .dimension .type {
-	font-weight: normal;
-	font-size: 90%;
-	margin-left: 0.5em;
-}
-.vue-component.collection .dimension label {
-	font-weight: normal;
-}
-.vue-component.collection .provider-role {
-	text-transform: capitalize;
+.vue-component.collection {
+	.dimension {
+		h4 {
+			margin: 0;
+		}
+		.type {
+			font-weight: normal;
+			font-size: 90%;
+			margin-left: 0.5em;
+		}
+		label {
+			font-weight: normal;
+		}
+	}
+	.provider-role {
+		text-transform: capitalize;
+	}
 }
 </style>

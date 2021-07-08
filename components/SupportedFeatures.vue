@@ -105,22 +105,25 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
-.vue-component.features ul {
-    padding: 0;
-}
-.vue-component.features ul li {
-    list-style-type: none;
-}
-.vue-component.features .supported {
-    color: darkgreen;
-}
-.vue-component.features .unsupported {
-    color: maroon;
-}
-.vue-component.features .partial {
-    color: darkgoldenrod;
+.vue-component.features {
+    ul {
+        padding: 0;
+
+        li {
+            list-style-type: none;
+        }
+    }
+    .supported {
+        color: darkgreen;
+    }
+    .unsupported {
+        color: maroon;
+    }
+    .partial {
+        color: darkgoldenrod;
+    }
 }
 </style>

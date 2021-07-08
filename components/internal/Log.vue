@@ -143,44 +143,51 @@ export default {
 };
 </script>
 
-<style scoped>
-.log-entry {
+<style lang="scss">
+.vue-component.log-entry {
 	padding: 0.25em 0;
-}
-summary {
-	display: flex;
-}
-summary .log-message {
-	flex-grow: 1;
-	width: 100%;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	cursor: pointer;
-}
-.expanded summary .log-message {
-	white-space: normal;
-	overflow: unset;
-	text-overflow: unset;
-	cursor: inherit;
-}
-.details {
-	margin: 0.5em 0 1em 1.6em;
-	padding-left: 1.5em;
-	font-size: 0.9em;
-}
-.details > li {
-	margin: 0.5em 0;
-}
-.toggle {
-	display: inline-block;
-	width: 0.6em;
-	height: 1em;
-	margin: 0 0.5em;
-	cursor: pointer;
-}
-.expanded .toggle {
-	top: 1em;
-	transform: rotate(90deg);
+
+	.details {
+		margin: 0.5em 0 1em 1.6em;
+		padding-left: 1.5em;
+		font-size: 0.9em;
+
+		> li {
+			margin: 0.5em 0;
+		}
+	}
+	summary {
+		display: flex;
+
+		.log-message {
+			flex-grow: 1;
+			width: 100%;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			cursor: pointer;
+		}
+		.toggle {
+			display: inline-block;
+			width: 0.6em;
+			height: 1em;
+			margin: 0 0.5em;
+			cursor: pointer;
+		}
+	}
+	.expanded {
+		summary {
+			.log-message {
+				white-space: normal;
+				overflow: unset;
+				text-overflow: unset;
+				cursor: inherit;
+			}
+			.toggle {
+				top: 1em;
+				transform: rotate(90deg);
+			}
+		}
+	}
 }
 </style>
