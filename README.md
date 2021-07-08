@@ -435,7 +435,7 @@ Shows an (expandable) list of all processes available at a back-end.
 **Properties:**
 
 - `processes` (array, required): An array of processes as defined by the openEO API (`GET /processes` or `GET /process_graphs` although the latter is usually not complete).
-- `provideDownload` / `provide-download (boolean): See the corresponding prop in [`Process`](#process).
+- `provideDownload` / `provide-download` (boolean): See the corresponding prop in [`Process`](#process).
 - `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
 - `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
