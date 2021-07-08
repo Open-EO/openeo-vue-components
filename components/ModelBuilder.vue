@@ -23,6 +23,7 @@
                 @mounted="mountBlock" @unmounted="unmountBlock"
                 @move="startDragBlock" @moved="refreshEdges" />
         </div>
+        <div class="scaleInfo">Zoom in for more details</div>
         <ParameterViewer v-if="parameterViewer" v-bind="parameterViewer" @close="parameterViewer = null" />
     </div>
 </template>
@@ -144,6 +145,27 @@ export default {
             if (this.editable) {
                 classes.push('editable');
             }
+
+            if (this.state.compactMode) {
+                classes.push('compact');
+            }
+
+            if (this.state.scale < 0.5) {
+                classes.push('scale_xs');
+            }
+            else if (this.state.scale < 0.7) {
+                classes.push('scale_s');
+            }
+            else if (this.state.scale < 0.9) {
+                classes.push('scale_m');
+            }
+            else if (this.state.scale < 1.1) {
+                classes.push('scale_l');
+            }
+            else {
+                classes.push('scale_xl');
+            }
+
             return classes;
         },
         selectRect() {
@@ -1206,33 +1228,65 @@ class BlocksProcess {
 }
 </script>
 
-<style>
+<style lang="scss">
 .vue-component.model-builder {
 	width: 100%;
 	height: 100%;
 	position: relative;
-}
 
-.vue-component.model-builder.editable.focus .blocks {
-    border-color: rgba(22, 102, 182, 0.3);
-}
-.vue-component.model-builder:focus, .vue-component.model-builder .blocks:focus, .vue-component.model-builder .canvas:focus {
-    outline: 0;
-}
+    &.editable.focus .blocks {
+        border-color: rgba(22, 102, 182, 0.3);
+    }
 
-.vue-component.model-builder .canvas {
-    width: 100%;
-    height: 100%;
-	position: absolute;
-	z-index: 1;
-}
-.vue-component.model-builder .blocks {
-    box-sizing: border-box;
-    border: 1px solid transparent;
-	overflow: hidden;
-	position: absolute;
-	z-index: 3;
-	width: 100%;
-	height: 100%;
+    &:focus,
+    .blocks:focus,
+    .canvas:focus {
+        outline: 0;
+    }
+    
+    .canvas {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+    }
+    
+    .blocks {
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        overflow: hidden;
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+    }
+
+    &.compact .blockicon .delete,
+    &.compact .blockicon .info,
+    &.compact .blockicon .addComment,
+    &.compact .blockId,
+    &.compact .editComment, 
+    &.scale_xs .blockicon,
+    &.scale_s .blockicon,
+    &.scale_m .scaleInfo,
+    &.scale_l .scaleInfo,
+    &.scale_xl .scaleInfo,
+    &.scale_xs .connector .text {
+        display: none;
+    }
+    &.scale_xs .scaleInfo,
+    &.scale_s .scaleInfo {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: inline-block;
+        padding: 0.3em;
+        background-color: #f9f9f9;
+        border-radius: 0 0 0 0.3em;
+        z-index: 5;
+    }
+    &.scale_xs .editComment {
+        visibility: hidden;
+    }
 }
 </style>

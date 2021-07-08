@@ -3,7 +3,7 @@
 		<h4>{{ title }}</h4>
 
 		<div class="content">
-			<Description v-if="example.description" :description="example.description" :processUrl="processUrl" />
+			<Description v-if="example.description" :description="example.description" :processUrl="processUrl" :compact="true" />
 
 			<div class="arguments" v-if="example.arguments">
 				<code v-html="renderedArguments"></code>
@@ -63,13 +63,17 @@ export default {
 }
 </script>
 
-<style>
-@import url('../base.css');
-
-.vue-component.process-example .content {
-	border-left: 0.5em solid #ccc;
-	border-bottom: 1px dotted #ccc;
-	padding: 0.5em;
-	margin-left: 1.5em;
+<style lang="scss">
+.vue-component.process-example {
+	.content {
+		border-left: 0.5em solid #ccc;
+		border-bottom: 1px dotted #ccc;
+		padding: 0.5em;
+		margin-left: 1.5em;
+		
+		.styled-description {
+			margin-bottom: 1em;
+		}
+	}
 }
 </style>

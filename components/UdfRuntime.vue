@@ -117,16 +117,18 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
-.vue-component.udf-runtime h4 {
-	margin: 0.25em 0 0.75em 0;
-}
-.vue-component.udf-runtime .tabContent {
-	padding: 0.5em;
-}
-.vue-component.udf-runtime .library {
-	margin-bottom: 0.5em;
+.vue-component.udf-runtime {
+	h4 {
+		margin: 0.25em 0 0.75em 0;
+	}
+	.tabContent {
+		padding: 0.5em;
+	}
+	.library {
+		margin-bottom: 0.5em;
+	}
 }
 </style>

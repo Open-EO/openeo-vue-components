@@ -1,7 +1,7 @@
 <template>
-    <div :class="classes" v-on="listeners">
+    <div :class="classes">
         <div v-if="!output" ref="circle" :class="circleClasses" v-on="circleListeners"></div>
-        <span class="text">
+        <span class="text" v-on="listeners">
             <span v-show="unspecified" class="unspecified" title="Parameter is likely unsupported!">
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
@@ -79,7 +79,7 @@ export default {
         listeners() {
             if (this.allowsParameterChange) {
                 return {
-                    dblclick: this.openEditorForParameter
+                    click: this.openEditorForParameter
                 };
             }
             else {
@@ -498,57 +498,54 @@ export default {
 }
 </script>
 
-<style>
-.vue-component.model-builder.editable .block .connector span[title] {
-    cursor: help;
-}
-.vue-component.model-builder.editable .input .label, .vue-component.model-builder.editable .circle {
-    cursor: pointer;
-}
-</style>
-<style scoped>
-.block_collection .field_id { /* Hide collection ID as it's shown in the title */
-    display: none;
-}
-.connector {
-    font-size: 0.9em;
-    margin: 0.2em 0;
-    white-space: nowrap;
-}
-.input {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.output {
-    text-align: right;
-}
-.connector.noValue {
-    color: red;
-}
-.unspecified {
-    color: red;
-    margin-left: 2px;
-}
-.scale_xs .connector .text {
-    display: none;
-}
-.circle {
-    width: 0.8em;
-    height: 0.8em;
-    margin: 0 0.2em;
-    border: 1px solid #888;
-    background-color: transparent;
-    display: inline-block;
-}
-.block_result .field_output .circle {
-    background-color: #888;
-    cursor: auto;
-}
-.circle.io_active {
-    background-color: #FFC800;
-}
-.circle.io_selected {
-    background-color: #00C800 !important;
+<style lang="scss">
+.vue-component.model-builder {
+    .block .connector {
+        font-size: 0.9em;
+        margin: 0.2em 0;
+        white-space: nowrap;
+        
+        &.noValue {
+            color: red;
+        }
+        span[title] {
+            cursor: help;
+        }
+        .input {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            .label {
+                cursor: pointer;
+            }
+        }
+        .output {
+            text-align: right;
+        }
+        .unspecified {
+            color: red;
+            margin-left: 2px;
+        }
+        .circle {
+            width: 0.8em;
+            height: 0.8em;
+            margin: 0 0.2em;
+            border: 1px solid #888;
+            background-color: transparent;
+            display: inline-block;
+
+            &.io_active {
+                background-color: #FFC800;
+            }
+            &.io_selected {
+                background-color: #00C800 !important;
+            }
+        }
+    }
+
+    &.editable .circle {
+        cursor: pointer;
+    }
 }
 </style>

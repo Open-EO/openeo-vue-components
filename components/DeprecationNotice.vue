@@ -19,15 +19,16 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
 .vue-component.depcrecation-notice {
 	background-color: rgb(255,0,0,0.1);
 	border: 1px solid red;
-}
-.vue-component.depcrecation-notice strong {
-	display: block;
-	color: red;
+
+	strong {
+		display: block;
+		color: red;
+	}
 }
 </style>

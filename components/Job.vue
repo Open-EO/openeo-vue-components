@@ -139,32 +139,33 @@ export default {
 }
 </script>
 
-<style scoped>
-.progressBar {
-	background-color: #eee;
-	border: 1px solid #ccc;
-	color: black;
-	height: 1.2em;
-	border-radius: 0.3em;
-}
-.progressBar .number {
-	font-size: 0.8em;
-	padding: 0.1em 0.3em;
-	display: inline-block;
-}
-.progressBar .completed {
-	background-color: green;
-	width: 1px;
-	height: 1.2em;
-	color: white;
-	display: inline-block;
-	border-radius: 0.3em;
-}
-.progressBar.error .completed {
-	background-color: maroon;
-}
-</style>
+<style lang="scss">
+@import './base.scss';
 
-<style>
-@import url('./base.css');
+.vue-component.job {
+	.progressBar {
+		background-color: #eee;
+		border: 1px solid #ccc;
+		color: black;
+		height: 1.2em;
+		border-radius: 0.3em;
+
+		.number {
+			font-size: 0.8em;
+			padding: 0.1em 0.3em;
+			display: inline-block;
+		}
+		.completed {
+			background-color: green;
+			width: 1px;
+			height: 1.2em;
+			color: white;
+			display: inline-block;
+			border-radius: 0.3em;
+		}
+		&.error .completed {
+			background-color: maroon;
+		}
+	}
+}
 </style>

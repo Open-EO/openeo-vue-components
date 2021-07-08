@@ -217,23 +217,6 @@ export default {
                 classes.push('block_invalid');
             }
 
-            if (this.state.compactMode) {
-                classes.push('compact');
-            }
-
-            if (this.state.scale < 0.5) {
-                classes.push('scale_xs');
-            }
-            else if (this.state.scale < 0.7) {
-                classes.push('scale_s');
-            }
-            else if (this.state.scale < 0.9) {
-                classes.push('scale_m');
-            }
-            else if (this.state.scale < 1.1) {
-                classes.push('scale_l');
-            }
-
             return classes;
         },
         invalid() {
@@ -524,7 +507,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .block {
     position:absolute;
     border:2px solid #ccc;
@@ -538,126 +521,131 @@ export default {
     -khtml-user-select:none;
     -webkit-user-select:none;
     -o-user-select:none;
-}
 
-.block .description {
-    display:none;
-    width:200px;
-    padding:3px;
-    border:1px solid #083776;
-    border-radius:5px;
-    color:#001531;
-    background-color:#91bcf6;
-    margin-top:15px;
-    position:absolute;
-    font-weight:normal;
-}
+    .description {
+        display:none;
+        width:200px;
+        padding:3px;
+        border:1px solid #083776;
+        border-radius:5px;
+        color:#001531;
+        background-color:#91bcf6;
+        margin-top:15px;
+        position:absolute;
+        font-weight:normal;
+    }
 
-.blockTitle {
-    display: flex;
-    padding: 0.3em 0.1em;
-    font-weight:bold;
-    background-color:#ddd;
-    margin-bottom: 0.1em;
-    cursor: move;
-    font-size: 0.9em;
-}
+    .blockTitle {
+        display: flex;
+        padding: 0.3em 0.1em;
+        font-weight:bold;
+        background-color:#ddd;
+        margin-bottom: 0.1em;
+        cursor: move;
+        font-size: 0.9em;
+        
+        .blockId {
+            opacity:0.4;
+            margin-left: 2px;
+        }
 
-.titleText {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .titleText {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .blockicon {
+            white-space: nowrap;
+            text-align: center;
 
-.block .blockTitle .blockId {
-    opacity:0.4;
-    margin-left: 2px;
-}
+            i.fas {
+                min-width: 1.4em;
+                cursor: pointer;
+                opacity: 0.5;
+                margin-left: 0.1em;
 
-.block .blockicon {
-    white-space: nowrap;
-    text-align: center;
-}
+                &:hover {
+                    opacity:1.0;
+                }
+            }
+        }
+    }
 
+    .invalid {
+        color: red;
+    }
 
-.block .blockicon i {
-    min-width: 1.4em;
-    cursor: pointer;
-    opacity: 0.5;
-    margin-left: 0.1em;
-}
+    .inout {
+        display: flex;
+    }
 
-.block .blockicon i:hover {
-    opacity:1.0;
+    .inputs {
+        flex-grow: 1;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .editComment {
+        padding: 0.3em 0.2em;
+        box-sizing: border-box;
+        font-size: 0.9em;
+        line-height: 1em;
+        overflow: auto;
+        border: 0;
+        border-top: 1px dotted #ccc;
+        background-color: transparent;
+        width: 100%;
+        max-width: 100%;
+        height: 3.7em;
+        min-height: 2.5em;
+        resize: none;
+
+        &:focus {
+            outline: 0;
+        }
+    }
 }
 
 .block_collection {
     border:2px solid #6B8DAF;
+
+    .blockTitle {
+        background-color:#A3B7CC;
+    }
+    .field_id { /* Hide collection ID as it's shown in the title */
+        display: none;
+    }
 }
-.block_collection .blockTitle {
-    background-color:#A3B7CC;
+
+.block_result {
+    border:2px solid #888;
+
+    .field_output .circle {
+        background-color: #888;
+        cursor: auto;
+    }
 }
 
 .block_argument {
     border:2px solid #B28C6B;
-}
-.block_argument .blockTitle {
-    background-color:#CCB7A3;
+
+    .blockTitle {
+        background-color:#CCB7A3;
+    }
 }
 
 .block_selected {
     border:2px solid #0a0 !important; /* important is used to override the styles for block_collection and block_argument above */
-}
-.block_selected .blockTitle {
-    background-color:#0c0 !important;
+
+    .blockTitle {
+        background-color:#0c0 !important;
+    }
 }
 
 .block_invalid {
     border:2px solid #ff0000 !important; /* important is used to override the styles for block_selected above */
-}
-.invalid {
-    color: red;
-}
-
-.inout {
-    display: flex;
-}
-
-.inputs {
-    flex-grow: 1;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.editComment {
-    padding: 0.3em 0.2em;
-    box-sizing: border-box;
-    font-size: 0.9em;
-    line-height: 1em;
-    overflow: auto;
-    border: 0;
-    border-top: 1px dotted #ccc;
-    background-color: transparent;
-    width: 100%;
-    max-width: 100%;
-    height: 3.7em;
-    min-height: 2.5em;
-    resize: none;
-}
-.editComment:focus {
-    outline: 0;
-}
-
-.compact .blockicon .delete, .compact .blockicon .info, .compact .blockicon .addComment, .compact .blockId, .compact .editComment {
-    display: none;
-}
-
-.scale_xs .blockicon, .scale_s .blockicon {
-    display: none;
-
-}
-.scale_xs .editComment {
-    visibility: hidden;
 }
 </style>

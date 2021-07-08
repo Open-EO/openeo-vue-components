@@ -79,41 +79,46 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
 .vue-component.styled-description {
 	line-height: 1.25em;
-}
-.vue-component.styled-description.compact p {
-	margin: 0.5em 0;
-}
-.vue-component.styled-description.compact p:first-child {
-	margin-top: 0;
-}
-.vue-component.styled-description.compact p:last-child {
-	margin-bottom: 0;
-}
-.vue-component.styled-description pre {
-	background-color: #eee;
-	width: 100%;
-	border: 1px solid #ccc;
-	max-height: 15em;
-	overflow-y: auto;
-}
-.vue-component.styled-description.compact pre {
-	max-height: 7em;
-	width: auto;
-	max-width: 100%;
-}
-.vue-component.styled-description pre code {
-	background-color: transparent; 
-	display: block;
-	margin: 0.5em;
-}
-.vue-component.styled-description code {
-	color: maroon;
-	display: inline-block;
-	padding: 0 0.1em;
+
+	code {
+		color: maroon;
+		display: inline-block;
+		padding: 0 0.1em;
+	}
+	pre {
+		background-color: #eee;
+		width: 100%;
+		border: 1px solid #ccc;
+		max-height: 15em;
+		overflow-y: auto;
+		
+		code {
+			background-color: transparent; 
+			display: block;
+			margin: 0.5em;
+		}
+	}
+	&.compact {
+		pre {
+			max-height: 7em;
+			width: auto;
+			max-width: 100%;
+		}
+		p {
+			margin: 0.5em 0;
+
+			&:first-child {
+				margin-top: 0;
+			}
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
 }
 </style>

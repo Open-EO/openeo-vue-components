@@ -10,13 +10,15 @@ export default {
 }
 </script>
 
-<style scoped>
-.loading:after {
-	content: '.';
-	animation: dots 1.25s steps(5, end) infinite;
-	font-size: 1.5em;
-	line-height: 1em;
-	font-weight: bold;
+<style lang="scss">
+.vue-component.loading-notice {
+	.loading:after {
+		content: '.';
+		animation: dots 1.25s steps(5, end) infinite;
+		font-size: 1.5em;
+		line-height: 1em;
+		font-weight: bold;
+	}
 }
 
 @keyframes dots {

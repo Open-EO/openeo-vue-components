@@ -90,54 +90,57 @@ export default {
 }
 </script>
 
-<style scoped>
-.parameter-viewer {
+<style lang="scss">
+.vue-component.parameter-viewer {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	z-index: 5;
+	z-index: 10;
 	overflow: auto;
 	padding: 1em;
 	box-sizing: border-box;
 	background-color: white;
-}
-.parameter-viewer > .model-builder {
-	height: 400px;
-}
-.parameter-viewer > section {
-	border-top: 1px dotted gray;
-	margin: 1em 0;
-}
-.parameter-viewer > section > .description {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 1em;
-}
-.parameter-viewer > section > .description > i.fas {
-	margin-right: 0.5em;
-	color: gray;
-}
-.parameter-viewer > section > .description > .styled-description {
-	flex-grow: 1;
-	font-size: 0.9em;
-	border-left: 1px solid gray;
-	padding-left: 0.5em;
-	color: gray;
-}
-.close {
-	position: absolute;
-	top: 1.1em;
-	right: 1em;
-}
-header h2 {
-	margin-top: 0;
-	font-size: 1.2em;
-}
-h3 {
-	font-size: 1.1em;
-}
-.highlight h3 {
-	color: red;
+
+	> .model-builder {
+		height: 400px;
+	}
+	> section {
+		border-top: 1px dotted gray;
+		margin: 1em 0;
+
+		> .description {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-top: 1em;
+
+			> i.fas {
+				margin-right: 0.5em;
+				color: gray;
+			}
+			> .styled-description {
+				flex-grow: 1;
+				font-size: 0.9em;
+				border-left: 1px solid gray;
+				padding-left: 0.5em;
+				color: gray;
+			}
+		}
+	}
+	.close {
+		position: absolute;
+		top: 1.1em;
+		right: 1em;
+	}
+	header h2 {
+		margin-top: 0;
+		font-size: 1.2em;
+	}
+	h3 {
+		font-size: 1.1em;
+	}
+	.highlight h3 {
+		color: red;
+	}
 }
 </style>

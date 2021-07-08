@@ -104,4 +104,8 @@ export default {
 
 <style>
 @import url('./examples.css');
+
+.component > .model-builder {
+	height: 400px;
+}
 </style>

@@ -257,71 +257,80 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
-.vue-component .schemaProcessGraph h4 {
-	font-size: 1.1em;
-	margin-top: 1em;
-}
-</style>
-
-<style scoped>
-.data-type {
-	font-weight: bold;
-}
-.json-schema {
+.vue-component.json-schema {
 	border-left: 7px solid #ccc;
 	border-bottom: 1px dotted #ccc;
 	padding: 0.25%;
 	width: 99%;
-}
-.data-types-container > .json-schema {
-	border-left: 1px solid #ccc;
-	border-bottom: 1px dotted #ccc;
-	margin-top: 0.5em;
-	margin-left: 1em;
-}
-.json-schema td, .json-schema th, .schemaProcessGraph {
-	padding: 0.25em;
-}
-.inline-schema-attrs .json-schema {
-	border: 0;
-	padding: 0;
-	width: 100%;
-	background-color: transparent;
-}
-.schema-name {
-	display: inline-block;
-	border-bottom: 1px dotted black;
-}
-.schema-attrs {
-	width: 100%;
-}
-.schema-attrs .key {
-	white-space: nowrap;
-}
-.schema-attrs .value {
-	width: 90%;
-}
-p.schema-attrs {
-	margin: 1em 0 0.5em 0;
-}
-p.schema-attrs:first-of-type {
-	margin: 0 0 1em 0;
-}
 
-.object-prop-heading, .data-types-heading {
-	padding: 0.5em 0em;
-	text-align: left;
+	td, th {
+		padding: 0.25em;
+	}
+	.schemaProcessGraph {
+		padding: 0.25em;
+
+		h4 {
+			font-size: 1.1em;
+			margin-top: 1em;
+		}
+	}
+	.data-type {
+		font-weight: bold;
+	}
+	.data-types-container > .json-schema {
+		border-left: 1px solid #ccc;
+		border-bottom: 1px dotted #ccc;
+		margin-top: 0.5em;
+		margin-left: 1em;
+	}
+	.inline-schema-attrs .json-schema {
+		border: 0;
+		padding: 0;
+		width: 100%;
+		background-color: transparent;
+	}
+	.schema-name {
+		display: inline-block;
+		border-bottom: 1px dotted black;
+	}
+	.schema-attrs {
+		width: 100%;
+
+		.key {
+			white-space: nowrap;
+		}
+		.value {
+			width: 90%;
+		}
+	}
+	p.schema-attrs {
+		margin: 1em 0 0.5em 0;
+		
+		&:first-of-type {
+			margin: 0 0 1em 0;
+		}
+	}
+	.object-prop-heading,
+	.data-types-heading {
+		padding: 0.5em 0em;
+		text-align: left;
+	}
+	.object-properties {
+		.propKey {
+			font-style: italic;
+			font-weight: bold;
+			min-width: 80px;
+			width: 8%;
+		}
+		th {
+			padding-top: 1em;
+		}
+	}
 }
-.object-properties .propKey {
-	font-style: italic;
-	font-weight: bold;
-	min-width: 80px;
-	width: 8%;
-}
-.object-properties th {
-	padding-top: 1em;
-}
+</style>
+
+<style scoped>
 </style>

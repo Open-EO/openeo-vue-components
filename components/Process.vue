@@ -173,61 +173,68 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
-.vue-component.process .process-bar {
-	display: flex;
-	align-items: baseline;
-}
-.vue-component.process .badges {
-	margin-bottom: 0.75em;
-}
-.vue-component.process .categories {
-	flex: 3;
-}
-.vue-component.process .actions {
-	flex: 1;
-	text-align: right;
-}
-.vue-component.process .actions .action {
-	background-color: chocolate;
-}
-.vue-component.process .actions .action:hover {
-	background-color: black;
-}
-.vue-component.process strong.deprecated {
-	color: red;
-}
-.vue-component.process strong.experimental {
-	color: blueviolet;
-}
-.vue-component.process .exception {
-	margin-top: 0.5em;
-}
-.vue-component.process .exception code {
-	font-weight: bold;
-}
-.vue-component.process .exception .styled-description {
-	margin: 0.5em 0;
-}
-.vue-component.process .exception .message {
-	margin: 0.5em 0;
-	font-size: 0.8em;
-}
-.vue-component.process .signature {
-	display: block;
-	margin: 1em 0;
-}
-.vue-component.process .process-graph .graph {
-	max-width: 100%;
-	min-height: 300px;
-}
-.vue-component.process .process-graph .graph > .object-tree > ul {
-	margin: 0;
-	padding: 0;
-}
-.vue-component.process .links:empty {
-	display: none;
+.vue-component.process {
+	.process-bar {
+		display: flex;
+		align-items: baseline;
+	}
+	.badges {
+		margin-bottom: 0.75em;
+	}
+	.categories {
+		flex: 3;
+	}
+	.actions {
+		flex: 1;
+		text-align: right;
+		.action {
+			background-color: chocolate;
+
+			&:hover {
+				background-color: black;
+			}
+		}
+	}
+	strong {
+		&.deprecated {
+			color: red;
+		}
+		&.experimental {
+			color: blueviolet;
+		}
+	}
+	.exception {
+		margin-top: 0.5em;
+		code {
+			font-weight: bold;
+		}
+		.styled-description {
+			margin: 0.5em 0;
+		}
+		.message {
+			margin: 0.5em 0;
+			font-size: 0.8em;
+		}
+	}
+	.signature {
+		display: block;
+		margin: 1em 0;
+	}
+	.process-graph .graph {
+		max-width: 100%;
+		height: 300px;
+		border: 1px solid #ccc;
+
+		 > .object-tree > ul {
+			margin: 0;
+			padding: 0;
+		}
+	}
+	.links:empty {
+		display: none;
+	}
 }
 </style>

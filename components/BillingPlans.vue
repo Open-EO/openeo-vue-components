@@ -65,13 +65,15 @@ export default {
 }
 </script>
 
-<style>
-@import url('./base.css');
+<style lang="scss">
+@import './base.scss';
 
-.vue-component.billing-plans .plan-name {
-	margin: 0.25em 0;
-	padding: 0.2em 0;
-	line-height: 1em;
-	vertical-align: baseline;
+.vue-component.billing-plans {
+	.plan-name {
+		margin: 0.25em 0;
+		padding: 0.2em 0;
+		line-height: 1em;
+		vertical-align: baseline;
+	}
 }
 </style>
