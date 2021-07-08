@@ -30,7 +30,7 @@
 			<li v-if="hasUsageMetrics">
 				Usage metrics:
 				<ul class="usage">
-					<li v-for="(metric, key) in log.usage" :key="key">
+					<li v-for="(metric, key) in usage" :key="key">
 						<strong class="metric">{{ key | usageLabel }}</strong>: {{ metric.value }} <span class="unit">{{ metric.unit }}</span>
 					</li>
 				</ul>
@@ -46,6 +46,7 @@
 
 <script>
 import Utils from '../../utils';
+import UsageMixin from './UsageMixin.js';
 
 const timeUnits = [
 	{
@@ -66,17 +67,11 @@ const timeUnits = [
 	}
 ];
 
-const usageLabels = {
-	cpu: "CPU usage",
-	memory: "Memory usage",
-	duration: "Wall time",
-	network: "Network Transfer IO",
-	disk: "Storage IO",
-	storage: "Storage space"
-};
-
 export default {
 	name: 'Log',
+	mixins: [
+		UsageMixin
+	],
 	components: {
 		LinkList: () => import('../LinkList.vue'),
 		ObjectTree: () => import('../ObjectTree.vue')
@@ -95,8 +90,8 @@ export default {
 		hasData() {
 			return typeof this.log.data !== 'undefined';
 		},
-		hasUsageMetrics() {
-			return Utils.size(this.log.usage) > 0;
+		usage() {
+			return this.log.usage;
 		},
 		relativeTime() {
 			if (!this.startTime || !this.log.time) {
@@ -133,16 +128,6 @@ export default {
 		},
 		path() {
 			return this.log.path.reverse();
-		}
-	},
-	filters: {
-		usageLabel(key) {
-			if (usageLabels[key]) {
-				return usageLabels[key];
-			}
-			else {
-				return Utils.prettifyString(key);
-			}
 		}
 	},
 	data() {

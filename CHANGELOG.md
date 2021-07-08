@@ -23,6 +23,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Better instructions on FontAwesome usage in Web Components
 - Updates dependencies
 
+## [2.2.2] - 2020-07-01
+
+### Added
+
+- `Job` and `Service`: supports usage metrics
+
+### Fixed
+
+- Fixed an error that was thrown in the case that no time is present in the logs
+
 ## [2.2.1] - 2020-06-24
 
 ### Fixed
@@ -295,7 +305,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.2.1...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.2.2...HEAD
+[2.2.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.2.0...v2.2.1
 [2.2.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.2...v2.2.0
 [2.1.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.1.1...v2.1.2
