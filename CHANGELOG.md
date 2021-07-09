@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1] - 2020-07-09
+
+### Fixed
+
+- The fallback size set in `ModelBuilder` was too intrusive and couldn't be altered from externally.
+
 ## [2.3.0] - 2020-07-09
 
 ### Added
@@ -312,7 +318,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.1...HEAD
+[2.3.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.2.2...v2.3.0
 [2.2.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.2.1...v2.2.2
 [2.2.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.2.0...v2.2.1

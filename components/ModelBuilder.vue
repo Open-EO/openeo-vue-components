@@ -128,6 +128,7 @@ export default {
             hasFocus: false,
             linkingLine: null,
             parameterViewer: null,
+            fixSize: false,
             
             // State specific to this blocks instance including all children
             state: getDefaultState(this)
@@ -139,6 +140,9 @@ export default {
                 'vue-component',
                 'model-builder'
             ];
+            if (this.fixSize) {
+                classes.push('fix-size');
+            }
             if (this.hasFocus) {
                 classes.push('focus');
             }
@@ -273,14 +277,10 @@ export default {
         // model builder will not show up as it has a width and height of 100% assigned.
         // So we fall back to 400px here so that users at least see something.
         let size = this.$el.getBoundingClientRect();
-        let check = dimension => {
-            if (!size[dimension]) {
-                console.error(`Model builder has a ${dimension} of 0, please set a ${dimension} for the parent element in CSS. Falling back to 400px.`);
-                this.$el.style[dimension] = '400px';
-            }
-        };
-        check('height');
-        check('width');
+        if (!size.width || !size.height) {
+            console.warn(`Model builder has a width or height of 0, please set a size for the parent element in CSS. Enforcing a minimum size.`);
+            this.fixSize = true;
+        }
 
         Utils.loadFontAwesome(this);
 
@@ -1233,6 +1233,11 @@ class BlocksProcess {
 	width: 100%;
 	height: 100%;
 	position: relative;
+
+    &.fix-size {
+        min-width: 400px;
+        min-height: 400px;
+    }
 
     &.editable.focus .blocks {
         border-color: rgba(22, 102, 182, 0.3);
