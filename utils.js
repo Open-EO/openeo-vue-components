@@ -1,4 +1,4 @@
-import CommonUtils from '@openeo/js-commons/src/utils';
+import { Utils as CommonUtils } from '@openeo/js-commons';
 import Loading from './components/internal/Loading.vue';
 import Errored from './components/internal/Errored.vue';
 

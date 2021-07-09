@@ -1,5 +1,5 @@
 import Utils from '../../utils';
-import Versions from '@openeo/js-commons/src/versions';
+import { Versions } from '@openeo/js-commons';
 
 const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 const IMAGE_EXTENSIONS = ['gif', 'png', 'jpg', 'jpeg', 'webp'];
