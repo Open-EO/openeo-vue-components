@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is [**2.2.2**](CHANGELOG.md) and supports **openEO API versions 1.0.x and 1.1.x**.
+This library's version is [**2.3.0**](CHANGELOG.md) and supports **openEO API versions 1.0.x and 1.1.x**.
 Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
 
 npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-components)
@@ -464,14 +464,30 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 
 **Events:**
 
-- `input(value)` / v-model: The process has been updated
-- `error(message, title = null)`: Show error message
-- `showProcess(id)`: Show process by id
-- `showCollection(id)`: Show collection by id
-- `showSchema(name, schema)`: Show JSON schema for parameters
-- `editParameters(parameters, values, title = "Edit", isEditable = true, selectParameterName = null, saveCallback(data) = null, parentBlock = null)`: Show the parameter editor
+- `input(value)` / v-model: Fired when the process has been updated.
+- `error(message, title)`: Informs about an error, e.g. to show error messages in the UI.
+	- `message` (string): The error message.
+	- `title` (string|null): Some errors provide a title, too.
+- `showProcess(id)`: Providing this event will enable a button on each process so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the process details to the user.
+	- `id` (string): ID of a process to show
+- `showCollection(id)`: Providing this event will enable a button on each collection so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the collection details to the user.
+	- `id` (string): ID of a collection to show
+- `showSchema(name, schema)`: Providing this event will enable a button on each Parameter so that user can click it to get more details about the (JSON) schema for it. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
+	- `name` (string): Name of the parameter
+	- `schema` (object|array): JSON Schema of the parameter (or an array of schemas)
+- `editParameters(parameters, values, title, isEditable, selectParameterName , saveCallback, parentBlock)`: Providing this event will enable a button on each block so that user can click it to get more details about the parameters and corresponding values. This event is fired when the user has clicked the button. The UI can then show the parameter viewer or editor to the user.
+	- `parameters` (array\<ProcessParameter>): An array with the details about the parameters, see [`ProcessParameter`](https://open-eo.github.io/openeo-js-commons/1.3.0/ProcessParameter.html) for details.
+	- `values` (object): An object with values for the parameters. The keys are the parameter names (`parameters.name`) and the objects are the values for the corresponding parameter.
+	- `title` (string): A title for the UI
+	- `isEditable` (boolean): Indicates whether the `ModelBuilder` is editable or not, see property `editable`.
+	- `selectParameterName` (string|null): If the user has not clicked the general button for the parameter viewer / editor, but instead clicked a specific parameter in the block, it passes the parameter name so that a UI can jump directly to the specific parameter or highlight it.
+	- `saveCallback` (function|null): A callback function that is called when the parameter editor indicates that a user wants to persist/save the data. The callback will receive one parameter with the new values in the same format as the `values` parameter above.
+	- `parentBlock` (object): The Vue `Block` instance that is the origin of this event.
 - `compactMode(enabled)`: Informs about the current state of compact mode.
-- `historyChanged(history, undoIndex = null, redoIndex = null)`: The history has been changed, e.g. using `redo`, `undo` or by editing the process in the model builder.
+	- `enabled` (boolean): `true` when compact mode is active, `false` otherwise.
+- `historyChanged(history, index)`: The history has been changed, e.g. using `redo`, `undo` or by editing the process in the model builder.
+	- `history` (array): The full history.
+	- `index` (intener): The index of the element in the history that is currently shown.
 
 **Methods:**
 
@@ -481,10 +497,18 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 - `async deleteSelected() -> boolean`: Deletes all selected blocks and edges. Returns `true` on success and `false` on faile or if nothing has been selected.
 - `async toggleCompact()`: Toggles compact mode (e.g. doesn't show parameter values).
 - `perfectScale()`: Fits the view to the blocks and edges so that it is fully shown.
-- `getPgParameters() -> array<object>`: Returns all process parameters.
-- `addPgParameter(param, origin = 'user', position = null)`: Adds a process parameter block to the model builder.
-- `getPositionForPageXY(x, y) -> array<number>`: Get's the local position in the model builder from the page coordinates (`pageX`, `pageY`) of a Browser event (e.g. mouse). Useful e.g. for the `position` parameters of `addPgParameter` or `addProcess`.
-- `addProcess(name, args = {}, position = [], node = {}) -> object`: Adds a process block to the model builder.
+- `getPgParameters() -> array<object>`: Returns all process parameters blocks.
+- `addPgParameter(parameter, origin, position)`: Adds a process parameter block to the model builder.
+	- `parameter` (object): The parameter to add, should at least include a `name` and a `schema` as defined by the openEO API.
+	- `origin` (string): The origin of the parameter, defaults to `user` for user-defined parameters.
+	- `position` (array|null): The position to show the newly created block. Use `getPositionForPageXY` to get the position from a Browser event. Set to `null` (default value) to place it automatically.
+- `getPositionForPageXY(x, y) -> array<number>`: Get's the local position in the model builder from the page coordinates (`pageX`, `pageY`) of a Browser event (e.g. mouse). Useful e.g. for the `position` parameters of `addPgParameter` or `addProcess`. Returns the computed x and y coordinates as array.
+	- `x` (number): The x coordinate on the page, usually the `pageX` property of the Browser event.
+	- `y` (number): The y coordinate on the page, usually the `pageY` property of the Browser event.
+- `addProcess(name, args, position) -> object`: Adds a process block to the model builder.
+	- `name` (string): The ID of the process to add.
+	- `args` (object): The arguments for the process. The keys are the parameter names and the objects are the values for the corresponding parameter. Defaults to no arguments (empty object).
+	- `position` (array|null): The position to show the newly created block. Use `getPositionForPageXY` to get the position from a Browser event. Set to `null` to place it automatically.
 
 ### `Processes`
 
@@ -493,7 +517,7 @@ Shows an (expandable) list of all processes available at a back-end.
 **Properties:**
 
 - `processes` (array, required): An array of processes as defined by the openEO API (`GET /processes` or `GET /process_graphs` although the latter is usually not complete).
-- `provideDownload` / `provide-download (boolean): See the corresponding prop in [`Process`](#process).
+- `provideDownload` / `provide-download` (boolean): See the corresponding prop in [`Process`](#process).
 - `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
 - `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
