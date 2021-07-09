@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `ModelBuilder` component to nicely visualize process graphs (migrated over from Web Editor)
 - `Processes`: Make `showGraph` prop from `Process` component  available
+- `Collections`, `Items`, `Processes`, `SearchableList`: Add new property `loadAdditionalData` to load additional data in expanded state.
 
 ### Changed
 
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Process`: Use `ModelBuilder` instead of `ObjectTree` to visualize the processing instructions.
 - `Tab` / `Tabs`: Load FontAwesome automatically if not available (Vue environments only).
 - CSS styles are processed with SCSS and thus `base.scss` has been renamed to `base.scss`
+- `SearchableList`: `detailsToggled` is not emitted to parent any longer, the parent components do this now directly.
 
 ### Fixed
 

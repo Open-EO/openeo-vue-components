@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component service-types">
-		<SearchableList :data="services" summaryKey="title" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
+		<SearchableList :data="services" summaryKey="title" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
@@ -51,6 +51,11 @@ export default {
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
+	},
+	methods: {
+		detailsToggled(...args) {
+			this.$emit('detailsToggled', ...args);
+		}
 	}
 }
 </script>

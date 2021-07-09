@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component processes">
-		<SearchableList :data="processes" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed">
+		<SearchableList :data="processes" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
@@ -56,10 +56,19 @@ export default {
 		showGraph: {
 			type: Boolean,
 			default: false
+		},
+		loadAdditionalData: {
+			type: Function,
+			default: null
 		}
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
+	},
+	methods: {
+		detailsToggled(...args) {
+			this.$emit('detailsToggled', ...args);
+		}
 	}
 }
 </script>

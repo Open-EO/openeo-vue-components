@@ -18,13 +18,14 @@
 				<ul v-else class="list" :class="{expandable: offerDetails}">
 					<li v-for="(summary, i) in summaries" :key="summary.identifier" v-show="summary.show" :class="{expanded: showDetails[i]}">
 						<summary @click="toggleDetails(i)" class="summary" :class="{experimental: summary.experimental, deprecated: summary.deprecated}">
-							<slot name="summary" :summary="summary" :item="data[summary.index]">
+							<slot name="summary" :summary="summary" :item="summary.data">
 								<strong>{{ summary.identifier }}</strong>
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
 							</slot>
 						</summary>
 						<div class="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true">
-							<slot name="details" :summary="summary" :item="data[summary.index]">
+							<Loading v-if="!summary.loaded" />
+							<slot v-else name="details" :summary="summary" :item="summary.data">
 								No details available!
 							</slot>
 						</div>
@@ -37,11 +38,13 @@
 
 <script>
 import Utils from '../utils';
+import Loading from './internal/Loading.vue';
 import Vue from 'vue';
 
 export default {
 	name: 'SearchableList',
 	components: {
+		Loading,
 		SearchBox: () => import('./SearchBox.vue')
 	},
 	props: {
@@ -85,9 +88,13 @@ export default {
 			type: Boolean,
 			default: null
 		},
-		searchMinLength:{
+		searchMinLength: {
 			type: Number,
 			default: 2
+		},
+		loadAdditionalData: {
+			type: Function,
+			default: null
 		}
 	},
 	data() {
@@ -104,6 +111,11 @@ export default {
 		};
 	},
 	watch: {
+		loadAdditionalData: {
+			handler() {
+				this.generateSummaries(this.summaries);
+			}
+		},
 		data: {
 			immediate: true,
 			handler(data, oldData) {
@@ -113,34 +125,7 @@ export default {
 				if (data === oldData) {
 					return;
 				}
-				let summaries = [];
-				for(let index in this.data) {
-					let entry = this.data[index];
-					let summary = {
-						identifier: index,
-						summary: '',
-						show: true,
-						index: index,
-						experimental: entry.experimental,
-						deprecated: entry.deprecated
-					};
-
-					if (typeof entry[this.identifierKey] === 'string') {
-						summary.identifier = entry[this.identifierKey];
-					}
-					if (typeof entry[this.summaryKey] === 'string') {
-						summary.summary = entry[this.summaryKey];
-					}
-
-					summaries.push(Vue.observable(summary));
-				}
-				if (this.sort) {
-					if (Utils.isObject(this.data)) {
-						summaries = Object.values(summaries);
-					}
-					summaries.sort((a,b) => Utils.compareStringCaseInsensitive(a.identifier, b.identifier));
-				}
-				this.summaries = summaries;
+				this.generateSummaries(data);
 			}
 		},
 		externalSearchTerm: {
@@ -193,6 +178,36 @@ export default {
 		}
 	},
 	methods: {
+		generateSummaries() {
+			let hasLoader = typeof this.loadAdditionalData === 'function';
+			let summaries = [];
+			for(let index in this.data) {
+				let entry = this.data[index];
+				let summary = {
+					identifier: index,
+					summary: '',
+					show: true,
+					loaded: !hasLoader,
+					index: index,
+					experimental: entry.experimental,
+					deprecated: entry.deprecated,
+					data: entry
+				};
+
+				if (typeof entry[this.identifierKey] === 'string') {
+					summary.identifier = entry[this.identifierKey];
+				}
+				if (typeof entry[this.summaryKey] === 'string') {
+					summary.summary = entry[this.summaryKey];
+				}
+
+				summaries.push(Vue.observable(summary));
+			}
+			if (this.sort) {
+				summaries.sort((a,b) => Utils.compareStringCaseInsensitive(a.identifier, b.identifier));
+			}
+			this.summaries = summaries;
+		},
 		toggleHeading(show = null) {
 			if (this.collapsed === null) {
 				return;
@@ -203,7 +218,7 @@ export default {
 				this.$parent.$emit('headingToggled', this.showList);
 			}
 		},
-		toggleDetails(i, newState) {
+		async toggleDetails(i, newState) {
 			if (!this.offerDetails) {
 				return;
 			}
@@ -215,10 +230,15 @@ export default {
 			}
 			this.$set(this.showDetails, i, newState);
 			let summary = this.summaries[i];
-			this.$emit('detailsToggled', newState, summary.index, summary.identifier, this.data[summary.index]);
-			if (this.$parent) {
-				this.$parent.$emit('detailsToggled', newState, summary.index, summary.identifier, this.data[summary.index]);
+			if (newState && typeof this.loadAdditionalData === 'function' && !summary.loaded) {
+				try {
+					summary.data = await this.loadAdditionalData(summary.index, summary.identifier, summary.data);
+					summary.loaded = true;
+				} catch (error) {
+					console.error(error);
+				}
 			}
+			this.$emit('detailsToggled', newState, summary.index, summary.identifier, summary.data);
 		}
 	}
 }

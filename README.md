@@ -179,6 +179,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `offerDetails` / `odder-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
+- `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 
 **Slots:**
 
@@ -344,6 +345,7 @@ Shows an (expandable) list of STAC-based Items.
 - `offerDetails` / `odder-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Items`.
+- `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 
 **Slots:**
 
@@ -525,6 +527,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 - `showGraph` / `show-graph` (boolean): See the corresponding prop in [`Process`](#process).
+- `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 
 **Slots:**
 
@@ -556,6 +559,10 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `showSummaryOnExpand` / `show-summary-on-expand` (boolean): If set to `false`, the summary gets hidden for expanded elements. Defaults to `true`.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `null`.
 - `searchMinLength` / `search-min-length` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
+- `loadAdditionalData` / `load-additional-data` (function|null): An asynchronous function that returns newly loaded data and replaces the original data in the viewer. The function has three parameters:
+    - `key` (integer): Gives the index (for arrays) or the key (for objects) of the toggled element in the array or object given in the prop `data`.
+    - `identifier` (number|string): Gives the identifier of the toggled element (corresponds to the values selected via the prop `identifierKey`).
+	- `data` (object): The original data.
 
 **Slots:**
 

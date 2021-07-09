@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component items">
-		<SearchableList :data="data" identifierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @summaries="updateFeatures" ref="list">
+		<SearchableList :data="data" identifierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @summaries="updateFeatures" @detailsToggled="detailsToggled" ref="list">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #after-search-box>
 				<slot v-if="showMap" name="map" :geojson="geojson" :mapOptions="mapOptions">
@@ -63,6 +63,10 @@ export default {
 		},
 		collapsed: {
 			type: Boolean,
+			default: null
+		},
+		loadAdditionalData: {
+			type: Function,
 			default: null
 		}
 	},
@@ -144,6 +148,9 @@ export default {
 				geom.addTo(this.map.instance);
 			}
 			this.map.geometries = geom;
+		},
+		detailsToggled(...args) {
+			this.$emit('detailsToggled', ...args);
 		}
 	}
 }
