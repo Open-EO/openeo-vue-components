@@ -507,145 +507,147 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.block {
-    position:absolute;
-    border:2px solid #ccc;
-    margin-left:0px;
-    margin-top:0px;
-    background-color:#fafafa;
-    opacity:0.8;
-    font-size:14px;
-    user-select:none;
-    -moz-user-select:none;
-    -khtml-user-select:none;
-    -webkit-user-select:none;
-    -o-user-select:none;
-
-    .description {
-        display:none;
-        width:200px;
-        padding:3px;
-        border:1px solid #083776;
-        border-radius:5px;
-        color:#001531;
-        background-color:#91bcf6;
-        margin-top:15px;
+<style lang="scss">
+.vue-component.model-builder {
+    .block {
         position:absolute;
-        font-weight:normal;
-    }
+        border:2px solid #ccc;
+        margin-left:0px;
+        margin-top:0px;
+        background-color:#fafafa;
+        opacity:0.8;
+        font-size:14px;
+        user-select:none;
+        -moz-user-select:none;
+        -khtml-user-select:none;
+        -webkit-user-select:none;
+        -o-user-select:none;
 
-    .blockTitle {
-        display: flex;
-        padding: 0.3em 0.1em;
-        font-weight:bold;
-        background-color:#ddd;
-        margin-bottom: 0.1em;
-        cursor: move;
-        font-size: 0.9em;
-        
-        .blockId {
-            opacity:0.4;
-            margin-left: 2px;
+        .description {
+            display:none;
+            width:200px;
+            padding:3px;
+            border:1px solid #083776;
+            border-radius:5px;
+            color:#001531;
+            background-color:#91bcf6;
+            margin-top:15px;
+            position:absolute;
+            font-weight:normal;
         }
 
-        .titleText {
+        .blockTitle {
+            display: flex;
+            padding: 0.3em 0.1em;
+            font-weight:bold;
+            background-color:#ddd;
+            margin-bottom: 0.1em;
+            cursor: move;
+            font-size: 0.9em;
+            
+            .blockId {
+                opacity:0.4;
+                margin-left: 2px;
+            }
+
+            .titleText {
+                flex-grow: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .blockicon {
+                white-space: nowrap;
+                text-align: center;
+
+                i.fas {
+                    min-width: 1.4em;
+                    cursor: pointer;
+                    opacity: 0.5;
+                    margin-left: 0.1em;
+
+                    &:hover {
+                        opacity:1.0;
+                    }
+                }
+            }
+        }
+
+        .invalid {
+            color: red;
+        }
+
+        .inout {
+            display: flex;
+        }
+
+        .inputs {
             flex-grow: 1;
-            white-space: nowrap;
+            max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        
-        .blockicon {
-            white-space: nowrap;
-            text-align: center;
 
-            i.fas {
-                min-width: 1.4em;
-                cursor: pointer;
-                opacity: 0.5;
-                margin-left: 0.1em;
+        .editComment {
+            padding: 0.3em 0.2em;
+            box-sizing: border-box;
+            font-size: 0.9em;
+            line-height: 1em;
+            overflow: auto;
+            border: 0;
+            border-top: 1px dotted #ccc;
+            background-color: transparent;
+            width: 100%;
+            max-width: 100%;
+            height: 3.7em;
+            min-height: 2.5em;
+            resize: none;
 
-                &:hover {
-                    opacity:1.0;
-                }
+            &:focus {
+                outline: 0;
             }
         }
     }
 
-    .invalid {
-        color: red;
-    }
+    .block_collection {
+        border:2px solid #6B8DAF;
 
-    .inout {
-        display: flex;
-    }
-
-    .inputs {
-        flex-grow: 1;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .editComment {
-        padding: 0.3em 0.2em;
-        box-sizing: border-box;
-        font-size: 0.9em;
-        line-height: 1em;
-        overflow: auto;
-        border: 0;
-        border-top: 1px dotted #ccc;
-        background-color: transparent;
-        width: 100%;
-        max-width: 100%;
-        height: 3.7em;
-        min-height: 2.5em;
-        resize: none;
-
-        &:focus {
-            outline: 0;
+        .blockTitle {
+            background-color:#A3B7CC;
+        }
+        .field_id { /* Hide collection ID as it's shown in the title */
+            display: none;
         }
     }
-}
 
-.block_collection {
-    border:2px solid #6B8DAF;
+    .block_result {
+        border:2px solid #888;
 
-    .blockTitle {
-        background-color:#A3B7CC;
+        .field_output .circle {
+            background-color: #888;
+            cursor: auto;
+        }
     }
-    .field_id { /* Hide collection ID as it's shown in the title */
-        display: none;
+
+    .block_argument {
+        border:2px solid #B28C6B;
+
+        .blockTitle {
+            background-color:#CCB7A3;
+        }
     }
-}
 
-.block_result {
-    border:2px solid #888;
+    .block_selected {
+        border:2px solid #0a0 !important; /* important is used to override the styles for block_collection and block_argument above */
 
-    .field_output .circle {
-        background-color: #888;
-        cursor: auto;
+        .blockTitle {
+            background-color:#0c0 !important;
+        }
     }
-}
 
-.block_argument {
-    border:2px solid #B28C6B;
-
-    .blockTitle {
-        background-color:#CCB7A3;
+    .block_invalid {
+        border:2px solid #ff0000 !important; /* important is used to override the styles for block_selected above */
     }
-}
-
-.block_selected {
-    border:2px solid #0a0 !important; /* important is used to override the styles for block_collection and block_argument above */
-
-    .blockTitle {
-        background-color:#0c0 !important;
-    }
-}
-
-.block_invalid {
-    border:2px solid #ff0000 !important; /* important is used to override the styles for block_selected above */
 }
 </style>
