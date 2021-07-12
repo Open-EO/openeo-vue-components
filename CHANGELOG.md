@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix CSS issue in Model builder: Result node output was not correctly rendered.
+- Fix CSS issue in Tabs: Boxed Tabs were a bit too large.
+
 ## [2.3.1] - 2020-07-09
 
 ### Fixed

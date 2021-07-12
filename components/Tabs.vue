@@ -305,6 +305,7 @@ export default {
 	&.boxed {
 		border-radius: 3px;
 		border: 1px solid #aaa;
+		box-sizing: border-box;
 
 		> .tabsHeader {
 			padding-left: 5px;
