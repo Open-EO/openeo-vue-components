@@ -335,7 +335,7 @@ export default {
 		&.top {
 			> .tabsBody > .tabContent {
 				border-top: 1px solid #ddd;
-				height: calc(100% - 2px);
+				box-sizing: border-box;
 			}
 			> .tabsHeader {
 				> .tabItem {
@@ -353,7 +353,7 @@ export default {
 			> .tabsBody > .tabContent {
 				border-bottom: 1px solid #ddd;
 				padding-bottom: 1px;
-				height: calc(100% - 2px);
+				box-sizing: border-box;
 			}
 			> .tabsHeader > .tabItem {
 				border-top: 0;
