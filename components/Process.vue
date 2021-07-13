@@ -1,7 +1,7 @@
 <template>
 	<article class="vue-component process">
 
-		<slot name="title" :v-bind="$props">
+		<slot v-if="process.id" name="title" :v-bind="$props">
 			<a class="anchor" :name="process.id"></a>
 			<h2>{{ process.id }}</h2>
 		</slot>
@@ -70,7 +70,7 @@
 
 		<section class="examples" v-if="hasElements(process.examples)">
 			<h3>Examples</h3>
-			<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="process.id" :processParameters="parameters" :processUrl="processUrl" />
+			<ProcessExample v-for="(example, key) in process.examples" :key="key" :id="key" :example="example" :processId="id" :processParameters="parameters" :processUrl="processUrl" />
 			<LinkList :links="exampleLinks" heading="Processes" headingTag="h4" />
 		</section>
 
@@ -82,7 +82,7 @@
 			<h3>Processing Instructions</h3>
 			<div class="graph">
 				<slot name="process-graph" :v-bind="$props">
-					<ModelBuilder :id="process.id" :value="process" />
+					<ModelBuilder :id="id" :value="process" />
 				</slot>
 			</div>
 		</section>
@@ -124,6 +124,9 @@ export default {
 		}
 	},
 	computed: {
+		id() {
+			return this.process.id || 'unnamed';
+		},
 		parameters() {
 			if (Array.isArray(this.process.parameters)) {
 				return this.process.parameters;
@@ -164,7 +167,7 @@ export default {
 			let dataStr = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.process, null, 2));
 			let downloadAnchorNode = document.createElement('a');
 			downloadAnchorNode.setAttribute("href", dataStr);
-			downloadAnchorNode.setAttribute("download", this.process.id + ".json");
+			downloadAnchorNode.setAttribute("download", this.id + ".json");
 			document.body.appendChild(downloadAnchorNode);
 			downloadAnchorNode.click();
 			downloadAnchorNode.remove();
