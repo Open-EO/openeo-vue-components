@@ -187,7 +187,7 @@ export default {
             };
         },
         processRegistry() {
-            if (this.processes instanceof ProcessRegistry || (Utils.isObject(this.processes) && this.processes.constructor.name === 'ProcessRegistry')) { // Sometimes instanceof ProcessRegistry doesn't work (thanks webpack?)
+            if (this.processes instanceof ProcessRegistry) {
                 return this.processes;
             }
             else if (Array.isArray(this.processes)) {
