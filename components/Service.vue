@@ -84,7 +84,7 @@
 			<h3>Usage Metrics</h3>
 			<div v-for="(metric, key) in usage" :key="key" class="tabular">
 				<label class="metric">{{ key | usageLabel }}</label>
-				<span class="value">{{ metric.value }} <span class="unit">{{ metric.unit }}</span></span>
+				<span class="value">{{ metric.value | usageValue }} <span class="unit">{{ metric.unit }}</span></span>
 			</div>
 		</section>
 

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Usage metrics numbers are better formatted (decimal and thousands separators).
+
 ### Fixed
 
 - Fix CSS issue in `ModelBuilder`: Result node output was not correctly rendered.

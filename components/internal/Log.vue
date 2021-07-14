@@ -31,7 +31,8 @@
 				Usage metrics:
 				<ul class="usage">
 					<li v-for="(metric, key) in usage" :key="key">
-						<strong class="metric">{{ key | usageLabel }}</strong>: {{ metric.value }} <span class="unit">{{ metric.unit }}</span>
+						<strong class="metric">{{ key | usageLabel }}</strong>:
+						{{ metric.value | usageValue }} <span class="unit">{{ metric.unit }}</span>
 					</li>
 				</ul>
 			</li>

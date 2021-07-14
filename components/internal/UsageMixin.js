@@ -23,6 +23,12 @@ export default {
 			else {
 				return Utils.prettifyString(key);
 			}
+		},
+		usageValue(num) {
+			if (typeof num === 'number') {
+				return num.toLocaleString();
+			}
+			return num;
 		}
 	}
 };
