@@ -101,7 +101,7 @@ export default {
 	box-sizing: border-box;
 	background-color: white;
 
-	> .model-builder {
+	> section > .model-builder {
 		height: 400px;
 	}
 	> section {

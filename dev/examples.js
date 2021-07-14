@@ -17,6 +17,7 @@ let longArray = [...Array(1000).keys()];
 
 let mbSample = require('./examples/model-builder/sample.json');
 let maskScl = require('./examples/model-builder/mask_scl_dilation.json');
+let clip = require('./examples/model-builder/clip.json');
 
 module.exports = {
 	"billing-plans": {
@@ -246,6 +247,10 @@ if (a == b) console.log("Hello World");
 			"id": "mask",
 			"editable": true,
 			"value": maskScl
+		},
+		"clip": {
+			"id": "clip",
+			"value": clip
 		}
 	},
 	"object-tree": {

@@ -6,7 +6,7 @@
                     <i class="fas fa-exclamation-triangle"></i>
                 </span>
                 {{ name }}
-                <span v-if="showId" class="blockId">#{{ id }}</span>
+                <span v-if="showId" class="blockId">{{ id }}</span>
             </span>
             <div class="blockicon" @mousedown.prevent.stop.left="focus()">
                 <span v-show="allowsComment && !hasComment" class="addComment" title="Add comment" @click.stop.prevent="addComment()">
@@ -171,7 +171,7 @@ export default {
             };
         },
         plainTitle() {
-            return this.name + (!this.showId ? '' : ' #' + this.id);
+            return this.name + (!this.showId ? '' : ' ' + this.id);
         },
         name() {
             switch(this.type) {
@@ -185,7 +185,7 @@ export default {
                 case 'parameter':
                     return this.spec.name;
                 default:
-                    return this.id;
+                    return this.id.substr(1);
             }
         },
         outputLabel() {
@@ -339,10 +339,10 @@ export default {
                 value: {}
             };
             if (this.type === 'parameter') {
-                output.value.from_parameter = this.id;
+                output.value.from_parameter = this.id.substr(1);
             }
             else {
-                output.value.from_node = this.id;
+                output.value.from_node = this.id.substr(1);
             }
             return output;
         }
@@ -495,7 +495,7 @@ export default {
                 let value = this.value.arguments[param];
                 if (Utils.isObject(value) && Utils.isObject(value.process_graph)) {
                     let refs = PgUtils.getRefs(value, true, true);
-                    if (refs.find(r => r.from_parameter === parameterBlock.id)) {
+                    if (refs.find(r => r.from_parameter === parameterBlock.id.substr(1))) {
                         return param;
                     }
                 }

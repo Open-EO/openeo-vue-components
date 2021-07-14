@@ -17,7 +17,7 @@
             <rect v-if="selectRect" v-bind="selectRect" />
         </svg>
         <div ref="blocks" class="blocks">
-            <Block v-for="block in blocks" :key="block.type + block.id"
+            <Block v-for="block in blocks" :key="block.id"
                 :id="block.id" :type="block.type" :value="block.value" :spec="block.spec" :state="state" :selected.sync="block.selected"
                 @input="commit()" @parameterRemoved="parameterRemoved"
                 @mounted="mountBlock" @unmounted="unmountBlock"
@@ -128,7 +128,6 @@ export default {
             hasFocus: false,
             linkingLine: null,
             parameterViewer: null,
-            fixSize: false,
             
             // State specific to this blocks instance including all children
             state: getDefaultState(this)
@@ -140,9 +139,6 @@ export default {
                 'vue-component',
                 'model-builder'
             ];
-            if (this.fixSize) {
-                classes.push('fix-size');
-            }
             if (this.hasFocus) {
                 classes.push('focus');
             }
@@ -273,15 +269,6 @@ export default {
         }
     },
     async mounted() {
-        // If the parent element doesn't have a height (or width) assigned, the
-        // model builder will not show up as it has a width and height of 100% assigned.
-        // So we fall back to 400px here so that users at least see something.
-        let size = this.$el.getBoundingClientRect();
-        if (!size.width || !size.height) {
-            console.warn(`Model builder has a width or height of 0, please set a size for the parent element in CSS. Enforcing a minimum size.`);
-            this.fixSize = true;
-        }
-
         Utils.loadFontAwesome(this);
 
         // Setting up default viewer center
@@ -646,8 +633,9 @@ export default {
         },
 
         addBlock(node, id = null) {
+            id = '#' + String(this.incrementId(id));
             var block = {
-                id: String(this.incrementId(id)),
+                id,
                 type: 'process',
                 selected: false,
                 value: typeof node.toJSON === 'function' ? node.toJSON() : node
@@ -761,7 +749,7 @@ export default {
                     return (param !== null);
                 });
                 if (conflictBlock) {
-                    throw new Error(`Parameter is still used in '#${conflictBlock.id}', parameter '${param}'. Only unused parameters can be deleted.`);
+                    throw new Error(`Parameter is still used in '${conflictBlock.id}', parameter '${param}'. Only unused parameters can be deleted.`);
                 }
             }
 
@@ -957,7 +945,8 @@ export default {
                 if (copy.result !== true) {
                     delete copy.result;
                 }
-                nodes[block.id] = copy;
+                let nodeId = block.id.substr(1);
+                nodes[nodeId] = copy;
             }
 
             // ToDo: Currently, we just use the id, parameters etc from the original process
@@ -1058,8 +1047,9 @@ export default {
         },
 
         addPgParameter(param, origin = 'user', position = null) {
+            let id = '$' + param.name;
             // Check a parameter with the same name exists
-            if (this.blocks.findIndex(p => p.type === 'parameter' && p.id == param.name) >= 0) {
+            if (this.blocks.findIndex(p => p.type === 'parameter' && p.id == id) >= 0) {
                 return;
             }
             param = Utils.deepClone(param);
@@ -1068,7 +1058,7 @@ export default {
             }
             param.origin = origin;
             this.blocks.push(Vue.observable({
-                id: param.name,
+                id,
                 type: 'parameter',
                 value: {
                     from_parameter: param.name,
@@ -1090,10 +1080,10 @@ export default {
                     var val = node.getRawArgument(args[i]);
                     switch(node.getArgumentType(args[i])) {
                         case 'result':
-                            await this.addEdgeByNames(pg.getNode(val.from_node).id, "output", node.id, args[i], false);
+                            await this.addEdgeByNames('#' + pg.getNode(val.from_node).id, "output", '#' + node.id, args[i], false);
                             break;
                         case 'parameter':
-                            await this.addEdgeByNames(val.from_parameter, "output", node.id, args[i], false);
+                            await this.addEdgeByNames('$' + val.from_parameter, "output", '#' + node.id, args[i], false);
                             break;
                         case 'object':
                         case 'array':
@@ -1114,10 +1104,10 @@ export default {
                     continue;
                 }
                 else if (val.from_node) {
-                    await this.addEdgeByNames(pg.getNode(val.from_node).id, "output", node.id, args[i], false);
+                    await this.addEdgeByNames('#' + pg.getNode(val.from_node).id, "output", '#' + node.id, args[i], false);
                 }
                 else if (val.from_parameter) {
-                    await this.addEdgeByNames(val.from_parameter, "output", node.id, args[i], false);
+                    await this.addEdgeByNames('$' + val.from_parameter, "output", '#' + node.id, args[i], false);
                 }
             }
         },
@@ -1233,11 +1223,6 @@ class BlocksProcess {
 	width: 100%;
 	height: 100%;
 	position: relative;
-
-    &.fix-size {
-        min-width: 400px;
-        min-height: 400px;
-    }
 
     &.editable.focus .blocks {
         border-color: rgba(22, 102, 182, 0.3);
