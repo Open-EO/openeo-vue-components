@@ -176,7 +176,7 @@ export default {
 			cursor: pointer;
 		}
 	}
-	.expanded {
+	&.expanded {
 		summary {
 			.log-message {
 				white-space: normal;

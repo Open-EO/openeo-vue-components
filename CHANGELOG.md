@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix CSS issue in `ModelBuilder`: Result node output was not correctly rendered.
 - Fix CSS issue in `Tabs`: Boxed Tabs were somtimes a bit too small or large.
+- Fix CSS issue in `Logs`: Expand/Collapse arrow changes again based on state.
 - `Process`: Fallback to `unnamed` if no process id is present (to avoid issues with the `ModelBuilder` for example).
 
 ## [2.3.1] - 2020-07-09
