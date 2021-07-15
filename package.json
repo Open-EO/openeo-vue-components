@@ -45,6 +45,8 @@
     "intersects": "^2.7.2",
     "leaflet": "^1.6.0",
     "leaflet.antimeridian": "^1.0.0",
+    "sass": "^1.35.2",
+    "sass-loader": "^10.2.0",
     "vue": "^2.6.0",
     "vue-multiselect": "^2.1.6"
   },
@@ -52,8 +54,6 @@
     "@vue/cli-plugin-babel": "~4.4.6",
     "@vue/cli-service": "~4.4.6",
     "http-server": "^0.12.3",
-    "sass": "^1.35.2",
-    "sass-loader": "^10.2.0",
     "vue-template-compiler": "^2.6.0"
   },
   "browserslist": [

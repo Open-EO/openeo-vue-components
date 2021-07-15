@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `ModelBuilder`: Fix issue that prevented deleting certain blocks
+- SCSS dependencies are now installed as normal dependencies instead of devDependencies
+
 ## [2.3.2] - 2020-07-14
 
 ### Changed
@@ -40,7 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Logs`: Don't allow passing `null` (to show a loading state) any longer, which was an undocumented left-over from the Web Editor.
 - `Process`: Use `ModelBuilder` instead of `ObjectTree` to visualize the processing instructions.
 - `Tab` / `Tabs`: Load FontAwesome automatically if not available (Vue environments only).
-- CSS styles are processed with SCSS and thus `base.scss` has been renamed to `base.scss`
+- CSS styles are processed with SCSS and thus `base.css` has been renamed to `base.scss`
 - `SearchableList`: `detailsToggled` is not emitted to parent any longer, the parent components do this now directly.
 
 ### Fixed

@@ -745,7 +745,7 @@ export default {
             if (block.type === 'parameter') {
                 let param = null;
                 let conflictBlock = this.blocks.find(otherBlock => {
-                    param = otherBlock.hiddenParameterRef(block);
+                    param = otherBlock.$el.hiddenParameterRef(block);
                     return (param !== null);
                 });
                 if (conflictBlock) {
