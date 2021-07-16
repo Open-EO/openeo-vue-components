@@ -474,9 +474,8 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 	- `id` (string): ID of a process to show
 - `showCollection(id)`: Providing this event will enable a button on each collection so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the collection details to the user.
 	- `id` (string): ID of a collection to show
-- `showSchema(name, schema)`: Providing this event will enable a button on each Parameter so that user can click it to get more details about the (JSON) schema for it. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
-	- `name` (string): Name of the parameter
-	- `schema` (object|array): JSON Schema of the parameter (or an array of schemas)
+- `showParameter(parameter)`: Providing this event will enable a button on each Parameter so that user can click it to get more details about the parameter and its schema. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
+	- `parameter` (object): A process parameter compliant to the openEO API.
 - `editParameters(parameters, values, title, isEditable, selectParameterName , saveCallback, parentBlock)`: Providing this event will enable a button on each block so that user can click it to get more details about the parameters and corresponding values. This event is fired when the user has clicked the button. The UI can then show the parameter viewer or editor to the user.
 	- `parameters` (array\<ProcessParameter>): An array with the details about the parameters, see [`ProcessParameter`](https://open-eo.github.io/openeo-js-commons/1.3.0/ProcessParameter.html) for details.
 	- `values` (object): An object with values for the parameters. The keys are the parameter names (`parameters.name`) and the objects are the values for the corresponding parameter.

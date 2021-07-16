@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `ModelBuilder`: Event `showSchema` was renamed to `showParameter` with a new set of parameters.
+
 ## [2.3.3] - 2020-07-15
 
 ### Fixed

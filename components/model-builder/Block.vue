@@ -274,7 +274,7 @@ export default {
                 return this.$parent.supports('showCollection');
             }
             else if (this.type === 'parameter') {
-                return Utils.isObject(this.spec) && this.$parent.supports('showSchema');
+                return Utils.isObject(this.spec) && this.$parent.supports('showParameter');
             }
             else {
                 return this.$parent.supports('showProcess');
@@ -403,7 +403,7 @@ export default {
                 this.$parent.$emit('showCollection', this.collectionId);
             }
             else if (this.type === 'parameter') {
-                this.$parent.$emit('showSchema', this.name, this.spec.schema);
+                this.$parent.$emit('showParameter', this.spec);
             }
             else {
                 this.$parent.$emit('showProcess', this.processId);
