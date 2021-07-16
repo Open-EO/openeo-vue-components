@@ -64,8 +64,8 @@
 					</tr>
 				</template>
 				<template v-if="!Array.isArray(this.schema)">
-					<tr v-for="(val, key) in schema" :key="key">
-						<template v-if="showRow(key)">
+					<template v-for="(val, key) in schema">
+						<tr :key="key" v-if="typeof val !== 'undefined' && showRow(key)">
 							<td class="key">{{ formatKey(key) }}:</td>
 							<td class="value">
 								<span v-if="key == 'type'" class="data-type">{{ formatType() }}</span>
@@ -88,8 +88,8 @@
 								<openeo-json-schema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								<span v-else>{{ val }}</span>
 							</td>
-						</template>
-					</tr>
+						</tr>
+					</template>
 				</template>
 			</table>
 		</template>
