@@ -30,6 +30,10 @@ export default {
             type: Boolean,
             default: false
         },
+        issues: {
+            type: Array,
+            default: () => {[]}
+        },
         lineWidth: {
             type: Number,
             default: 3
@@ -104,6 +108,12 @@ export default {
     created() {
         this.updatePositions();
     },
+    mounted() {
+        this.$emit('mounted', this);
+    },
+    beforeDestroy() {
+        this.$emit('unmounted', this);
+    },
     methods: {
         updatePositions() {
             let pos1 = this.parameter1.getCirclePosition();
@@ -116,8 +126,15 @@ export default {
         },
         getLineStyle(lineWidth, selected = false, dashed = false) {
             let dashLength = 2 * this.state.scale;
+            let color = [255, 200, 0, 1];
+            if (selected) {
+                color = [0, 200, 0, 1];
+            }
+            else if (this.issues.length > 0) {
+                color = [255, 0, 0, 1];
+            }
             return {
-                'stroke': selected ? 'rgba(0, 200, 0, 1)' : 'rgba(255, 200, 0, 1)',
+                'stroke': `rgba(${color.join(', ')})`,
                 'stroke-width': lineWidth,
                 'stroke-dasharray': dashed ? dashLength * 3 + ' ' + dashLength * 2 : 'none'
             }

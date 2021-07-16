@@ -8,19 +8,18 @@
         @blur="hasFocus = false">
         <!-- tabindex is to allow focus for delete keystroke etc -->
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="canvas">
-            <Edge v-for="edge in edges" ref="edges" :key="edge.id"
-                v-bind="edge" :state="state"
-                :parameter1="edge.parameter1"
-                :parameter2="edge.parameter2"
+            <Edge v-for="edge in edges" :key="edge.id"
+                :id="edge.id" :parameter1="edge.parameter1" :parameter2="edge.parameter2" :selected="edge.selected" :inactive="edge.inactive" :issues="edge.issues" :state="state"
+                @mounted="node => edge.$el = node" @unmounted="() => edge.$el = null"
                 @position="edge.position1 = arguments[0]; edge.position2 = arguments[1]" />
             <line v-if="linkingLine" v-bind="linkingLine" />
             <rect v-if="selectRect" v-bind="selectRect" />
         </svg>
-        <div ref="blocks" class="blocks">
+        <div class="blocks">
             <Block v-for="block in blocks" :key="block.id"
                 :id="block.id" :type="block.type" :value="block.value" :spec="block.spec" :state="state" :selected.sync="block.selected"
                 @input="commit()" @parameterRemoved="parameterRemoved"
-                @mounted="mountBlock" @unmounted="unmountBlock"
+                @mounted="node => block.$el = node" @unmounted="() => block.$el = null"
                 @move="startDragBlock" @moved="refreshEdges" />
         </div>
         <div class="scaleInfo">Zoom in for more details</div>
@@ -290,12 +289,6 @@ export default {
         document.removeEventListener('mouseup', this.onDocumentMouseUpFn);
     },
     methods: {
-        mountBlock(node) {
-            this.setBlockElement(node, node);
-        },
-        unmountBlock(node) {
-            this.setBlockElement(node, null);
-        },
         parameterRemoved(block, parameterName) {
             for(let edge of this.edges) {
                 if(edge.parameter2.$parent === block && edge.parameter2.name === parameterName) {
@@ -303,24 +296,18 @@ export default {
                 }
             }
         },
-        setBlockElement(node, setTo) {
-            for(var block of this.blocks) {
-                if (block.id === node.id) {
-                    block.$el = setTo;
-                    return;
-                }
-            }
-        },
         startDragBlock(event) {
-            for(let i in this.blocks) {
-                if (this.blocks[i].$el) {
-                    this.blocks[i].$el.startDrag(event);
+            for(let block of this.blocks) {
+                if (block.$el) {
+                    block.$el.startDrag(event);
                 }
             }
         },
         refreshEdges() {
-            for(let i in this.$refs.edges) {
-                this.$refs.edges[i].updatePositions();
+            for(let edge of this.edges) {
+                if (edge.$el) {
+                    edge.$el.updatePositions();
+                }
             }
         },
         supports(event) {
@@ -490,9 +477,11 @@ export default {
                 }
 
                 // Select edges
-                for (var k in this.$refs.edges) {
-                    var edge = this.$refs.edges[k];
-                    var collide = edge.collide(mousePos[0], mousePos[1]);
+                for (var edge of this.edges) {
+                    if (!edge.$el) {
+                        continue;
+                    }
+                    var collide = edge.$el.collide(mousePos[0], mousePos[1]);
                     if (collide != false) {
                         if (this.selectedEdges.length === 0 && !event.shiftKey) {
                             if (collide < 0.3) {
@@ -502,7 +491,12 @@ export default {
                                 sideSelected = edge.parameter1;
                             }
                         }
-                        this.selectEdge(k, true, sideSelected);
+                        this.selectEdge(edge, true, sideSelected);
+                        if (edge.issues.length > 0) {
+                            for(let issue of edge.issues) {
+                                this.$emit('error', issue);
+                            }
+                        }
                         event.preventDefault();
                         break;
                     }
@@ -712,8 +706,8 @@ export default {
             for(var block of this.blocks) {
                 this.$set(block, "selected", false);
             }
-            for(var i in this.edges) {
-                this.selectEdge(i, false);
+            for(var edge of this.edges) {
+                this.selectEdge(edge, false);
             }
         },
 
@@ -842,7 +836,7 @@ export default {
             }
 
             var id = this.nextEdgeId++;
-            var edge = {id, selected: false, inactive: false};
+            var edge = {id, selected: false, inactive: false, issues: [], $el: null};
             if (p1.output) {
                 edge.parameter1 = p1;
                 edge.parameter2 = p2;
@@ -861,20 +855,23 @@ export default {
             if (this.allSuccessors(edge.parameter1).indexOf(edge.parameter2.id) !== -1) {
                 throw 'You can not create a loop';
             }
-            // Check type compatibility
-            if (!JsonSchemaValidator.isSchemaCompatible(edge.parameter2.schema || {}, edge.parameter1.schema || {}, false, true)) {
-                throw 'Incoming data type is not compatible for parameter "' + edge.parameter2.name + '"';
-            }
             // Check whether the data type allows multiple input edges
             if (edge.parameter2.getEdgeCount() > 0 && !edge.parameter2.allowsMultipleInputs) {
                 throw 'Parameter accepts only one input';
             }
 
             // Check whether the edge exists
-            for (var k in this.$refs.edges) {
-                if (this.$refs.edges[k].equals(edge)) {
+            for (var other of this.edges) {
+                if (other.$el && other.$el.equals(edge)) {
                     throw 'This connection exists already';
                 }
+            }
+
+            // Check type compatibility
+            if (!JsonSchemaValidator.isSchemaCompatible(edge.parameter2.schema || {}, edge.parameter1.schema || {}, false, true)) {
+                let issue = 'Incoming data type is not compatible for parameter "' + edge.parameter2.name + '"';
+                edge.issues.push(issue);
+                this.$emit('error', issue);
             }
 
             return await this.startTransaction(async () => {
@@ -1171,8 +1168,7 @@ export default {
             var xMin = null, xMax = null;
             var yMin = null, yMax = null;
 
-            for (let k in this.blocks) {
-                let block = this.blocks[k];
+            for (let block of this.blocks) {
                 let size = this.getBlockSize(block);
                 let pos = Utils.ensurePoint(block.value.position);
                 if (xMin == null) {

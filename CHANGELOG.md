@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- `ModelBuilder`: Event `showSchema` was renamed to `showParameter` with a new set of parameters.
+- `ModelBuilder`:
+  - Event `showSchema` was renamed to `showParameter` with a new set of parameters.
+  - Edges from incompatible inputs/outputs are created in red with an error message instead of completely rejecting the edge. Thus, the import is also not interrupted for such issues.
 
 ### Fixed
 

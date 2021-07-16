@@ -134,10 +134,12 @@ export default {
                 classes.push('io_active');
             }
 
-            var edges = this.edges;
-            for (var n in edges) {
-                if (edges[n].selected) {
+            for (var edge of this.edges) {
+                if (edge.selected) {
                     classes.push('io_selected');
+                }
+                else if (edge.issues.length > 0) {
+                    classes.push('io_issues');
                 }
             }
 
@@ -540,6 +542,9 @@ export default {
             }
             &.io_selected {
                 background-color: #00C800 !important;
+            }
+            &.io_issues {
+                background-color: #FF0000;
             }
         }
     }
