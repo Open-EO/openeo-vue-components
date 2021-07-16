@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.4] - 2020-07-16
+
 ### Changed
 
 - `ModelBuilder`:
@@ -350,7 +352,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.3...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.4...HEAD
+[2.3.4]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.3...v2.3.4
 [2.3.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.2...v2.3.3
 [2.3.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.1...v2.3.2
 [2.3.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.0...v2.3.1
