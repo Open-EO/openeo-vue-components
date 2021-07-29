@@ -151,8 +151,11 @@ export default {
         displayValue() {
             var maxLength = 38 - this.displayLabel.length;
             var formattedValue = null;
-            if (this.isEditable && !this.state.compactMode && !Utils.isRef(this.value) && typeof this.value !== 'undefined') {
-                formattedValue = this.formatValue(this.value, maxLength, true);
+            if (this.isEditable && !this.state.compactMode && !Utils.isRef(this.value)) {
+                let value = typeof this.value !== 'undefined' ? this.value : this.default;
+                if (typeof value !== 'undefined') {
+                    formattedValue = this.formatValue(value, maxLength, true);
+                }
             }
 
             if (typeof formattedValue === 'string') {
