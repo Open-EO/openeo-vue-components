@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `SearchableList`:
+  - New prop `keywordsTag`: Support to search in a list of keywords additionally
+  - New prop `showKeywords`: Option to show keywords below the summary (already in the collapsed view)
+- `Collections`:
+  - Searches in keywords, too
+  - New prop `showKeywords`: Option to show keywords below the summary (already in the collapsed view)
+- `Processes`:
+  - Searches in categories, too
+  - New prop `showCategories`: Option to show categories below the summary (already in the collapsed view)
+- `FileFormats`:
+  - Searches in `gis_raster_type`, too
+
 ### Changed
 
 - `Collection`:
@@ -15,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Shows "Worldwide" instead of a map if the spatial extent covers the whole Earth
 - `Collection` / `Item`: Changed default height from 300 to 250px
 - `ModelBuilder`: Show default values for parameters
+- `Process`: Changed place of categories and "Download JSON" with summary
 
 ### Fixed
 

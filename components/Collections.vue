@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component collections">
-		<SearchableList :data="collections" identifierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled">
+		<SearchableList :data="collections" identifierKey="id" summaryKey="title" keywordsKey="keywords" :showKeywords="showKeywords"  :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
@@ -57,6 +57,10 @@ export default {
 		loadAdditionalData: {
 			type: Function,
 			default: null
+		},
+		showKeywords: {
+			type: Boolean,
+			default: false
 		}
 	},
 	beforeCreate() {

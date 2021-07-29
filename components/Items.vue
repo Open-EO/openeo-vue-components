@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component items">
-		<SearchableList :data="data" identifierKey="id" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @summaries="updateFeatures" @detailsToggled="detailsToggled" ref="list">
+		<SearchableList :data="data" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @summaries="updateFeatures" @detailsToggled="detailsToggled" ref="list">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #after-search-box>
 				<slot v-if="showMap" name="map" :geojson="geojson" :mapOptions="mapOptions">

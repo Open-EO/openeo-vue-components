@@ -180,6 +180,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `showKeywords` / `show-keywords` (boolean): Adds the keywords to the third line of the summary if set to `true`. Defaults to `false`.
 
 **Slots:**
 
@@ -526,6 +527,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Processes`.
 - `showGraph` / `show-graph` (boolean): See the corresponding prop in [`Process`](#process).
+- `showCategories` / `show-categories` (boolean): Adds the categories to the third line of the summary if set to `true`. Defaults to `false`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 
 **Slots:**
@@ -550,6 +552,8 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `data` (array\<object>|object, required): The data to show in the list. Usually an array, but if an object is given the key of the elements is used as the default identifier. Each value of the array or object must be an object.
 - `identifierKey` / `identifier-key` (string|null): The key in the object to use as identifiers (first line of the list). If not `null`, overrides the default identifier set from object keys. Defaults to `id`.
 - `summaryKey` / `summary-key` (string|null): The key in the object to use as summary (second line of the list). If set to `null`, no summary is shown. Defaults to `summary`.
+- `keywordsKey` / `keywords-key` (string|null): The key in the object to use as a list of keywords to display (third line of the list if `showKeywords` is set to `true`) and search through. Set to `null` to not consider keywords. Defaults to `null`.
+- `showKeywords` / `show-keywords` (boolean): Adds the keywords referenced in `keywordsKey` to the third line of the list if set to `true`. Defaults to `false`.
 - `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Setting to the empty string `""` effectively disables searching. Defaults to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
 - `searchPlaceholder` / `search-placeholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
 - `sort` (boolean): Sort the data by identifier. Defaults to `true`.

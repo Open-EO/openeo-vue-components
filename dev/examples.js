@@ -48,9 +48,10 @@ module.exports = {
 			"collections": collections,
 			"collapsed": true
 		},
-		"expanded-but-collapsible": {
+		"expanded-but-collapsible-with-keywords": {
 			"collections": collections,
-			"collapsed": false
+			"collapsed": false,
+			"show-keywords": true
 		}
 	},
 	"data-table": {
@@ -290,6 +291,10 @@ if (a == b) console.log("Hello World");
 	"processes": {
 		"gee": {
 			"processes": processes
+		},
+		"gee-with-categories": {
+			"processes": processes,
+			"show-categories": true
 		}
 	},
 	// ToDo: SearchableList - see other implementing components for examples, e.g. Collections or Processes

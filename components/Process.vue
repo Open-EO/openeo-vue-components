@@ -6,17 +6,6 @@
 			<h2>{{ process.id }}</h2>
 		</slot>
 
-		<template v-if="provideDownload || hasElements(process.categories)">
-			<div class="process-bar">
-				<ul class="badges categories" v-if="hasElements(process.categories)">
-					<li class="badge category" v-for="value in process.categories" :key="value" v-text="formatCategory(value)"></li>
-				</ul>
-				<ul class="badges actions" v-if="provideDownload">
-					<li class="badge action download"><a class="badge-fill" @click="download">Download JSON</a></li>
-				</ul>
-			</div>
-		</template>
-
 		<template v-if="process.summary || process.deprecated || process.experimental">
 			<summary>
 				{{ process.summary }}
@@ -26,6 +15,17 @@
 					<strong class="experimental" v-if="process.experimental">experimental</strong>
 				</template>
 			</summary>
+		</template>
+
+		<template v-if="provideDownload || hasElements(process.categories)">
+			<div class="process-bar">
+				<ul class="badges categories" v-if="hasElements(process.categories)">
+					<li class="badge category" v-for="value in process.categories" :key="value" v-text="formatCategory(value)"></li>
+				</ul>
+				<ul class="badges actions" v-if="provideDownload">
+					<li class="badge action download"><a class="badge-fill" @click="download">Download JSON</a></li>
+				</ul>
+			</div>
 		</template>
 
 		<slot name="before-description" :v-bind="$props"></slot>
@@ -185,13 +185,12 @@ export default {
 		align-items: baseline;
 	}
 	.badges {
-		margin-bottom: 0.75em;
+		margin-top: 0.75em;
 	}
 	.categories {
-		flex: 3;
+		flex: 1;
 	}
 	.actions {
-		flex: 1;
 		text-align: right;
 		.action {
 			background-color: chocolate;

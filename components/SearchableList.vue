@@ -21,6 +21,9 @@
 							<slot name="summary" :summary="summary" :item="summary.data">
 								<strong>{{ summary.identifier }}</strong>
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
+								<ul v-if="showKeywords && summary.keywords.length > 0" class="badges small hideOnExpand">
+									<li v-for="keyword in summary.keywords" :key="keyword" class="badge">{{ keyword }}</li>
+								</ul>
 							</slot>
 						</summary>
 						<div class="details" v-if="typeof showDetails[i] === 'boolean'" v-show="showDetails[i] === true">
@@ -59,6 +62,14 @@ export default {
 		summaryKey: {
 			type: String,
 			default: 'summary'
+		},
+		keywordsKey: {
+			type: String,
+			default: null
+		},
+		showKeywords: {
+			type: Boolean,
+			default: false
 		},
 		externalSearchTerm: {
 			type: String,
@@ -145,7 +156,11 @@ export default {
 			handler(value) {
 				if (value.length >= this.searchMinLength) {
 					this.summaries.forEach(item => {
-						let searchable = (item.identifier + ' ' + item.summary).toLowerCase();
+						let searchable = [item.identifier, item.summary]
+							.concat(item.keywords)
+							.filter(s => typeof s === 'string')
+							.join(' ')
+							.toLowerCase();
 						let result = searchable.includes(this.searchTerm.toLowerCase());
 						this.$set(item, 'show', result);
 					});
@@ -194,11 +209,17 @@ export default {
 					data: entry
 				};
 
-				if (typeof entry[this.identifierKey] === 'string') {
+				if (typeof this.identifierKey === 'string' && typeof entry[this.identifierKey] === 'string') {
 					summary.identifier = entry[this.identifierKey];
 				}
-				if (typeof entry[this.summaryKey] === 'string') {
+				if (typeof this.summaryKey === 'string' && typeof entry[this.summaryKey] === 'string') {
 					summary.summary = entry[this.summaryKey];
+				}
+				if (typeof this.keywordsKey === 'string' && Array.isArray(entry[this.keywordsKey])) {
+					summary.keywords = entry[this.keywordsKey];
+				}
+				else {
+					summary.keywords = [];
 				}
 
 				summaries.push(Vue.observable(summary));
@@ -306,6 +327,9 @@ export default {
 					margin-left: -1em;
 					float: left;
 					font-size: 1em;
+				}
+				.badges {
+					display: block;
 				}
 			}
 		}
