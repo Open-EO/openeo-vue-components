@@ -8,6 +8,12 @@
 
 		<summary v-if="data.title">{{ data.title }}</summary>
 
+		<section class="keywords" v-if="hasElements(data.keywords)">
+			<ul class="badges">
+				<li class="badge" v-for="keyword in data.keywords" :key="keyword">{{ keyword }}</li>
+			</ul>
+		</section>
+
 		<slot name="before-description" v-bind="$props"></slot>
 
 		<section class="description" v-if="data.description">
@@ -16,13 +22,6 @@
 			<Description :description="data.description"></Description>
 
 			<DeprecationNotice v-if="data.deprecated" entity="collection" />
-
-			<div v-if="hasElements(data.keywords)">
-				<strong>Keywords:</strong>&nbsp;
-				<ul class="comma-separated-list">
-					<li v-for="keyword in data.keywords" :key="keyword">{{ keyword }}</li>
-				</ul>
-			</div>
 		</section>
 
 		<section class="license">
@@ -41,16 +40,7 @@
 		</section>
 
 		<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
-			<template v-if="temporalIntervals.length">
-				<h3>Temporal Extent</h3>
-				<slot name="temporal-extents" :extents="temporalIntervals">
-					<ul v-for="(interval, i) in temporalIntervals" :key="i">
-						<li v-html="stac.formatTemporalExtent(interval)" />
-					</ul>
-				</slot>
-			</template>
-		
-			<template v-if="boundingBoxes.length">
+			<div v-if="boundingBoxes.length">
 				<h3>Spatial Extent</h3>
 				<slot name="spatial-extents" :extents="boundingBoxes" :mapOptions="mapOptions">
 					<div class="map" ref="mapContainer">
@@ -61,7 +51,19 @@
 						</template>
 					</div>
 				</slot>
-			</template>
+			</div>
+
+			<div v-if="temporalIntervals.length">
+				<h3>Temporal Extent</h3>
+				<slot name="temporal-extents" :extents="temporalIntervals.length > 0">
+					<template v-if="temporalIntervals.length > 1">
+						<ul v-for="(interval, i) in temporalIntervals" :key="i">
+							<li v-if="i !== 0" v-html="stac.formatTemporalExtent(interval)" />
+						</ul>
+					</template>
+					<span v-else v-html="stac.formatTemporalExtent(temporalIntervals[0])" />
+				</slot>
+			</div>
 		</section>
 
 		<section class="providers" v-if="data.providers">
@@ -71,9 +73,9 @@
 					<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
 					<template v-else>{{ provider.name }}</template>
 					<template v-if="hasElements(provider.roles)">
-						(<ul class="comma-separated-list">
-							<li v-for="role in provider.roles" :key="role" class="provider-role">{{ role }}</li>
-						</ul>)
+						<ul class="badges small inline">
+							<li v-for="role in provider.roles" :key="role" class="badge provider-role">{{ role }}</li>
+						</ul>
 					</template>
 					<Description v-if="provider.description" :description="provider.description" :compact="true" />
 				</li>
@@ -87,7 +89,7 @@
 					<h4>
 						<a v-if="dim.type === 'bands'" @click="scrollToBands" class="name" href="#summary_eo:bands">{{ name }}</a>
 						<span v-else class="name">{{ name }}</span>
-						<ul class="type badges small"><li class="badge">{{ dim.type }}</li></ul>
+						<ul class="type badges small inline"><li class="badge">{{ dim.type }}</li></ul>
 					</h4>
 					<Description v-if="dim.description" :description="dim.description" />
 					<div class="tabular" v-if="dim.axis">
@@ -100,12 +102,12 @@
 							<span v-if="dim.type === 'temporal'" v-html="stac.formatTemporalExtent(dim.extent)" />
 							<span v-else v-html="stac.formatExtent(dim.extent)" />
 						</div>
-						<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value">
+						<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value comma-separated-list">
 							<li v-for="value in dim.values" :key="value">{{ value }}</li>
 						</ul>
 						<div v-else class="value"><i>n/a</i></div>
 					</div>
-					<div class="tabular" v-if="typeof dim.step !== 'undefined'">
+					<div class="tabular" v-if="(typeof dim.step !== 'undefined')">
 						<label>Steps:</label>
 						<div class="value">
 							<template v-if="dim.step === null">irregularly spaced</template>
@@ -113,12 +115,12 @@
 							<template v-else>{{ dim.step }}</template>
 						</div>
 					</div>
-					<div class="tabular" v-if="typeof dim.reference_system !== 'undefined'">
+					<div class="tabular" v-if="(typeof dim.reference_system !== 'undefined')">
 						<label>Reference System:</label>
 						<div class="value">
-							<div class="epsg" v-if="typeof dim.reference_system === 'number'" v-html="stac.formatEPSG(dim.reference_system)" />
-							<div class="wkt2" v-else-if="typeof dim.reference_system === 'string'" v-html="stac.formatWKT2(dim.reference_system)" />
-							<ObjectTree v-else-if="typeof dim.reference_system === 'object'" :data="dim.reference_system" />
+							<div class="epsg" v-if="(typeof dim.reference_system === 'number')" v-html="stac.formatEPSG(dim.reference_system)" />
+							<div class="wkt2" v-else-if="(typeof dim.reference_system === 'string')" v-html="stac.formatWKT2(dim.reference_system)" />
+							<ObjectTree class="projjson" v-else-if="(typeof dim.reference_system === 'object')" :data="dim.reference_system" />
 							<template v-else>{{ dim.reference_system }}</template>
 						</div>
 					</div>
@@ -168,7 +170,7 @@ export default {
 		temporalIntervals() {
 			let e = this.data.extent;
 			if (Utils.isObject(e) && Utils.isObject(e.temporal) && Utils.size(e.temporal.interval) > 0) {
-				return e.temporal.interval.filter(interval => Array.isArray(interval) && interval.length >= 2);
+				return e.temporal.interval.filter(interval => Array.isArray(interval) && interval.length >= 2 && interval.filter(i => typeof i === 'string').length > 0);
 			}
 			return [];
 		},
@@ -198,7 +200,8 @@ export default {
 				console.warn(`Leaflet Antimeridian plugin is not available: ${error.message}`);
 			}
 			let features = L.featureGroup();
-			for(let bbox of this.boundingBoxes) {
+			let bboxes = this.boundingBoxes.length > 1 ? this.boundingBoxes.slice(1) : this.boundingBoxes;
+			for(let bbox of bboxes) {
 				let p = [[bbox[1], bbox[0]], [bbox[3], bbox[0]], [bbox[3], bbox[2]], [bbox[1], bbox[2]]];
 				let geom;
 				if (L.Wrapped && bbox[2] < bbox[0]) {
@@ -249,18 +252,39 @@ export default {
 @import './base.scss';
 
 .vue-component.collection {
+	.keywords {
+		margin-top: 1em;
+	}
 	.dimension {
 		h4 {
 			margin: 0;
 		}
 		.type {
 			font-weight: normal;
-			font-size: 90%;
-			margin-left: 0.5em;
 		}
 		label {
 			font-weight: normal;
 		}
+	}
+	.extent {
+		display: flex;
+
+		> div {
+			min-width: 49%;
+			height: 100%;
+		}
+
+		> div:nth-child(2) {
+			margin-left: 2%;
+		}
+	}
+	.projjson,
+	.wkt2,
+	td > dl {
+		margin: 0;
+		height: 5em;
+		overflow: auto;
+    	resize: vertical;
 	}
 	.provider-role {
 		text-transform: capitalize;

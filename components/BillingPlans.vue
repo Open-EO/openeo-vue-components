@@ -69,6 +69,10 @@ export default {
 @import './base.scss';
 
 .vue-component.billing-plans {
+	> ul > li {
+		margin-bottom: 0.5em;
+	}
+
 	.plan-name {
 		margin: 0.25em 0;
 		padding: 0.2em 0;

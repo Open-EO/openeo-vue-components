@@ -151,7 +151,7 @@ Visualizes a single collection following the STAC-based collection description.
 
 - `data` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collection_id}`).
 - `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
-  - `height` (string): Height of the map container div. Defaults to `"300px"`.
+  - `height` (string): Height of the map container div. Defaults to `"250px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.
@@ -315,7 +315,7 @@ Visualizes a single STAC Item, e.g. a batch job result.
 
 - `data` (object, required): A single STAC-based Item object as defined by the openEO API (`GET /jobs/{job_id}/results`).
 - `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the item's geometry. Entirely optional. Possible keys:
-  - `height` (string): Height of the map container div. Defaults to `"300px"`.
+  - `height` (string): Height of the map container div. Defaults to `"250px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.

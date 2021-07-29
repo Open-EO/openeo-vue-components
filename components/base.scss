@@ -121,7 +121,7 @@
 	color: #fff;
 	background-color: #6c757d;
 }
-.vue-component .badges .badge:first-of-type {
+.vue-component .badges .badge:first-of-type:not(.inline) {
 	margin-left: 0;
 }
 .vue-component .badges.small .badge {
@@ -130,6 +130,11 @@
 }
 .vue-component .badges.inline {
 	margin-left: 0.5em;
+
+	.badge {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }
 .vue-component .badges .badge a {
 	color: #fff;
@@ -193,8 +198,11 @@
 	flex: 3;
 	overflow: auto;
 }
-.vue-component .tabular .value > ul, .vue-component .tabular ul.value, .vue-component .tabular .value td > div {
-	max-height: 20em;
+.vue-component .tabular .value > ul,
+.vue-component .tabular .value > .formatted > ul,
+.vue-component .tabular ul.value,
+.vue-component .tabular .value td > div {
+	max-height: 15em;
 	overflow: auto;
 }
 .vue-component .tabular .value pre {

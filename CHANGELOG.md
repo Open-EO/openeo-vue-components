@@ -6,9 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `Collection`:
+  - Make the component more compact / consume less space
+  - Move keywords up (before: below collection, now: below summary)
+  - Use Badges instead of comma separated values to better stand out
+- `Collection` / `Item`: Changed default height from 300 to 250px
+
 ### Fixed
 
 - `FileFormats`: File formats get sorted correctly
+- `Collection`: Support multiple extents better
+- Minor improvements to CSS
 
 ## [2.3.4] - 2020-07-16
 

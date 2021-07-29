@@ -43,7 +43,7 @@ export default {
 	computed: {
 		leafletOptions() {
 			return {  // keep in sync with Readme
-				height: this.mapOptions.height || "300px",
+				height: this.mapOptions.height || "250px",
 				width: this.mapOptions.width || "auto",
 				noWrap: this.mapOptions.wrapAroundAntimeridian === undefined ? true : !this.mapOptions.wrapAroundAntimeridian,  // negate!
 				scrollWheelZoom: this.mapOptions.scrollWheelZoom === undefined ? false : this.mapOptions.scrollWheelZoom
