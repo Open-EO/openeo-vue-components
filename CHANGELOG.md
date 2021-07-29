@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Make the component more compact / consume less space
   - Move keywords up (before: below collection, now: below summary)
   - Use Badges instead of comma separated values to better stand out
+  - Shows "Worldwide" instead of a map if the spatial extent covers the whole Earth
 - `Collection` / `Item`: Changed default height from 300 to 250px
 - `ModelBuilder`: Show default values for parameters
 

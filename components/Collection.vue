@@ -43,7 +43,8 @@
 			<div v-if="boundingBoxes.length">
 				<h3>Spatial Extent</h3>
 				<slot name="spatial-extents" :extents="boundingBoxes" :mapOptions="mapOptions">
-					<div class="map" ref="mapContainer">
+					<span v-if="worldwide" class="worldwide"><i class="fas fa-globe"></i> Worldwide</span>
+					<div v-else class="map" ref="mapContainer">
 						<template v-if="!map">
 							<ul v-for="(bbox, i) in boundingBoxes" :key="i">
 								<li>Latitudes: {{ bbox[1] }} / {{ bbox[3] }}, Longitudes: {{ bbox[0] }} / {{ bbox[2] }}</li>
@@ -165,7 +166,7 @@ export default {
 	},
 	computed: {
 		showMap() {
-			return this.boundingBoxes.length !== 0;
+			return this.boundingBoxes.length > 0 && !this.worldwide;
 		},
 		temporalIntervals() {
 			let e = this.data.extent;
@@ -180,6 +181,13 @@ export default {
 				return e.spatial.bbox.filter(bbox => Array.isArray(bbox) && bbox.length >= 4);
 			}
 			return [];
+		},
+		worldwide() {
+			if (this.boundingBoxes.length !== 1) {
+				return false;
+			}
+			let bbox = this.boundingBoxes[0];
+			return (bbox[0] === -180 && bbox[1] === -90 && bbox[2] === 180 && bbox[3] === 90);
 		},
 		hasDimensions() {
 			return Utils.size(this.data['cube:dimensions']) > 0;
@@ -255,29 +263,62 @@ export default {
 	.keywords {
 		margin-top: 1em;
 	}
-	.dimension {
+	.dimensions > ul .dimension {
 		h4 {
 			margin: 0;
+			margin-bottom: 0.5em;
 		}
 		.type {
 			font-weight: normal;
 		}
-		label {
-			font-weight: normal;
+	}
+
+	@media screen and (min-width: 1000px) {
+		.dimensions > ul {
+			display: flex;
+			margin: 0;
+			padding: 0;
+
+			.dimension {
+				list-style-type: none;
+				min-width: 23%;
+
+				margin-left: 1%;
+				border-left: 1px dotted #ccc;
+				padding-left: 1%;
+
+				&:first-of-type {
+					margin-left: 0;
+					border: 0;
+					padding-left: 0;
+				}
+				.tabular {
+					display: flex;
+					flex-direction: column;
+
+					label {
+						margin-top: 0.5em;
+					}
+				}
+			}
+		}
+		.extent {
+			display: flex;
+
+			> div {
+				min-width: 49%;
+				height: 100%;
+				flex-grow: 1;
+			}
+
+			> div:nth-child(2) {
+				margin-left: 1%;
+				border-left: 1px dotted #ccc;
+				padding-left: 1%;
+			}
 		}
 	}
-	.extent {
-		display: flex;
 
-		> div {
-			min-width: 49%;
-			height: 100%;
-		}
-
-		> div:nth-child(2) {
-			margin-left: 2%;
-		}
-	}
 	.projjson,
 	.wkt2,
 	td > dl {
