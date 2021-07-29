@@ -1,0 +1,92 @@
+{
+  "input": {
+    "GeoJSON": {
+      "gis_data_types": [
+        "vector"
+      ],
+      "parameters": {}
+    }
+  },
+  "output": {
+    "CSV": {
+      "gis_data_types": [
+        "raster"
+      ],
+      "parameters": {},
+      "title": "Comma Separated Values"
+    },
+    "CovJSON": {
+      "gis_data_types": [
+        "other"
+      ],
+      "parameters": {},
+      "title": "CoverageJSON"
+    },
+    "GTiff": {
+      "gis_data_types": [
+        "raster"
+      ],
+      "parameters": {
+        "ZLEVEL": {
+          "default": "6",
+          "description": "Specifies the compression level used for DEFLATE compression. As a number from 1 to 9, lowest and fastest compression is 1 while 9 is highest and slowest compression.",
+          "type": "string"
+        },
+        "feature_id_property": {
+          "default": null,
+          "description": "Specifies the name of the feature attribute that is to be used as feature id, by processes that require it. Can be used to link a given output back to an input feature.",
+          "type": "string"
+        },
+        "sample_by_feature": {
+          "default": false,
+          "description": "Set to true to write one output tiff per feature and date. Spatial features can be specified using filter_spatial. This setting is used to sample a data cube at multiple locations in a single job.",
+          "type": "boolean"
+        },
+        "tile_grid": {
+          "default": "none",
+          "description": "Specifies the tile grid to use, for batch jobs only. By default, no tile grid is set, and one Geotiff is generated per date. If a tile grid is set, multiple geotiffs are generated per date, as defined by the specified tiling grid.",
+          "enum": [
+            "wgs84-1degree",
+            "utm-100km",
+            "utm-20km",
+            "utm-10km"
+          ],
+          "type": "string"
+        }
+      },
+      "title": "GeoTiff"
+    },
+    "JSON": {
+      "gis_data_types": [
+        "raster"
+      ],
+      "parameters": {}
+    },
+    "NetCDF": {
+      "gis_data_types": [
+        "other",
+        "raster"
+      ],
+      "parameters": {
+        "feature_id_property": {
+          "default": null,
+          "description": "Specifies the name of the feature attribute that is to be used as feature id, by processes that require it. Can be used to link a given output back to an input feature.",
+          "type": "string"
+        },
+        "sample_by_feature": {
+          "default": false,
+          "description": "Set to true to write one output netCDF per feature, containing all bands and dates. Spatial features can be specified using filter_spatial. This setting is used to sample a data cube at multiple locations in a single job.",
+          "type": "boolean"
+        }
+      },
+      "title": "Network Common Data Form"
+    },
+    "PNG": {
+      "gis_data_types": [
+        "raster"
+      ],
+      "parameters": {},
+      "title": "Portable Network Graphics"
+    }
+  }
+}

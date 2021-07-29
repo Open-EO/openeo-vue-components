@@ -88,7 +88,7 @@ export default {
 			let data = [];
 			for(let type of this.typesToShow) {
 				for(var name in this.formats[type]) {
-					let format = Object.assign({id: `${type}-${name}`, name, type}, this.formats[type][name]);
+					let format = Object.assign({id: `${name}-${type}`, name, type}, this.formats[type][name]);
 					data.push(format);
 				}
 			}

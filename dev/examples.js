@@ -9,7 +9,8 @@ let processes = require('./examples/processes-gee.json');
 let udp = require('./examples/process-array-find-nodata.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
-let fileFormats = require('./examples/file-formats-api.json');
+let fileFormatsApi = require('./examples/file-formats-api.json');
+let fileFormatsVito = require('./examples/file-formats-api.json');
 let serviceTypes = require('./examples/service-types-api.json');
 let service = require('./examples/service.json');
 let reduceApi = require('./examples/reduce-api-new.json');
@@ -142,32 +143,35 @@ if (a == b) console.log("Hello World");
 	"file-format": {
 		"output-gtiff": {
 			"id": "GTIFF",
-			"format": fileFormats.output.GTiff,
+			"format": fileFormatsApi.output.GTiff,
 			"type": "output"
 		},
 		"output-gpkg": {
 			"id": "GPKG",
-			"format": fileFormats.output.GPKG,
+			"format": fileFormatsApi.output.GPKG,
 			"type": "output"
 		},
 		"input-gpkg": {
 			"id": "GPKG",
-			"format": fileFormats.input.GPKG,
+			"format": fileFormatsApi.input.GPKG,
 			"type": "input"
 		}
 	},
 	"file-formats": {
 		"api-all": {
-			"formats": fileFormats
+			"formats": fileFormatsApi
 		},
 		"api-input": {
-			"formats": fileFormats,
+			"formats": fileFormatsApi,
 			"show-output": false
 		},
 		"api-output": {
-			"formats": fileFormats,
+			"formats": fileFormatsApi,
 			"show-input": false
-		}
+		},
+		"vito": {
+			"formats": fileFormatsVito
+		},
 	},
 	"item": {
 		"batch-job": {
