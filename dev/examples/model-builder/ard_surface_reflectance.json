@@ -1,0 +1,109 @@
+{
+    "id": "ard_surface_reflectance",
+    "summary": "CARD4L compliant Surface Reflectance generation",
+    "description": "...",
+    "categories": [
+        "cubes",
+        "sar",
+        "ard"
+    ],
+    "experimental": true,
+    "parameters": [
+        {
+            "description": "The source data cube containing multi-spectral optical top of the atmosphere (TOA) reflectances.",
+            "name": "data",
+            "schema": {
+                "subtype": "raster-cube",
+                "type": "object"
+            }
+        },
+        {
+            "description": "The digital elevation model to use, leave empty to allow the back-end to make a suitable choice.",
+            "name": "elevation_model",
+            "optional": true,
+            "default": null,
+            "schema": [
+                {
+                    "type": "string",
+                    "subtype": "collection-id"
+                },
+                {
+                    "type": "null"
+                }
+            ]
+        },
+        {
+            "description": "The minimum probability required for atmospheric disturbances like clouds for being removed (greater-than-equal).",
+            "name": "threshold",
+            "optional": true,
+            "default": 0.5,
+            "schema": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+            }
+        },
+        {
+            "description": "The name of the band dimension.",
+            "name": "dimension",
+            "optional": true,
+            "default": "bands",
+            "schema": {
+                "type": "string",
+                "subtype": "band-name"
+            }
+        }
+    ],
+    "returns": {
+        "description": "Data cube containing bottom of atmosphere reflectances with atmospheric disturbances like clouds removed. The data returned is CARD4L compliant and contains metadata.",
+        "schema": {
+            "subtype": "raster-cube",
+            "type": "object"
+        }
+    },
+    "links": [
+        {
+            "rel": "about",
+            "href": "http://ceos.org/ard/files/PFS/SR/v5.0/CARD4L_Product_Family_Specification_Surface_Reflectance-v5.0.pdf",
+            "title": "CEOS CARD4L specification"
+        }
+    ],
+    "process_graph": {
+        "merge_cloud_saturation": {
+            "process_id": "reduce_dimension",
+            "arguments": {
+                "data": {
+                    "from_parameter": "data"
+                },
+                "reducer": {
+                    "process_graph": {
+                        "max": {
+                            "process_id": "max",
+                            "arguments": {
+                                "data": {
+                                    "from_parameter": "data"
+                                }
+                            }
+                        },
+                        "gte": {
+                            "process_id": "gte",
+                            "arguments": {
+                                "x": {
+                                    "from_node": "max"
+                                },
+                                "y": {
+                                    "from_parameter": "threshold"
+                                }
+                            },
+                            "result": true
+                        }
+                    }
+                },
+                "dimension": {
+                    "from_parameter": "dimension"
+                }
+            },
+            "result": true
+        }
+    }
+}

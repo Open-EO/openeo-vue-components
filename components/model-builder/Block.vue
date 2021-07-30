@@ -41,6 +41,7 @@ import Utils from '../../utils.js';
 import { ProcessParameter } from '@openeo/js-commons';
 import { Utils as PgUtils } from '@openeo/js-processgraphs';
 import Vue from 'vue';
+import Config from './config.js';
 
 /*
 Events:
@@ -99,12 +100,12 @@ export default {
         value: {
             immediate: true,
             handler(value) {
-                this.data = Vue.observable(value);
+                this.data = Vue.observable(Utils.deepClone(value));
             }
         }
     },
     computed: {
-        // Manage the node object (arguments, description, result, x, y, selected)
+        // Manage the node object (arguments, description, result, position, selected)
         position: {
             set(pos) {
                 pos = Utils.ensurePoint(pos);
@@ -128,7 +129,7 @@ export default {
                     }
                 }
                 this.$set(this.data, 'arguments', value);
-                this.commit();
+                this.commit('arguments', value);
             },
             get() {
                 return Utils.isObject(this.data.arguments) ? this.data.arguments : {};
@@ -137,7 +138,7 @@ export default {
         comment: {
             set(value) {
                 this.$set(this.data, 'description', value);
-                this.commit();
+                this.commit('description', value === '' ? null : value);
             },
             get() {
                 return this.data.description;
@@ -146,7 +147,7 @@ export default {
         result: {
             set(value) {
                 this.$set(this.data, 'result', value);
-                this.commit();
+                this.commit('result', value);
             },
             get() {
                 return this.data.result || false;
@@ -154,12 +155,12 @@ export default {
         },
         // Visualizations
         width() {
-            // ToDo: Sizes also defined in Blocks.getBlockSize() - define only in one place!
+            let size = Config.blockWidth;
             if (this.parameters.length > 0) {
-                return this.state.compactMode ? 110 : 220;
+                return this.state.compactMode ? size.compactParams : size.normalParams;
             }
             else {
-                return this.state.compactMode ? 60 : 110;
+                return this.state.compactMode ? size.compact : size.normal;
             }
         },
         styles() {
@@ -364,8 +365,8 @@ export default {
         this.$emit('unmounted', this);
     },
     methods: {
-        commit() {
-            this.$emit('input', this.data);
+        commit(key, value) {
+            this.$emit('update', key, value, this.id);
         },
         focus() {
             this.$parent.focus();
@@ -380,7 +381,7 @@ export default {
             if (unselectOthers) {
                 this.$parent.unselectAll(null);
             }
-            this.$emit('update:selected', selected);
+            this.commit('selected', selected);
             this.focus();
             await this.$nextTick();
             return selected;
@@ -451,7 +452,7 @@ export default {
 
             var delta = 5 / this.state.scale; // Only store History if block was moved enough
             if (Math.abs(this.drag.origin[0] - this.position[0]) > delta || Math.abs(this.drag.origin[1] - this.position[1]) > delta) {
-                this.commit();
+                this.commit('position', this.position);
             }
             this.drag = null;
         },
@@ -501,7 +502,7 @@ export default {
                 }
             }
             return null;
-        },
+        }
     }
 
 }

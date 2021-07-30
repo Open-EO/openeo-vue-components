@@ -10,10 +10,7 @@ import Segment from './segment.js';
 export default {
     name: 'Edge',
     props: {
-        id: {
-            type: Number, // Should be Integer?!
-            required: true
-        },
+        id: {},
         parameter1: {
             type: Object,
             required: true
@@ -32,11 +29,15 @@ export default {
         },
         issues: {
             type: Array,
-            default: () => {[]}
+            default: () => ([])
         },
         lineWidth: {
             type: Number,
             default: 3
+        },
+        lineColor: {
+            type: Array,
+            default: () => ([255, 200, 0, 1])
         },
         state: {
             type: Object,
@@ -126,7 +127,7 @@ export default {
         },
         getLineStyle(lineWidth, selected = false, dashed = false) {
             let dashLength = 2 * this.state.scale;
-            let color = [255, 200, 0, 1];
+            let color = this.lineColor;
             if (selected) {
                 color = [0, 200, 0, 1];
             }

@@ -19,6 +19,7 @@ let longArray = [...Array(1000).keys()];
 let mbSample = require('./examples/model-builder/sample.json');
 let maskScl = require('./examples/model-builder/mask_scl_dilation.json');
 let clip = require('./examples/model-builder/clip.json');
+let ardSR = require('./examples/model-builder/ard_surface_reflectance.json');
 
 module.exports = {
 	"billing-plans": {
@@ -134,7 +135,7 @@ if (a == b) console.log("Hello World");
 2. X
 3. Y
 `
-		}	
+		}
 	},
 	"experimental-notice": {
 		"process": {
@@ -256,6 +257,12 @@ if (a == b) console.log("Hello World");
 		"clip": {
 			"id": "clip",
 			"value": clip
+		},
+		"ard-sr-parameter-used-in-children-editable": {
+			"id": "ard",
+			"value": ardSR,
+			"processes": processes,
+			"editable": true
 		}
 	},
 	"object-tree": {

@@ -8,18 +8,23 @@
         @blur="hasFocus = false">
         <!-- tabindex is to allow focus for delete keystroke etc -->
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="canvas">
-            <Edge v-for="edge in edges" :key="edge.id"
-                :id="edge.id" :parameter1="edge.parameter1" :parameter2="edge.parameter2" :selected="edge.selected" :inactive="edge.inactive" :issues="edge.issues" :state="state"
-                @mounted="node => edge.$el = node" @unmounted="() => edge.$el = null"
+            <Edge v-for="edge in edges" :key="edge.id" :id="edge.id"
+                :parameter1="edge.parameter1" :parameter2="edge.parameter2"
+                :selected="edge.selected" :inactive="edge.inactive" :issues="edge.issues" :state="state"
+                @mounted="node => mount(edge, node)" @unmounted="() => mount(edge)"
                 @position="edge.position1 = arguments[0]; edge.position2 = arguments[1]" />
+            <Edge v-for="edge in hiddenParameterRefEdges" :key="edge.id" :id="edge.id"
+                :parameter1="edge.parameter1" :parameter2="edge.parameter2"
+                @mounted="node => mount(edge, node)" @unmounted="() => mount(edge)"
+                :inactive="true" :lineColor="[200,200,200,1]" :lineWidth="2" :state="state" />
             <line v-if="linkingLine" v-bind="linkingLine" />
             <rect v-if="selectRect" v-bind="selectRect" />
         </svg>
         <div class="blocks">
-            <Block v-for="block in blocks" :key="block.id"
-                :id="block.id" :type="block.type" :value="block.value" :spec="block.spec" :state="state" :selected.sync="block.selected"
-                @input="commit()" @parameterRemoved="parameterRemoved"
-                @mounted="node => block.$el = node" @unmounted="() => block.$el = null"
+            <Block v-for="(block) in blocks" :key="block.id"
+                :id="block.id" :type="block.type" :value="block.value" :spec="block.spec" :state="state" :selected="block.selected"
+                @update="(...args) => updateBlock(block, ...args)" @parameterRemoved="parameterRemoved"
+                @mounted="node => mount(block, node)" @unmounted="() => mount(block)"
                 @move="startDragBlock" @moved="refreshEdges" />
         </div>
         <div class="scaleInfo">Zoom in for more details</div>
@@ -31,10 +36,12 @@
 import Block from './model-builder/Block.vue';
 import Edge from './model-builder/Edge.vue';
 import Utils from '../utils.js';
-import { JsonSchemaValidator, ProcessGraph, ProcessRegistry } from '@openeo/js-processgraphs';
+import { ProcessUtils } from '@openeo/js-commons';
+import { JsonSchemaValidator, ProcessGraph, ProcessRegistry, Utils as PgUtils } from '@openeo/js-processgraphs';
 import Vue from 'vue';
 import boxIntersectsBox from 'intersects/box-box';
 import boxIntersectsLine from 'intersects/box-line';
+import Config from './model-builder/config.js';
 
 const getDefaultState = function(blocks) {
     return Vue.observable({
@@ -45,7 +52,7 @@ const getDefaultState = function(blocks) {
         selecting: null, // Is the user multi-selecting?
         center: [0,0],
         mouse: [0,0],
-        scale: 1.3,
+        scale: Config.defaultScale,
         linkFrom: null, // Array
         linkTo: null // Array
     });
@@ -102,6 +109,7 @@ export default {
     data() {
         return {
             isMounted: false,
+            allMounted: false,
 
             // Current offset for block that are generated without specific coordinates so that not all block occur on the same position
             newBlockOffset: 0,
@@ -115,6 +123,7 @@ export default {
             blocks: [],
             // Metadata for edges to show
             edges: [],
+            hiddenParameterRefEdges: {},
 
             processGraph: null,
 
@@ -236,7 +245,7 @@ export default {
         },
         async value(value) {
             // Only run if component has been mounted
-            if (!this.isMounted) {
+            if (!this.allMounted) {
                 return;
             }
 
@@ -253,7 +262,13 @@ export default {
             }
         },
         selectedEdges: selectionChangeWatcher,
-        selectedBlocks: selectionChangeWatcher
+        selectedBlocks: selectionChangeWatcher,
+        allMounted() {
+            this.updateHiddenParameterRefEdges();
+        },
+        isMounted() {
+            this.checkAllMounted();
+        }
     },
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
@@ -289,6 +304,84 @@ export default {
         document.removeEventListener('mouseup', this.onDocumentMouseUpFn);
     },
     methods: {
+        mount(elem, node = null) {
+            elem.$el = node;
+            this.checkAllMounted();
+        },
+        checkAllMounted() {
+            if (!this.isMounted) {
+                this.allMounted = false;
+            }
+            else {
+                this.allMounted = !this.blocks.find(block => !block.$el) || !this.edges.find(edge => !edge.$el);
+            }
+        },
+        updateBlock(block, key, value) {
+            let obj = (key === 'selected' ? block : block.value);
+            if (obj[key] !== value) {
+                this.$set(obj, key, value);
+                let propagate = ['arguments','description','result'].includes(key);
+                let history = key !== 'selected';
+                this.commit(null, history, propagate);
+            }
+        },
+        updateHiddenParameterRefEdges() {
+            // We can only reliably detect parameter refs if we know which parameters a process makes available to the child process
+            // So if we don't have process schemas, don't offer this functionality.
+            // Also don't execute (yet) if no parameters are given or not all elements are mounted yet.
+            if (!this.hasProcesses || !this.allMounted || !this.blocks.find(block => block.type === 'parameter')) {
+                return [];
+            }
+
+            let processes = this.blocks.filter(block => block.type === 'process');
+            let hiddenRefs = {};
+            for(let process of processes) {
+                for (let param in process.value.arguments) {
+                    let value = process.value.arguments[param];
+                    if (!Utils.isObject(value) || !Utils.isObject(value.process_graph)) {
+                        // Process can only have hidden refs it it contains a process graph
+                        continue;
+                    }
+                    
+                    let refs = PgUtils.getRefs(value, true, true).filter(ref => typeof ref.from_parameter !== 'undefined');
+                    for(let ref of refs) {
+                        try {
+                            let parameter2 = process.$el.getBlockParameter(param);
+
+                            // Skip if the parameter usage is scoped (i.e. defined as process parameetr for the children)
+                            let cbParams = ProcessUtils.getCallbackParameters(parameter2).map(cbParam => cbParam.name);
+                            if (cbParams.includes(ref.from_parameter)) {
+                                continue;
+                            }
+        
+                            let parameter = this.getPgParameterById('$' + ref.from_parameter);
+                            if (!parameter) {
+                                continue; // Skip if parameter can't be found
+                            }
+                            let parameter1 = parameter.$el.getBlockParameter('output');
+                            let id = `${parameter.id}->${process.id}:${param}`;
+                            if (parameter1 && parameter2) {
+                                if (this.hiddenParameterRefEdges[id]) {
+                                    hiddenRefs[id] = this.hiddenParameterRefEdges[id];
+                                }
+                                else {
+                                    hiddenRefs[id] = {
+                                        $el: null,
+                                        id,
+                                        parameter1,
+                                        parameter2
+                                    };
+                                }
+                            }
+                        } catch(error) {
+                             console.warn(error);
+                        }
+                    }
+                }
+
+            }
+            this.hiddenParameterRefEdges = hiddenRefs;
+        },
         parameterRemoved(block, parameterName) {
             for(let edge of this.edges) {
                 if(edge.parameter2.$parent === block && edge.parameter2.name === parameterName) {
@@ -304,9 +397,16 @@ export default {
             }
         },
         refreshEdges() {
-            for(let edge of this.edges) {
+            this.refreshEdgesFor(this.edges);
+            this.refreshEdgesFor(Object.values(this.hiddenParameterRefEdges));
+        },
+        refreshEdgesFor(edges) {
+            for(let edge of edges) {
                 if (edge.$el) {
                     edge.$el.updatePositions();
+                }
+                else {
+                    console.log(edge.id);
                 }
             }
         },
@@ -537,6 +637,10 @@ export default {
             }
             if (propagate !== false) {
                 this.$emit('input', data === null ? this.export() : data);
+                this.updateHiddenParameterRefEdges();
+            }
+            else {
+                this.refreshEdges();
             }
         },
     
@@ -574,12 +678,7 @@ export default {
                 return; // Nothing to change
             }
 
-            var setResult = (obj, val) => {
-                this.$set(obj.value, 'result', val);
-                this.commit();
-            }
-
-            setResult(block, result);
+            this.updateBlock(block, 'result', result);
             var foundNewResultNode = false;
             var hasOtherBlocks = false;
             for(var other of this.processBlocks) {
@@ -590,12 +689,12 @@ export default {
                 hasOtherBlocks = true;
                 // If we set a new result node, ensure that only that node is a result node and no other.
                 if (result) {
-                    setResult(other, false);
+                    this.updateBlock(other, 'result', false);
                 }
                 // Find a potential result node if we don't want this to be the result node
                 else {
                     if (other.$el && !other.$el.hasOutputEdges()) {
-                        setResult(other, true);
+                        this.updateBlock(other, 'result', true);
                         foundNewResultNode = true;
                         break;
                     }
@@ -632,7 +731,7 @@ export default {
                 id,
                 type: 'process',
                 selected: false,
-                value: typeof node.toJSON === 'function' ? node.toJSON() : node
+                value: Vue.observable(typeof node.toJSON === 'function' ? node.toJSON() : node)
             };
             if (this.processRegistry) {
                 block.spec = this.processRegistry.get(node.process_id);
@@ -673,22 +772,22 @@ export default {
                 return [dim.width / this.state.scale, dim.height / this.state.scale];
             }
 
-            // ToDo: Doesn't recognize that collections has one parameter less
-            var inputs = Math.max(
+            let inputs = Math.max(
                 Utils.isObject(block.value) ? Utils.size(block.value.arguments) : 0,
                 Utils.isObject(block.spec) ? Utils.size(block.spec.parameters) : 0
             );
 
-            var width;
+            let size = Config.blockWidth;
+            let width;
             if (inputs > 0) {
-                width = this.state.compactMode ? 110 : 220;
+                width = this.state.compactMode ? size.compactParams : size.normalParams;
             }
             else {
-                width = this.state.compactMode ? 60 : 110;
+                width = this.state.compactMode ? size.compact : size.normal;
             }
 
-            var commentHeight = (Utils.isObject(block.value) && typeof block.value.description === 'string') ? 40 : 0;
-            var height = MARGIN + inputs * 15 + commentHeight;
+            let commentHeight = (Utils.isObject(block.value) && typeof block.value.description === 'string') ? 40 : 0;
+            let height = MARGIN + inputs * 15 + commentHeight;
 
             return [width, height];
         },
@@ -704,7 +803,7 @@ export default {
 
         unselectAll() {
             for(var block of this.blocks) {
-                this.$set(block, "selected", false);
+                this.updateBlock(block, 'selected', false);
             }
             for(var edge of this.edges) {
                 this.selectEdge(edge, false);
@@ -715,10 +814,14 @@ export default {
             if (!Utils.isObject(edge)) {
                 edge = this.edges[edge];
             }
+            if (edge.selected === select) {
+                return false; // Nothing to change
+            }
             if (select !== null) {
                 this.$set(edge, "selected", select);
             }
             this.$set(edge, "selectedParameter", parameter);
+            return true;
         },
 
         /**
@@ -946,7 +1049,8 @@ export default {
                 nodes[nodeId] = copy;
             }
 
-            // ToDo: Currently, we just use the id, parameters etc from the original process
+            // ToDo: Currently, we just use the id, parameters etc from the original process.
+            // Implement to allow custom settings from users.
             return new BlocksProcess(Object.assign({}, this.process, { process_graph: nodes }));
         },
 
@@ -995,8 +1099,7 @@ export default {
                     return false;
                 }
 
-                // Parse process 
-                // ToDO: Earlier this was always a ProcessGraph Object, but that seems no longer to be the case. How to clean-up?
+                // Parse process
                 if (process instanceof ProcessGraph) {
                     // Make a copy
                     this.processGraph = new ProcessGraph(process.toJSON(), this.processRegistry);
@@ -1067,6 +1170,10 @@ export default {
 
         getPgParameters() {
             return this.blocks.filter(b => b.type === 'parameter');
+        },
+
+        getPgParameterById(id) {
+            return this.blocks.find(b => b.type === 'parameter' && b.id === id);
         },
 
         async importEdges(pg) {

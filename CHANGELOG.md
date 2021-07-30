@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - New prop `showCategories`: Option to show categories below the summary (already in the collapsed view)
 - `FileFormats`:
   - Searches in `gis_raster_type`, too
+- `ModelBuilder`: Visualize parameters used in child processes (if process schemas are available)
 
 ### Changed
 
@@ -34,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `FileFormats`: File formats get sorted correctly
 - `Collection`: Support multiple extents better
+- `ModelBuilder`: Change blocks in ModelBuilder not directly, but instead emit events properly in Block component. Refactoring.
 - Minor improvements to CSS
 
 ## [2.3.4] - 2020-07-16
