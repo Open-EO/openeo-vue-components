@@ -9,7 +9,7 @@
                 <span v-if="showId" class="blockId">{{ id }}</span>
             </span>
             <div class="blockicon" @mousedown.prevent.stop.left="focus()">
-                <span v-show="allowsComment && !hasComment" class="addComment" title="Add comment" @click.stop.prevent="addComment()">
+                <span v-show="allowsDescription && !showDescriptionField" class="addDescription" title="Add description" @click.stop.prevent="addDescription()">
                     <i class="fas fa-comment-medical"></i>
                 </span>
                 <span v-show="allowsDelete" class="delete" title="Remove (DEL)" @click.stop.prevent="remove()">
@@ -25,13 +25,13 @@
         </div>
         <div class="inout">
             <div class="inputs">
-                <BlockParameter v-for="(param, i) in parameters" :key="i" ref="parameters" :state="state" v-model="args[param.name]" @edgesChanged="edgesChanged(param, $event)" v-bind="param" />
+                <BlockParameter v-for="(param, i) in parameters" :key="i" ref="parameters" :state="state" :value="args[param.name]" @input="value => updateArgument(param.name, value)" @edgesChanged="edgesChanged(param, $event)" v-bind="param" />
             </div>
             <div class="outputs">
-                <BlockParameter ref="output" :state="state" :label="outputLabel" v-bind="output" />
+                <BlockParameter ref="output" :state="state" :label="outputLabel" v-bind="output" @input="updateResult" />
             </div>
         </div>
-        <textarea ref="commentField" v-if="hasComment" v-model.lazy="comment" :readonly="!state.editable" class="editComment" placeholder="Type comment here..." @blur="updateComment" @mousedown.stop=""></textarea>
+        <textarea ref="descriptionField" v-if="showDescriptionField" :value="description" :readonly="!state.editable" class="editDescription" placeholder="Type description here..." @blur="updateDescription" @mousedown.stop=""></textarea>
     </div>
 </template>
 
@@ -40,7 +40,6 @@ import BlockParameter from './BlockParameter.vue';
 import Utils from '../../utils.js';
 import { ProcessParameter } from '@openeo/js-commons';
 import { Utils as PgUtils } from '@openeo/js-processgraphs';
-import Vue from 'vue';
 import Config from './config.js';
 
 /*
@@ -70,11 +69,29 @@ export default {
             type: String,
             required: true
         },
-        value: {
-            type: Object,
+        selected: {
+            type: Boolean,
+            default: false
+        },
+        position: {
+            type: Array,
             required: true
         },
-        selected: {
+        process_id: {
+            type: String
+        },
+        namespace: {
+            type: String
+        },
+        description: {
+            type: String,
+            default: null
+        },
+        args: {
+            type: Object,
+            default: () => ({})
+        },
+        result: {
             type: Boolean,
             default: false
         },
@@ -89,70 +106,16 @@ export default {
     },
     data() {
         return {
-            data: {},
+            showDescriptionField: false,
             drag: null // Is the user dragging ?
         };
     },
     watch: {
         'state.compactMode'() {
             this.$emit('moved', this.position);
-        },
-        value: {
-            immediate: true,
-            handler(value) {
-                this.data = Vue.observable(Utils.deepClone(value));
-            }
         }
     },
     computed: {
-        // Manage the node object (arguments, description, result, position, selected)
-        position: {
-            set(pos) {
-                pos = Utils.ensurePoint(pos);
-                this.$set(this.data, 'position', pos);
-                this.$emit('moved', pos);
-                // Position changes need to be commited/emitted manually, 
-                // otherwise each change is a step in the history (see stopDrag)
-            },
-            get() {
-                return Utils.ensurePoint(this.data.position);
-            }
-        },
-        args: {
-            set(value) {
-                if (!Utils.isObject(this.data.arguments)) {
-                    this.data.arguments = {};
-                }
-                for(let key in this.data.arguments) {
-                    if (typeof value[key] === 'undefined' && (!this.hasParametersDefined || this.spec.parameters.findIndex(p => p.name === key) === -1)) {
-                        this.$emit('parameterRemoved', this, key);
-                    }
-                }
-                this.$set(this.data, 'arguments', value);
-                this.commit('arguments', value);
-            },
-            get() {
-                return Utils.isObject(this.data.arguments) ? this.data.arguments : {};
-            }
-        },
-        comment: {
-            set(value) {
-                this.$set(this.data, 'description', value);
-                this.commit('description', value === '' ? null : value);
-            },
-            get() {
-                return this.data.description;
-            }
-        },
-        result: {
-            set(value) {
-                this.$set(this.data, 'result', value);
-                this.commit('result', value);
-            },
-            get() {
-                return this.data.result || false;
-            }
-        },
         // Visualizations
         width() {
             let size = Config.blockWidth;
@@ -249,8 +212,8 @@ export default {
         },
         processId() {
             if (this.type === 'process') {
-                if (this.value.process_id) {
-                    return this.value.process_id;
+                if (this.process_id) {
+                    return this.process_id;
                 }
                 else if (Utils.isObject(this.spec) && this.spec.id) {
                     return this.spec.id;
@@ -281,11 +244,9 @@ export default {
                 return this.$parent.supports('showProcess');
             }
         },
-        allowsComment() {
+        allowsDescription() {
+            // ToDo: Remove type restriction and store description for parameters.
             return (this.state.editable && this.type === 'process');
-        },
-        hasComment() {
-            return (typeof this.comment === 'string');
         },
         showId() {
             return (this.type !== 'parameter');
@@ -365,26 +326,56 @@ export default {
         this.$emit('unmounted', this);
     },
     methods: {
-        commit(key, value) {
-            this.$emit('update', key, value, this.id);
+        hasParameter(name) {
+            return this.hasParametersDefined && !!this.spec.parameters.find(p => p.name === name);
+        },
+        updateDescription(event) {
+            let value;
+            if (typeof event.target.value === 'string' && event.target.value.length > 0) {
+                value = event.target.value;
+            }
+            else {
+                value = null;
+            }
+            this.showDescriptionField = (value !== null);
+            if (this.description !== value) {
+                this.$emit('update', 'description', value);
+            }
+        },
+        updatePosition(pos, saveHistory = true) {
+            pos = Utils.ensurePoint(pos);
+            if (this.position[0] !== pos[0] || this.position[1] !== pos[1]) {
+                this.$emit('update', 'position', pos, saveHistory);
+            }
+        },
+        updateArguments(value) {
+            let removeParameters = Object.keys(this.args)
+                    .filter(key => typeof value[key] === 'undefined' && (!this.hasParametersDefined || this.hasParameter(key)));
+            this.$emit('update', 'arguments', value, removeParameters);
+        },
+        updateArgument(key, value) {
+            let args = Utils.deepClone(this.args);
+            args[key] = value;
+            this.updateArguments(args);
+        },
+        updateResult(value) {
+            if (this.hasOutputEdges()) {
+                this.state.root.$emit("error", "A result node can't have outgoing edges.");
+                return;
+            }
+            if (value !== this.result) {
+                this.$emit('update', 'result', value);
+            }
         },
         focus() {
             this.$parent.focus();
         },
-        async onMouseDown(event) {
-            if (!event.shiftKey) {
-                this.$parent.unselectAll(event);
-            }
-            return await this.select(!this.selected, false);
+        onMouseDown(event) {
+            this.select(!this.selected, !event.shiftKey);
         },
-        async select(selected = true, unselectOthers = true) {
-            if (unselectOthers) {
-                this.$parent.unselectAll(null);
-            }
-            this.commit('selected', selected);
+        select(selected = true, unselectOthers = true) {
+            this.$emit('update', 'selected', selected, unselectOthers);
             this.focus();
-            await this.$nextTick();
-            return selected;
         },
         getDimensions() {
             let dim = Utils.domBoundingBox(this.$refs.div);
@@ -397,7 +388,7 @@ export default {
             parameter.refs = edges.map(edge => edge.parameter1.value);
         },
         showParameters(parameterName = null) {
-            this.$parent.$emit('editParameters', this.parameters.filter(p => p.isEditable()), this.args, this.plainTitle, this.state.editable, parameterName, data => this.args = data, this);
+            this.$parent.$emit('editParameters', this.parameters.filter(p => p.isEditable()), this.args, this.plainTitle, this.state.editable, parameterName, data => this.updateArguments(data), this);
         },
         showInfo() {
             if(this.collectionId) {
@@ -410,25 +401,16 @@ export default {
                 this.$parent.$emit('showProcess', this.processId);
             }
         },
-        async addComment() {
-            await this.select();
-            this.comment = "";
+        async addDescription() {
+            this.select();
+            this.showDescriptionField = true;
             await this.$nextTick();
-            this.$refs.commentField.focus();
-        },
-        updateComment(evt) {
-            if (typeof evt.target.value === 'string' && evt.target.value.length > 0) {
-                this.comment = evt.target.value;
-            }
-            else {
-                this.comment = null;
-            }
+            this.$refs.descriptionField.focus();
         },
         async emitDrag(event) {
+            this.select(true, !event.shiftKey);
             this.focus();
-            if (!this.selected) {
-                await this.onMouseDown(event);
-            }
+            await this.$nextTick();
             this.$emit('move', event);
         },
         getDragPos(pos, mouse) {
@@ -452,7 +434,7 @@ export default {
 
             var delta = 5 / this.state.scale; // Only store History if block was moved enough
             if (Math.abs(this.drag.origin[0] - this.position[0]) > delta || Math.abs(this.drag.origin[1] - this.position[1]) > delta) {
-                this.commit('position', this.position);
+                this.updatePosition(this.position);
             }
             this.drag = null;
         },
@@ -462,7 +444,9 @@ export default {
             }
             
             let mousePos = this.$parent.getMousePos(event);
-            this.position = this.getDragPos(this.drag.mouse, mousePos);
+            let drapPos = this.getDragPos(this.drag.mouse, mousePos);
+            // Don't store for each run a history step...
+            this.updatePosition(drapPos, false);
         },
 
         hasOutputEdges() {
@@ -492,8 +476,8 @@ export default {
             if (this.type !== 'process') {
                 return null;
             }
-            for (let param in this.value.arguments) {
-                let value = this.value.arguments[param];
+            for (let param in this.args) {
+                let value = this.args[param];
                 if (Utils.isObject(value) && Utils.isObject(value.process_graph)) {
                     let refs = PgUtils.getRefs(value, true, true);
                     if (refs.find(r => r.from_parameter === parameterBlock.id.substr(1))) {
@@ -590,7 +574,7 @@ export default {
             text-overflow: ellipsis;
         }
 
-        .editComment {
+        .editDescription {
             padding: 0.3em 0.2em;
             box-sizing: border-box;
             font-size: 0.9em;

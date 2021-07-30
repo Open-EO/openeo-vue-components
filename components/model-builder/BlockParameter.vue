@@ -99,14 +99,9 @@ export default {
 
                 if (this.output) {
                     // Allow specifying the result node
-                    listeners.click = event => {
+                    listeners.dblclick = event => {
                         if (event.which == 1) {
-                            // ToDo: Move out of here...
-                            if (this.getEdgeCount() > 0) {
-                                this.state.root.$emit("error", "A result node can't have outgoing edges.");
-                                return;
-                            }
-                            this.state.root.setResultNode(this.$parent);
+                            this.$emit('input', true);
                         }
                     };
                 }
@@ -220,11 +215,16 @@ export default {
             }
         },
         getCirclePosition() {
-            var dim = Utils.domBoundingBox(this.$refs.circle);
-            var blocksDim = this.state.root.getDimensions();
-            var x = (dim.offsetLeft-blocksDim.offsetLeft)+dim.width/2;
-            var y = (dim.offsetTop-blocksDim.offsetTop)+dim.height/2;
-            return [x, y];
+            try {
+                var dim = Utils.domBoundingBox(this.$refs.circle);
+                var blocksDim = this.state.root.getDimensions();
+                var x = (dim.offsetLeft-blocksDim.offsetLeft)+dim.width/2;
+                var y = (dim.offsetTop-blocksDim.offsetTop)+dim.height/2;
+                return [x, y];
+            } catch (error) {
+                console.warn(error);
+                return null;
+            }
         },
         openEditorForParameter() {
             if (this.allowsParameterChange) {
@@ -235,7 +235,7 @@ export default {
             return this.schemas.toJSON();
         },
         setValue(value) {
-            if (this.schemas.nativeDataType() == 'boolean0' && !Utils.isRef(value)) {
+            if (this.schemas.nativeDataType() == 'boolean' && !Utils.isRef(value)) {
                 value = !!value;
             }
             this.$emit('input', value);
@@ -322,13 +322,14 @@ export default {
             }
         },
         removeRefFromValue(edge) {
-            // ToDo: Check whether this should only be executed for input fields
-            var ref = this.getEdgeRef(edge);
-            if (Utils.isRefEqual(ref, this.value)) {
-                this.resetValue();
-            }
-            else if (this.isArrayType || this.isObjectType) {
-                this.setValue(this.removeRefFromValueDeep(this.value, ref));
+            if (!this.output) {
+                var ref = this.getEdgeRef(edge);
+                if (Utils.isRefEqual(ref, this.value)) {
+                    this.resetValue();
+                }
+                else if (this.isArrayType || this.isObjectType) {
+                    this.setValue(this.removeRefFromValueDeep(this.value, ref));
+                }
             }
         },
         removeRefFromValueDeep(value, ref) {
@@ -403,7 +404,6 @@ export default {
             return this.edges.length;
         },
         formatProcess(pg, maxLength) {
-            // ToDO: Earlier this was always a ProcessGraph Object, but that seems no longer to be the case. How to clean-up?
             if (pg instanceof ProcessGraph && pg.getNodeCount() === 1) {
                 return this.formatValue(pg.getResultNode().process_id, maxLength);
             }
@@ -482,7 +482,6 @@ export default {
             if (Object.keys(value).length === 0) {
                 return 'None';
             }
-            // ToDO: Earlier this was always a ProcessGraph Object, but that seems no longer to be the case. How to clean-up?
             else if (value instanceof ProcessGraph || Utils.isObject(value.process_graph)) {
                 return this.formatProcess(value, maxLength);
             }

@@ -119,6 +119,9 @@ export default {
         updatePositions() {
             let pos1 = this.parameter1.getCirclePosition();
             let pos2 = this.parameter2.getCirclePosition();
+            if (!pos1 || !pos2) {
+                return;
+            }
             if (!this.position1 || !this.position2 || pos1[0] !== this.position1[0] || pos1[1] !== this.position1[1] || pos2[0] !== this.position2[0] || pos2[1] !== this.position2[1]) {
                 this.position1 = pos1;
                 this.position2 = pos2;

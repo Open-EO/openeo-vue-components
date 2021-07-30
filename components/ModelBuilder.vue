@@ -12,7 +12,7 @@
                 :parameter1="edge.parameter1" :parameter2="edge.parameter2"
                 :selected="edge.selected" :inactive="edge.inactive" :issues="edge.issues" :state="state"
                 @mounted="node => mount(edge, node)" @unmounted="() => mount(edge)"
-                @position="edge.position1 = arguments[0]; edge.position2 = arguments[1]" />
+                @position="updateEdgePos(edge, arguments)" />
             <Edge v-for="edge in hiddenParameterRefEdges" :key="edge.id" :id="edge.id"
                 :parameter1="edge.parameter1" :parameter2="edge.parameter2"
                 @mounted="node => mount(edge, node)" @unmounted="() => mount(edge)"
@@ -22,10 +22,12 @@
         </svg>
         <div class="blocks">
             <Block v-for="(block) in blocks" :key="block.id"
-                :id="block.id" :type="block.type" :value="block.value" :spec="block.spec" :state="state" :selected="block.selected"
-                @update="(...args) => updateBlock(block, ...args)" @parameterRemoved="parameterRemoved"
+                :id="block.id" :type="block.type" :spec="block.spec" :state="state"
+                :selected="block.selected" :position="block.position"
+                :process_id="block.process_id" :result="block.result" :args="block.arguments" :description="block.description" 
+                @update="(...args) => updateBlock(block, ...args)"
                 @mounted="node => mount(block, node)" @unmounted="() => mount(block)"
-                @move="startDragBlock" @moved="refreshEdges" />
+                @move="startDragBlock" />
         </div>
         <div class="scaleInfo">Zoom in for more details</div>
         <ParameterViewer v-if="parameterViewer" v-bind="parameterViewer" @close="parameterViewer = null" />
@@ -191,7 +193,9 @@ export default {
             };
         },
         processRegistry() {
-            if (this.processes instanceof ProcessRegistry) {
+            // If I link between openeo-web-editor and openeo-vue-components, instanceof ProcessRegistry fails.
+            // Webpack seems to mangle names and thus I need to check for specific processes alternatively to detect whether this could be a ProcessRegistry.
+            if (this.processes instanceof ProcessRegistry || (typeof this.processes.count === 'function' && typeof this.processes.get === 'function')) {
                 return this.processes;
             }
             else if (Array.isArray(this.processes)) {
@@ -304,6 +308,10 @@ export default {
         document.removeEventListener('mouseup', this.onDocumentMouseUpFn);
     },
     methods: {
+        updateEdgePos(edge, pos) {
+            edge.position1 = pos[0];
+            edge.position2 = pos[1];
+        },
         mount(elem, node = null) {
             elem.$el = node;
             this.checkAllMounted();
@@ -316,13 +324,52 @@ export default {
                 this.allMounted = !this.blocks.find(block => !block.$el) || !this.edges.find(edge => !edge.$el);
             }
         },
-        updateBlock(block, key, value) {
-            let obj = (key === 'selected' ? block : block.value);
-            if (obj[key] !== value) {
-                this.$set(obj, key, value);
-                let propagate = ['arguments','description','result'].includes(key);
-                let history = key !== 'selected';
-                this.commit(null, history, propagate);
+        updateBlockArguments(block, args, removedParams) {
+            if (removedParams.length > 0) {
+                this.parameterRemoved(block, removedParams);
+            }
+            this.$set(block, 'arguments', args);
+            this.commit();
+            if(removedParams.length > 0) {
+                this.$nextTick(() => this.refreshEdges());
+            }
+        },
+        updateBlockDescription(block, description) {
+            this.$set(block, 'description', description);
+            this.commit();
+        },
+        updateBlockPos(block, pos, saveHistory = true) {
+            this.$set(block, 'position', pos);
+            this.commit(null, saveHistory, false);
+        },
+        updateBlockResult(block, result) {
+            this.$set(block, 'result', result);
+            this.commit();
+        },
+        updateBlockSelected(block, selected, unselectOthers = true) {
+            if (unselectOthers) {
+                this.unselectAll();
+            }
+            this.$set(block, 'selected', selected);
+            this.commit(null, false, false);
+        },
+        updateBlock(block, key, value, extra) {
+            switch(key) {
+                case 'arguments':
+                    this.updateBlockArguments(block, value, extra);
+                    break;
+                case 'description':
+                    this.updateBlockDescription(block, value);
+                    break;
+                case 'position':
+                    this.updateBlockPos(block, value, extra);
+                    break;
+                case 'result':
+                    this.setResultNode(block, value);
+                    break;
+                case 'selected':
+                    this.updateBlockSelected(block, value, extra);
+                    break;
             }
         },
         updateHiddenParameterRefEdges() {
@@ -330,14 +377,14 @@ export default {
             // So if we don't have process schemas, don't offer this functionality.
             // Also don't execute (yet) if no parameters are given or not all elements are mounted yet.
             if (!this.hasProcesses || !this.allMounted || !this.blocks.find(block => block.type === 'parameter')) {
-                return [];
+                this.hiddenParameterRefEdges = {};
+                return;
             }
 
-            let processes = this.blocks.filter(block => block.type === 'process');
             let hiddenRefs = {};
-            for(let process of processes) {
-                for (let param in process.value.arguments) {
-                    let value = process.value.arguments[param];
+            for(let process of this.processBlocks) {
+                for (let param in process.arguments) {
+                    let value = process.arguments[param];
                     if (!Utils.isObject(value) || !Utils.isObject(value.process_graph)) {
                         // Process can only have hidden refs it it contains a process graph
                         continue;
@@ -382,9 +429,9 @@ export default {
             }
             this.hiddenParameterRefEdges = hiddenRefs;
         },
-        parameterRemoved(block, parameterName) {
-            for(let edge of this.edges) {
-                if(edge.parameter2.$parent === block && edge.parameter2.name === parameterName) {
+        parameterRemoved(block, parameterNames) {
+            for(let edge of this.edges.slice(0)) {
+                if(edge.parameter2.$parent.id === block.id && parameterNames.includes(edge.parameter2.name)) {
                     this.removeEdge(edge);
                 }
             }
@@ -444,7 +491,7 @@ export default {
             let box = this.selectRect;
             this.blocks
                 .filter(b => {
-                    if (Array.isArray(b.value.position) && b.$el) {
+                    if (Array.isArray(b.position) && b.$el) {
                         let pos = b.$el.getDimensions();
                         return boxIntersectsBox(box.x, box.y, box.width, box.height, pos.x, pos.y, pos.width, pos.height);
                     }
@@ -524,11 +571,13 @@ export default {
 
                 if (this.state.editable && this.selectedSideEdge) {
                     var origin = this.selectedSideEdge.selectedParameter.getCirclePosition();
-                    var distance = Math.sqrt(Math.pow(mousePos[0]-origin[0], 2)+Math.pow(mousePos[1]-origin[1], 2));
-                    if (distance > 10) {
-                        this.link(this.selectedSideEdge.selectedParameter);
-                        this.removeEdge(this.selectedSideEdge);
-                        this.commit();
+                    if (origin) {
+                        var distance = Math.sqrt(Math.pow(mousePos[0]-origin[0], 2)+Math.pow(mousePos[1]-origin[1], 2));
+                        if (distance > 10) {
+                            this.link(this.selectedSideEdge.selectedParameter);
+                            this.removeEdge(this.selectedSideEdge);
+                            this.commit();
+                        }
                     }
                 }
 
@@ -543,14 +592,16 @@ export default {
 
                 if (this.state.linkFrom) {
                     var position = this.state.linkFrom.getCirclePosition();
-                    this.linkingLine = {
-                        x1: position[0],
-                        y1: position[1],
-                        x2: mousePos[0],
-                        y2: mousePos[1],
-                        'stroke': 'rgba(0,0,0,0.4)',
-                        'stroke-width': 3 * this.state.scale
-                    };
+                    if (position) {
+                        this.linkingLine = {
+                            x1: position[0],
+                            y1: position[1],
+                            x2: mousePos[0],
+                            y2: mousePos[1],
+                            'stroke': 'rgba(0,0,0,0.4)',
+                            'stroke-width': 3 * this.state.scale
+                        };
+                    }
                 }
             } catch (error) {
                 this.$emit("error", error);
@@ -622,6 +673,7 @@ export default {
                 this.nextBlockId = 1;
                 this.nextEdgeId = 1;
                 this.process = {};
+                this.updateHiddenParameterRefEdges();
                 return true;
             });
         },
@@ -674,11 +726,11 @@ export default {
 
         setResultNode(block, result = true) {
             block = this.getBlockById(block.id);
-            if (!block || block.value.result === result) {
+            if (!block || block.result === result) {
                 return; // Nothing to change
             }
 
-            this.updateBlock(block, 'result', result);
+            this.updateBlockResult(block, result);
             var foundNewResultNode = false;
             var hasOtherBlocks = false;
             for(var other of this.processBlocks) {
@@ -689,12 +741,12 @@ export default {
                 hasOtherBlocks = true;
                 // If we set a new result node, ensure that only that node is a result node and no other.
                 if (result) {
-                    this.updateBlock(other, 'result', false);
+                    this.updateBlockResult(other, false);
                 }
                 // Find a potential result node if we don't want this to be the result node
                 else {
                     if (other.$el && !other.$el.hasOutputEdges()) {
-                        this.updateBlock(other, 'result', true);
+                        this.updateBlockResult(other, true);
                         foundNewResultNode = true;
                         break;
                     }
@@ -727,26 +779,34 @@ export default {
 
         addBlock(node, id = null) {
             id = '#' + String(this.incrementId(id));
+            if (typeof node.toJSON === 'function') {
+                node = node.toJSON();
+            }
             var block = {
                 id,
                 type: 'process',
                 selected: false,
-                value: Vue.observable(typeof node.toJSON === 'function' ? node.toJSON() : node)
+                position: node.position,
+                process_id: node.process_id,
+                namespace: node.namespace,
+                arguments: node.arguments,
+                description: node.description || null,
+                result: node.result || false
             };
             if (this.processRegistry) {
                 block.spec = this.processRegistry.get(node.process_id);
             }
 
             var size = this.getBlockSize(block);
-            block.value.position = Utils.ensurePoint(block.value.position, () => this.getNewBlockDefaultPosition(size));
+            block.position = Utils.ensurePoint(block.position, () => this.getNewBlockDefaultPosition(size));
 
             // If there's already a result node, remove the flag here
-            if (block.value.result && this.blocks.filter(b => b.value.result === true).length) {
-                delete block.value.result;
+            if (block.result && this.blocks.filter(b => b.result === true).length) {
+                delete block.result;
             }
             // Make this the result node if there's no node yet
             else if (this.processBlocks.length === 0) {
-                block.value.result = true;
+                block.result = true;
             }
             
             this.blocks.push(Vue.observable(block));
@@ -773,7 +833,7 @@ export default {
             }
 
             let inputs = Math.max(
-                Utils.isObject(block.value) ? Utils.size(block.value.arguments) : 0,
+                Utils.size(block.arguments),
                 Utils.isObject(block.spec) ? Utils.size(block.spec.parameters) : 0
             );
 
@@ -786,7 +846,7 @@ export default {
                 width = this.state.compactMode ? size.compact : size.normal;
             }
 
-            let commentHeight = (Utils.isObject(block.value) && typeof block.value.description === 'string') ? 40 : 0;
+            let commentHeight = typeof block.description === 'string' ? 40 : 0;
             let height = MARGIN + inputs * 15 + commentHeight;
 
             return [width, height];
@@ -803,7 +863,7 @@ export default {
 
         unselectAll() {
             for(var block of this.blocks) {
-                this.updateBlock(block, 'selected', false);
+                this.updateBlockSelected(block, false, false);
             }
             for(var edge of this.edges) {
                 this.selectEdge(edge, false);
@@ -863,7 +923,7 @@ export default {
                     }
                 }
 
-                if (block.value.result) {
+                if (block.result) {
                     this.setResultNode(block, false);
                 }
 
@@ -895,7 +955,7 @@ export default {
                 // Remove the selected blocks and its edges
                 for(var block of this.selectedBlocks.slice(0)) { // copy to avoid race condition
                     if (block.$el.allowsDelete) {
-                        this.removeBlock(block);
+                        await this.removeBlock(block);
                     }
                 }
 
@@ -951,7 +1011,7 @@ export default {
             }
 
             // You have to link an input with an output
-            if (!edge.parameter1.output) {
+            if (edge.parameter1.output === edge.parameter2.output) {
                 throw 'You have to link an input with an output';
             }
             // Check for non-recursiveness
@@ -1033,11 +1093,12 @@ export default {
         export(internal = false) {
             var nodes = {};
             for(var block of this.processBlocks) {
-                let copy = Utils.deepClone(block.value);
-                if (!internal) {
-                    // Delete internal state for external export 
-                    delete copy.position;
+                let keys = ['process_id', 'namespace', 'arguments', 'description', 'result'];
+                if (internal) {
+                    // Keep internal state for history
+                    keys.push('position');
                 }
+                let copy = Utils.pickFromObject(block, keys);
                 // Remove default values for simplicity
                 if (copy.description === null) {
                     delete copy.description;
@@ -1119,6 +1180,9 @@ export default {
                     this.perfectScale();
                 }
 
+                await this.$nextTick();
+                this.updateHiddenParameterRefEdges();
+
                 return true;
             }, options);
         },
@@ -1160,10 +1224,8 @@ export default {
             this.blocks.push(Vue.observable({
                 id,
                 type: 'parameter',
-                value: {
-                    from_parameter: param.name,
-                    position: Utils.ensurePoint(position, () => this.getNewBlockDefaultPosition(this.getBlockSize({})))
-                },
+//              from_parameter: param.name,
+                position: Utils.ensurePoint(position, () => this.getNewBlockDefaultPosition(this.getBlockSize({}))),
                 spec: param
             }));
         },
@@ -1277,7 +1339,7 @@ export default {
 
             for (let block of this.blocks) {
                 let size = this.getBlockSize(block);
-                let pos = Utils.ensurePoint(block.value.position);
+                let pos = Utils.ensurePoint(block.position);
                 if (xMin == null) {
                     xMin = pos[0]-15
                     xMax = pos[0]+size[0]+15;
@@ -1356,9 +1418,9 @@ class BlocksProcess {
 
     &.compact .blockicon .delete,
     &.compact .blockicon .info,
-    &.compact .blockicon .addComment,
+    &.compact .blockicon .addDescription,
     &.compact .blockId,
-    &.compact .editComment, 
+    &.compact .editDescription, 
     &.scale_xs .blockicon,
     &.scale_s .blockicon,
     &.scale_m .scaleInfo,
@@ -1378,7 +1440,7 @@ class BlocksProcess {
         border-radius: 0 0 0 0.3em;
         z-index: 5;
     }
-    &.scale_xs .editComment {
+    &.scale_xs .editDescription {
         visibility: hidden;
     }
 }

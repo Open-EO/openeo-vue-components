@@ -28,14 +28,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Use Badges instead of comma separated values to better stand out
   - Shows "Worldwide" instead of a map if the spatial extent covers the whole Earth
 - `Collection` / `Item`: Changed default height from 300 to 250px
-- `ModelBuilder`: Show default values for parameters
+- `ModelBuilder`:
+  - Show default values for parameters
+  - Major code refactoring
 - `Process`: Changed place of categories and "Download JSON" with summary
 
 ### Fixed
 
 - `FileFormats`: File formats get sorted correctly
 - `Collection`: Support multiple extents better
-- `ModelBuilder`: Change blocks in ModelBuilder not directly, but instead emit events properly in Block component. Refactoring.
+- `ModelBuilder`:
+  - Change blocks in ModelBuilder not directly, but instead emit events properly in Block component
+  - Several minor bug fixes
 - Minor improvements to CSS
 
 ## [2.3.4] - 2020-07-16
