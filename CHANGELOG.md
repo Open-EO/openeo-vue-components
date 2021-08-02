@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ModelBuilder`: Basic support for copy&paste
+
 ## [2.4.0] - 2020-08-02
 
 ### Added

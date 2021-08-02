@@ -1,9 +1,9 @@
 <template>
     <div ref="div" :id="id" :class="classes" tabindex="0"
-        @mousemove="onMouseMove($event)"
-        @mousedown="onMouseDown($event)"
-        @wheel="onMouseWheel($event)"
-        @keydown="onKeyDown($event)"
+        @mousemove="onMouseMove"
+        @mousedown="onMouseDown"
+        @wheel="onMouseWheel"
+        @keydown="onKeyDown"
         @focus="hasFocus = true"
         @blur="hasFocus = false">
         <!-- tabindex is to allow focus for delete keystroke etc -->
@@ -133,6 +133,8 @@ export default {
             nextBlockId: 1,
             // Next edge id
             nextEdgeId: 1,
+            // Copy&Paste
+            clipboard: null,
 
             activeTransactions: 0,
             hasFocus: false,
@@ -222,6 +224,9 @@ export default {
                 return this.selectedEdges[0];
             }
             return null;
+        },
+        hasSelection() {
+            return this.selectedBlocks.length > 0 || this.selectedEdges.length > 0;
         },
         processParametersFromSchemas() {
             // Get all process parameters from the parent process
@@ -506,6 +511,10 @@ export default {
                 .filter(e => Array.isArray(e.position1) && Array.isArray(e.position2) && boxIntersectsLine(box.x, box.y, box.width, box.height, e.position1[0], e.position1[1], e.position2[0], e.position2[1]))
                 .map(e => e.selected = true);
         },
+        toJSON() {
+            let process = this.export();
+            return JSON.stringify(process, null, 2);
+        },
         async onDocumentMouseUp(event) {
             if (this.parameterViewer) {
                 return;
@@ -531,7 +540,7 @@ export default {
                 this.unlink();
             }
         },
-        onKeyDown(event) {
+        async onKeyDown(event) {
             if (this.parameterViewer) {
                 return;
             }
@@ -542,9 +551,53 @@ export default {
                 }
             }
 
-            // "del" will delete a selected link or block
-            if (this.state.editable && event.keyCode == 46) {
-                this.deleteSelected();
+            let captured = false;
+            if (this.state.editable) {
+                // delete selected blocks/edges
+                if (event.code === 'Delete') {
+                    this.deleteSelected();
+                    captured = true;
+                }
+                else if (event.ctrlKey || event.metaKey) { // STRG for Win/Linux, meta/cmd from Mac
+                    if (event.code === 'KeyV') {
+                        if (this.hasSelection && this.clipboard) {
+                            return; // ToDo: Implement pasting for selected blocks
+                        }
+                        else {
+                            try {
+                                const text = await navigator.clipboard.readText();
+                                let process = JSON.parse(text);
+                                await this.import(process);
+                            } catch(error) {
+                                this.$emit('error', error, 'Paste Error');
+                            }
+                        }
+                        captured = true;
+                    }
+                    else if (event.code === 'KeyC') {
+                        if (this.hasSelection) {
+                            this.clipboard = {
+                                blocks: this.selectedBlocks.slice(0),
+                                edges: this.selectedEdges.slice(0)
+                            };
+                        }
+                        else {
+                            try {
+                                let json = this.toJSON();
+                                await navigator.clipboard.writeText(json);
+                                captured = true;
+                            } catch(error) {
+                                this.$emit('error', error, 'Copy Error');
+                            }
+                        }
+                        captured = true;
+                    }
+                }
+            }
+
+            if (captured) {
+                event.preventDefault();
+                event.stopPropagation();
             }
         },
         onMouseWheel(event) {
@@ -951,7 +1004,7 @@ export default {
          * Delete the current link
          */
         async deleteSelected() {
-            if (this.selectedBlocks.length === 0 && this.selectedEdges.length === 0) {
+            if (!this.hasSelection) {
                 return false;
             }
 
