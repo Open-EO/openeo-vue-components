@@ -457,7 +457,7 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 **Properties:**
 
 - `id` (string, required): A document-wide unique identifier for the ModelBuilder instance.
-- `editable` (boolean): Allows to edit the model (defaults to `false`). You need to use the `editParameters` event to implement parameter editing.
+- `editable` (boolean): Allows to edit the model (defaults to `false`). You need to use the `editArguments` event to implement parameter editing.
 - `value` / v-model (boolean): The process to show/edit (defaults to an empty object).
 - `collections` (array): Allows to add the collections from the API for better visualizations (defaults to an empty array).
 - `processes` (array|ProcessRegistry): Allows to add the processes from the API for better visualizations (defaults to an empty array). Can be given as a [`ProcessRegistry`](https://open-eo.github.io/openeo-js-processgraphs/1.2.0/ProcessRegistry.html).
@@ -475,9 +475,11 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 	- `id` (string): ID of a process to show
 - `showCollection(id)`: Providing this event will enable a button on each collection so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the collection details to the user.
 	- `id` (string): ID of a collection to show
-- `showParameter(parameter)`: Providing this event will enable a button on each Parameter so that user can click it to get more details about the parameter and its schema. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
+- `showParameter(parameter)`: Providing this event will enable a button on each parameter so that user can click it to get more details about the parameter and its schema. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
 	- `parameter` (object): A process parameter compliant to the openEO API.
-- `editParameters(parameters, values, title, isEditable, selectParameterName , saveCallback, parentBlock)`: Providing this event will enable a button on each block so that user can click it to get more details about the parameters and corresponding values. This event is fired when the user has clicked the button. The UI can then show the parameter viewer or editor to the user.
+- `editParameter(parameter, title, saveCallback)`: Providing this event will enable a button on each parameter so that user can click it to edit the parameter. This event is fired when the user has clicked the button. The UI can then show the parameter editor to the user.
+	- `parameter` (object): A process parameter compliant to the openEO API.
+- `editArguments(parameters, values, title, isEditable, selectParameterName , saveCallback, parentBlock)`: Providing this event will enable a button on each block so that user can click it to get more details about the parameters and corresponding values. This event is fired when the user has clicked the button. The UI can then show the parameter viewer or editor to the user.
 	- `parameters` (array\<ProcessParameter>): An array with the details about the parameters, see [`ProcessParameter`](https://open-eo.github.io/openeo-js-commons/1.3.0/ProcessParameter.html) for details.
 	- `values` (object): An object with values for the parameters. The keys are the parameter names (`parameters.name`) and the objects are the values for the corresponding parameter.
 	- `title` (string): A title for the UI
@@ -500,7 +502,7 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 - `async toggleCompact()`: Toggles compact mode (e.g. doesn't show parameter values).
 - `perfectScale()`: Fits the view to the blocks and edges so that it is fully shown.
 - `getPgParameters() -> array<object>`: Returns all process parameters blocks.
-- `addPgParameter(parameter, origin, position)`: Adds a process parameter block to the model builder.
+- `async addPgParameter(parameter, origin, position)`: Adds a process parameter block to the model builder.
 	- `parameter` (object): The parameter to add, should at least include a `name` and a `schema` as defined by the openEO API.
 	- `origin` (string): The origin of the parameter, defaults to `user` for user-defined parameters.
 	- `position` (array|null): The position to show the newly created block. Use `getPositionForPageXY` to get the position from a Browser event. Set to `null` (default value) to place it automatically.

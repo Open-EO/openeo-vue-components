@@ -77,9 +77,9 @@ export default {
             return (this.value !== undefined);
         },
         listeners() {
-            if (this.allowsParameterChange) {
+            if (this.allowsArgumentChange) {
                 return {
-                    click: this.openEditorForParameter
+                    click: this.openEditorForArguments
                 };
             }
             else {
@@ -186,7 +186,7 @@ export default {
         isEditable() {
             return !this.output && this.schemas.isEditable();
         },
-        allowsParameterChange() {
+        allowsArgumentChange() {
             return (!this.output && this.schemas.isEditable());
         },
         allowsMultipleInputs() {
@@ -226,9 +226,9 @@ export default {
                 return null;
             }
         },
-        openEditorForParameter() {
-            if (this.allowsParameterChange) {
-                this.$parent.showParameters(this.name);
+        openEditorForArguments() {
+            if (this.allowsArgumentChange) {
+                this.$parent.showArguments(this.name);
             }
         },
         jsonSchema() {

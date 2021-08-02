@@ -18,7 +18,7 @@
                 <span v-show="allowsInfo" class="info" title="Details" @click.stop.prevent="showInfo()">
                     <i class="fas fa-info"></i>
                 </span>
-                <span v-show="allowsParameterChange" class="settings" title="Change parameter values" @click.stop.prevent="showParameters()">
+                <span v-show="allowsParameterChange" class="settings" :title="isParameter ? 'Edit parameter' : 'Change parameter values'" @click.stop.prevent="edit">
                     <i class="fas fa-sliders-h"></i>
                 </span>
             </div>
@@ -95,6 +95,10 @@ export default {
             type: Boolean,
             default: false
         },
+        origin: {
+            type: String,
+            default: null
+        },
         spec: {
             type: Object,
             default: () => null
@@ -156,7 +160,7 @@ export default {
             if (this.result) {
                 return "Result";
             }
-            else if (this.type === 'parameter') {
+            else if (this.isParameter) {
                 return "Process Parameter";
             }
             else {
@@ -168,7 +172,7 @@ export default {
             if (this.collectionId) {
                 classes.push('block_collection');
             }
-            else if (this.type === 'parameter') {
+            else if (this.isParameter) {
                 classes.push('block_argument');
             }
             if (this.result) {
@@ -227,17 +231,25 @@ export default {
             }
             return null;
         },
+        isParameter() {
+            return this.type === 'parameter';
+        },
         allowsParameterChange() {
-            return (this.parameters.filter(p => p.isEditable()).length > 0 && this.type !== 'parameter');
+            if (this.isParameter) {
+                return this.state.editable && !!this.$parent.supports('editParameter');
+            }
+            else {
+                return this.parameters.filter(p => p.isEditable()).length > 0;
+            }
         },
         allowsDelete() {
-            return (this.state.editable && (!this.spec || (Utils.isObject(this.spec) && this.spec.origin !== 'schema')));
+            return (this.state.editable && (!this.spec || (Utils.isObject(this.spec) && this.origin !== 'schema')));
         },
         allowsInfo() {
             if (this.collectionId) {
                 return this.$parent.supports('showCollection');
             }
-            else if (this.type === 'parameter') {
+            else if (this.isParameter) {
                 return Utils.isObject(this.spec) && this.$parent.supports('showParameter');
             }
             else {
@@ -285,7 +297,7 @@ export default {
         output() {
             var spec = {};
             if (Utils.isObject(this.spec)) {
-                if (this.type === 'parameter') {
+                if (this.isParameter) {
                     spec = this.spec;
                 }
                 else if (Utils.isObject(this.spec.returns)) {
@@ -300,7 +312,7 @@ export default {
                 output: true,
                 value: {}
             };
-            if (this.type === 'parameter') {
+            if (this.isParameter) {
                 output.value.from_parameter = this.id.substr(1);
             }
             else {
@@ -326,6 +338,14 @@ export default {
         this.$emit('unmounted', this);
     },
     methods: {
+        edit() {
+            if (this.isParameter) {
+                this.editParameter();
+            }
+            else {
+                this.showArguments();
+            }
+        },
         hasParameter(name) {
             return this.hasParametersDefined && !!this.spec.parameters.find(p => p.name === name);
         },
@@ -387,14 +407,17 @@ export default {
         edgesChanged(parameter, edges) {
             parameter.refs = edges.map(edge => edge.parameter1.value);
         },
-        showParameters(parameterName = null) {
-            this.$parent.$emit('editParameters', this.parameters.filter(p => p.isEditable()), this.args, this.plainTitle, this.state.editable, parameterName, data => this.updateArguments(data), this);
+        editParameter() {
+            this.$parent.$emit('editParameter', this.spec, "Edit Parameter: " + this.plainTitle, data => this.$emit('update', 'spec', data));
+        },
+        showArguments(parameterName = null) {
+            this.$parent.$emit('editArguments', this.parameters.filter(p => p.isEditable()), this.args, this.plainTitle, this.state.editable, parameterName, data => this.updateArguments(data), this);
         },
         showInfo() {
             if(this.collectionId) {
                 this.$parent.$emit('showCollection', this.collectionId);
             }
-            else if (this.type === 'parameter') {
+            else if (this.isParameter) {
                 this.$parent.$emit('showParameter', this.spec);
             }
             else {

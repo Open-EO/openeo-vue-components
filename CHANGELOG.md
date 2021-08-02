@@ -18,7 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - New prop `showCategories`: Option to show categories below the summary (already in the collapsed view)
 - `FileFormats`:
   - Searches in `gis_raster_type`, too
-- `ModelBuilder`: Visualize parameters used in child processes (if process schemas are available)
+- `ModelBuilder`:
+  - Visualize parameters used in child processes (if process schemas are available)
+  - Added event `editParameter`
 
 ### Changed
 
@@ -30,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Collection` / `Item`: Changed default height from 300 to 250px
 - `ModelBuilder`:
   - Show default values for parameters
+  - Event `editParameters` has been renamed to `editArguments`
+  - Method `addPgParameter` is now async.
   - Major code refactoring
 - `Process`: Changed place of categories and "Download JSON" with summary
 

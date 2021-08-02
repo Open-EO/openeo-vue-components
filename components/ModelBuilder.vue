@@ -23,7 +23,7 @@
         <div class="blocks">
             <Block v-for="(block) in blocks" :key="block.id"
                 :id="block.id" :type="block.type" :spec="block.spec" :state="state"
-                :selected="block.selected" :position="block.position"
+                :selected="block.selected" :position="block.position" :origin="block.origin"
                 :process_id="block.process_id" :result="block.result" :args="block.arguments" :description="block.description" 
                 @update="(...args) => updateBlock(block, ...args)"
                 @mounted="node => mount(block, node)" @unmounted="() => mount(block)"
@@ -282,8 +282,8 @@ export default {
             // Print error to console if event is not supported by implementing context
             this.$on('error', (msg, title = null) => console.error(msg, title));
         }
-        if (!this.supports('editParameters')) {
-            this.$on('editParameters', (...args) => this.showParameterViewer(...args));
+        if (!this.supports('editArguments')) {
+            this.$on('editArguments', (...args) => this.showParameterViewer(...args));
         }
     },
     async mounted() {
@@ -353,6 +353,10 @@ export default {
             this.$set(block, 'selected', selected);
             this.commit(null, false, false);
         },
+        updateBlockSpec(block, data) {
+            this.$set(block, 'spec', Object.assign({}, block.spec, data));
+            this.commit();
+        },
         updateBlock(block, key, value, extra) {
             switch(key) {
                 case 'arguments':
@@ -369,6 +373,9 @@ export default {
                     break;
                 case 'selected':
                     this.updateBlockSelected(block, value, extra);
+                    break;
+                case 'spec':
+                    this.updateBlockSpec(block, value);
                     break;
             }
         },
@@ -669,7 +676,7 @@ export default {
             return await this.startTransaction(async () => {
                 this.edges = [];
                 // Don't remove parameters injected by props (fixed callback parameters)
-                this.blocks = this.blocks.filter(b => b.type === 'parameter' && Utils.isObject(b.spec) && b.spec.origin === 'schema');
+                this.blocks = this.blocks.filter(b => b.type === 'parameter' && Utils.isObject(b.spec) && b.origin === 'schema');
                 this.nextBlockId = 1;
                 this.nextEdgeId = 1;
                 this.process = {};
@@ -1091,8 +1098,11 @@ export default {
         },
 
         export(internal = false) {
-            var nodes = {};
-            for(var block of this.processBlocks) {
+            let data = {
+                process_graph: {}
+            };
+
+            for(let block of this.processBlocks) {
                 let keys = ['process_id', 'namespace', 'arguments', 'description', 'result'];
                 if (internal) {
                     // Keep internal state for history
@@ -1107,12 +1117,22 @@ export default {
                     delete copy.result;
                 }
                 let nodeId = block.id.substr(1);
-                nodes[nodeId] = copy;
+                data.process_graph[nodeId] = copy;
             }
 
-            // ToDo: Currently, we just use the id, parameters etc from the original process.
+            if (!this.parent) {
+                data.parameters = [];
+                let parameterBlocks = this.getPgParameters();
+                for(let param of parameterBlocks) {
+                    data.parameters.push(param.spec);
+                }
+            }
+
+            console.log(data);
+
+            // ToDo: Currently, we just use the id, categories, result value etc from the original process.
             // Implement to allow custom settings from users.
-            return new BlocksProcess(Object.assign({}, this.process, { process_graph: nodes }));
+            return new BlocksProcess(Object.assign({}, this.process, data));
         },
 
         // Options may contain:
@@ -1194,7 +1214,7 @@ export default {
 
             // Remove existing parameters from the given origin
             if (clear) {
-                this.blocks = this.blocks.filter(b => b.type !== 'parameter' || b.spec.origin !== origin);
+                this.blocks = this.blocks.filter(b => b.type !== 'parameter' || b.origin !== origin);
             }
 
             let size = this.getBlockSize({}); // Estimate base size for an empty block
@@ -1205,29 +1225,31 @@ export default {
                     i * (size[1] + MARGIN)
                 ];
 
-                this.addPgParameter(params[i], origin, position);
+                await this.addPgParameter(params[i], origin, position);
             }
             await this.$nextTick();
         },
 
-        addPgParameter(param, origin = 'user', position = null) {
-            let id = '$' + param.name;
-            // Check a parameter with the same name exists
-            if (this.blocks.findIndex(p => p.type === 'parameter' && p.id == id) >= 0) {
-                return;
-            }
-            param = Utils.deepClone(param);
-            if (typeof param.schema === 'undefined') {
-                param.schema = {};
-            }
-            param.origin = origin;
-            this.blocks.push(Vue.observable({
-                id,
-                type: 'parameter',
-//              from_parameter: param.name,
-                position: Utils.ensurePoint(position, () => this.getNewBlockDefaultPosition(this.getBlockSize({}))),
-                spec: param
-            }));
+        async addPgParameter(param, origin = 'user', position = null) {
+            return await this.startTransaction(async () => {
+                let id = '$' + param.name;
+                // Check a parameter with the same name exists
+                if (this.blocks.findIndex(p => p.type === 'parameter' && p.id == id) >= 0) {
+                    return false;
+                }
+                param = Utils.deepClone(param);
+                if (typeof param.schema === 'undefined') {
+                    param.schema = {};
+                }
+                this.blocks.push(Vue.observable({
+                    id,
+                    type: 'parameter',
+                    origin,
+                    position: Utils.ensurePoint(position, () => this.getNewBlockDefaultPosition(this.getBlockSize({}))),
+                    spec: param
+                }));
+                return true;
+            });
         },
 
         getPgParameters() {
