@@ -459,9 +459,6 @@ export default {
                 if (edge.$el) {
                     edge.$el.updatePositions();
                 }
-                else {
-                    console.log(edge.id);
-                }
             }
         },
         supports(event) {
@@ -1127,8 +1124,6 @@ export default {
                     data.parameters.push(param.spec);
                 }
             }
-
-            console.log(data);
 
             // ToDo: Currently, we just use the id, categories, result value etc from the original process.
             // Implement to allow custom settings from users.
