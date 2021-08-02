@@ -67,7 +67,7 @@
 			</div>
 		</section>
 
-		<section class="providers" v-if="data.providers">
+		<section class="providers" v-if="hasProviders">
 			<h3>Providers</h3>
 			<ol>
 				<li v-for="provider in data.providers" :key="provider.name">
@@ -188,6 +188,9 @@ export default {
 			}
 			let bbox = this.boundingBoxes[0];
 			return (bbox[0] === -180 && bbox[1] === -90 && bbox[2] === 180 && bbox[3] === 90);
+		},
+		hasProviders() {
+			return Utils.size(this.data.providers) > 0;
 		},
 		hasDimensions() {
 			return Utils.size(this.data['cube:dimensions']) > 0;
