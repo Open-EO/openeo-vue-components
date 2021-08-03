@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `ModelBuilder`: Basic support for copy&paste
+- `ModelBuilder`: Basic support for copy&paste of processes (JSON)
 
 ### Fixed
 
-- `Collection`: Only show providers heading if there are providers available.
+- `Collection`:
+  - Only show providers heading if there are providers available.
+  - Minor style improvements
 
 ## [2.4.0] - 2020-08-02
 

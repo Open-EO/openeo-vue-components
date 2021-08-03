@@ -187,7 +187,7 @@ export default {
 				return false;
 			}
 			let bbox = this.boundingBoxes[0];
-			return (bbox[0] === -180 && bbox[1] === -90 && bbox[2] === 180 && bbox[3] === 90);
+			return (Math.round(bbox[0]) == -180 && Math.round(bbox[1]) == -90 && Math.round(bbox[2]) == 180 && Math.round(bbox[3]) == 90);
 		},
 		hasProviders() {
 			return Utils.size(this.data.providers) > 0;
@@ -310,7 +310,6 @@ export default {
 
 			> div {
 				min-width: 49%;
-				height: 100%;
 				flex-grow: 1;
 			}
 
@@ -319,14 +318,19 @@ export default {
 				border-left: 1px dotted #ccc;
 				padding-left: 1%;
 			}
+
+			.map {
+				height: 350px;
+			}
 		}
 	}
 
 	.projjson,
 	.wkt2,
-	td > dl {
-		margin: 0;
-		height: 5em;
+	td > dl, td > ol, td > ul {
+		margin: -3px;
+		padding: 3px;
+		height: 7em;
 		overflow: auto;
     	resize: vertical;
 	}
