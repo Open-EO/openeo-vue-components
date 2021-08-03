@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Collection`:
   - Only show providers heading if there are providers available.
   - Minor style improvements
+- `ModelBuilder`: Properly unset default values when editing parameters
 
 ## [2.4.0] - 2020-08-02
 

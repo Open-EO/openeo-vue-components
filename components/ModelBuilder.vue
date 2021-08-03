@@ -359,7 +359,21 @@ export default {
             this.commit(null, false, false);
         },
         updateBlockSpec(block, data) {
-            this.$set(block, 'spec', Object.assign({}, block.spec, data));
+            let parameterFields = ['name', 'schema', 'description', 'optional', 'deprecated', 'experimental', 'default'];
+            let newBlock = Utils.omitFromObject(block.spec, parameterFields);
+            Object.assign(newBlock, data);
+            // Remove default values (and unset default value if parameter is required)
+            if (!newBlock.optional) {
+                delete newBlock.optional;
+                delete newBlock.default;
+            }
+            if (!newBlock.deprecated) {
+                delete newBlock.deprecated;
+            }
+            if (!newBlock.experimental) {
+                delete newBlock.experimental;
+            }
+            this.$set(block, 'spec', newBlock);
             this.commit();
         },
         updateBlock(block, key, value, extra) {
