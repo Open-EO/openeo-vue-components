@@ -21,7 +21,7 @@
 							<slot name="summary" :summary="summary" :item="summary.data">
 								<strong>{{ summary.identifier }}</strong>
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
-								<ul v-if="showKeywords && summary.keywords.length > 0" class="badges small hideOnExpand">
+								<ul v-if="showKeywords && summary.keywords.length > 0" class="badges small block hideOnExpand">
 									<li v-for="keyword in summary.keywords" :key="keyword" class="badge">{{ keyword }}</li>
 								</ul>
 							</slot>
@@ -328,7 +328,7 @@ export default {
 					float: left;
 					font-size: 1em;
 				}
-				.badges {
+				.badges.block {
 					display: block;
 				}
 			}

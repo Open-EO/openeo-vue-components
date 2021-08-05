@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `SearchableList`:  Minor CSS fix for badges
+
 ## [2.4.1] - 2020-08-03
 
 ### Added
@@ -44,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Move keywords up (before: below collection, now: below summary)
   - Use Badges instead of comma separated values to better stand out
   - Shows "Worldwide" instead of a map if the spatial extent covers the whole Earth
-- `Collection` / `Item`: Changed default height from 300 to 250px
+- `Collection` / `Item`: Changed default height from 300 to 250px
 - `ModelBuilder`:
   - Show default values for parameters
   - Event `editParameters` has been renamed to `editArguments`
