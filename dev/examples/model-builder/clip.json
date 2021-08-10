@@ -77,6 +77,7 @@
   "process_graph": {
     "min": {
       "process_id": "min",
+      "namespace": "user",
       "arguments": {
         "data": [
           {
@@ -90,6 +91,7 @@
     },
     "max": {
       "process_id": "max",
+      "namespace": "user",
       "arguments": {
         "data": [
           {

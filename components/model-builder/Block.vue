@@ -81,7 +81,8 @@ export default {
             type: String
         },
         namespace: {
-            type: String
+            type: String,
+            default: null
         },
         description: {
             type: String,
@@ -139,7 +140,15 @@ export default {
             };
         },
         plainTitle() {
-            return this.name + (!this.showId ? '' : ' ' + this.id);
+            let parts = [];
+            parts.push(this.name);
+            if (this.namespace) {
+                parts.push(`@${this.namespace}`);
+            }
+            if (this.showId) {
+                parts.push(` ${this.id}`);
+            }
+            return parts.join('');
         },
         name() {
             switch(this.type) {
@@ -421,7 +430,7 @@ export default {
                 this.$parent.$emit('showParameter', this.spec);
             }
             else {
-                this.$parent.$emit('showProcess', this.processId);
+                this.$parent.$emit('showProcess', this.processId, this.namespace);
             }
         },
         async addDescription() {
@@ -554,8 +563,13 @@ export default {
             font-size: 0.9em;
             
             .blockId {
-                opacity:0.4;
-                margin-left: 2px;
+                opacity: 0.4;
+                margin-left: 0.25em;
+                font-weight: normal;
+            }
+            
+            .namespace {
+                font-weight: normal;
             }
 
             .titleText {

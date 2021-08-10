@@ -9,11 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `Collection`: Pass `worldwide` property to `spatial-extents` slot.
+- `ModelBuilder`: `showProcess` event is also passing the process namespace as second parameter.
+
+### Changed
+
+- Updated dependencies (use `ProcessRegistry` from js-commons instead of js-processgraphs)
 
 ### Fixed
 
 - `SearchableList`:  Minor CSS fix for badges
-- Minor CSS fixes for overflowing content, especially in collections
+- Minor CSS fixes for overly long content, especially in Collections
 
 ## [2.4.1] - 2020-08-03
 

@@ -3,7 +3,10 @@
 
 		<slot v-if="process.id" name="title" :v-bind="$props">
 			<a class="anchor" :name="process.id"></a>
-			<h2>{{ process.id }}</h2>
+			<h2>
+				{{ process.id }}
+				<span class="namespace" v-if="displayableNamespace"> — {{ displayableNamespace }}</span>
+			</h2>
 		</slot>
 
 		<template v-if="process.summary || process.deprecated || process.experimental">
@@ -113,6 +116,10 @@ export default {
 			type: Object,
 			default: () => ({})
 		},
+		namespace: {
+			type: String,
+			default: null
+		},
 		provideDownload: {
 			type: Boolean,
 			default: true
@@ -124,6 +131,18 @@ export default {
 		}
 	},
 	computed: {
+		displayableNamespace() {
+			let namespace = this.process.namespace || this.namespace;
+			if (namespace === 'backend') {
+				return '';
+			}
+			else if (namespace === 'user') {
+				return 'user-defined';
+			}
+			else {
+				return namespace;
+			}
+		},
 		id() {
 			return this.process.id || 'unnamed';
 		},
@@ -180,6 +199,10 @@ export default {
 @import './base.scss';
 
 .vue-component.process {
+	.namespace {
+		font-weight: normal;
+		color: #aaa;
+	}
 	.process-bar {
 		display: flex;
 		align-items: baseline;

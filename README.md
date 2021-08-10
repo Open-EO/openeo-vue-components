@@ -460,7 +460,7 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 - `editable` (boolean): Allows to edit the model (defaults to `false`). You need to use the `editArguments` event to implement parameter editing.
 - `value` / v-model (boolean): The process to show/edit (defaults to an empty object).
 - `collections` (array): Allows to add the collections from the API for better visualizations (defaults to an empty array).
-- `processes` (array|ProcessRegistry): Allows to add the processes from the API for better visualizations (defaults to an empty array). Can be given as a [`ProcessRegistry`](https://open-eo.github.io/openeo-js-processgraphs/1.2.0/ProcessRegistry.html).
+- `processes` (array|ProcessRegistry): Allows to add the processes from the API for better visualizations (defaults to an empty array). Can be given as a [`ProcessRegistry`](https://open-eo.github.io/openeo-js-commons/1.4.0/ProcessRegistry.html).
 - `parent` (object): The parent `Block` if a Model Builder is shown for a child process (defaults to `null`).
 - `parentSchema` (object): The schema for the parent parameter if a Model Builder is shown for a child process (defaults to `null`).
 - `historySize` (integer): The amount of steps for undo/redo (defaults to `30`)
@@ -471,8 +471,9 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 - `error(message, title)`: Informs about an error, e.g. to show error messages in the UI.
 	- `message` (string): The error message.
 	- `title` (string|null): Some errors provide a title, too.
-- `showProcess(id)`: Providing this event will enable a button on each process so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the process details to the user.
-	- `id` (string): ID of a process to show
+- `showProcess(id, namespace)`: Providing this event will enable a button on each process so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the process details to the user.
+	- `id` (string): ID of the process to show
+	- `namespace` (string): Namespace of the process
 - `showCollection(id)`: Providing this event will enable a button on each collection so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the collection details to the user.
 	- `id` (string): ID of a collection to show
 - `showParameter(parameter)`: Providing this event will enable a button on each parameter so that user can click it to get more details about the parameter and its schema. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
@@ -509,10 +510,11 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 - `getPositionForPageXY(x, y) -> array<number>`: Get's the local position in the model builder from the page coordinates (`pageX`, `pageY`) of a Browser event (e.g. mouse). Useful e.g. for the `position` parameters of `addPgParameter` or `addProcess`. Returns the computed x and y coordinates as array.
 	- `x` (number): The x coordinate on the page, usually the `pageX` property of the Browser event.
 	- `y` (number): The y coordinate on the page, usually the `pageY` property of the Browser event.
-- `addProcess(name, args, position) -> object`: Adds a process block to the model builder.
+- `addProcess(name, args, position, namespace) -> object`: Adds a process block to the model builder.
 	- `name` (string): The ID of the process to add.
 	- `args` (object): The arguments for the process. The keys are the parameter names and the objects are the values for the corresponding parameter. Defaults to no arguments (empty object).
 	- `position` (array|null): The position to show the newly created block. Use `getPositionForPageXY` to get the position from a Browser event. Set to `null` to place it automatically.
+	- `namespace` (string|null): The namespace of the process to add, defaults to `null`.
 
 ### `Processes`
 

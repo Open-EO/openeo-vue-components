@@ -288,11 +288,13 @@ if (a == b) console.log("Hello World");
 		},
 		"udp-array-find-nodata": {
 			"process": udp,
-			"show-graph": true
+			"show-graph": true,
+			"namespace": "user"
 		},
 		"udp-mask-scl-dilation": {
 			"process": maskScl,
-			"show-graph": true
+			"show-graph": true,
+			"namespace": "vito"
 		}
 	},
 	"processes": {
