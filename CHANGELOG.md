@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `SearchableList`:  Minor CSS fix for badges
+- `ModelBuilder`: `showProcess` event is also passing the process namespace as second parameter.
+- Updated dependencies (use `ProcessRegistry` from js-commons instead of js-processgraphs)
 
 ## [2.4.1] - 2020-08-03
 

@@ -24,7 +24,7 @@
             <Block v-for="(block) in blocks" :key="block.id"
                 :id="block.id" :type="block.type" :spec="block.spec" :state="state"
                 :selected="block.selected" :position="block.position" :origin="block.origin"
-                :process_id="block.process_id" :result="block.result" :args="block.arguments" :description="block.description" 
+                :process_id="block.process_id" :namespace="block.namespace" :result="block.result" :args="block.arguments" :description="block.description" 
                 @update="(...args) => updateBlock(block, ...args)"
                 @mounted="node => mount(block, node)" @unmounted="() => mount(block)"
                 @move="startDragBlock" />
@@ -38,8 +38,8 @@
 import Block from './model-builder/Block.vue';
 import Edge from './model-builder/Edge.vue';
 import Utils from '../utils.js';
-import { ProcessUtils } from '@openeo/js-commons';
-import { JsonSchemaValidator, ProcessGraph, ProcessRegistry, Utils as PgUtils } from '@openeo/js-processgraphs';
+import { ProcessRegistry, ProcessUtils } from '@openeo/js-commons';
+import { JsonSchemaValidator, ProcessGraph, Utils as PgUtils } from '@openeo/js-processgraphs';
 import Vue from 'vue';
 import boxIntersectsBox from 'intersects/box-box';
 import boxIntersectsLine from 'intersects/box-line';
@@ -840,12 +840,13 @@ export default {
             return [x, y];
         },
 
-        addProcess(name, args = {}, position = [], node = {}) {
-            return this.addBlock(Object.assign({
-                process_id: name,
+        addProcess(process_id, args = {}, position = [], namespace = null) {
+            return this.addBlock({
+                process_id,
+                namespace,
                 arguments: args,
                 position
-            }, node));
+            });
         },
 
         addBlock(node, id = null) {
@@ -865,7 +866,7 @@ export default {
                 result: node.result || false
             };
             if (this.processRegistry) {
-                block.spec = this.processRegistry.get(node.process_id);
+                block.spec = this.processRegistry.get(node.process_id, node.namespace);
             }
 
             var size = this.getBlockSize(block);
@@ -1179,6 +1180,9 @@ export default {
                 }
                 if (copy.result !== true) {
                     delete copy.result;
+                }
+                if (!copy.namespace) {
+                    delete copy.namespace;
                 }
                 let nodeId = block.id.substr(1);
                 data.process_graph[nodeId] = copy;
