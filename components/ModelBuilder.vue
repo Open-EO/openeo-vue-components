@@ -1262,8 +1262,7 @@ export default {
                     this.perfectScale();
                 }
 
-                await this.$nextTick();
-                this.updateHiddenParameterRefEdges();
+                this.$nextTick(() => this.updateHiddenParameterRefEdges());
 
                 return true;
             }, options);
@@ -1289,7 +1288,6 @@ export default {
 
                 await this.addPgParameter(params[i], origin, position);
             }
-            await this.$nextTick();
         },
 
         async addPgParameter(param, origin = 'user', position = null) {
@@ -1363,7 +1361,6 @@ export default {
         },
 
         async importNodes(nodes, x = 0, y = 0, imported = []) {
-            let isInitialCall = imported.length === 0;
             let nextNodes = [];
             let maxX = 0;
             for(let node of nodes) {
@@ -1391,10 +1388,6 @@ export default {
             }
             if (nextNodes.length) {
                 await this.importNodes(nextNodes, maxX + MARGIN, 0, imported);
-            }
-            // Wait for all nodes being rendered
-            if (isInitialCall) {
-                await this.$nextTick();
             }
         },
 

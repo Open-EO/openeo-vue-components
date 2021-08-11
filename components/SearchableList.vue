@@ -206,7 +206,7 @@ export default {
 					index: index,
 					experimental: entry.experimental,
 					deprecated: entry.deprecated,
-					data: entry
+					data: null // Fill later, see below
 				};
 
 				if (typeof this.identifierKey === 'string' && typeof entry[this.identifierKey] === 'string') {
@@ -222,7 +222,11 @@ export default {
 					summary.keywords = [];
 				}
 
-				summaries.push(Vue.observable(summary));
+				// Set the data property only after the call to Vue.observable for a performance increase.
+				// Making the whole object in data observable is pretty slow as they can get pretty massive in size.
+				let observable = Vue.observable(summary);
+				observable.data = entry;
+				summaries.push(observable);
 			}
 			if (this.sort) {
 				summaries.sort((a,b) => Utils.compareStringCaseInsensitive(a.identifier, b.identifier));
