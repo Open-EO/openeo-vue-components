@@ -162,7 +162,7 @@ Visualizes a single collection following the STAC-based collection description.
 - `title`: HTML to display as the main heading. The component properties are passed through as slot properties with the same names.
 - `before-description`: HTML to display before the description. The component properties are passed through as slot properties with the same names.
 - `end`: HTML to display after the component. The component properties are passed through as slot properties with the same names.
-- `spatial-extents`: HTML to display the spatial extents, e.g. a map. The slot property `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates. The component property `mapOptions` is also available as slot property.
+- `spatial-extents`: HTML to display the spatial extents, e.g. a map. The slot property `extents` provides an array of arrays, each containing four elements (west, south, east, north) with the WGS84 coordinates. The properties `mapOptions` and `worldwide` are also available as slot property.
 - `temporal-extents`: HTML to display the temporal extents. The slot property `extents` provides an array of arrays, each with two elements (start, end). Both are RFC3339 compatible `date-time`, or `null` to indicate an open range.
 
 

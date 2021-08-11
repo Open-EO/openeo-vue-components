@@ -42,7 +42,7 @@
 		<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
 			<div v-if="boundingBoxes.length">
 				<h3>Spatial Extent</h3>
-				<slot name="spatial-extents" :extents="boundingBoxes" :mapOptions="mapOptions">
+				<slot name="spatial-extents" :extents="boundingBoxes" :mapOptions="mapOptions" :worldwide="worldwide">
 					<span v-if="worldwide" class="worldwide"><i class="fas fa-globe"></i> Worldwide</span>
 					<div v-else class="map" ref="mapContainer">
 						<template v-if="!map">

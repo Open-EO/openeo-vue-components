@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `Collection`: Pass `worldwide` property to `spatial-extents` slot.
+
 ### Fixed
 
 - `SearchableList`:  Minor CSS fix for badges
