@@ -404,7 +404,7 @@ class Utils extends CommonUtils {
                 if (html) {
                     pStr = `<span class="param-optional">${req}</span><span class="data-type">${ Utils.htmlentities(pType) }</span> <span class="param-name">${ Utils.htmlentities(p.name) }</span>`;
                     if (pDefault) {
-                        if (pDefault.length > 15) {
+                        if (pDefault.length > 30) {
                             pDefault = `<span title="${ Utils.htmlentities(pDefault) }">…</span>`;
                         }
                         pStr += ` = <span class="param-argument">${pDefault}</span>`;
