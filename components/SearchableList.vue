@@ -317,7 +317,6 @@ export default {
 
 					&.inline {
 						display: inline;
-						overflow: auto;
 					}
 				}
 				&.experimental strong {
