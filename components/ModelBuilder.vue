@@ -29,7 +29,14 @@
                 @mounted="node => mount(block, node)" @unmounted="() => mount(block)"
                 @move="startDragBlock" />
         </div>
-        <div class="scaleInfo">Zoom in for more details</div>
+        <div v-if="state.scale < 0.7 || showZoomInfo" class="zoomInfo">
+            <div v-if="state.scale < 0.7">
+                Zoom in for more details.
+            </div>
+            <div v-if="showZoomInfo">
+                Zoom with <kbd>STRG</kbd> or <kbd>Meta</kbd> key and the mouse wheel.
+            </div>
+        </div>
         <ParameterViewer v-if="parameterViewer" v-bind="parameterViewer" @close="parameterViewer = null" />
     </div>
 </template>
@@ -106,6 +113,10 @@ export default {
         historySize: {
             type: Number,
             default: 30
+        },
+        explicitZoom: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -140,6 +151,8 @@ export default {
             hasFocus: false,
             linkingLine: null,
             parameterViewer: null,
+
+            showZoomInfo: this.explicitZoom,
             
             // State specific to this blocks instance including all children
             state: getDefaultState(this)
@@ -618,13 +631,16 @@ export default {
             if (this.parameterViewer) {
                 return;
             }
-            let mouse = this.getMousePos(event);
-            var dX = mouse[0] - this.state.center[0];
-            var dY = mouse[1] - this.state.center[1];
-            var deltaScale = Math.pow(1.1, Math.sign(event.deltaY)*-1);
-            this.moveCenter(-dX*(deltaScale-1), -dY*(deltaScale-1));
-            this.state.scale *= deltaScale;
-            event.preventDefault();
+            if (!this.explicitZoom || this.hasFocus || event.ctrlKey || event.metaKey) { // STRG for Win/Linux, meta/cmd for Mac
+                let mouse = this.getMousePos(event);
+                var dX = mouse[0] - this.state.center[0];
+                var dY = mouse[1] - this.state.center[1];
+                var deltaScale = Math.pow(1.1, Math.sign(event.deltaY)*-1);
+                this.moveCenter(-dX*(deltaScale-1), -dY*(deltaScale-1));
+                this.state.scale *= deltaScale;
+                event.preventDefault();
+                this.showZoomInfo = false;
+            }
         },
         getMousePos(event) {
             let root = this.$refs.div.getBoundingClientRect();
@@ -1504,14 +1520,10 @@ class BlocksProcess {
     &.compact .editDescription, 
     &.scale_xs .blockicon,
     &.scale_s .blockicon,
-    &.scale_m .scaleInfo,
-    &.scale_l .scaleInfo,
-    &.scale_xl .scaleInfo,
     &.scale_xs .connector .text {
         display: none;
     }
-    &.scale_xs .scaleInfo,
-    &.scale_s .scaleInfo {
+    .zoomInfo {
         position: absolute;
         top: 0;
         right: 0;

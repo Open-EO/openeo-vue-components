@@ -252,7 +252,8 @@ if (a == b) console.log("Hello World");
 		"mask-scl-dilation": {
 			"id": "mask",
 			"editable": true,
-			"value": maskScl
+			"value": maskScl,
+			"explicit-zoom": true
 		},
 		"clip": {
 			"id": "clip",

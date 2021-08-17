@@ -13,7 +13,7 @@
 			<div v-else-if="param.isObject && param.value.from_parameter" class="externalData fromArgument">
 				<em>Value of process parameter <tt>#{{ param.value.from_parameter }}</tt></em>
 			</div>
-			<ModelBuilder v-else-if="param.isObject && param.value.process_graph" :id="param.name" :value="param.value" :parent="parent" />
+			<ModelBuilder v-else-if="param.isObject && param.value.process_graph" :id="param.name" :value="param.value" :parent="parent" :explicitZoom="true" />
 			<ObjectTree v-else :data="param.value" />
 			<div v-if="param.description" class="description">
 				<i class="fas fa-info-circle"></i>

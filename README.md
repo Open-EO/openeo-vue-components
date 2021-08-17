@@ -462,8 +462,9 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 - `collections` (array): Allows to add the collections from the API for better visualizations (defaults to an empty array).
 - `processes` (array|ProcessRegistry): Allows to add the processes from the API for better visualizations (defaults to an empty array). Can be given as a [`ProcessRegistry`](https://open-eo.github.io/openeo-js-commons/1.4.0/ProcessRegistry.html).
 - `parent` (object): The parent `Block` if a Model Builder is shown for a child process (defaults to `null`).
-- `parentSchema` (object): The schema for the parent parameter if a Model Builder is shown for a child process (defaults to `null`).
-- `historySize` (integer): The amount of steps for undo/redo (defaults to `30`)
+- `parentSchema` / `parent-schema` (object): The schema for the parent parameter if a Model Builder is shown for a child process (defaults to `null`).
+- `historySize` / `history-size` (integer): The amount of steps for undo/redo (defaults to `30`)
+- `explicitZoom` / `explicit-zoom` (boolean): If set to `true`: The control zooms only if the control has focus or one of the keys `STRG` (Win/*nix) or `Meta` (Mac) has been pressed. Default to `false`, which always scrolls on mouse wheel interaction over the control.
 
 **Events:**
 

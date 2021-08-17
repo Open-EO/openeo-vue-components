@@ -6,12 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.5.0] - 2020-08-13
+## [2.5.0] - 2020-08-19
 
 ### Added
 
 - `Collection`: Pass `worldwide` property to `spatial-extents` slot.
-- `ModelBuilder`: `showProcess` event is also passing the process namespace as second parameter.
+- `ModelBuilder`:
+  - `showProcess` event is also passing the process namespace as second parameter.
+  - New property `explicitZoom` to zoom only when in focus or when the STRG / Meta key is pressed.
 
 ### Changed
 

@@ -85,7 +85,7 @@
 			<h3>Processing Instructions</h3>
 			<div class="graph">
 				<slot name="process-graph" :v-bind="$props">
-					<ModelBuilder :id="id" :value="process" />
+					<ModelBuilder :id="id" :value="process" :explicitZoom="true" />
 				</slot>
 			</div>
 		</section>
