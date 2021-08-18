@@ -16,7 +16,12 @@ body {
 	outline: 1px solid black;
 }
 
+body.wc {
+	overflow: hidden;
+}
+
 body.wc .component {
 	margin: 0;
 	height: 100%;
+	overflow: auto;
 }
