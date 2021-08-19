@@ -1293,21 +1293,28 @@ export default {
                 return;
             }
 
-            // Remove existing parameters from the given origin
-            if (clear) {
-                this.blocks = this.blocks.filter(b => b.type !== 'parameter' || b.origin !== origin);
-            }
+            let options = {
+                undoOnError: false,
+                saveHistory: false,
+                propagate: false
+            };
+            return await this.startTransaction(async () => {
+                // Remove existing parameters from the given origin
+                if (clear) {
+                    this.blocks = this.blocks.filter(b => b.type !== 'parameter' || b.origin !== origin);
+                }
 
-            let size = this.getBlockSize({}); // Estimate base size for an empty block
-            let position = [0,0];
-            for(var i in params) {
-                position = [
-                    -size[0] - MARGIN,
-                    i * (size[1] + MARGIN)
-                ];
+                let size = this.getBlockSize({}); // Estimate base size for an empty block
+                let position = [0,0];
+                for(var i in params) {
+                    position = [
+                        -size[0] - MARGIN,
+                        i * (size[1] + MARGIN)
+                    ];
 
-                await this.addPgParameter(params[i], origin, position);
-            }
+                    await this.addPgParameter(params[i], origin, position);
+                }
+            }, options);
         },
 
         async addPgParameter(param, origin = 'user', position = null) {

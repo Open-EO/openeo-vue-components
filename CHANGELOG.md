@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.5.0] - 2020-08-19
+## [2.5.1] - 2020-08-19
+
+### Fixed
+
+- `ModelBuilder`:  Incorrectly sent an update event when adding (importing) process parameters, which resulted in empty processes
+
+## [2.5.0] - 2020-08-18
 
 ### Added
 
@@ -427,7 +433,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.5.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.5.1...HEAD
+[2.5.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.5.0...v2.5.1
 [2.5.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.4.1...v2.5.0
 [2.4.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.3.4...v2.4.0
