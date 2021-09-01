@@ -1,5 +1,6 @@
 import Utils from '../../utils';
 import { Versions } from '@openeo/js-commons';
+import StacMigrate from '@radiantearth/stac-migrate';
 
 const IMAGE_MEDIA_TYPES = ['image/apng', 'image/gif', 'image/png', 'image/jpeg', 'image/webp'];
 const IMAGE_EXTENSIONS = ['gif', 'png', 'jpg', 'jpeg', 'webp'];
@@ -41,6 +42,10 @@ export default {
 		};
 	},
 	computed: {
+		stac() {
+			let cloned = Utils.deepClone(this.data);
+			return StacMigrate.stac(cloned);
+		},
 		leafletOptions() {
 			return {  // keep in sync with Readme
 				height: this.mapOptions.height || "250px",
@@ -49,27 +54,14 @@ export default {
 				scrollWheelZoom: this.mapOptions.scrollWheelZoom === undefined ? false : this.mapOptions.scrollWheelZoom
 			}
 		},
-		assetLinks() {
-			if (!Utils.isObject(this.data.assets)) {
-				return [];
-			}
-			return Object.values(this.data.assets)
-				// Remove all thumbnails (covered by separate thumbnails viewer)
-				.filter(a => !this.assetIsImage(a))
-				// Convert from asset to links so that LinkList can be used
-				.map(a => {
-					if (Array.isArray(a.role) && a.roles.length > 0) {
-						a.rel = a.roles.join(' ');
-						delete a.roles;
-					}
-					return a;
-				});
-		},
 		thumbnails() {
-			if (!Utils.isObject(this.data.assets)) {
+			if (!Utils.isObject(this.stac.assets)) {
 				return [];
 			}
-			return Object.values(this.data.assets).filter(this.assetIsImage);
+			return Object.values(this.stac.assets).filter(this.assetIsImage);
+		},
+		hasAssets() {
+			return Utils.size(this.stac.assets) > 0;
 		}
 	},
 	watch: {

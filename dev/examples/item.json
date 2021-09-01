@@ -48,7 +48,7 @@
 		"description": "This is the result for batch job `Test Job`, processed on Cool Cloud Corp.",
 		"platform": "landsat-8",
 		"instruments": ["oli", "tirs"],
-		"datetime": "2018-10-01T01:08:32.033Z",
+		"datetime": "2018-10-01T01:08:32Z",
 		"gsd": 30,
 		"view:sun_azimuth": 168.8989761,
 		"view:sun_elevation": 26.32596431,
@@ -130,22 +130,49 @@
 		"ANG": {
 			"href": "https://landsat-pds.s3.amazonaws.com/c1/L8/107/018/LC08_L1TP_107018_20181001_20181001_01_RT/LC08_L1TP_107018_20181001_20181001_01_RT_ANG.txt",
 			"title": "Angle coefficients file",
-			"type": "text/plain"
+			"created": "2018-10-01T01:08:32Z",
+			"type": "text/plain",
+			"description": "Angle coefficients file"
 		},
 		"B1": {
 			"href": "https://landsat-pds.s3.amazonaws.com/c1/L8/107/018/LC08_L1TP_107018_20181001_20181001_01_RT/LC08_L1TP_107018_20181001_20181001_01_RT_B1.TIF",
 			"type": "image/tiff; application=geotiff",
-			"title": "Band 1 (coastal)"
+			"title": "Band 1 (coastal)",
+			"created": "2018-10-01T01:08:32Z",
+			"eo:bands": [
+				{
+					"name": "B1",
+					"common_name": "coastal",
+					"center_wavelength": 0.44,
+					"full_width_half_max": 0.02
+				}
+			]
 		},
 		"B2": {
 			"href": "https://landsat-pds.s3.amazonaws.com/c1/L8/107/018/LC08_L1TP_107018_20181001_20181001_01_RT/LC08_L1TP_107018_20181001_20181001_01_RT_B2.TIF",
 			"type": "image/tiff; application=geotiff",
-			"title": "Band 2 (blue)"
+			"title": "Band 2 (blue)",
+			"eo:bands": [
+				{
+					"name": "B2",
+					"common_name": "blue",
+					"center_wavelength": 0.48,
+					"full_width_half_max": 0.06
+				}
+			]
 		},
 		"B3": {
 			"href": "https://landsat-pds.s3.amazonaws.com/c1/L8/107/018/LC08_L1TP_107018_20181001_20181001_01_RT/LC08_L1TP_107018_20181001_20181001_01_RT_B3.TIF",
 			"type": "image/tiff; application=geotiff",
-			"title": "Band 3 (green)"
+			"title": "Band 3 (green)",
+			"eo:bands": [
+				{
+					"name": "B3",
+					"common_name": "green",
+					"center_wavelength": 0.56,
+					"full_width_half_max": 0.06
+				}
+			]
 		}
 	},
 	"links": [

@@ -2,26 +2,26 @@
 	<article class="vue-component stac collection">
 
 		<slot name="title" v-bind="$props">
-			<a class="anchor" :name="data.id"></a>
-			<h2>{{ data.id }}</h2>
+			<a class="anchor" :name="stac.id"></a>
+			<h2>{{ stac.id }}</h2>
 		</slot>
 
-		<summary v-if="data.title">{{ data.title }}</summary>
+		<summary v-if="stac.title">{{ stac.title }}</summary>
 
-		<section class="keywords" v-if="hasElements(data.keywords)">
+		<section class="keywords" v-if="hasElements(stac.keywords)">
 			<ul class="badges">
-				<li class="badge" v-for="keyword in data.keywords" :key="keyword">{{ keyword }}</li>
+				<li class="badge" v-for="keyword in stac.keywords" :key="keyword">{{ keyword }}</li>
 			</ul>
 		</section>
 
 		<slot name="before-description" v-bind="$props"></slot>
 
-		<section class="description" v-if="data.description">
+		<section class="description" v-if="stac.description">
 			<h3>Description</h3>
 
-			<Description :description="data.description"></Description>
+			<Description :description="stac.description"></Description>
 
-			<DeprecationNotice v-if="data.deprecated" entity="collection" />
+			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
 		</section>
 
 		<section class="license">
@@ -59,10 +59,10 @@
 				<slot name="temporal-extents" :extents="temporalIntervals.length > 0">
 					<template v-if="temporalIntervals.length > 1">
 						<ul v-for="(interval, i) in temporalIntervals" :key="i">
-							<li v-if="i !== 0" v-html="stac.formatTemporalExtent(interval)" />
+							<li v-if="i !== 0" v-html="formatters.formatTemporalExtent(interval)" />
 						</ul>
 					</template>
-					<span v-else v-html="stac.formatTemporalExtent(temporalIntervals[0])" />
+					<span v-else v-html="formatters.formatTemporalExtent(temporalIntervals[0])" />
 				</slot>
 			</div>
 		</section>
@@ -70,7 +70,7 @@
 		<section class="providers" v-if="hasProviders">
 			<h3>Providers</h3>
 			<ol>
-				<li v-for="provider in data.providers" :key="provider.name">
+				<li v-for="provider in stac.providers" :key="provider.name">
 					<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
 					<template v-else>{{ provider.name }}</template>
 					<template v-if="hasElements(provider.roles)">
@@ -100,8 +100,8 @@
 					<div class="tabular">
 						<label>Labels:</label>
 						<div v-if="dim.extent" class="value">
-							<span v-if="dim.type === 'temporal'" v-html="stac.formatTemporalExtent(dim.extent)" />
-							<span v-else v-html="stac.formatExtent(dim.extent)" />
+							<span v-if="dim.type === 'temporal'" v-html="formatters.formatTemporalExtent(dim.extent)" />
+							<span v-else v-html="formatters.formatExtent(dim.extent)" />
 						</div>
 						<ul v-else-if="Array.isArray(dim.values) && dim.values.length > 0" class="value comma-separated-list">
 							<li v-for="value in dim.values" :key="value">{{ value }}</li>
@@ -119,8 +119,8 @@
 					<div class="tabular" v-if="(typeof dim.reference_system !== 'undefined')">
 						<label>Reference System:</label>
 						<div class="value">
-							<div class="epsg" v-if="(typeof dim.reference_system === 'number')" v-html="stac.formatEPSG(dim.reference_system)" />
-							<div class="wkt2" v-else-if="(typeof dim.reference_system === 'string')" v-html="stac.formatWKT2(dim.reference_system)" />
+							<div class="epsg" v-if="(typeof dim.reference_system === 'number')" v-html="formatters.formatEPSG(dim.reference_system)" />
+							<div class="wkt2" v-else-if="(typeof dim.reference_system === 'string')" v-html="formatters.formatWKT2(dim.reference_system)" />
 							<ObjectTree class="projjson" v-else-if="(typeof dim.reference_system === 'object')" :data="dim.reference_system" />
 							<template v-else>{{ dim.reference_system }}</template>
 						</div>
@@ -129,14 +129,17 @@
 			</ul>
 		</section>
 
-		<StacFields class="summaries" :metadata="data" />
+		<StacFields class="summaries" type="Collection" :metadata="data" />
 
-		<section class="assets">
-			<LinkList :links="assetLinks" heading="Assets" headingTag="h3" />
+		<section class="assets" v-if="hasAssets">
+			<h3>Assets</h3>
+			<ul class="list">
+				<StacAsset v-for="(asset, id) in stac.assets" :key="id" :asset="asset" :id="id" :context="data" />
+			</ul>
 		</section>
 
 		<section class="links">
-			<LinkList :links="data.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
+			<LinkList :links="stac.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
 		</section>
 
 		<slot name="end" v-bind="$props"></slot>
@@ -148,12 +151,14 @@
 import Utils from '../utils';
 import { Formatters } from '@radiantearth/stac-fields';
 import StacMixin from './internal/StacMixin.js';
+import StacAsset from './internal/StacAsset.vue';
 import { isoDuration, en } from '@musement/iso-duration';
 
 export default {
 	name: 'Collection',
 	components: {
-		ObjectTree: () => import('./ObjectTree.vue')
+		ObjectTree: () => import('./ObjectTree.vue'),
+		StacAsset
 	},
 	mixins: [StacMixin],
 	// Mixins don't work properly in web components,
@@ -161,7 +166,7 @@ export default {
 	props: {...StacMixin.props},
 	data() {
 		return {
-			stac: Formatters
+			formatters: Formatters
 		};
 	},
 	computed: {
@@ -169,14 +174,14 @@ export default {
 			return this.boundingBoxes.length > 0 && !this.worldwide;
 		},
 		temporalIntervals() {
-			let e = this.data.extent;
+			let e = this.stac.extent;
 			if (Utils.isObject(e) && Utils.isObject(e.temporal) && Utils.size(e.temporal.interval) > 0) {
 				return e.temporal.interval.filter(interval => Array.isArray(interval) && interval.length >= 2 && interval.filter(i => typeof i === 'string').length > 0);
 			}
 			return [];
 		},
 		boundingBoxes() {
-			let e = this.data.extent;
+			let e = this.stac.extent;
 			if (Utils.isObject(e) && Utils.isObject(e.spatial) && Utils.size(e.spatial.bbox) > 0) {
 				return e.spatial.bbox.filter(bbox => Array.isArray(bbox) && bbox.length >= 4);
 			}
@@ -190,17 +195,17 @@ export default {
 			return (Math.round(bbox[0]) == -180 && Math.round(bbox[1]) == -90 && Math.round(bbox[2]) == 180 && Math.round(bbox[3]) == 90);
 		},
 		hasProviders() {
-			return Utils.size(this.data.providers) > 0;
+			return Utils.size(this.stac.providers) > 0;
 		},
 		hasDimensions() {
-			return Utils.size(this.data['cube:dimensions']) > 0;
+			return Utils.size(this.stac['cube:dimensions']) > 0;
 		},
 		license() {
-			if (typeof this.data.license !== 'string' || this.data.license.length === 0) {
+			if (typeof this.stac.license !== 'string' || this.stac.license.length === 0) {
 				return false;
 			}
 			
-			return Formatters.formatLicense(this.data.license, null, null, this.data);
+			return Formatters.formatLicense(this.stac.license, null, null, this.stac);
 		}
 	},
 	methods: {

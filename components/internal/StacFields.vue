@@ -2,52 +2,42 @@
 	<section class="vue-component stac stac-fields metadata">
 		<template v-for="group in fields">
 			<component :is="headingTag" v-html="group.label || 'General'" :key="group.extension" />
-			<div v-for="(prop, field) in group.properties" :key="group.extension + field" :id="'field_' + field" class="tabular" :class="{wrap: Boolean(prop.custom || prop.items)}">
-				<label :title="field" v-html="prop.label" />
-				<div class="value">
-					<slot :name="field" :prop="prop" :field="field">
-						<table v-if="prop.items" class="table">
-							<thead>
-								<tr>
-									<th v-if="!Array.isArray(prop.formatted)">&nbsp;</th>
-									<th v-for="col in prop.itemOrder" :key="col" v-html="prop.items[col].label"></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="(row, r) in prop.formatted" :key="r">
-									<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
-									<td v-for="col in prop.itemOrder" :key="`${col}_${r}`" v-html="row[col]" />
-								</tr>
-							</tbody>
-						</table>
-						<Process v-else-if="field === 'card4l:processing_chain'" class="inline" :process="prop.value" :provideDownload="false" :showGraph="true" />
-						<div class="formatted" v-else-if="prop.formatted" v-html="prop.formatted" />
-						<template v-else>{{ prop.value }}</template>
-					</slot>
+			<section class="group" :key="`section_${group.extension}`">
+				<div v-for="(prop, field) in group.properties" :key="group.extension + field" :id="'field_' + field" class="tabular" :class="{wrap: Boolean(prop.custom || prop.items)}">
+					<label :title="field" v-html="prop.label" />
+					<div class="value">
+						<slot :name="field" :prop="prop" :field="field">
+							<table v-if="prop.items" class="table">
+								<thead>
+									<tr>
+										<th v-if="!Array.isArray(prop.formatted)">&nbsp;</th>
+										<th v-for="col in prop.itemOrder" :key="col" v-html="prop.items[col].label"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(row, r) in prop.formatted" :key="r">
+										<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
+										<td v-for="col in prop.itemOrder" :key="`${col}_${r}`" v-html="row[col]" />
+									</tr>
+								</tbody>
+							</table>
+							<Process v-else-if="field === 'card4l:processing_chain'" class="inline" :process="prop.value" :provideDownload="false" :showGraph="true" />
+							<div class="formatted" v-else-if="prop.formatted" v-html="prop.formatted" />
+							<template v-else>{{ prop.value }}</template>
+						</slot>
+					</div>
 				</div>
-			</div>
+			</section>
 		</template>
 	</section>
 </template>
 
 <script>
 import StacFields from '@radiantearth/stac-fields';
-import StacMigrate from '@radiantearth/stac-migrate';
 import Utils from '../../utils'
 
 StacFields.Registry.externalRenderer = true;
-StacFields.Registry.addMetadataFields({
-	"eo:platform": {
-		alias: "platform"
-	},
-	"eo:instrument": {
-		alias: "instruments"
-	},
-	"gee:type": {
-		label: "Collection Type",
-		formatter: StacFields.label
-	}
-});
+//StacFields.Registry.addMetadataFields({});
 
 export default {
 	name: 'StacFields',
@@ -66,6 +56,14 @@ export default {
 		ignore: {
 			type: Array,
 			default: () => ([])
+		},
+		type: {
+			type: String,
+			required: true
+		},
+		context: {
+			type: Object,
+			default: () => ({})
 		}
 	},
 	computed: {
@@ -75,14 +73,9 @@ export default {
 			}
 			return null;
 		},
-		isCollection() {
-			return (this.metadata.type !== 'Feature');
-
-		},
 		fields() {
-			let data = JSON.parse(JSON.stringify(this.metadata));
-			if (this.isCollection) {
-				data = StacMigrate.collection(data);
+			if (this.type === 'Collection') {
+				let data = Utils.deepClone(this.metadata);
 				if (!Utils.isObject(data.summaries)) {
 					data.summaries = {};
 				}
@@ -94,20 +87,18 @@ export default {
 				}
 				return StacFields.formatSummaries(data, this.ignoreFn);
 			}
+			else if (this.type === 'Item') {
+				return StacFields.formatItemProperties(this.metadata, this.ignoreFn);
+			}
+			else if (this.type === 'Asset') {
+				return StacFields.formatAsset(this.metadata, this.context, this.ignoreFn);
+			}
 			else {
-				return StacFields.formatItemProperties(StacMigrate.item(data), this.ignoreFn);
+				throw new Error('Not implemented yet');
 			}
 		}
 	},
 	methods: {
-		normalize(data) {
-			if (this.isCollection) {
-				return data;
-			}
-			else {
-				return [data];
-			}
-		},
 		label(key, specs = {}) {
 			return StacFields.label(key, specs);
 		}
@@ -118,6 +109,9 @@ export default {
 <style lang="scss">
 @import '../base.scss';
 .vue-component.stac-fields {
+	> .group {
+		margin-left: 1em;
+	}
 	.table {
 		width: 100%;
 		border-collapse: collapse;

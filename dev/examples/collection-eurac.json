@@ -88,8 +88,6 @@
     }
   },
   "summaries": {
-    "rows": 8332,
-    "columns": 10240,
     "eo:cloud cover": {
       "min": 0,
       "max": 0

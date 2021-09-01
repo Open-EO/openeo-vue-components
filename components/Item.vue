@@ -2,7 +2,7 @@
 	<article class="vue-component stac item">
 
 		<slot name="title" v-bind="$props">
-			<a class="anchor" :name="data.id"></a>
+			<a class="anchor" :name="stac.id"></a>
 			<h2>{{ title }}</h2>
 		</slot>
 
@@ -26,26 +26,29 @@
 		<section class="metadata properties">
 			<h3 v-if="thumbnails.length">Metadata</h3>
 
-			<slot v-if="data.geometry || Array.isArray(data.bbox)" name="location" :geometry="data.geometry" :bbox="data.bbox" :mapOptions="mapOptions">
+			<slot v-if="stac.geometry || Array.isArray(stac.bbox)" name="location" :geometry="stac.geometry" :bbox="stac.bbox" :mapOptions="mapOptions">
 				<div class="tabular wrap">
 					<label>Location</label>
 					<div class="value map" ref="mapContainer">
 						<template v-if="!map">
-							Latitudes: {{ data.bbox[1] }} / {{ data.bbox[3] }}, Longitudes: {{ data.bbox[0] }} / {{ data.bbox[2] }}
+							Latitudes: {{ stac.bbox[1] }} / {{ stac.bbox[3] }}, Longitudes: {{ stac.bbox[0] }} / {{ stac.bbox[2] }}
 						</template>
 					</div>
 				</div>
 			</slot>
 
-			<StacFields :metadata="data" headingTag="h4" :ignore="ignoredFields" />
+			<StacFields type="Item" :metadata="data" headingTag="h4" :ignore="ignoredFields" />
 		</section>
 
-		<section class="assets">
-			<LinkList :links="assetLinks" heading="Assets" headingTag="h3" />
+		<section class="assets" v-if="hasAssets">
+			<h3>Assets</h3>
+			<ul class="list">
+				<StacAsset v-for="(asset, id) in stac.assets" :key="id" :asset="asset" :id="id" :context="data" />
+			</ul>
 		</section>
 
 		<section class="links">
-			<LinkList :links="data.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
+			<LinkList :links="stac.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
 		</section>
 
 		<slot name="end" v-bind="$props"></slot>
@@ -54,12 +57,16 @@
 </template>
 
 <script>
+import StacAsset from './internal/StacAsset.vue';
 import StacMixin from './internal/StacMixin.js';
 import Utils from '../utils';
 
 export default {
 	name: 'Item',
 	mixins: [StacMixin],
+	components: {
+		StacAsset
+	},
 	// Mixins don't work properly in web components,
 	// see https://github.com/vuejs/vue-web-component-wrapper/issues/30
 	props: {...StacMixin.props},
@@ -70,26 +77,26 @@ export default {
 	},
 	computed: {
 		properties() {
-			if (Utils.isObject(this.data.properties)) {
-				return this.data.properties;
+			if (Utils.isObject(this.stac.properties)) {
+				return this.stac.properties;
 			}
 			return {};
 		},
 		title() {
 			if (this.properties.title) {
-				return `${this.properties.title} (${this.data.id})`;
+				return `${this.properties.title} (${this.stac.id})`;
 			}
 			else {
-				return this.data.id;
+				return this.stac.id;
 			}
 		},
 		showMap() {
-			return Boolean(this.data.geometry);
+			return Boolean(this.stac.geometry);
 		}
 	},
 	methods: {
 		addFeatures() {
-			let geom = this.map.leaflet.geoJSON(this.data);
+			let geom = this.map.leaflet.geoJSON(this.stac);
 			geom.setStyle({
 				color: '#3388ff',
 				fillOpacity: 0.2

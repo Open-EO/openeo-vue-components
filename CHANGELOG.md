@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.2] - 2020-09-01
+
+### Added
+
+- `Collection` / `Item`: Show more details for STAC assets
+
+### Changed
+
+- Upgraded to stac-fields v1.0.0-beta.8, which includes several updates and bug fixes
+
+### Fixed
+
+- `Collection` / `Item`: Correctly migrate all STAC data
+
 ## [2.5.1] - 2020-08-19
 
 ### Fixed
