@@ -45,7 +45,7 @@
 import Block from './model-builder/Block.vue';
 import Edge from './model-builder/Edge.vue';
 import Utils from '../utils.js';
-import { ProcessRegistry, ProcessUtils } from '@openeo/js-commons';
+import { ProcessRegistry } from '@openeo/js-commons';
 import { JsonSchemaValidator, ProcessGraph, Utils as PgUtils } from '@openeo/js-processgraphs';
 import Vue from 'vue';
 import boxIntersectsBox from 'intersects/box-box';
@@ -422,30 +422,25 @@ export default {
 
             let hiddenRefs = {};
             for(let process of this.processBlocks) {
-                for (let param in process.arguments) {
-                    let value = process.arguments[param];
+                for (let argName in process.arguments) {
+                    let value = process.arguments[argName];
                     if (!Utils.isObject(value) || !Utils.isObject(value.process_graph)) {
-                        // Process can only have hidden refs it it contains a process graph
-                        continue;
+                        continue; // Process can only have hidden refs it it contains a process graph
                     }
                     
                     let refs = PgUtils.getRefs(value, true, true).filter(ref => typeof ref.from_parameter !== 'undefined');
                     for(let ref of refs) {
                         try {
-                            let parameter2 = process.$el.getBlockParameter(param);
-
-                            // Skip if the parameter usage is scoped (i.e. defined as process parameetr for the children)
-                            let cbParams = ProcessUtils.getCallbackParameters(parameter2).map(cbParam => cbParam.name);
-                            if (cbParams.includes(ref.from_parameter)) {
-                                continue;
+                            if (process.$el.isParameterScoped(argName, ref.from_parameter)) {
+                                continue; // Skip if the parameter usage is scoped (i.e. defined as process parameetr for the children)
                             }
-        
                             let parameter = this.getPgParameterById('$' + ref.from_parameter);
                             if (!parameter) {
                                 continue; // Skip if parameter can't be found
                             }
                             let parameter1 = parameter.$el.getBlockParameter('output');
-                            let id = `${parameter.id}->${process.id}:${param}`;
+                            let parameter2 = process.$el.getBlockParameter(argName);
+                            let id = `${parameter.id}->${process.id}:${argName}`;
                             if (parameter1 && parameter2) {
                                 if (this.hiddenParameterRefEdges[id]) {
                                     hiddenRefs[id] = this.hiddenParameterRefEdges[id];

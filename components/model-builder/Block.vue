@@ -38,7 +38,7 @@
 <script>
 import BlockParameter from './BlockParameter.vue';
 import Utils from '../../utils.js';
-import { ProcessParameter } from '@openeo/js-commons';
+import { ProcessParameter, ProcessUtils } from '@openeo/js-commons';
 import { Utils as PgUtils } from '@openeo/js-processgraphs';
 import Config from './config.js';
 
@@ -504,16 +504,25 @@ export default {
             }
             return null;
         },
+
+        isParameterScoped(parameterName, referenceName) {
+            console.log(parameterName, referenceName);
+            let parameterBlock = this.getBlockParameter(parameterName);
+            let cbParams = ProcessUtils.getCallbackParameters(parameterBlock).map(cbParam => cbParam.name);
+            return cbParams.includes(referenceName);
+        },
+
         hiddenParameterRef(parameterBlock) {
             if (this.type !== 'process') {
                 return null;
             }
-            for (let param in this.args) {
-                let value = this.args[param];
+            let globalParam = parameterBlock.id.substr(1);
+            for (let argName in this.args) {
+                let value = this.args[argName];
                 if (Utils.isObject(value) && Utils.isObject(value.process_graph)) {
                     let refs = PgUtils.getRefs(value, true, true);
-                    if (refs.find(r => r.from_parameter === parameterBlock.id.substr(1))) {
-                        return param;
+                    if (refs.find(r => r.from_parameter === globalParam && !this.isParameterScoped(argName, r.from_parameter))) {
+                        return argName;
                     }
                 }
             }
