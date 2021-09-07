@@ -506,7 +506,6 @@ export default {
         },
 
         isParameterScoped(parameterName, referenceName) {
-            console.log(parameterName, referenceName);
             let parameterBlock = this.getBlockParameter(parameterName);
             let cbParams = ProcessUtils.getCallbackParameters(parameterBlock).map(cbParam => cbParam.name);
             return cbParams.includes(referenceName);

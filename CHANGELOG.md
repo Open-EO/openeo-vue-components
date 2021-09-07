@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.1] - 2020-09-07
+
+### Fixed 
+
+- `ModelBuilder`: Deleting parameters with connected edges didn't work.
+
 ## [2.6.0] - 2020-09-01
 
 ### Added
@@ -444,7 +450,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.1...HEAD
+[2.6.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.5.1...v2.6.0
 [2.5.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.5.0...v2.5.1
 [2.5.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.4.1...v2.5.0
