@@ -29,7 +29,7 @@
 				</td>
 			</tr>
 			<tr v-if="hasData && view.length == 0" class="no-results">
-				<td :colspan="columnCount">Sorry, no element matches your search criteria.</td>
+				<td :colspan="columnCount">No element matches your search criteria.</td>
 			</tr>
 		</table>
 		<div class="no-data" v-else>{{ noDataMessage }}</div>
@@ -60,7 +60,7 @@ export default {
 			view: [],
 			filterValue: null,
 			primaryKey: null,
-			noDataMessage: 'Sorry, no data available.',
+			noDataMessage: 'No data available.',
 			editField: null,
 			sortState: {
 				id: null,
