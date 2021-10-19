@@ -31,7 +31,7 @@
 							<th colspan="2" class="object-prop-heading">Object Properties:</th>
 						</tr>
 						<tr v-for="(val, key) in schema.properties" :key="key">
-							<td class="propKey">
+							<td class="key">
 								{{ key }}
 								<strong class="required" v-if="schema.required && schema.required.indexOf(key) !== -1" title="required">*</strong>
 							</td>
@@ -305,6 +305,10 @@ export default {
 		.value {
 			width: 90%;
 		}
+
+		> tr > td > .styled-description {
+			margin-bottom: 1em;
+		}
 	}
 	p.schema-attrs {
 		margin: 1em 0 0.5em 0;
@@ -315,17 +319,30 @@ export default {
 	}
 	.object-prop-heading,
 	.data-types-heading {
-		padding: 0.5em 0em;
 		text-align: left;
 	}
 	.object-properties {
-		.propKey {
-			font-style: italic;
-			font-weight: bold;
-			min-width: 80px;
-			width: 8%;
+		> tr {
+			> .key {
+				font-style: italic;
+				font-weight: bold;
+				min-width: 80px;
+				width: 8%;
+				vertical-align: top;
+				padding-top: 0.75em;
+				padding-left: 1em;
+			}
+
+			> .value {
+				border-bottom: 1px dotted #ccc;
+			}
 		}
-		th {
+		> tr:last-of-type {
+			> .value {
+				border-bottom: 0;
+			}
+		}
+		> th {
 			padding-top: 1em;
 		}
 	}
