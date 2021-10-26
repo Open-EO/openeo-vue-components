@@ -25,7 +25,7 @@
         </div>
         <div class="inout">
             <div class="inputs">
-                <BlockParameter v-for="(param, i) in parameters" :key="i" ref="parameters" :state="state" :value="args[param.name]" @input="value => updateArgument(param.name, value)" @edgesChanged="edgesChanged(param, $event)" v-bind="param" />
+                <BlockParameter v-for="(param, i) in parameters" :key="i" ref="parameters" :state="state" :value="args[param.name]" @input="value => updateArgument(param.name, value)" @edgesChanged="edgesChanged(param, $event)" :name="param.name" :description="param.description" :optional="param.optional" :deprecated="param.deprecated" :experimental="param.experimental" :default="param.default" :schema="param.schema" />
             </div>
             <div class="outputs">
                 <BlockParameter ref="output" :state="state" :label="outputLabel" v-bind="output" @input="updateResult" />

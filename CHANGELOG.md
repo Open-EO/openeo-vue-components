@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `JsonSchema`: Improved rendering for properties.
+- `ModelBuilder`: HTML code for parameters contains invalid attributes.
+
 ## [2.6.1] - 2020-09-07
 
 ### Fixed 
