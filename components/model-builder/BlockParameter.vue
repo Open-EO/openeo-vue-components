@@ -1,14 +1,14 @@
 <template>
     <div :class="classes">
         <div v-if="!output" ref="circle" :class="circleClasses" v-on="circleListeners"></div>
-        <span class="text" v-on="listeners">
+        <span class="text" v-on="textListeners">
             <span v-show="unspecified" class="unspecified" title="Parameter is likely unsupported!">
                 <i class="fas fa-exclamation-triangle"></i>
             </span>
             <span class="label">{{ displayLabel }}</span><template v-if="displayValue.length">: </template>
             <span class="value" v-html="displayValue"></span>
         </span>
-        <div v-if="output" ref="circle" :class="circleClasses" v-on="circleListeners"></div>
+        <div v-if="output" ref="circle" :class="circleClasses" v-on="circleListeners" title="Output of the process"></div>
     </div>
 </template>
 
@@ -76,7 +76,7 @@ export default {
         hasValue() {
             return (this.value !== undefined);
         },
-        listeners() {
+        textListeners() {
             if (this.allowsArgumentChange) {
                 return {
                     click: this.openEditorForArguments
@@ -113,12 +113,16 @@ export default {
             return listeners;
         },
         classes() {
-            return [
+            let classes = [
                 this.output ? 'output' : 'input',
                 'connector',
                 'field_' + this.name,
-                (this.hasValue || this.optional || this.output || this.getEdgeCount() > 0) ? 'hasValue' : 'noValue'
+                (this.hasValue || this.optional || this.output || this.getEdgeCount() > 0) ? 'hasValue' : 'noValue',
             ];
+            if (this.allowsArgumentChange) {
+                classes.push("editable");
+            }
+            return classes;
         },
         unspecified() {
             return !this.$parent.invalid && this.state.root.hasProcesses && this.schemas.unspecified;
@@ -512,6 +516,10 @@ export default {
         &.noValue {
             color: red;
         }
+        &.editable .label,
+        &.editable .value {
+            cursor: pointer;
+        }
         span[title] {
             cursor: help;
         }
@@ -519,17 +527,13 @@ export default {
             max-width: 100%;
             overflow: hidden;
             text-overflow: ellipsis;
-
-            .label {
-                cursor: pointer;
-            }
         }
         .output {
             text-align: right;
         }
         .unspecified {
             color: red;
-            margin-left: 2px;
+            margin-right: 0.3em;
         }
         .circle {
             width: 0.8em;

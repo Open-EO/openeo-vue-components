@@ -606,6 +606,7 @@ export default {
 
         .invalid {
             color: red;
+            cursor: help;
         }
 
         .inout {
