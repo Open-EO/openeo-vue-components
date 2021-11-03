@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.2] - 2021-11-03
+
 ### Fixed
 
 - `JsonSchema`: Improved rendering for properties.
@@ -15,13 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rendering of data types has been improved
 - Process return values consisting of multiple data types don't always return `any`
 
-## [2.6.1] - 2020-09-07
+## [2.6.1] - 2021-09-07
 
 ### Fixed 
 
 - `ModelBuilder`: Deleting parameters with connected edges didn't work.
 
-## [2.6.0] - 2020-09-01
+## [2.6.0] - 2021-09-01
 
 ### Added
 
@@ -32,13 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded dependencies, which includes several updates and bug fixes
 - `Collection` / `Item`: Correctly migrate all STAC data
 
-## [2.5.1] - 2020-08-19
+## [2.5.1] - 2021-08-19
 
 ### Fixed
 
 - `ModelBuilder`:  Incorrectly sent an update event when adding (importing) process parameters, which resulted in empty processes
 
-## [2.5.0] - 2020-08-18
+## [2.5.0] - 2021-08-18
 
 ### Added
 
@@ -58,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `SearchableList`:  Minor CSS fix for badges
 - Minor CSS fixes for overly long content, especially in Collections
 
-## [2.4.1] - 2020-08-03
+## [2.4.1] - 2021-08-03
 
 ### Added
 
@@ -71,7 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Minor style improvements
 - `ModelBuilder`: Properly unset default values when editing parameters
 
-## [2.4.0] - 2020-08-02
+## [2.4.0] - 2021-08-02
 
 ### Added
 - `SearchableList`:
@@ -113,7 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Several minor bug fixes
 - Minor improvements to CSS
 
-## [2.3.4] - 2020-07-16
+## [2.3.4] - 2021-07-16
 
 ### Changed
 
@@ -125,14 +127,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `JsonSchema`: Don't show properties with undefined values any longer.
 
-## [2.3.3] - 2020-07-15
+## [2.3.3] - 2021-07-15
 
 ### Fixed
 
 - `ModelBuilder`: Fix issue that prevented deleting certain blocks
 - SCSS dependencies are now installed as normal dependencies instead of devDependencies
 
-## [2.3.2] - 2020-07-14
+## [2.3.2] - 2021-07-14
 
 ### Changed
 
@@ -147,13 +149,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Process`: Fallback to `unnamed` if no process id is present (to avoid issues with the `ModelBuilder` for example).
 - `ModelBuilder`: Fix issue when parameter name and node id conflict.
 
-## [2.3.1] - 2020-07-09
+## [2.3.1] - 2021-07-09
 
 ### Fixed
 
 - The fallback size set in `ModelBuilder` was too intrusive and couldn't be altered from externally.
 
-## [2.3.0] - 2020-07-09
+## [2.3.0] - 2021-07-09
 
 ### Added
 
@@ -177,7 +179,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added missing `vue-component` class that was missing from some components
 - Updates dependencies
 
-## [2.2.2] - 2020-07-01
+## [2.2.2] - 2021-07-01
 
 ### Added
 
@@ -187,13 +189,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed an error that was thrown in the case that no time is present in the logs
 
-## [2.2.1] - 2020-06-24
+## [2.2.1] - 2021-06-24
 
 ### Fixed
 
 - `Process`: *'The return value has not been defined.'* was shown for processes that had no parameters regardless of the actual return value.
 
-## [2.2.0] - 2020-06-17
+## [2.2.0] - 2021-06-17
 
 ### Added
 
@@ -209,7 +211,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Logs`: Correctly distinguish "non-existing" and "null" for `data`
 
-## [2.1.2] - 2020-06-14
+## [2.1.2] - 2021-06-14
 
 ### Fixed
 
@@ -217,7 +219,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Collection`: Prevent map from incorrectly relocating to the preview section when data is altered externally.
 - Better keys in Vue loops.
 
-## [2.1.1] - 2020-05-31
+## [2.1.1] - 2021-05-31
 
 ### Changed
 
@@ -233,7 +235,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fix error when no summaries were present in the Collection
 - `Collection` and `Item`: Improve consistency of how units get shown
 
-## [2.1.0] - 2020-05-05
+## [2.1.0] - 2021-05-05
 
 ### Added
 
@@ -261,7 +263,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Show better text if return value has not been declared
   - Fix spacing around process signature
 
-## [2.0.3] - 2020-03-15
+## [2.0.3] - 2021-03-15
 
 ### Changed
 
@@ -272,7 +274,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix version check issue when Leaflet should be replaced by another mapping library.
 
-## [2.0.2] - 2020-03-12
+## [2.0.2] - 2021-03-12
 
 ### Changed
 
@@ -285,13 +287,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In some cases Web Components were not able to load the data passed via script tags
 - Event `summaries` was not emitted for all changes
 
-## [2.0.1] - 2020-03-08
+## [2.0.1] - 2021-03-08
 
 ### Fixed
 
 - Fixed a rare issue in some environments (e.g. Jupyter Notebooks) in which the HTML props were not taken into account on subsequent calls. The type attribute for the slots is `true/application/json` for an unknown reason.
 
-## [2.0.0] - 2020-03-04
+## [2.0.0] - 2021-03-04
 
 ### Added
 - `Collection`: Allow to pass `mapOptions` through to `Collection` component
@@ -305,7 +307,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed `DataTable` CSS
 - Updated dependencies
 
-## [2.0.0-rc.5] - 2020-02-26
+## [2.0.0-rc.5] - 2021-02-26
 
 ### Added
 - `DataTable` component
@@ -319,7 +321,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Scroll to bands in Collections
 - Previews in Items and Collections are shown correctly
 
-## [2.0.0-rc.4] - 2020-02-18
+## [2.0.0-rc.4] - 2021-02-18
 
 ### Added
 - Add component `Item` to render Batch Job Results and STAC Items
@@ -332,7 +334,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Web Components: Fixed README with regards to how the props must be used (kebab-case instead of camelCase)
 - Initial state for Tab(s) and JsonSchema components is correctly registered
 
-## [2.0.0-rc.3] - 2020-02-10
+## [2.0.0-rc.3] - 2021-02-10
 
 ### Changed
 - Migrated from custom StacUtils to new package `@radiantearth/stac-fields` to format Collection metadata
@@ -340,7 +342,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Leaflet CSS import issue
 
-## [2.0.0-rc.2] - 2020-01-29
+## [2.0.0-rc.2] - 2021-01-29
 
 ### Added
 - `SearchableList`: The item keys `experimental` and `deprecated` lead to a different rendering.
@@ -363,7 +365,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Web Component examples can also be created with `npm run wc-examples`
 
 
-## [2.0.0-rc.1] - 2020-01-22
+## [2.0.0-rc.1] - 2021-01-22
 
 ### Added
 - `SearchBox` component
@@ -382,13 +384,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Slot detection
 
 
-## [2.0.0-beta.2] - 2020-01-21
+## [2.0.0-beta.2] - 2021-01-21
 
 ### Fixed
 - `JsonSchema` and `ObjectTree` show all details when used as Web Component [vue-cli#6225](https://github.com/vuejs/vue-cli/issues/6225)
 
 
-## [2.0.0-beta.1] - 2020-01-20
+## [2.0.0-beta.1] - 2021-01-20
 
 This release contains a large number of changes. It lists only the major changes that may need users to adapt their code. Bug fixes or minor improvements are not listed in detail.
 
@@ -459,7 +461,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.1...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.2...HEAD
+[2.6.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.1...v2.6.2
 [2.6.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.0...v2.6.1
 [2.6.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.5.1...v2.6.0
 [2.5.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.5.0...v2.5.1
