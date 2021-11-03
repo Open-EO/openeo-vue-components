@@ -1,4 +1,4 @@
-import { Utils as CommonUtils } from '@openeo/js-commons';
+import { Utils as CommonUtils, ProcessSchema } from '@openeo/js-commons';
 import Loading from './components/internal/Loading.vue';
 import Errored from './components/internal/Errored.vue';
 
@@ -108,59 +108,37 @@ class Utils extends CommonUtils {
         };
     }
 
-    static dataType(schema, short = false, level = 0, type = undefined) {
-        if (Utils.isAnyType(schema)) {
-            type = 'any';
-        }
-        if (typeof type === 'undefined') {
-            type = schema.type;
-        }
-        if (typeof schema === 'object' && (Array.isArray(schema) || typeof schema.oneOf !== 'undefined' || typeof schema.anyOf !== 'undefined')) {
-            if (short) {
-                return 'mixed';
+    static dataType(schema, signature = false, similarAllowed = 2, level = 0) {
+        let schemaObj = new ProcessSchema(schema);
+        var types = new Set();
+        console.log(schemaObj.schemas);
+        for(let i in schemaObj.schemas) {
+            let dt = schemaObj.schemas[i];
+            let native = dt.nativeDataType();
+            let type = dt.dataType();
+            console.log(native, type);
+            // Make the data types that we can submit via JSON (e.g. raster-cube, labeled-array) native
+            if (!dt.isEditable()) {
+                native = type;
             }
-            var choice;
-            if (Array.isArray(schema)) {
-                choice = schema;
+            else if (signature && schemaObj.schemas.filter(other => other.nativeDataType() === native).length > similarAllowed) {
+                // For signatures only: Check whether another similar type is available, then show only native type
+                types.add(native);
+                continue;
             }
-            else {
-                choice = schema.oneOf || schema.anyOf;
-            }
-            var types = [];
-            for(let i in choice) {
-                types.push(Utils.dataType(choice[i], short, level));
-            }
-            return types.join(', ');
-        }
-        else if (Array.isArray(type)) {
-            var types = [];
-            for(let i in type) {
-                types.push(Utils.dataType(schema, short, level, type[i]));
-            }
-            return types.join(short ? '|' : ', ');
-        }
-        else if (typeof type === 'string' && type.toLowerCase() === 'array' && typeof schema.items === 'object' && typeof schema.items.type !== 'undefined') {
-            var arrType = "array<"+Utils.dataType(schema.items, true, level+1)+">";
-            if (typeof schema.subtype === 'string') {
-                if (level == 0) {
-                    return schema.subtype + (short ? ":" + arrType : " ("+arrType+")");
-                }
-                else {
-                    return schema.subtype;
+            let formatted = native === type ? type : `${type}:${native}`;
+            if (native === 'array' && Utils.isObject(dt.schema.items)) {
+                let arrayItems = Utils.dataType(dt.schema.items, signature, similarAllowed, level + 1);
+                if (arrayItems !== 'any') {
+                    formatted += `<${arrayItems}>`;
                 }
             }
-            else {
-                return arrType;
-            }
+            types.add(formatted);
         }
-        else if (typeof type === 'string' && typeof schema.subtype === 'string') {
-            return schema.subtype + (short ? ":" + type : " ("+type+")");
+        if (types.has('any')) {
+            return 'any';
         }
-        return type;
-    }
-
-    static isAnyType(schema) {
-		return (typeof schema !== 'object' || (!Array.isArray(schema) && typeof schema.type === 'undefined' && typeof schema.oneOf === 'undefined' && typeof schema.allOf === 'undefined' && typeof schema.anyOf === 'undefined'));
+        return Array.from(types).join(signature || level > 0 ? '|' : ', ');
     }
 
     static htmlentities_decode(str) {
@@ -394,7 +372,7 @@ class Utils extends CommonUtils {
         if (Array.isArray(process.parameters)) {
             for(let i in process.parameters) {
                 let p = process.parameters[i];
-                let pType = Utils.dataType(p.schema, true);
+                let pType = Utils.dataType(p.schema, true, 1);
                 let req = p.optional ? '?' : '';
                 let pDefault = '';
                 if (p.optional && typeof p.default !== 'undefined') {
@@ -418,8 +396,8 @@ class Utils extends CommonUtils {
         }
         let paramStr = "(" + params.join(", ") + ") : ";
 
-        let returnSchema = Utils.isObject(process.returns) && Utils.isObject(process.returns.schema) ? process.returns.schema : {};
-        let returns = Utils.dataType(returnSchema, true);
+        let returnSchema = Utils.isObject(process.returns) && process.returns.schema && typeof process.returns.schema === 'object' ? process.returns.schema : {};
+        let returns = Utils.dataType(returnSchema, true, 2);
 
         if (html) {
             return `<span class="process-name">${ Utils.htmlentities(process.process.id) }</span>${paramStr}<span class="data-type">${ Utils.htmlentities(returns) }</span>`;

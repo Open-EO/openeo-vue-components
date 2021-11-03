@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ModelBuilder`:
   - HTML code for parameters contains invalid attributes.
   - Improved UX for blocks (context-sensitive cursors etc.)
+- Rendering of data types has been improved
+- Process return values consisting of multiple data types don't always return `any`
 
 ## [2.6.1] - 2020-09-07
 

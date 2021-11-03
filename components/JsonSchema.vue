@@ -3,16 +3,16 @@
 		<template v-if="visible">
 			<div v-if="isProcessGraph" class="schemaProcessGraph">
 				<div class="process-graph-parameters">
-					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">child process</span></p>
+					<p class="schema-attrs">{{ formatKey('type') }}: <span class="data-type">User-defined Process (process-graph:object)</span></p>
 					<p class="schema-attrs" title="The parameters that can be used in the process.">
-						<strong>Child Process Parameters:</strong>
+						<strong>Parameters:</strong>
 					</p>
 					<template v-if="hasParameters">
 						<ProcessParameter v-for="(param, i) in schema.parameters" :key="i" :parameter="param" :processUrl="processUrl" />
 					</template>
 					<p v-else>No parameters defined.</p>
 					<p class="schema-attrs" title="Describes what must be returned by the process.">
-						<strong>Child Process Return Value:</strong>
+						<strong>Expected Return Value:</strong>
 					</p>
 					<template v-if="hasReturns">
 						<Description v-if="schema.returns.description" :description="schema.returns.description" :processUrl="processUrl" />
@@ -53,7 +53,7 @@
 					<td class="key">{{ formatKey('type') }}:</td>
 					<td class="value data-type">any</td>
 				</tr>
-				<template v-else-if="isCompositeType">
+				<template v-else-if="compositeTypes.length > 1">
 					<tr>
 						<th colspan="2" class="data-types-heading">Data Types:</th>
 					</tr>
@@ -139,13 +139,10 @@ export default {
 			return typeof this.schema === 'object' && this.schema !== null && this.nestingLevel < 20;
 		},
 		showAnyType() {
-			return Utils.isAnyType(this.schema);
+			return Utils.isObject(this.schema) && typeof this.schema.type === 'undefined' && typeof this.schema.subtype === 'undefined';
 		},
 		isProcessGraph() {
 			return (this.schema.type === 'object' && this.schema.subtype === 'process-graph');
-		},
-		isCompositeType() {
-			return (Array.isArray(this.schema) || Array.isArray(this.schema.anyOf) || Array.isArray(this.schema.oneOf));
 		},
 		compositeTypes() {
 			if (Array.isArray(this.schema)) {

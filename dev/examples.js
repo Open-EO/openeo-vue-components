@@ -5,7 +5,7 @@ let item = require('./examples/item.json');
 let items = require('./examples/items-ard-eodc.json');
 let job = require('./examples/job.json');
 let logs = require('./examples/logs.json');
-let processes = require('./examples/processes-gee.json');
+let processes = require('./examples/processes.json');
 let udp = require('./examples/process-array-find-nodata.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
@@ -281,8 +281,11 @@ if (a == b) console.log("Hello World");
 		}
 	},
 	"process": {
-		"gee-load-collection": {
+		"load-collection": {
 			"process": processes.find(p => p.id === 'load_collection')
+		},
+		"extrema": {
+			"process": processes.find(p => p.id === 'extrema')
 		},
 		"api-reduce-new": {
 			"process": reduceApi
@@ -299,10 +302,10 @@ if (a == b) console.log("Hello World");
 		}
 	},
 	"processes": {
-		"gee": {
+		"1.1.0": {
 			"processes": processes
 		},
-		"gee-with-categories": {
+		"1.1.0-with-categories": {
 			"processes": processes,
 			"show-categories": true
 		}
