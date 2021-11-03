@@ -57,16 +57,12 @@
 </template>
 
 <script>
-import StacAsset from './internal/StacAsset.vue';
 import StacMixin from './internal/StacMixin.js';
 import Utils from '../utils';
 
 export default {
 	name: 'Item',
 	mixins: [StacMixin],
-	components: {
-		StacAsset
-	},
 	// Mixins don't work properly in web components,
 	// see https://github.com/vuejs/vue-web-component-wrapper/issues/30
 	props: {...StacMixin.props},

@@ -151,14 +151,12 @@
 import Utils from '../utils';
 import { Formatters } from '@radiantearth/stac-fields';
 import StacMixin from './internal/StacMixin.js';
-import StacAsset from './internal/StacAsset.vue';
 import { isoDuration, en } from '@musement/iso-duration';
 
 export default {
 	name: 'Collection',
 	components: {
-		ObjectTree: () => import('./ObjectTree.vue'),
-		StacAsset
+		ObjectTree: () => import('./ObjectTree.vue')
 	},
 	mixins: [StacMixin],
 	// Mixins don't work properly in web components,

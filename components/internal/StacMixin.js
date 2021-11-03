@@ -10,6 +10,7 @@ export default {
 		Description: () => import('../Description.vue'),
 		DeprecationNotice: () => import('../DeprecationNotice.vue'),
 		LinkList: () => import('../LinkList.vue'),
+		StacAsset: () => import('../internal/StacAsset.vue'),
 		StacFields: () => import('../internal/StacFields.vue')
 	},
 	props: {
@@ -110,7 +111,7 @@ export default {
 				// is running. For all other cases store Leaflet in this.map.leaflet, which can be used in other places.
 				let hasLeaflet = () => Utils.isObject(window.L) && Versions.validate(window.L.version) && Versions.compare(window.L.version, "1.x.x", "=");
 				if (!hasLeaflet()) {
-					window.L = require('leaflet');
+					window.L = await import('leaflet');
 				}
 				if (!hasLeaflet()) {
 					console.warn("Leaflet is not available");

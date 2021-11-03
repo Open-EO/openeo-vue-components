@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Improved UX for blocks (context-sensitive cursors etc.)
 - Rendering of data types has been improved
 - Process return values consisting of multiple data types don't always return `any`
+- Don't include Leaflet multiple times (bundles got larger starting with v2.6.0)
 
 ## [2.6.1] - 2021-09-07
 
