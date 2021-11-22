@@ -111,12 +111,10 @@ class Utils extends CommonUtils {
     static dataType(schema, signature = false, similarAllowed = 2, level = 0) {
         let schemaObj = new ProcessSchema(schema);
         var types = new Set();
-        console.log(schemaObj.schemas);
         for(let i in schemaObj.schemas) {
             let dt = schemaObj.schemas[i];
             let native = dt.nativeDataType();
             let type = dt.dataType();
-            console.log(native, type);
             // Make the data types that we can submit via JSON (e.g. raster-cube, labeled-array) native
             if (!dt.isEditable()) {
                 native = type;
