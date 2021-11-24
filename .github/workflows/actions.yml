@@ -6,13 +6,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
     env:
       CLIENT_URL: /openeo-vue-components/
     steps:
       - uses: actions/setup-node@v1
+        with:
+          node-version: '16'
       - uses: actions/checkout@v2
       - run: npm install
       - run: npm run build-examples
