@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed typos in `DeprecationNotice` (classes and component name)
+
 ## [2.6.2] - 2021-11-03
 
 ### Fixed
@@ -39,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- `ModelBuilder`:  Incorrectly sent an update event when adding (importing) process parameters, which resulted in empty processes
+- `ModelBuilder`:  Incorrectly sent an update event when adding (importing) process parameters, which resulted in empty processes
 
 ## [2.5.0] - 2021-08-18
 
@@ -58,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- `SearchableList`:  Minor CSS fix for badges
+- `SearchableList`:  Minor CSS fix for badges
 - Minor CSS fixes for overly long content, especially in Collections
 
 ## [2.4.1] - 2021-08-03
