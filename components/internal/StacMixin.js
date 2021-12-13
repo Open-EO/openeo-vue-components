@@ -27,6 +27,8 @@ export default {
 				const allowedTypes = {  // keep in sync with Readme
 					height: "string",
 					width: "string",
+					basemap: "string",
+					attribution: "string",
 					wrapAroundAntimeridian: "boolean",
 					scrollWheelZoom: "boolean"
 				};
@@ -49,8 +51,10 @@ export default {
 		},
 		leafletOptions() {
 			return {  // keep in sync with Readme
-				height: this.mapOptions.height || "250px",
-				width: this.mapOptions.width || "auto",
+				height: this.mapOptions.height || '250px',
+				width: this.mapOptions.width || 'auto',
+				basemap: this.mapOptions.basemap || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+				attribution: this.mapOptions.attribution || 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
 				noWrap: this.mapOptions.wrapAroundAntimeridian === undefined ? true : !this.mapOptions.wrapAroundAntimeridian,  // negate!
 				scrollWheelZoom: this.mapOptions.scrollWheelZoom === undefined ? false : this.mapOptions.scrollWheelZoom
 			}
@@ -127,9 +131,9 @@ export default {
 
 				var map = this.map.leaflet.map(this.$refs.mapContainer, {scrollWheelZoom: this.leafletOptions.scrollWheelZoom});
 				this.map.instance = map;
-				var osm = this.map.leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-					name: 'OpenStreetMap',
-					attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>',
+				var osm = this.map.leaflet.tileLayer(this.leafletOptions.basemap, {
+					name: 'Basemap',
+					attribution: this.leafletOptions.attribution,
 					noWrap: this.leafletOptions.noWrap
 				});
 				osm.addTo(map);

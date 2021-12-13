@@ -151,8 +151,10 @@ Visualizes a single collection following the STAC-based collection description.
 
 - `data` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collection_id}`).
 - `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
-  - `height` (string): Height of the map container div. Defaults to `"250px"`.
-  - `width` (string): Width of the map container div. Defaults to `"auto"`.
+  - `height` (string): Height of the map container div. Defaults to `250px`.
+  - `width` (string): Width of the map container div. Defaults to `auto`.
+  - `basemap` (string): Templated URI for the XYZ basemap. Default to `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`. Please make sure that your usage complies with the [OpenStreetMap Tile Usage Policy](https://operations.osmfoundation.org/policies/tiles/)!
+  - `attribution` (string): Attributon for the basemap. HTML is allowed. Default to `Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>`.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.
   - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `geometries` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).

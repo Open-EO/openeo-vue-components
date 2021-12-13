@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Collection`, `Collections`, `Item`, `items`: Added `attribution` and `basemap` options to `mapOptions` to make basemap tile layer configurable.
+
 ### Fixed
 
 - Fixed typos in `DeprecationNotice` (classes and component name)

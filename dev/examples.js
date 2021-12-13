@@ -37,8 +37,12 @@ module.exports = {
 		"gee": {
 			"data": collectionGee
 		},
-		"eurac": {
-			"data": collectionEurac
+		"eurac-mapbox": {
+			"data": collectionEurac,
+			"mapOptions": {
+				"basemap": "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib3BlbmVvIiwiYSI6ImNreDRzdjNibDE5a2cyd3BoOXFyamd2ZTcifQ._epD9HcfAnGndfgwXmz_3A",
+				"attribution": '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'
+			}
 		}
 	},
 	"collections": {
