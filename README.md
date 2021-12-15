@@ -932,4 +932,5 @@ A list of categorized features with their corresponding endpoints as used by the
 * `htmlentities_decode(string str) -> string`: Replace the HTML entities for `"`, `'`, `<` and `>` with their respective characters.
 * `prettifyAbbreviation(string str) -> string`: Converts a string to uppercase if all letters given are lower-cased.
 * `prettifyString(string str) -> string`: Tries to convert strings in snake-case, camel-case or kebab-case into more human-readable texts, mostly by adding spaces.
+* `search(string searchterm, array|string|object values, boolean and = true)`: Searches for search term(s) in various inputs. Splits the `searchterm` at certain word boundaries (e.g. whitespaces and punctuation). Does 'and' search by default. Can be switched to 'or' by setting `and` to `false`. `values` can be an array of strings, a string or an object of strings (searches the values only). 
 * and other functions not meant for public use.

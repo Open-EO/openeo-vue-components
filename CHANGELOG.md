@@ -9,9 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `Collection`, `Collections`, `Item`, `Items`: Added `attribution` and `basemap` options to `mapOptions` to make basemap tile layer configurable.
+- `Utils`: New function `search` to do advanced search in texts.
 
 ### Changed
 
+- `DataTable` and `SearchableList` (and all usages of it): Use `Utils.search` instead of the previous simple search method.
 - `UdfRuntime`: Each version tab has a CSS class assigned; built from the runtime identifier and the version number.
 - `Tab`: Each tab/pill gets the tab id a CSS class name assigned.
 

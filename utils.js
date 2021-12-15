@@ -405,6 +405,35 @@ class Utils extends CommonUtils {
         }
     }
 
+    static search(searchterm, target, and = true) {
+        if (Utils.isObject(target)) {
+            target = Object.values(target);
+        }
+        else if (typeof target === 'string') {
+            target = [target];
+        }
+
+        if (!Array.isArray(target)) {
+            return false;
+        }
+
+        let splitChars = /[\s\.,;!&\(\{\[\)\}\]]+/g;
+
+        // Prepare search terms
+        searchterm = searchterm.toLowerCase().split(splitChars);
+
+        // Prepare text to search in
+        target = target
+            .filter(s => typeof s === 'string') // Remove non-strings
+            .join(' ') // Merge into a single string
+            .replace(splitChars, ' ') // replace split chars with white spaces
+            .toLowerCase(); // Lowercase
+
+        // Search with "and" or "or"
+        let fn = and ? 'every' : 'some';
+        return searchterm[fn](term => target.includes(term));
+    }
+
 };
 
 export default Utils;

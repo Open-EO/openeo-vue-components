@@ -156,13 +156,7 @@ export default {
 			handler(value) {
 				if (value.length >= this.searchMinLength) {
 					this.summaries.forEach(item => {
-						let searchable = [item.identifier, item.summary]
-							.concat(item.keywords)
-							.filter(s => typeof s === 'string')
-							.join(' ')
-							.toLowerCase();
-						let result = searchable.includes(this.searchTerm.toLowerCase());
-						this.$set(item, 'show', result);
+						this.$set(item, 'show', Utils.search(this.searchTerm, [item.identifier, item.summary].concat(item.keywords)));
 					});
 				}
 				else {

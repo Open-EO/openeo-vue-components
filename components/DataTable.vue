@@ -244,6 +244,7 @@ export default {
 			var searchTerm = this.filterValue.toLowerCase();
 
 			return data.filter(row => {
+				let values = [];
 				for(var key in row) {
 					var col = this.columns[key];
 					if (typeof col === 'undefined' || col.hasOwnProperty('filterable') && col.filterable === false) {
@@ -256,11 +257,9 @@ export default {
 					else {
 						continue;
 					}
-					if (value.toLowerCase().indexOf(searchTerm) !== -1) {
-						return true;
-					}
+					values.push(value);
 				}
-				return false;
+				return Utils.search(searchTerm, values);
 			});
 		},
 		clearFilter() {
