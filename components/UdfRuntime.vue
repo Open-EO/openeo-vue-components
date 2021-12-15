@@ -43,7 +43,7 @@
 		<template v-else>
 			<h3>Versions</h3>
 			<Tabs id="userContent" ref="tabs">
-				<Tab v-for="(env, version) in runtime.versions" :key="version" :id="version" :name="version" :selected="version === selectVersion">
+				<Tab v-for="(env, version) in runtime.versions" :key="version" :id="`${id}-${version.replaceAll('.', '_')}`" :name="version" :selected="version === selectVersion">
 					<ul v-if="version === runtime.default" class="badges">
 						<li class="badge default">default</li>
 					</ul>

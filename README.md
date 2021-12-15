@@ -702,7 +702,7 @@ Creates a tab interface.
 
 **Properties:**
 
-- `id` (string, required): A unique identifier for the tab container.
+- `id` (string, required): A unique identifier for the tab container, preferrably only using `a`-`z` (upper- and lower-case), `0`-`9`, `-` and `_`.
 - `pills` (boolean, default `false`): Switch between [normal boxed tabs and tabs with pills styling](https://www.w3schools.com/bootstrap/bootstrap_tabs_pills.asp).
 - `pillsMultiline` / `pills-multiline` (boolean, default `false`): If pills are active, the pills in the tabs header can be shown in multiple lines instead of squeezing all pills into a single line.
 - `position` (string, default `top`): Position of the tabs/pills, either `top` or `bottom`.
@@ -713,7 +713,7 @@ Creates a tab interface.
 	- `name` (string): The title of the tab.
 	- `icon` (string): A [FontAwesome icon identifier](https://fontawesome.com/icons?d=gallery&s=solid&m=free), e.g. `fa-address-book`. This may require to load [FontAwesome](#fontawesome). Defaults to `null`, which shows no icon.
 	- `data` (any): Additional data that is passed to the tab.
-	- `id` (string): An id for the tab. Specifying `null` generates an id.
+	- `id` (string|null): An id for the tab, preferrably only using `a`-`z` (upper- and lower-case), `0`-`9`, `-` and `_`. Specifying `null` generates an id.
 	- `selected` (boolean): If set to `true`, the tab is getting selected and the active tab is set hidden.
 	- `closable` (boolean): Set to `true` to show a close symbol, which can be used to close/remove the tab.
 	- `show` (function): Function that is called when the tab is about to be shown. The tab is passed as a parameter to the function.

@@ -8,7 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `Collection`, `Collections`, `Item`, `items`: Added `attribution` and `basemap` options to `mapOptions` to make basemap tile layer configurable.
+- `Collection`, `Collections`, `Item`, `Items`: Added `attribution` and `basemap` options to `mapOptions` to make basemap tile layer configurable.
+
+### Changed
+
+- `UdfRuntime`: Each version tab has a CSS class assigned; built from the runtime identifier and the version number.
+- `Tab`: Each tab/pill gets the tab id a CSS class name assigned.
 
 ### Fixed
 

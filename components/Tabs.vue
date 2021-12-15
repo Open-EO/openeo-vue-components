@@ -1,7 +1,7 @@
 <template>
 	<div :class="classes" :id="id">
 		<div class="tabsHeader" ref="tabsHeader">
-			<button type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" v-for="tab in tabs" :key="tab.id">
+			<button v-for="tab in tabs" type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon, [tab.id]: true }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
 				<span class="tabName"><slot name="tabName" :tab="tab">{{ tab.name }}</slot></span>
 				<svg v-if="tab.closable" xmlns="http://www.w3.org/2000/svg" class="tabClose" title="Close" @click.prevent.stop="closeTab(tab)" viewBox="0 0 24 24">
