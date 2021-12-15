@@ -56,7 +56,6 @@ export default {
 	},
 	computed: {
 		shown() {
-			console.log(this.searchterm);
 			return this.logs.map(log => {
 				if (!this.levelsShown.includes(log.level)) {
 					return false;
