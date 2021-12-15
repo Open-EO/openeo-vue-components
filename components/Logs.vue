@@ -2,6 +2,7 @@
 	<div class="vue-component logs">
 		<div class="log-container" v-if="hasLogs">
 			<div class="log-header">
+				<SearchBox  v-if="externalSearchTerm === null" v-model="searchTerm" placeholder="Search in Logs" :minLength="2" />
 				<MultiSelect v-model="levelsShown" :multiple="true" :options="levels" :allowEmpty="false" :taggable="true" :closeOnSelect="false" placeholder="Select the log levels shown">
 					<template slot="tag" slot-scope="props">
 						<span class="multiselect__tag" :class="props.option" :key="props.index">
@@ -12,7 +13,7 @@
 				</MultiSelect>
 			</div>
 			<ul class="log-body">
-				<Log v-for="(log, i) in logs" v-show="levelsShown.includes(log.level)" :log="log" :startTime="startTime" :key="i" />
+				<Log v-for="(log, i) in logs" v-show="shown[i]" :log="log" :startTime="startTime" :key="i" />
 			</ul>
 		</div>
 		<div v-else class="log-empty">No logs available.</div>
@@ -27,15 +28,45 @@ export default {
 	name: 'Logs',
 	components: {
 		Log,
-		MultiSelect: () => import('vue-multiselect')
+		MultiSelect: () => import('vue-multiselect'),
+		SearchBox: () => import('./SearchBox.vue')
 	},
 	props: {
 		logs: {
 			type: Array,
 			default: () => ([])
+		},
+		externalSearchTerm: {
+			type: String,
+			default: null
 		}
 	},
+	data() {
+		let levels = [
+			'debug',
+			'info',
+			'warning',
+			'error'
+		];
+		return {
+			levels: levels,
+			levelsShown: levels,
+			searchTerm: ''
+		};
+	},
 	computed: {
+		shown() {
+			console.log(this.searchterm);
+			return this.logs.map(log => {
+				if (!this.levelsShown.includes(log.level)) {
+					return false;
+				}
+				if (this.searchTerm.length >= 2) {
+					return Utils.search(this.searchTerm, log);
+				}
+				return true;
+			});
+		},
 		startTime() {
 			if (this.hasLogs) {
 				let startTime = this.logs.find(log => Utils.isObject(log) && typeof log.time === 'string' && log.time.length > 10);
@@ -49,17 +80,13 @@ export default {
 			return Array.isArray(this.logs) && this.logs.length > 0;
 		}
 	},
-	data() {
-		let levels = [
-			'debug',
-			'info',
-			'warning',
-			'error'
-		];
-		return {
-			levels: levels,
-			levelsShown: levels
-		};
+	watch: {
+		externalSearchTerm: {
+			immediate: true,
+			handler(value) {
+				this.searchTerm = typeof value === 'string' ? value : '';
+			}
+		},
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
@@ -89,6 +116,10 @@ export default {
 		background-color: white;
 		z-index: 1;
 
+
+		.search-box {
+			margin-bottom: 0.25em;
+		}
 		.multiselect__tag {
 			text-transform: uppercase;
 		}

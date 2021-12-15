@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Collection`, `Collections`, `Item`, `Items`: Added `attribution` and `basemap` options to `mapOptions` to make basemap tile layer configurable.
 - `Utils`: New function `search` to do advanced search in texts.
+- `Logs`: Support for searching through logs, also adds new prop `externalSearchTerm`.
 
 ### Changed
 

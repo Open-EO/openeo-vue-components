@@ -406,6 +406,9 @@ class Utils extends CommonUtils {
     }
 
     static search(searchterm, target, and = true) {
+        if (typeof searchterm !== 'string' || searchterm.length === 0) {
+            return false;
+        }
         if (Utils.isObject(target)) {
             target = Object.values(target);
         }

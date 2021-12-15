@@ -414,6 +414,7 @@ Show log messages.
 **Properties:**
 
 - `logs` (array\<object>): A list of logs as defined by the openEO API (e.g. response from `GET /jobs/{job_id}/logs`, property `logs`).
+- `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Defaults to `null`, which will show a search box in the component itself so that users can filter the logs.
 
 
 ### `ObjectTree`
