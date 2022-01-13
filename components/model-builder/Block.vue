@@ -19,7 +19,7 @@
                     <i class="fas fa-info"></i>
                 </span>
                 <span v-show="allowsParameterChange" class="settings" :title="isParameter ? 'Edit parameter' : 'Change parameter values'" @click.stop.prevent="edit">
-                    <i class="fas fa-sliders-h"></i>
+                    <i class="fas fa-edit"></i>
                 </span>
             </div>
         </div>
