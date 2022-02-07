@@ -12,6 +12,24 @@
 		<Description v-if="capabilities.description" :description="capabilities.description" />
 		<SupportedFeatures :endpoints="capabilities.endpoints" headingTag="h3" />
 		<BillingPlans v-if="capabilities.billing" :billing="capabilities.billing" headingTag="h3" />
+		<div v-if="federated" class="federation">
+			<h3>Federation</h3>
+			<p>This service is a federation of multiple services, which are all listed below:</p>
+			<ul>
+				<li v-for="(service, id) in capabilities.federation" :key="id">
+					<div class="fed-header">
+						<strong class="fed-title">{{ service.title || id }}</strong>
+						<ul class="badges small inline">
+							<li class="badge red" v-if="service.status === 'offline'" :title="offlineTitle(service)">offline</li>
+							<li class="badge green" v-else>online</li>
+						</ul>
+					</div>
+					<small>URL: {{ service.url }}</small>
+					<Description v-if="service.description" :description0="service.description" :compact="compact" />
+					<small v-if="last_status_check">Last check: {{ service.last_status_check | timestamp }}</small>
+				</li>
+			</ul>
+		</div>
 		<LinkList :links="capabilities.links" heading="More information" headingTag="h3" />
 	</div>
 </template>
@@ -61,14 +79,56 @@ export default {
 				}
 			}
 			return null;
+		},
+		federated() {
+			return Utils.size(this.capabilities.federation) > 0;
 		}
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
+	},
+	filters: {
+		timestamp(value) {
+			return Utils.formatTimestamp(value);
+		}
+	},
+	methods: {
+		offlineTitle(service) {
+			if (service.last_successful_check) {
+				return `Last seen online: ${ Utils.formatTimestamp(service.last_successful_check) }`;
+			}
+			return null;
+		}
 	}
 }
 </script>
 
 <style lang="scss">
 @import './base.scss';
+
+.vue-component {
+	.federation {
+		> ul > li {
+			margin-bottom: 0.5em;
+
+			> small {
+				display: block;
+			}
+
+			> h4 {
+				margin: 0;
+			}
+		}
+
+
+		.fed-header {
+			margin: 0.2em 0;
+
+			> .fed-title {
+				display: inline-block;
+				vertical-align: bottom;
+			}
+		}
+	}
+}
 </style>

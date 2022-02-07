@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Capabilities`: Support for the experimental Federation Extension
+
 ## [2.7.1] - 2022-01-25
 
 ### Fixed
