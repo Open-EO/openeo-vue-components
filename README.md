@@ -185,6 +185,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `showKeywords` / `show-keywords` (boolean): Adds the keywords to the third line of the summary if set to `true`. Defaults to `false`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of collections due to an issue.
 
 **Slots:**
 
@@ -287,6 +288,7 @@ Visualizes all supported file formats of the back-end.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of file formats due to an issue.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
@@ -543,6 +545,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `showCategories` / `show-categories` (boolean): Adds the categories to the third line of the summary if set to `true`. Defaults to `false`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of processes due to an issue.
 
 **Slots:**
 
@@ -586,6 +589,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `heading`: HTML to display the heading, which by default consists of a title (see property `heading`) and the count of elements available in total. Will also show the count of elements matching the search term, if a search term has been given. The following slot properties are made available:
 	- `filteredCount` (integer|null): The count of elements matching the search term. `null` if no search term has been specified and all elements are shown.
 	- `totalCount` (integer): The total count of elements.
+- `content-start`: After heading, before searchbox and list.
 - `after-search-box`:
 	- `filteredCount` (integer|null): see above
 	- `summaries` (array\<object>): The list of summaries.

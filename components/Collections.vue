@@ -2,6 +2,7 @@
 	<div class="vue-component collections">
 		<SearchableList :data="collections" identifierKey="id" summaryKey="title" keywordsKey="keywords" :showKeywords="showKeywords"  :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
+			<template #content-start><FederationMissing :missing="missing" :federation="federation" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
 				<Collection :data="slot.item" :mapOptions="mapOptions" :federation="federation">
@@ -65,6 +66,10 @@ export default {
 		showKeywords: {
 			type: Boolean,
 			default: false
+		},
+		missing: {
+			type: Array,
+			default: null
 		},
 		...FederationMixin.props
 	},

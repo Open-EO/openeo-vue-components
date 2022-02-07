@@ -58,7 +58,9 @@ module.exports = {
 		"expanded-but-collapsible-with-keywords": {
 			"collections": collections,
 			"collapsed": false,
-			"show-keywords": true
+			"show-keywords": true,
+			"missing": ["wwu"],
+			"federation": capabilities.federation
 		}
 	},
 	"data-table": {

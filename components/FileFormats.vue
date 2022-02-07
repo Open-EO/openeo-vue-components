@@ -2,6 +2,7 @@
 	<div class="vue-component file-formats">
 		<SearchableList :data="fileFormats" summaryKey="title" keywordsKey="gis_data_types" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
+			<template #content-start><FederationMissing :missing="missing" :federation="federation" /></template>
 			<template #summary="slot">
 				<slot name="summary" v-bind="slot">
 					<strong class="inline">{{ slot.item.name }}</strong>
@@ -71,6 +72,10 @@ export default {
 		},
 		collapsed: {
 			type: Boolean,
+			default: null
+		},
+		missing: {
+			type: Array,
 			default: null
 		},
 		...FederationMixin.props

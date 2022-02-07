@@ -1,6 +1,6 @@
 <template>
 	<section v-if="unsupported.length > 0" class="vue-component message-block federation federation-backends">
-		<component class="header" :is="headingTag">Federation</component>
+		<strong class="header">Federation</strong>
 		<p>This {{ entity }} is only available through the following services in the federation:</p>
 		<ul>
 			<li v-for="service in services" :key="service.url">
@@ -33,10 +33,6 @@ export default {
 		backends: {
 			type: Array,
 			default: []
-		},
-		headingTag: {
-			type: String,
-			default: 'strong'
 		}
 	},
 	computed: {
@@ -69,7 +65,7 @@ export default {
 @import '../base.scss';
 
 .vue-component.federation-backends {
-	background-color: rgba(226, 177, 43, 0.1);
+	background-color: rgba(184, 134, 11, 0.1);
 	border: 1px solid darkgoldenrod;
 
 	> .header {

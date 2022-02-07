@@ -8,6 +8,7 @@
 			</h2>
 		</slot>
 		<div class="body" v-if="showList !== null" v-show="showList === true">
+			<slot name="content-start"></slot>
 			<template v-if="totalCount === 0">
 				<p>No data available.</p>
 			</template>
