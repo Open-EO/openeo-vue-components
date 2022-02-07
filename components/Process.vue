@@ -39,9 +39,8 @@
 			<Description :description="process.description" :processUrl="processUrl" />
 			<DeprecationNotice v-if="process.deprecated" entity="process" />
 			<ExperimentalNotice v-if="process.experimental" entity="process" />
-			<FederationBackends v-if="process['federation:backends']" :backends="process['federation:backends']" :federation="federation" entity="process" />
+			<FederationNotice v-if="process['federation:backends']" :backends="process['federation:backends']" :federation="federation" entity="process" />
 		</section>
-
 
 		<section class="parameters">
 			<h3>Parameters</h3>

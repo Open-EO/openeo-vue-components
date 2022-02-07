@@ -1,5 +1,8 @@
 <template>
 	<section v-if="services" class="vue-component message-block federation federation-backends">
+		<button type="button" class="retry" @click="retry">
+			<slot name="button-text">Retry</slot>
+		</button>
 		<strong class="header">Incomplete</strong>
 		<p>
 			The following list is incomplete as at least one of the services in the federation is currently not available.
@@ -9,17 +12,21 @@
 </template>
 
 <script>
-import FederationMixin from './FederationMixin.js';
-import Utils from '../../utils';
+import FederationMixin from './internal/FederationMixin.js';
+import Utils from '../utils';
 
 export default {
-	name: 'FederationMissing',
+	name: 'FederationMissingNotice',
 	mixins: [
 		FederationMixin
 	],
 	props: {
 		missing: {
 			type: Array,
+			required: true
+		},
+		retry: {
+			type: Function,
 			default: null
 		}
 	},
@@ -40,7 +47,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../base.scss';
+@import './base.scss';
 
 .vue-component.federation-backends {
 	background-color: rgba(255, 69, 0, 0.1);
@@ -52,6 +59,10 @@ export default {
 
 	.fed-title {
 		font-weight: normal;
+	}
+
+	.retry {
+		float: right;
 	}
 }
 </style>

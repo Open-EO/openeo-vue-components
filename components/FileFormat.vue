@@ -29,9 +29,8 @@
 			<Description :description="format.description" />
 			<DeprecationNotice v-if="format.deprecated" entity="file format" />
 			<ExperimentalNotice v-if="format.experimental" entity="file format" />
+			<FederationNotice v-if="format['federation:backends']" :backends="format['federation:backends']" :federation="federation" entity="file format" />
 		</section>
-
-		<FederationBackends v-if="format['federation:backends']" :backends="format['federation:backends']" :federation="federation" entity="file format" />
 
 		<section class="parameters">
 			<h3>Parameters</h3>

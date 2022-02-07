@@ -30,6 +30,7 @@ import DataTable from '../components/DataTable.vue';
 import DeprecationNotice from '../components/DeprecationNotice.vue';
 import Description from '../components/Description.vue';
 import ExperimentalNotice from '../components/ExperimentalNotice.vue';
+import FederationMissingNotice from '../components/FederationMissingNotice.vue';
 import FileFormat from '../components/FileFormat.vue';
 import FileFormats from '../components/FileFormats.vue';
 import Item from '../components/Item.vue';
@@ -64,6 +65,7 @@ export default {
 		DeprecationNotice,
 		Description,
 		ExperimentalNotice,
+		FederationMissingNotice,
 		FileFormat,
 		FileFormats,
 		Item,

@@ -1,7 +1,7 @@
 export default {
 	components: {
-		FederationBackends: () => import('../internal/FederationBackends.vue'),
-		FederationMissing: () => import('../internal/FederationMissing.vue')
+		FederationNotice: () => import('./FederationNotice.vue'),
+		FederationMissingNotice: () => import('../FederationMissingNotice.vue')
 	},
 	props: {
 		federation: {

@@ -150,6 +150,13 @@ if (a == b) console.log("Hello World");
 			"entity": "process"
 		}
 	},
+	"federation-missing-notice": {
+		"example": {
+			"missing": ["wwu", "eodc"],
+			"federation": capabilities.federation,
+			"retry": () => alert("Clicked refresh button")
+		}
+	},
 	"file-format": {
 		"output-gtiff": {
 			"id": "GTIFF",

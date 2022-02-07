@@ -23,6 +23,7 @@ Examples (dev): <https://open-eo.github.io/openeo-vue-components/>
 	* [DeprecationNotice](#deprecationnotice)
 	* [Description](#description)
 	* [ExperimentalNotice](#experimentalnotice)
+	* [FederationMissingNotice](#federationmissingnotice)
 	* [FileFormat](#fileformat)
 	* [FileFormats](#fileformats)
 	* [Item](#item)
@@ -226,6 +227,21 @@ Show a message that something has been deprecated.
 **Properties:**
 
 - `entity` (string): A noun that describes the entity that has been deprecated, e.g. `process` or `collection`.
+
+
+### `FederationMissingNotice`
+
+Show a message that a response is incomplete due to missing data from an inaccessible service in the federation.
+
+**Properties:**
+
+- `missing` (array, required): The identifiers of the federated back-ends that are not providing data for the list of processes due to an issue.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `retry` (function): Displays a "retry" button which executes the given function. 
+
+**Slots:**
+
+- `button-text`: The content (e.g. text) of the retry button.
 
 
 ### `Description`

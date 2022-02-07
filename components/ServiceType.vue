@@ -19,9 +19,8 @@
 			<Description :description="service.description" />
 			<DeprecationNotice v-if="service.deprecated" entity="type of secondary web service" />
 			<ExperimentalNotice v-if="service.experimental" entity="type of secondary web service" />
+			<FederationNotice v-if="service['federation:backends']" :backends="service['federation:backends']" :federation="federation" entity="type of secondary web service" />
 		</section>
-
-		<FederationBackends v-if="service['federation:backends']" :backends="service['federation:backends']" :federation="federation" entity="type of secondary web service" />
 
 		<section class="configuration">
 			<h3>Configuration Settings</h3>

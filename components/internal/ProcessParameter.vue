@@ -9,7 +9,7 @@
 			<Description v-if="parameter.description" :description="parameter.description" :processUrl="processUrl" />
 			<DeprecationNotice v-if="parameter.deprecated === true" entity="parameter" />
 			<ExperimentalNotice v-if="parameter.experimental === true" entity="parameter" />
-			<FederationBackends v-if="parameter['federation:backends']" :backends="parameter['federation:backends']" :federation="federation" entity="parameter" />
+			<FederationNotice v-if="parameter['federation:backends']" :backends="parameter['federation:backends']" :federation="federation" entity="parameter" />
 			<div class="json-schema-container" v-if="parameter.schema">
 				<JsonSchema :schema="parameter.schema" :processUrl="processUrl" />
 			</div>

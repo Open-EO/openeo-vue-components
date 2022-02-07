@@ -21,7 +21,7 @@ import FederationMixin from './FederationMixin.js';
 import Utils from '../../utils';
 
 export default {
-	name: 'FederationBackends',
+	name: 'FederationNotice',
 	mixins: [
 		FederationMixin
 	],

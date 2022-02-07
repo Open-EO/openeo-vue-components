@@ -21,7 +21,7 @@
 
 			<Description :description="stac.description"></Description>
 			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
-			<FederationBackends v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />
+			<FederationNotice v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />
 		</section>
 
 		<section class="license">

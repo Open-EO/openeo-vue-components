@@ -25,7 +25,7 @@
 			<Description :description="runtime.description"></Description>
 			<DeprecationNotice v-if="runtime.deprecated" entity="UDF runtime" />
 			<ExperimentalNotice v-if="runtime.experimental" entity="UDF runtime" />
-			<FederationBackends v-if="runtime['federation:backends']" :backends="runtime['federation:backends']" :federation="federation" entity="UDF runtime" />
+			<FederationNotice v-if="runtime['federation:backends']" :backends="runtime['federation:backends']" :federation="federation" entity="UDF runtime" />
 		</section>
 
 		<section class="links">

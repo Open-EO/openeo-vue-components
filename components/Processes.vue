@@ -2,7 +2,7 @@
 	<div class="vue-component processes">
 		<SearchableList :data="processes" keywordsKey="categories" :showKeywords="showCategories" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
-			<template #content-start><FederationMissing :missing="missing" :federation="federation" /></template>
+			<template #content-start><FederationMissingNotice :missing="missing" :federation="federation" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
 				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl" :showGraph="showGraph" :federation="federation">
