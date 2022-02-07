@@ -6,6 +6,7 @@
   "description": "Mask clouds by dilating Sen2Cor sceneclassification. This dilation algorithm removes pixels in the neighbourhood of clouds in a fairly aggresive manner, to avoid any type of contamination. Nevertheless, some outliers can sometimes still remain.",
   "experimental": true,
   "id": "mask_scl_dilation",
+  "federation:backends": ["vito"],
   "parameters": [
     {
       "description": "The source data cube containing Sentinel-2 input.",

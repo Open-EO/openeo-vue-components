@@ -9925,6 +9925,10 @@
       "sar"
     ],
     "experimental": true,
+    "federation:backends": [
+      "vito",
+      "eodc"
+    ],
     "parameters": [
       {
         "name": "data",
@@ -10012,6 +10016,9 @@
         "description": "If set to `false`, no noise removal is applied. Defaults to `true`, which removes noise.",
         "optional": true,
         "default": true,
+        "federation:backends": [
+          "vito"
+        ],
         "schema": {
           "type": "boolean"
         }

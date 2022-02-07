@@ -23,6 +23,7 @@
 		"description": "R programming language with `Rcpp` and `rmarkdown` extensions installed.",
 		"type": "language",
 		"default": "3.5.2",
+		"federation:backends": ["wwu", "eurac"],
 		"versions": {
 			"3.1.0": {
 				"libraries": {

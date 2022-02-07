@@ -20,8 +20,8 @@
 			<h3>Description</h3>
 
 			<Description :description="stac.description"></Description>
-
 			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
+			<FederationBackends v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />
 		</section>
 
 		<section class="license">
@@ -129,7 +129,7 @@
 			</ul>
 		</section>
 
-		<StacFields class="summaries" type="Collection" :metadata="data" />
+		<StacFields class="summaries" type="Collection" :metadata="data" :ignore="ignoredFields" />
 
 		<section class="assets" v-if="hasAssets">
 			<h3>Assets</h3>
@@ -150,6 +150,7 @@
 <script>
 import Utils from '../utils';
 import { Formatters } from '@radiantearth/stac-fields';
+import FederationMixin from './internal/FederationMixin.js';
 import StacMixin from './internal/StacMixin.js';
 import { isoDuration, en } from '@musement/iso-duration';
 
@@ -158,16 +159,34 @@ export default {
 	components: {
 		ObjectTree: () => import('./ObjectTree.vue')
 	},
-	mixins: [StacMixin],
+	mixins: [
+		StacMixin,
+		FederationMixin
+	],
 	// Mixins don't work properly in web components,
 	// see https://github.com/vuejs/vue-web-component-wrapper/issues/30
-	props: {...StacMixin.props},
+	props: {
+		...StacMixin.props,
+		...FederationMixin.props
+	},
 	data() {
 		return {
+			ignoredFields: ['federation:backends'],
 			formatters: Formatters
 		};
 	},
 	computed: {
+		supportedBy() {
+			if (Utils.isObject(this.data.summary) && Array.isArray(this.data.summary['federation:backends'])) {
+				return this.data.summary['federation:backends'];
+			}
+			else if (Array.isArray(this.data['federation:backends'])) {
+				return this.data['federation:backends'];
+			}
+			else {
+				return undefined;
+			}
+		},
 		showMap() {
 			return this.boundingBoxes.length > 0 && !this.worldwide;
 		},

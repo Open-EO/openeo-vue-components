@@ -306,12 +306,13 @@ class Utils extends CommonUtils {
             let processParameters = [];
             for(let name in parameters) {
                 let param = parameters[name];
-                let schema = Utils.omitFromObject(param, ['description', 'required', 'default']);
+                let schema = Utils.omitFromObject(param, ['description', 'required', 'default', 'federation:backends']);
                 processParameters.push({
                     name,
                     description: param.description,
                     optional: !param.required,
                     default: param.default,
+                    'federation:backends': param['federation:backends'],
                     schema
                 });
             }

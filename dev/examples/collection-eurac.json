@@ -53,6 +53,10 @@
       ]
     }
   },
+  "federation:backends": [
+    "eurac",
+    "wwu"
+  ],
   "cube:dimensions": {
     "X": {
       "type": "spatial",

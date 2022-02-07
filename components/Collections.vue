@@ -4,7 +4,7 @@
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
-				<Collection :data="slot.item" :mapOptions="mapOptions">
+				<Collection :data="slot.item" :mapOptions="mapOptions" :federation="federation">
 					<template #title><span class="hidden" /></template>
 					<template #before-description="scope"><slot name="collection-before-description" v-bind="scope" /></template>
 					<template #end="scope"><slot name="collection-end" v-bind="scope" /></template>
@@ -18,6 +18,7 @@
 
 <script>
 import Utils from '../utils';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'Collections',
@@ -25,6 +26,9 @@ export default {
 		Collection: () => Utils.loadAsyncComponent(import('./Collection.vue')),
 		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue'))
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		collections: {
 			type: Array,
@@ -61,7 +65,8 @@ export default {
 		showKeywords: {
 			type: Boolean,
 			default: false
-		}
+		},
+		...FederationMixin.props
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);

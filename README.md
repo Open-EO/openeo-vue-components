@@ -158,6 +158,7 @@ Visualizes a single collection following the STAC-based collection description.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.
   - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `geometries` (Bounding Boxes as Leaflet Rectangle or Leaflet Wrapped Polygon in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -183,6 +184,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `showKeywords` / `show-keywords` (boolean): Adds the keywords to the third line of the summary if set to `true`. Defaults to `false`.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -258,6 +260,7 @@ The properties must be filled with parts of the response for supported file form
 - `id` (string, required): The identifier of the file format (i.e. the key of the second level; `GTiff` or `PNG` in the example above)
 - `format` (object, required): The file format specification (i.e. the value of the second level; `{...}` in the example above)
 - `type` (boolean, required): Either `input` or `output` (i.e. the key of the first level)
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -283,6 +286,7 @@ Visualizes all supported file formats of the back-end.
 - `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
@@ -438,6 +442,7 @@ Visualizes a single process following the openEO process description.
 - `provideDownload` / `provide-download` (boolean): Provide a link to download the JSON file (defaults to `true`).
 - `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
 - `showGraph` / `show-graph` (boolean): Show and visualize the process graph (defaults to `false`).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -537,6 +542,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `showGraph` / `show-graph` (boolean): See the corresponding prop in [`Process`](#process).
 - `showCategories` / `show-categories` (boolean): Adds the categories to the third line of the summary if set to `true`. Defaults to `false`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -648,6 +654,7 @@ The properties must be filled with parts of the response for supported secondary
 
 - `id` (string, required): The identifier of the secondary web service (i.e. a key of the object; `WMS` or `WFS` in the example above)
 - `service` (object, required): The secondary web service specification (i.e. the value for the corresponding key; `{...}` in the example above)
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -670,6 +677,7 @@ Visualizes all secondary web service types supported by the back-end.
 - `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -881,6 +889,7 @@ The properties must be filled with parts of the response for supported UDF runti
 - `id` (string, required): The identifier of the UDF runtime (i.e. a key of the object; `R` or `Python` in the example above)
 - `runtime` (object, required): The UDF runtime specification (i.e. the value for the corresponding key; `{...}` in the example above)
 - `version` (string|null): If one of the versions or tags available for the runtime should be pre-selected and shown, specify the version or tag here. By default (`null`), the default version or tag specified by the back-end will be shown.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -903,6 +912,7 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 

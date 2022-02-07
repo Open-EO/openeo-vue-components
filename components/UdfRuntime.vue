@@ -25,6 +25,7 @@
 			<Description :description="runtime.description"></Description>
 			<DeprecationNotice v-if="runtime.deprecated" entity="UDF runtime" />
 			<ExperimentalNotice v-if="runtime.experimental" entity="UDF runtime" />
+			<FederationBackends v-if="runtime['federation:backends']" :backends="runtime['federation:backends']" :federation="federation" entity="UDF runtime" />
 		</section>
 
 		<section class="links">
@@ -70,6 +71,7 @@
 
 <script>
 import Utils from '../utils.js';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'UdfRuntime',
@@ -81,6 +83,9 @@ export default {
 		Tabs: () => import('./Tabs.vue'),
 		Tab: () => import('./Tab.vue')
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		id: {
 			type: String,
@@ -93,7 +98,8 @@ export default {
 		version: {
 			type: String,
 			default: null
-		}
+		},
+		...FederationMixin.props
 	},
 	computed: {
 		title() {

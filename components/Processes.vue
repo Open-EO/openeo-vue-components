@@ -4,7 +4,7 @@
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
-				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl" :showGraph="showGraph">
+				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl" :showGraph="showGraph" :federation="federation">
 					<template #title><span class="hidden" /></template>
 					<template #before-description="scope"><slot name="process-before-description" v-bind="scope" /></template>
 					<template #end="scope"><slot name="process-end" v-bind="scope" /></template>
@@ -16,6 +16,7 @@
 
 <script>
 import Utils from '../utils';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'Processes',
@@ -64,7 +65,8 @@ export default {
 		loadAdditionalData: {
 			type: Function,
 			default: null
-		}
+		},
+		...FederationMixin.props
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);

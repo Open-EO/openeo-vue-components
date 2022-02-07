@@ -39,11 +39,13 @@
 			<Description :description="process.description" :processUrl="processUrl" />
 			<DeprecationNotice v-if="process.deprecated" entity="process" />
 			<ExperimentalNotice v-if="process.experimental" entity="process" />
+			<FederationBackends v-if="process['federation:backends']" :backends="process['federation:backends']" :federation="federation" entity="process" />
 		</section>
+
 
 		<section class="parameters">
 			<h3>Parameters</h3>
-			<ProcessParameter v-for="param in parameters" :key="param.name" :parameter="param" :processUrl="processUrl" />
+			<ProcessParameter v-for="param in parameters" :key="param.name" :parameter="param" :processUrl="processUrl" :federation="federation" />
 			<p v-if="parameters.length === 0">This process has no parameters.</p>
 		</section>
 
@@ -97,6 +99,7 @@
 
 <script>
 import ProcessExample from './internal/ProcessExample.vue';
+import FederationMixin from './internal/FederationMixin.js';
 import Utils from '../utils.js';
 
 export default {
@@ -111,6 +114,9 @@ export default {
 		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
 		LinkList: () => import('./LinkList.vue')
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		process: {
 			type: Object,
@@ -128,7 +134,8 @@ export default {
 		showGraph: {
 			type: Boolean,
 			default: false
-		}
+		},
+		...FederationMixin.props
 	},
 	computed: {
 		displayableNamespace() {
@@ -206,9 +213,10 @@ export default {
 	.process-bar {
 		display: flex;
 		align-items: baseline;
-	}
-	.badges {
-		margin-top: 0.75em;
+		
+		.badges {
+			margin-top: 0.75em;
+		}
 	}
 	.categories {
 		flex: 1;

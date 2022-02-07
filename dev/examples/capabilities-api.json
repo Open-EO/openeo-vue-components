@@ -65,6 +65,27 @@
       }
     ]
   },
+  "federation": {
+    "vito": {
+      "title": "VITO",
+      "url": "https://openeo.vito.be"
+    },
+    "eodc": {
+      "title": "EODC",
+      "url": "https://openeo.eodc.eu"
+    },
+    "eurac": {
+      "title": "EURAC Research",
+      "url": "https://openeo.eurac.edu"
+    },
+    "wwu": {
+      "title": "WWU Münster",
+      "url": "https://openeo.wwu.de",
+      "status": "offline",
+      "description": "Experimental integration of the WWU HPC",
+      "last_successful_check": "2022-02-01T00:00:00Z"
+    }
+  },
   "links": [
     {
       "href": "http://www.cool-cloud-corp.com",

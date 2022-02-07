@@ -31,9 +31,11 @@
 			<ExperimentalNotice v-if="format.experimental" entity="file format" />
 		</section>
 
+		<FederationBackends v-if="format['federation:backends']" :backends="format['federation:backends']" :federation="federation" entity="file format" />
+
 		<section class="parameters">
 			<h3>Parameters</h3>
-			<ProcessParameter v-for="param in parameters" :key="param.name" :parameter="param" />
+			<ProcessParameter v-for="param in parameters" :key="param.name" :parameter="param" :federation="federation" />
 			<p v-if="parameters.length === 0">This file format has no parameters.</p>
 		</section>
 
@@ -48,6 +50,7 @@
 
 <script>
 import Utils from '../utils.js';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'FileFormat',
@@ -58,6 +61,9 @@ export default {
 		ProcessParameter: () => import('./internal/ProcessParameter.vue'),
 		LinkList: () => import('./LinkList.vue')
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		id: {
 			type: String,
@@ -70,7 +76,8 @@ export default {
 		type: {
 			type: String,
 			default: null
-		}
+		},
+		...FederationMixin.props
 	},
 	computed: {
 		parameters() {

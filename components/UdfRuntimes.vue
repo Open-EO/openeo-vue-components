@@ -18,7 +18,7 @@
 				</slot>
 			</template>
 			<template #details="slot">
-				<UdfRuntime :id="slot.summary.identifier" :runtime="slot.item">
+				<UdfRuntime :id="slot.summary.identifier" :runtime="slot.item" :federation="federation">
 					<template #title><span class="hidden" /></template>
 					<template #badges="scope"><slot name="udf-runtime-badges" v-bind="scope" /></template>
 					<template #before-description="scope"><slot name="udf-runtime-before-description" v-bind="scope" /></template>
@@ -30,6 +30,7 @@
 
 <script>
 import Utils from '../utils';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'UdfRuntimes',
@@ -37,6 +38,9 @@ export default {
 		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
 		UdfRuntime: () => Utils.loadAsyncComponent(import('./UdfRuntime.vue'))
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		runtimes:  {
 			type: Object,
@@ -61,7 +65,8 @@ export default {
 		collapsed: {
 			type: Boolean,
 			default: null
-		}
+		},
+		...FederationMixin.props
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);

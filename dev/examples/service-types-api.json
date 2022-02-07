@@ -3,6 +3,7 @@
     "title": "OGC Web Map Service",
     "configuration": {
       "version": {
+        "federation:backends": ["wwu"],
         "type": "string",
         "description": "The WMS version offered to consumers of the service.",
         "default": "1.3.0",
@@ -12,6 +13,7 @@
         ]
       }
     },
+    "federation:backends": ["wwu","vito","eodc"],
     "process_parameters": [
       {
         "name": "layer",

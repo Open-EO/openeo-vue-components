@@ -10,7 +10,7 @@ let udp = require('./examples/process-array-find-nodata.json');
 let runtimes = require('./examples/udf-runtimes-api.json');
 let capabilities = require('./examples/capabilities-api.json');
 let fileFormatsApi = require('./examples/file-formats-api.json');
-let fileFormatsVito = require('./examples/file-formats-api.json');
+let fileFormatsVito = require('./examples/file-formats-vito.json');
 let serviceTypes = require('./examples/service-types-api.json');
 let service = require('./examples/service.json');
 let reduceApi = require('./examples/reduce-api-new.json');
@@ -42,12 +42,14 @@ module.exports = {
 			"mapOptions": {
 				"basemap": "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib3BlbmVvIiwiYSI6ImNreDRzdjNibDE5a2cyd3BoOXFyamd2ZTcifQ._epD9HcfAnGndfgwXmz_3A",
 				"attribution": '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'
-			}
+			},
+			"federation": capabilities.federation
 		}
 	},
 	"collections": {
 		"gee": {
-			"collections": collections
+			"collections": collections,
+			"federation": capabilities.federation
 		},
 		"collapsed": {
 			"collections": collections,
@@ -176,7 +178,8 @@ if (a == b) console.log("Hello World");
 			"show-input": false
 		},
 		"vito": {
-			"formats": fileFormatsVito
+			"formats": fileFormatsVito,
+			"federation": capabilities.federation
 		},
 	},
 	"item": {
@@ -302,12 +305,14 @@ if (a == b) console.log("Hello World");
 		"udp-mask-scl-dilation": {
 			"process": maskScl,
 			"show-graph": true,
-			"namespace": "vito"
+			"namespace": "vito",
+			"federation": capabilities.federation
 		}
 	},
 	"processes": {
 		"1.1.0": {
-			"processes": processes
+			"processes": processes,
+			"federation": capabilities.federation
 		},
 		"1.1.0-with-categories": {
 			"processes": processes,
@@ -331,7 +336,8 @@ if (a == b) console.log("Hello World");
 	"service-type": {
 		"wms": {
 			"id": "WMS",
-			"service": serviceTypes.WMS
+			"service": serviceTypes.WMS,
+			"federation": capabilities.federation
 		},
 		"ogcapi-features": {
 			"id": "OGCAPI-FEATURES",
@@ -340,7 +346,8 @@ if (a == b) console.log("Hello World");
 	},
 	"service-types": {
 		"api": {
-			"services": serviceTypes
+			"services": serviceTypes,
+			"federation": capabilities.federation
 		}
 	},
 	"supported-features": {
@@ -352,12 +359,14 @@ if (a == b) console.log("Hello World");
 	"udf-runtime": {
 		"api": {
 			"id": "R",
-			"runtime": runtimes["R"]
+			"runtime": runtimes["R"],
+			"federation": capabilities.federation
 		}
 	},
 	"udf-runtimes": {
 		"api": {
-			"runtimes": runtimes
+			"runtimes": runtimes,
+			"federation": capabilities.federation
 		}
 	}
 }

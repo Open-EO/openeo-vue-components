@@ -16,7 +16,7 @@
 				</slot>
 			</template>
 			<template #details="slot">
-				<FileFormat :id="slot.summary.identifier" :format="slot.item" :type="slot.item.type">
+				<FileFormat :id="slot.summary.identifier" :format="slot.item" :type="slot.item.type" :federation="federation">
 					<template #title><span class="hidden" /></template>
 					<template #badges><span class="hidden" /></template>
 					<template #before-description="scope"><slot name="file-format-before-description" v-bind="scope" /></template>
@@ -29,6 +29,7 @@
 
 <script>
 import Utils from '../utils.js';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'FileFormats',
@@ -36,6 +37,9 @@ export default {
 		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue')),
 		FileFormat: () => Utils.loadAsyncComponent(import('./FileFormat.vue'))
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		formats: {
 			type: Object,
@@ -68,7 +72,8 @@ export default {
 		collapsed: {
 			type: Boolean,
 			default: null
-		}
+		},
+		...FederationMixin.props
 	},
 	computed: {
 		showAll() {

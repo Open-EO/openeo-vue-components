@@ -20,7 +20,8 @@
         "other"
       ],
       "parameters": {},
-      "title": "CoverageJSON"
+      "title": "CoverageJSON",
+      "federation:backends": ["vito"]
     },
     "GTiff": {
       "gis_data_types": [
@@ -45,6 +46,7 @@
         "tile_grid": {
           "default": "none",
           "description": "Specifies the tile grid to use, for batch jobs only. By default, no tile grid is set, and one Geotiff is generated per date. If a tile grid is set, multiple geotiffs are generated per date, as defined by the specified tiling grid.",
+          "federation:backends": ["vito"],
           "enum": [
             "wgs84-1degree",
             "utm-100km",

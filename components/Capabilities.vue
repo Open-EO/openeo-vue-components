@@ -25,8 +25,8 @@
 						</ul>
 					</div>
 					<small>URL: {{ service.url }}</small>
-					<Description v-if="service.description" :description0="service.description" :compact="compact" />
-					<small v-if="last_status_check">Last check: {{ service.last_status_check | timestamp }}</small>
+					<Description v-if="service.description" :description0="service.description" :compact="true" />
+					<small v-if="service.last_status_check">Last check: {{ service.last_status_check | timestamp }}</small>
 				</li>
 			</ul>
 		</div>
@@ -105,30 +105,4 @@ export default {
 
 <style lang="scss">
 @import './base.scss';
-
-.vue-component {
-	.federation {
-		> ul > li {
-			margin-bottom: 0.5em;
-
-			> small {
-				display: block;
-			}
-
-			> h4 {
-				margin: 0;
-			}
-		}
-
-
-		.fed-header {
-			margin: 0.2em 0;
-
-			> .fed-title {
-				display: inline-block;
-				vertical-align: bottom;
-			}
-		}
-	}
-}
 </style>

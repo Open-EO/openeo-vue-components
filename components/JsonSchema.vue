@@ -240,7 +240,7 @@ export default {
 			if (key == 'object') {
 				return (this.schema.type == 'object' && typeof this.schema.properties == 'object');
 			}
-			else if (key == 'title' || key == 'description' || key == 'subtype' || key == 'format' || key == 'anyOf' || key == 'oneOf') {
+			else if (key == 'title' || key == 'description' || key == 'subtype' || key == 'format' || key == 'anyOf' || key == 'oneOf' || key == 'federation:backends') {
 				return false;
 			}
 			else if (key == 'items' && Object.keys(this.schema.items).length === 1 && typeof this.schema.items.type !== 'undefined') {
