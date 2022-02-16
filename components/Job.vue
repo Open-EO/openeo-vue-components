@@ -45,6 +45,8 @@
 		<summary class="description" v-if="job.description">
 			<h3>Description</h3>
 			<Description :description="job.description" />
+
+			<FederationMissingNotice v-if="job['federation:missing']" :missing="job['federation:missing']" :federation="federation" />
 		</summary>
 
 		<section class="billing" v-if="job.plan || costs || budget">
@@ -87,11 +89,13 @@
 
 <script>
 import Utils from '../utils';
+import FederationMixin from './internal/FederationMixin.js';
 import UsageMixin from './internal/UsageMixin.js';
 
 export default {
 	name: 'Job',
 	mixins: [
+		FederationMixin,
 		UsageMixin
 	],
 	components: {
@@ -106,7 +110,8 @@ export default {
 		currency: {
 			type: String,
 			default: null
-		}
+		},
+		...FederationMixin.props
 	},
 	computed: {
 		budget() {

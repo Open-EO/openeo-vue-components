@@ -12,6 +12,7 @@
 			<Description :description="properties.description"></Description>
 
 			<DeprecationNotice v-if="properties.deprecated" entity="item" />
+			<FederationMissingNotice v-if="stac['federation:missing']" :missing="stac['federation:missing']" :federation="federation" />
 		</summary>
 
 		<section class="preview" v-if="thumbnails.length">
@@ -37,13 +38,13 @@
 				</div>
 			</slot>
 
-			<StacFields type="Item" :metadata="data" headingTag="h4" :ignore="ignoredFields" />
+			<StacFields type="Item" :metadata="stac" headingTag="h4" :ignore="ignoredFields" />
 		</section>
 
 		<section class="assets" v-if="hasAssets">
 			<h3>Assets</h3>
 			<ul class="list">
-				<StacAsset v-for="(asset, id) in stac.assets" :key="id" :asset="asset" :id="id" :context="data" />
+				<StacAsset v-for="(asset, id) in stac.assets" :key="id" :asset="asset" :id="id" :context="stac" />
 			</ul>
 		</section>
 
@@ -57,18 +58,25 @@
 </template>
 
 <script>
+import FederationMixin from './internal/FederationMixin.js';
 import StacMixin from './internal/StacMixin.js';
 import Utils from '../utils';
 
 export default {
 	name: 'Item',
-	mixins: [StacMixin],
+	mixins: [
+		FederationMixin,
+		StacMixin
+	],
 	// Mixins don't work properly in web components,
 	// see https://github.com/vuejs/vue-web-component-wrapper/issues/30
-	props: {...StacMixin.props},
+	props: {
+		...FederationMixin.props,
+		...StacMixin.props
+	},
 	data() {
 		return {
-			ignoredFields: ['title', 'description', 'deprecated']
+			ignoredFields: ['title', 'description', 'deprecated', 'federation:missing']
 		};
 	},
 	computed: {

@@ -1,6 +1,6 @@
 <template>
 	<section v-if="services" class="vue-component message-block federation federation-backends">
-		<button type="button" class="retry" @click="retry">
+		<button v-if="retry" type="button" class="retry" @click="retry">
 			<slot name="button-text">Retry</slot>
 		</button>
 		<strong class="header">Incomplete</strong>

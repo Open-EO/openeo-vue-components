@@ -345,6 +345,7 @@ Visualizes a single STAC Item, e.g. a batch job result.
   - `wrapAroundAntimeridian` (boolean): Whether the world map wraps around the antimeridian (defined the other way round it's also known as "noWrap"). Defaults to `false`.
   - `scrollWheelZoom` (boolean): Whether zooming via the mouse scroll wheel is enabled (regardless of this setting, buttons for `+` and `-` are _always_ displayed). Defaults to `false`.
   - `onAfterMapInit` (function|null): Callback function with two parameters `map` (Leaflet Map) and `geometries` (Geometry as Leaflet Geometry or Leaflet Wrapped Geometry in a Leaflet FeatureGroup) that is called after the map has been initialized. Can be used to further customize the map behavior. Defaults to `null` (no callback).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
@@ -371,6 +372,8 @@ Shows an (expandable) list of STAC-based Items.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Items`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of items due to an issue.
 
 **Slots:**
 
@@ -394,6 +397,7 @@ Visualizes a single batch job.
 
 - `job` (object, required): Batch Job details as defined by the openEO API (Either one of the array elements in the property `jobs` returned by `GET /jobs` or the response from `GET /jobs/{job_id}`).
 - `currency` (string|null): The currency of the service (see openEO API endpoint `GET /`).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 

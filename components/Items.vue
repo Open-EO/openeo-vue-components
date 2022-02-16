@@ -23,6 +23,7 @@
 <script>
 import Utils from '../utils';
 import StacMixin from './internal/StacMixin';
+import FederationMixin from './internal/FederationMixin';
 
 const geoJsonStyle = {
 	color: '#3388ff',
@@ -35,6 +36,9 @@ export default {
 		Item: () => Utils.loadAsyncComponent(import('./Item.vue')),
 		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue'))
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		items: {
 			type: [Array, Object], // Either a GeoJSON FeatureCollection or an array of Items
@@ -68,7 +72,12 @@ export default {
 		loadAdditionalData: {
 			type: Function,
 			default: null
-		}
+		},
+		missing: {
+			type: Array,
+			default: null
+		},
+		...FederationMixin.props
 	},
 	data() {
 		return Object.assign(StacMixin.data(), {

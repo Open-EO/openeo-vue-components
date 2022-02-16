@@ -22,6 +22,7 @@
 			<Description :description="stac.description"></Description>
 			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
 			<FederationNotice v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />
+			<FederationMissing v-if="stac['federation:missing']" :missing="stac['federation:missing']" :federation="federation" />
 		</section>
 
 		<section class="license">
@@ -86,7 +87,7 @@
 		<section class="dimensions" v-if="hasDimensions">
 			<h3>Data Cube Dimensions</h3>
 			<ul>
-				<li v-for="(dim, name) in data['cube:dimensions']" :key="name" class="dimension">
+				<li v-for="(dim, name) in stac['cube:dimensions']" :key="name" class="dimension">
 					<h4>
 						<a v-if="dim.type === 'bands'" @click="scrollToBands" class="name" href="#summary_eo:bands">{{ name }}</a>
 						<span v-else class="name">{{ name }}</span>
@@ -129,12 +130,12 @@
 			</ul>
 		</section>
 
-		<StacFields class="summaries" type="Collection" :metadata="data" :ignore="ignoredFields" />
+		<StacFields class="summaries" type="Collection" :metadata="stac" :ignore="ignoredFields" />
 
 		<section class="assets" v-if="hasAssets">
 			<h3>Assets</h3>
 			<ul class="list">
-				<StacAsset v-for="(asset, id) in stac.assets" :key="id" :asset="asset" :id="id" :context="data" />
+				<StacAsset v-for="(asset, id) in stac.assets" :key="id" :asset="asset" :id="id" :context="stac" />
 			</ul>
 		</section>
 
@@ -177,11 +178,11 @@ export default {
 	},
 	computed: {
 		supportedBy() {
-			if (Utils.isObject(this.data.summary) && Array.isArray(this.data.summary['federation:backends'])) {
-				return this.data.summary['federation:backends'];
+			if (Utils.isObject(this.stac.summary) && Array.isArray(this.stac.summary['federation:backends'])) {
+				return this.stac.summary['federation:backends'];
 			}
-			else if (Array.isArray(this.data['federation:backends'])) {
-				return this.data['federation:backends'];
+			else if (Array.isArray(this.stac['federation:backends'])) {
+				return this.stac['federation:backends'];
 			}
 			else {
 				return undefined;
