@@ -407,10 +407,10 @@ export default {
             this.focus();
         },
         getDimensions() {
-            let dim = Utils.domBoundingBox(this.$refs.div);
+            let dim = this.$parent.domBoundingBox(this.$refs.div);
             var blocksDim = this.$parent.getDimensions();
-            dim.x = dim.offsetLeft-blocksDim.offsetLeft;
-            dim.y = dim.offsetTop-blocksDim.offsetTop;
+            dim.x = dim.offsetLeft - blocksDim.offsetLeft;
+            dim.y = dim.offsetTop - blocksDim.offsetTop;
             return dim;
         },
         edgesChanged(parameter, edges) {
@@ -459,7 +459,7 @@ export default {
                 mouse: this.getDragPos(this.position, mousePos)
             };
         },
-        stopDrag(event) {
+        stopDrag() {
             if (!this.drag) {
                 return;
             }

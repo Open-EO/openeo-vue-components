@@ -178,9 +178,6 @@ export default {
                 return this.name;
             }
         },
-        isDefaultValue() {
-            return !this.hasValue || (typeof this.default !== 'undefined' && this.default == this.value); // Don't do ===, otherwise empty objects are not recognized as the same.
-        },
         isArrayType() {
             return this.schemas.nativeDataType() === 'array';
         },
@@ -220,10 +217,10 @@ export default {
         },
         getCirclePosition() {
             try {
-                var dim = Utils.domBoundingBox(this.$refs.circle);
+                var dim = this.state.root.domBoundingBox(this.$refs.circle);
                 var blocksDim = this.state.root.getDimensions();
-                var x = (dim.offsetLeft-blocksDim.offsetLeft)+dim.width/2;
-                var y = (dim.offsetTop-blocksDim.offsetTop)+dim.height/2;
+                var x = (dim.offsetLeft - blocksDim.offsetLeft) + dim.width / 2;
+                var y = (dim.offsetTop - blocksDim.offsetTop) + dim.height / 2;
                 return [x, y];
             } catch (error) {
                 console.warn(error);

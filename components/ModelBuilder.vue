@@ -131,7 +131,7 @@ export default {
             history: [],
             historyPointer: null,
 
-            process: this.value,
+            process: Object.freeze(this.value),
             // Metadata for blocks to show
             blocks: [],
             // Metadata for edges to show
@@ -637,6 +637,12 @@ export default {
                 this.showZoomInfo = false;
             }
         },
+        domBoundingBox(el) {
+            var rect = el.getBoundingClientRect();
+            rect.offsetTop = rect.top + Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+            rect.offsetLeft = rect.left + Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
+            return rect;
+        },
         getMousePos(event) {
             let root = this.$refs.div.getBoundingClientRect();
             return [
@@ -744,7 +750,7 @@ export default {
         },
 
         getDimensions() {
-            return Utils.domBoundingBox(this.$refs.div);
+            return this.domBoundingBox(this.$refs.div);
         },
 
         async clear() {
@@ -783,7 +789,7 @@ export default {
          */
         saveHistory() {
             var data = this.export(true);
-            this.history.splice(this.historyPointer + 1, this.historySize, data);
+            this.history.splice(this.historyPointer + 1, this.historySize, Object.freeze(data));
             if (this.history.length > this.historySize) {
                 this.history.shift();
             }
@@ -1258,16 +1264,18 @@ export default {
                 }
 
                 // Parse process
+                let pg;
                 if (process instanceof ProcessGraph) {
                     // Make a copy
-                    this.processGraph = new ProcessGraph(process.toJSON(), this.processRegistry);
-                    this.processGraph.setParent(process.parentProcessId, process.parentParameterName);
+                    pg = new ProcessGraph(process.toJSON(), this.processRegistry);
+                    pg.setParent(process.parentProcessId, process.parentParameterName);
                 }
                 else {
-                    this.processGraph = new ProcessGraph(process, this.processRegistry);
+                    pg = new ProcessGraph(process, this.processRegistry);
                 }
-                this.processGraph.allowEmpty();
-                this.processGraph.parse();
+                pg.allowEmpty();
+                pg.parse();
+                this.processGraph = Object.freeze(pg);
 
                 await this.importPgParameters(this.processGraph.getProcessParameters(true), 'user', options.clear !== false);
                 await this.importNodes(this.processGraph.getStartNodes());
@@ -1328,7 +1336,7 @@ export default {
                     type: 'parameter',
                     origin,
                     position: Utils.ensurePoint(position, () => this.getNewBlockDefaultPosition(this.getBlockSize({}))),
-                    spec: param
+                    spec: Object.freeze(param)
                 }));
                 return true;
             });

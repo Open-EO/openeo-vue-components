@@ -20,6 +20,7 @@ let mbSample = require('./examples/model-builder/sample.json');
 let maskScl = require('./examples/model-builder/mask_scl_dilation.json');
 let clip = require('./examples/model-builder/clip.json');
 let ardSR = require('./examples/model-builder/ard_surface_reflectance.json');
+let slow = require('./examples/model-builder/slow.json');
 
 module.exports = {
 	"billing-plans": {
@@ -270,6 +271,13 @@ if (a == b) console.log("Hello World");
 			"editable": true,
 			"value": maskScl,
 			"explicit-zoom": true
+		},
+		"slow": {
+			"id": "slow",
+			"editable": true,
+			"value": slow,
+			"explicit-zoom": true,
+			"processes": processes
 		},
 		"clip": {
 			"id": "clip",

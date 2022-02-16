@@ -205,13 +205,6 @@ class Utils extends CommonUtils {
         }
         return str;
     }
-
-	static domBoundingBox(el) {
-		var rect = el.getBoundingClientRect();
-		rect.offsetTop = rect.top + Math.max(document.documentElement.scrollTop, document.body.scrollTop);
-		rect.offsetLeft = rect.left + Math.max(document.documentElement.scrollLeft, document.body.scrollLeft);
-		return rect;
-    }
     
 	static ensurePoint(pt, fallback = null) {
 		if (typeof fallback !== 'function') {

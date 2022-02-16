@@ -123,8 +123,8 @@ export default {
                 return;
             }
             if (!this.position1 || !this.position2 || pos1[0] !== this.position1[0] || pos1[1] !== this.position1[1] || pos2[0] !== this.position2[0] || pos2[1] !== this.position2[1]) {
-                this.position1 = pos1;
-                this.position2 = pos2;
+                this.position1 = Object.freeze(pos1);
+                this.position2 = Object.freeze(pos2);
                 this.$emit('position', this.position1, this.position2);
             }
         },
