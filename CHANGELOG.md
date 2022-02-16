@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for the experimental Federation Extension
 - `FederationMissingNotice`
 
+### Fixed
+
+- `ModelBuilder`:
+  - Minor speed improvements
+  - Don't add default values to exported process arguments
+
 ## [2.7.1] - 2022-01-25
 
 ### Fixed

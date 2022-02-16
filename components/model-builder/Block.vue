@@ -380,6 +380,12 @@ export default {
         updateArguments(value) {
             let removeParameters = Object.keys(this.args)
                     .filter(key => typeof value[key] === 'undefined' && (!this.hasParametersDefined || this.hasParameter(key)));
+            // Remove default values
+            for(let p of this.parameters) {
+                if (typeof value[p.name] !== 'undefined' && p.optional && typeof p.default !== 'undefined' && Utils.equals(p.default, value[p.name]))  {
+                    delete value[p.name];
+                }
+            }
             this.$emit('update', 'arguments', value, removeParameters);
         },
         updateArgument(key, value) {
