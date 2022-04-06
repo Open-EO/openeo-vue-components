@@ -70,7 +70,7 @@ export default {
 		border: 1px solid #ccc;
 		box-sizing: content-box;
 		background-color: #fff;
-		width: calc(100% - 2.2em);
+		width: calc(100% - 1.9em - 0.25em - 2px);
 	}
 	.icon {
 		user-select: none;
