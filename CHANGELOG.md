@@ -9,13 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support for the experimental Federation Extension
-- `FederationMissingNotice`
+- New component `FederationMissingNotice`
+- `Tabs`: New slot and event with name `empty`
 
 ### Fixed
 
 - `ModelBuilder`:
   - Minor speed improvements
   - Don't add default values to exported process arguments
+- `SearchBox`: Fixed wrongly computed width
 
 ## [2.7.1] - 2022-01-25
 
