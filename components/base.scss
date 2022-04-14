@@ -181,6 +181,13 @@
 .vue-component .badges .experimental {
 	background-color: blueviolet;
 }
+.vue-component .badges .action {
+	background-color: chocolate;
+
+	&:hover {
+		background-color: black;
+	}
+}
 /* Badges for UDFs */
 .vue-component .badges .docker {
 	background-color: #0db7ed;

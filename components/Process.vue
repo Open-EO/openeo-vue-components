@@ -222,13 +222,6 @@ export default {
 	}
 	.actions {
 		text-align: right;
-		.action {
-			background-color: chocolate;
-
-			&:hover {
-				background-color: black;
-			}
-		}
 	}
 	strong {
 		&.deprecated {

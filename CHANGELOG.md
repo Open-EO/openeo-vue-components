@@ -6,11 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2022-04-14
+
 ### Added
 
 - Support for the experimental Federation Extension
 - New component `FederationMissingNotice`
 - `Tabs`: New slot and event with name `empty`
+
+### Changed
+
+- Make assets more compact
 
 ### Fixed
 
@@ -499,7 +505,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.7.1...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.8.0...HEAD
+[2.8.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.7.1...v2.8.0
 [2.7.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.7.0...v2.7.1
 [2.7.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.2...v2.7.0
 [2.6.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.1...v2.6.2
