@@ -1,5 +1,6 @@
 <template>
 	<div :class="classes" :id="id">
+		<div v-if="!hasEnabledTabs" class="tabsEmpty"><slot name="empty"></slot></div>
 		<div class="tabsHeader" ref="tabsHeader">
 			<button v-for="tab in tabs" type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon, [tab.id]: true }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
@@ -95,6 +96,9 @@ export default {
 		}
 	},
 	watch: {
+		hasEnabledTabs(hasTabs) {
+			this.$emit('empty', !hasTabs);
+		},
 		activeTab() {
 			this.adjustSizes();
 		}
@@ -283,6 +287,7 @@ export default {
 			margin-left: 5px;
 			height: 1em;
 			width: 1em;
+			min-width: 1em;
 
 			* {
 				stroke: black;
@@ -396,7 +401,18 @@ export default {
 		}
 	}
 	&.hide {
-		display: none;
+		border: 0;
+
+		> .tabsEmpty:empty {
+			display: none;
+		}
+
+		> .tabsBody {
+			display: none;
+		}
+		> .tabsHeader {
+			display: none;
+		}
 	}
 	&.spaceLimited {
 		.tabHasIcon:not(.tabActive) .tabName {

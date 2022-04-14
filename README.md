@@ -763,6 +763,7 @@ Creates a tab interface.
 **Slots:**
 
 - `default`: Place for [`Tab`](#tab) components to be added by default. Must only contain children of type [`Tab`](#tab) which contain the content for each of the tabs. The slot property `tabs` holds a reference to the `Tabs` component.
+- `empty`: Content that is shown when no tab is available to be shown.
 - `tabName`: A slot that can be used to customize the appearance of the tab name for each tab. The slot applies to *all* tabs. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
 - `dynamic`: Default content for dynamic tabs. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
 - The content for each dynamic tab that is added programmatically via the `addTab` method can also be filled with a slot that has the id of the tab (see example below). Otherwise the content of the `dynamic` slot is used. The slot property `tab` holds an object with the properties of the tab set with the `addTab` method.
@@ -770,6 +771,7 @@ Creates a tab interface.
 **Events:**
 
 - `@selected`: Fired when a Tab has been selected. The selected tab is passed as a parameter to the listener.
+- `@empty`: Fired when no tab is available to be shown. The first parameter is `true` when no tab is available, otherwise `false`.
 
 **Notes:**
 
