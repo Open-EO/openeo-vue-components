@@ -2,7 +2,12 @@
   <li class="vue-component asset">
     <h4>
       <ul class="badges actions">
-        <li class="badge action download"><a class="badge-fill" :href="asset.href" target="_blank" download>Download '{{ asset.title || id }}' as {{ fileFormat }}</a></li>
+        <li class="badge action download">
+          <a class="badge-fill" :href="asset.href" target="_blank" download>
+            Download '{{ asset.title || id }}'
+            <template v-if="fileFormat">as {{ fileFormat }}</template>
+          </a>
+        </li>
       </ul>
       <ul v-if="Array.isArray(asset.roles)" class="badges">
         <li v-for="role in asset.roles" :key="role" class="badge" :class="role === 'data' ? 'green' : 'secondary'">{{ role }}</li>
