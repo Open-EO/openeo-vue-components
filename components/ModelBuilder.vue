@@ -867,12 +867,21 @@ export default {
         },
 
         addBlock(node, id = null) {
-            id = '#' + String(this.incrementId(id));
+            let num = String(this.incrementId(id));
+            if (id === null && Utils.hasText(node.process_id)) {
+                id = node.process_id.replace(/^([a-z]*).*$/i, "$1") + num;
+                if (this.getBlockById('#' + id)) {
+                    id = num;
+                }
+            }
+            else {
+                id = num;
+            }
             if (typeof node.toJSON === 'function') {
                 node = node.toJSON();
             }
             var block = {
-                id,
+                id: '#' + id,
                 type: 'process',
                 selected: false,
                 position: node.position,
@@ -1426,7 +1435,7 @@ export default {
                 id = this.nextBlockId;
                 this.nextBlockId++;
             }
-            let int = Number.parseInt(id);
+            let int = Number.parseInt(id, 10);
             if (!Number.isNaN(int)) {
                 this.nextBlockId = Math.max(this.nextBlockId, int+1);
             }

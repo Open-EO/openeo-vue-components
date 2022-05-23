@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.1] - 2022-05-23
+
 ### Added
 
 - `Utils.isUrl()`
+
+### Changed
+
+- `ModelBuilder`: Create more human-friendly node names
 
 ### Fixed 
 
@@ -515,7 +521,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.8.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.8.1...HEAD
+[2.8.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.8.0...v2.8.1
 [2.8.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.7.1...v2.8.0
 [2.7.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.7.0...v2.7.1
 [2.7.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.6.2...v2.7.0
