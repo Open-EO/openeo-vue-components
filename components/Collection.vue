@@ -341,10 +341,6 @@ export default {
 				border-left: 1px dotted #ccc;
 				padding-left: 1%;
 			}
-
-			.map {
-				height: 350px;
-			}
 		}
 	}
 
