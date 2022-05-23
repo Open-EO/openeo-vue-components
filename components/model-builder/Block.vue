@@ -118,6 +118,12 @@ export default {
     watch: {
         'state.compactMode'() {
             this.$emit('moved', this.position);
+        },
+        description: {
+            immediate: true,
+            handler() {
+                this.showDescriptionField = (this.description !== null);
+            }
         }
     },
     computed: {
