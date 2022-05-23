@@ -21,6 +21,7 @@ let maskScl = require('./examples/model-builder/mask_scl_dilation.json');
 let clip = require('./examples/model-builder/clip.json');
 let ardSR = require('./examples/model-builder/ard_surface_reflectance.json');
 let slow = require('./examples/model-builder/slow.json');
+let externalProc = require('./examples/model-builder/external_process.json');
 
 module.exports = {
 	"billing-plans": {
@@ -249,6 +250,10 @@ if (a == b) console.log("Hello World");
 	"model-builder": {
 		"empty": {
 			"id": "empty"
+		},
+		"external-process": {
+			"id": "namespace-is-url",
+			"value": externalProc
 		},
 		"sample-viewer-without-metadata": {
 			"id": "sample",

@@ -199,6 +199,21 @@ class Utils extends CommonUtils {
         return [];
     }
 
+    static isUrl(value, onlyHttp = true) {
+        if (!Utils.hasText(value)) {
+            return false;
+        }
+        try {
+            let url = new URL(value);
+            if (onlyHttp && !url.protocol.match(/^https?:$/i)) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
     static prettifyAbbreviation(str) {
         if (typeof str === 'string' && str.match(/[A-Z]+/) === null) {
             return str.toUpperCase();

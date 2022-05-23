@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Utils.isUrl()`
+
 ### Fixed 
 
-- `ModelBuilder`: Descriptions for blocks not shown
+- `ModelBuilder`:
+  - Descriptions for blocks not shown initially
+  - If process namespace is a URL, don't show process as missing
 
 ## [2.8.0] - 2022-04-14
 

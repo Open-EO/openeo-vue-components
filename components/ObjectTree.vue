@@ -109,13 +109,7 @@ export default {
 			return null;
 		},
 		isUrl(url) {
-			if (typeof url === 'string') {
-				try {
-					new URL(url);
-					return true;
-				} catch (error) {}
-			}
-			return false;
+			return Utils.isUrl(url, false);
 		}
     }
 }

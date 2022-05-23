@@ -208,6 +208,10 @@ export default {
                 // Also, don't check for validity if no processes to validate against are given
                 return false;
             }
+            else if (this.namespace && Utils.isUrl(this.namespace)) {
+                // If the namespace is a URL, then don't complain about a missing process
+                return false;
+            }
             else if (!this.processId) {
                 return true;
             }
