@@ -84,7 +84,7 @@
 								<Description v-else-if="key == 'description'" :description="val" :compact="true" />
 								<em v-else-if="key == 'default' && val === ''">Empty string</em>
 								<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
-								<code v-else-if="key == 'pattern'">{{ val }}</code>
+								<code v-else-if="key == 'pattern'">{{ val | regex }}</code>
 								<openeo-json-schema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								<span v-else>{{ val }}</span>
 							</td>
@@ -133,6 +133,11 @@ export default {
 		// Circular dependency leads to errors when building with target wc(-async)
 		// See https://vuejs.org/v2/guide/components-edge-cases.html#Circular-References-Between-Components
 		this.$options.components.ProcessParameter = require('./internal/ProcessParameter.vue').default;
+	},
+	filters: {
+		regex(value) {
+			return value.replaceAll("\r", "\\r").replaceAll("\n", "\\n").replaceAll("\t", "\\t");
+		}
 	},
 	computed: {
 		showSchema() {

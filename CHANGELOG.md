@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `Process`: Escape non-printable characters (`\r`, `\n`, `\t`) in regular expressions properly 
+
 ## [2.8.1] - 2022-05-23
 
 ### Added
