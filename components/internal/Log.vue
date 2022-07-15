@@ -150,7 +150,7 @@ export default {
 
 	.details {
 		margin: 0.5em 0 1em 1.6em;
-		padding-left: 1.5em;
+		padding-left: 2em;
 		font-size: 0.9em;
 
 		> li {

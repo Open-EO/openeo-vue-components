@@ -1,5 +1,5 @@
 <template>
-	<div class="vue-component json-schema" v-if="showSchema">
+	<div class="vue-component json-schema" :class="{composite: compositeTypes.length > 1}" v-if="showSchema">
 		<template v-if="visible">
 			<div v-if="isProcessGraph" class="schemaProcessGraph">
 				<div class="process-graph-parameters">
@@ -72,8 +72,8 @@
 								<div v-else-if="key == 'allOf' && Array.isArray(val)" class="schema-container">
 									<openeo-json-schema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								</div>
-								<span v-else-if="key != 'default' && key != 'examples' && val === true" title="true">✓ Yes</span>
-								<span v-else-if="key != 'default' && key != 'examples' && val === false" title="false">✕ No</span>
+								<span v-else-if="key != 'const' && key != 'default' && key != 'examples' && val === true" title="true">✓ Yes</span>
+								<span v-else-if="key != 'const' && key != 'default' && key != 'examples' && val === false" title="false">✕ No</span>
 								<ul v-else-if="key != 'examples' && Array.isArray(val)" class="comma-separated-list">
 									<li v-for="(v, k) in val" :key="k">{{ v }}</li>
 								</ul>
@@ -201,7 +201,7 @@ export default {
 				case 'minItems':
 					return 'Min. number of items';
 				case 'const':
-					return 'Constant value';
+					return 'Allowed value';
 				case 'maxItems':
 					return 'Max. number of items';
 				case 'minimum':
@@ -262,17 +262,21 @@ export default {
 <style lang="scss">
 @import './base.scss';
 
-.vue-component.json-schema {
-	border-left: 7px solid #ccc;
-	border-bottom: 1px dotted #ccc;
-	padding: 0.25%;
-	width: 99%;
+.vue-component .json-schema {
+	border-left: 5px solid #ccc;
+	padding: 0.5em;
+	box-sizing: border-box;
+
+	&.composite {
+		border-left: 0;
+		padding-left: 0;
+	}
 
 	td, th {
-		padding: 0.25em;
+		padding: 0.5em;
 	}
 	.schemaProcessGraph {
-		padding: 0.25em;
+		padding: 0.5em;
 
 		h4 {
 			font-size: 1.1em;
@@ -283,10 +287,10 @@ export default {
 		font-weight: bold;
 	}
 	.data-types-container > .json-schema {
-		border-left: 1px solid #ccc;
-		border-bottom: 1px dotted #ccc;
-		margin-top: 0.5em;
-		margin-left: 1em;
+		border-left: 7px solid #ccc;
+		border-bottom: 1px solid #ccc;
+		margin-bottom: 1em;
+		margin-left: 0.25em;
 	}
 	.inline-schema-attrs .json-schema {
 		border: 0;
@@ -300,6 +304,7 @@ export default {
 	}
 	.schema-attrs {
 		width: 100%;
+		margin: -0.25em;
 
 		.key {
 			white-space: nowrap;

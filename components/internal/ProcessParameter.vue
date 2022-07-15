@@ -53,7 +53,7 @@ export default {
 <style lang="scss">
 .vue-component.process-parameter {
 	.details {
-		margin-left: 1.5em;
+		margin-left: 3em;
 	}
 	.default {
 		font-weight: normal;

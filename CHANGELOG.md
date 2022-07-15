@@ -8,7 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- `Process`: Escape non-printable characters (`\r`, `\n`, `\t`) in regular expressions properly 
+- `Process`:
+  - Escape non-printable characters (`\r`, `\n`, `\t`) in regular expressions properly 
+  - Show a constant boolean value as boolean value instead of yes/no
+- Small improvements to separate blocks better in `JsonSchema`, `Process` and `Logs`
 
 ## [2.8.1] - 2022-05-23
 

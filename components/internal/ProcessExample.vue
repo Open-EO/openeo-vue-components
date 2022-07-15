@@ -66,10 +66,11 @@ export default {
 <style lang="scss">
 .vue-component.process-example {
 	.content {
-		border-left: 0.5em solid #ccc;
-		border-bottom: 1px dotted #ccc;
+		border-left: 5px solid #ccc;
+		border-bottom: 1px solid #ccc;
 		padding: 0.5em;
-		margin-left: 1.5em;
+		margin-left: 3em;
+		box-sizing: border-box;
 		
 		.styled-description {
 			margin-bottom: 1em;
