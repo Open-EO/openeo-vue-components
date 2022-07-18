@@ -369,9 +369,10 @@ export default {
             return this.hasParametersDefined && !!this.spec.parameters.find(p => p.name === name);
         },
         updateDescription(event) {
+			let elem = event.composedPath()[0]; // event.target doesn't work in web components
             let value;
-            if (typeof event.target.value === 'string' && event.target.value.length > 0) {
-                value = event.target.value;
+            if (elem && typeof elem.value === 'string' && elem.value.length > 0) {
+                value = elem.value;
             }
             else {
                 value = null;

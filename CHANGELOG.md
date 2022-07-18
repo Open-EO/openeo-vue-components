@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fix mixin usage in FederationMissingNotice in web component mode
+- Fixed usage of `event.target` in Web Component mode
 
 ## [2.9.2] - 2022-07-18
 

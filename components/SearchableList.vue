@@ -201,15 +201,18 @@ export default {
 	methods: {
 		copyIdentifier(event, summary) {
 			if (this.allowCopy && this.canCopy) {
+				let elem = event.composedPath()[0]; // event.target doesn't work in web components
 				navigator.clipboard.writeText(summary.identifier)
-					.then(() => this.toggleIcon(event, '✅'))
-					.catch(() => this.toggleIcon(event, '❌'))
+					.then(() => this.toggleIcon(elem, '✅'))
+					.catch(() => this.toggleIcon(elem, '❌'))
 			}
 		},
-		toggleIcon(event, newIcon) {
-			let oldIcon = event.target.innerText;
-			event.target.innerText = newIcon;
-			setTimeout(() => event.target.innerText = oldIcon, 2000);
+		toggleIcon(elem, newIcon) {
+			if (elem) {
+				let oldIcon = elem.innerText;
+				elem.innerText = newIcon;
+				setTimeout(() => elem.innerText = oldIcon, 2000);
+			}
 		},
 		generateSummaries() {
 			let hasLoader = typeof this.loadAdditionalData === 'function';
