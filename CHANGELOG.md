@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `Collection`: Show more top-level metadata fields
+
 ### Fixed
 
 - `Process`:

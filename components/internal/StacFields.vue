@@ -36,6 +36,27 @@
 import StacFields from '@radiantearth/stac-fields';
 import Utils from '../../utils'
 
+const CORE_COLLECTION_FIELDS = [
+	// Catalog and Collection fields that are handled directly
+	'stac_version',
+	'stac_extensions',
+	'id',
+	'type',
+	'title',
+	'description',
+	'keywords',
+	'providers',
+	'license',
+	'extent',
+	'summaries',
+	'links',
+	'assets',
+	'item_assets',
+	'conformsTo',
+	'deprecated',
+	'cube:dimensions'
+];
+
 StacFields.Registry.externalRenderer = true;
 //StacFields.Registry.addMetadataFields({});
 
@@ -81,7 +102,7 @@ export default {
 				}
 				for(let key in data) {
 					// Copy all custom top-level fields to summaries for easier visualization
-					if (key === 'version' || (key !== 'cube:dimensions' && key.includes(':'))) {
+					if (!CORE_COLLECTION_FIELDS.includes(key)) {
 						data.summaries[key] = [data[key]];
 					}
 				}
