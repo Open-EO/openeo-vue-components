@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix mixin usage in FederationMissingNotice in web component mode
+
 ## [2.9.2] - 2022-07-18
 
 ### Fixed

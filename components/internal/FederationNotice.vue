@@ -33,7 +33,10 @@ export default {
 		backends: {
 			type: Array,
 			default: []
-		}
+		},
+		// Mixins don't work properly in web components,
+		// see https://github.com/vuejs/vue-web-component-wrapper/issues/30,
+		...FederationMixin.props
 	},
 	computed: {
 		unsupported() {
