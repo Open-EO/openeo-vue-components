@@ -20,7 +20,10 @@
 					<li v-for="(summary, i) in summaries" :key="summary.identifier" v-show="summary.show" :class="{expanded: showDetails[i]}">
 						<summary @click="toggleDetails(i)" class="summary" :class="{experimental: summary.experimental, deprecated: summary.deprecated}">
 							<slot name="summary" :summary="summary" :item="summary.data">
-								<strong>{{ summary.identifier }}</strong>
+								<strong>
+									{{ summary.identifier }}
+									<span v-if="canCopy" class="copy" @click.prevent.stop="copyIdentifier($event, summary)" title="Copy identifier">📋</span>
+								</strong>
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
 								<ul v-if="showKeywords && summary.keywords.length > 0" class="badges small block hideOnExpand">
 									<li v-for="keyword in summary.keywords" :key="keyword" class="badge">{{ keyword }}</li>
@@ -107,6 +110,10 @@ export default {
 		loadAdditionalData: {
 			type: Function,
 			default: null
+		},
+		allowCopy: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -177,6 +184,9 @@ export default {
 		}
 	},
 	computed: {
+		canCopy() {
+			return this.allowCopy && navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
+		},
 		totalCount() {
 			return Utils.size(this.data);
 		},
@@ -188,6 +198,18 @@ export default {
 		}
 	},
 	methods: {
+		copyIdentifier(event, summary) {
+			if (this.canCopy) {
+				navigator.clipboard.writeText(summary.identifier)
+					.then(() => this.toggleIcon(event, '✅'))
+					.catch(() => this.toggleIcon(event, '❌'))
+			}
+		},
+		toggleIcon(event, newIcon) {
+			let oldIcon = event.target.innerText;
+			event.target.innerText = newIcon;
+			setTimeout(() => event.target.innerText = oldIcon, 2000);
+		},
 		generateSummaries() {
 			let hasLoader = typeof this.loadAdditionalData === 'function';
 			let summaries = [];
@@ -310,6 +332,10 @@ export default {
 					text-overflow: ellipsis;
 					overflow: hidden;
 
+					.copy {
+						display: none;
+					}
+
 					&.inline {
 						display: inline;
 					}
@@ -336,6 +362,12 @@ export default {
 		> li {
 			> summary {
 				cursor: pointer;
+				
+				&:hover {
+					strong .copy {
+						display: inline-block !important;
+					}
+				}
 			}
 			&.expanded {
 				margin-bottom: 2em;

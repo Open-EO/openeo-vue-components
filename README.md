@@ -597,6 +597,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `offerDetails` / `offer-details` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
 - `collapsed` (boolean|null): If set to a boolean value, the component is collapsible. If it's set to `true` the component is collapsed and only the heading is shown initially. If set to `false` the component is expanded. Defaults to `null`, which expands the list and doesn't offer to collapse it.
 - `showSummaryOnExpand` / `show-summary-on-expand` (boolean): If set to `false`, the summary gets hidden for expanded elements. Defaults to `true`.
+- `allowCopy` (boolean): If set to `true`, shows a copy button for the identifier when the heading is hovered. May not work if the `summary` slot is used.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `null`.
 - `searchMinLength` / `search-min-length` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
 - `loadAdditionalData` / `load-additional-data` (function|null): An asynchronous function that returns newly loaded data and replaces the original data in the viewer. The function has three parameters:

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `SearchableList`: Allow showing a copy symbol for the identifier (enabled for collections and processes)
+
 ### Changed
 
 - `Collection`: Show more top-level metadata fields
