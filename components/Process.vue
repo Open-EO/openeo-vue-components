@@ -1,7 +1,7 @@
 <template>
 	<article class="vue-component process">
 
-		<slot v-if="process.id" name="title" :v-bind="$props">
+		<slot v-if="process.id" name="title" :v-bind="$props" :displayableNamespace="displayableNamespace">
 			<a class="anchor" :name="process.id"></a>
 			<h2>
 				{{ process.id }}

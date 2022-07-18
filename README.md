@@ -473,7 +473,7 @@ Visualizes a single process following the openEO process description.
 - `process-graph`: HTML to visualize the process graph.
 - `end`: HTML to display after the component.
 
-For all slots, the component properties are passed through as slot properties with the same names.
+For all slots, the component properties are passed through as slot properties with the same names. In the slot `title`, you can additionally access `displayableNamespace`.
 
 
 ### `ModelBuilder`
