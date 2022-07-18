@@ -544,7 +544,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.9.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.9.1...HEAD
+[2.9.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.9.0...v2.9.1
 [2.9.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.8.1...v2.9.0
 [2.8.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.8.0...v2.8.1
 [2.8.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.7.1...v2.8.0
