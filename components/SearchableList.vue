@@ -22,7 +22,7 @@
 							<slot name="summary" :summary="summary" :item="summary.data">
 								<strong>
 									{{ summary.identifier }}
-									<span v-if="canCopy" class="copy" @click.prevent.stop="copyIdentifier($event, summary)" title="Copy identifier">📋</span>
+									<span v-if="allowCopy && canCopy" class="copy" @click.prevent.stop="copyIdentifier($event, summary)" title="Copy identifier">📋</span>
 								</strong>
 								<small v-if="summary.summary" :class="{hideOnExpand: !showSummaryOnExpand}">{{ summary.summary }}</small>
 								<ul v-if="showKeywords && summary.keywords.length > 0" class="badges small block hideOnExpand">
@@ -126,7 +126,8 @@ export default {
 			// This allows with a combination of v-if and v-show to not render by default (=> null), but keep rendered versions in cache (=> false)
 			showDetails: {},
 			showList: this.collapsed ? null : true,
-			summaries: []
+			summaries: [],
+			canCopy: false
 		};
 	},
 	watch: {
@@ -184,9 +185,6 @@ export default {
 		}
 	},
 	computed: {
-		canCopy() {
-			return this.allowCopy && navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
-		},
 		totalCount() {
 			return Utils.size(this.data);
 		},
@@ -197,9 +195,12 @@ export default {
 			return null;
 		}
 	},
+	mounted() {
+		this.canCopy = navigator && navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
+	},
 	methods: {
 		copyIdentifier(event, summary) {
-			if (this.canCopy) {
+			if (this.allowCopy && this.canCopy) {
 				navigator.clipboard.writeText(summary.identifier)
 					.then(() => this.toggleIcon(event, '✅'))
 					.catch(() => this.toggleIcon(event, '❌'))
