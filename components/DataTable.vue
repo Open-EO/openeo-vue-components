@@ -9,28 +9,32 @@
 			</div>
 		</div>
 		<table v-if="hasData">
-			<tr>
-				<th v-for="(col, id) in columns" v-show="!col.hide" :key="col.name" :class="thClasses(id)" @click="enableSort(id)" :title="thTitle(id)">{{ col.name }}</th>
-			</tr>
-			<tr v-for="(row, i) in view" :key="i">
-				<td v-for="(col, id) in columns" v-show="!col.hide" :key="`${col.name}_${i}`" 
-					:class="[id, {'edit': canEdit(col)}]"
-					:title="canEdit(col) ? 'Double-click to change the value' : false"
-					@dblclick="onDblClick($event, row, col, id)"
-					:data-value="col.stylable ? value(row, col, id) : false">
-					<slot :name="id" :row="row" :col="col" :id="id">
-						<template v-if="showEditField(row, col, id)">
-							<form @submit.prevent.stop="saveEditField($event, row, col, id)">
-								<input type="text" ref="editField" :value="value(row, col, id)" @blur="saveEditField($event, row, col, id)" @keyup="resetEditFieldEsc($event, row, col, id)" />
-							</form>
-						</template>
-						<span v-else v-html="formattedValue(row, col, id)" />
-					</slot>
-				</td>
-			</tr>
-			<tr v-if="hasData && view.length == 0" class="no-results">
-				<td :colspan="columnCount">No element matches your search criteria.</td>
-			</tr>
+			<thead>
+				<tr>
+					<th v-for="(col, id) in columns" v-show="!col.hide" :key="col.name" :class="thClasses(id)" @click="enableSort(id)" :title="thTitle(id)">{{ col.name }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="(row, i) in view" :key="i">
+					<td v-for="(col, id) in columns" v-show="!col.hide" :key="`${col.name}_${i}`" 
+						:class="[id, {'edit': canEdit(col)}]"
+						:title="canEdit(col) ? 'Double-click to change the value' : false"
+						@dblclick="onDblClick($event, row, col, id)"
+						:data-value="col.stylable ? value(row, col, id) : false">
+						<slot :name="id" :row="row" :col="col" :id="id">
+							<template v-if="showEditField(row, col, id)">
+								<form @submit.prevent.stop="saveEditField($event, row, col, id)">
+									<input type="text" ref="editField" :value="value(row, col, id)" @blur="saveEditField($event, row, col, id)" @keyup="resetEditFieldEsc($event, row, col, id)" />
+								</form>
+							</template>
+							<span v-else v-html="formattedValue(row, col, id)" />
+						</slot>
+					</td>
+				</tr>
+				<tr v-if="hasData && view.length == 0" class="no-results">
+					<td :colspan="columnCount">No element matches your search criteria.</td>
+				</tr>
+			</tbody>
 		</table>
 		<div class="no-data" v-else>{{ noDataMessage }}</div>
 	</div>

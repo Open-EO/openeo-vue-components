@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- `DataTable`: Add `thead` and `tbody`
+
+### Fixed
+
+- Use locale settings for file size and restrict fraction digits to 2 for non-currencies
+
 ## [2.10.0] - 2022-07-18
 
 ### Changed
