@@ -332,14 +332,19 @@ class Utils extends CommonUtils {
     }
 	
 	static formatCurrency(amount, currency, fallback = '') {
-		if (typeof amount !== 'number' || typeof currency !== 'string') {
+		if (typeof amount !== 'number') {
 			return fallback;
 		}
 
 		try {
 			return amount.toLocaleString(undefined, { style: 'currency', currency: currency });
 		} catch(error) {
-			return `${amount.toLocaleString()} ${currency}`.trim();
+            let str = amount.toLocaleString(undefined, {maximumFractionDigits: 2});
+            if (typeof currency === 'string') {
+                str += ' ';
+                str += currency;
+            }
+            return str.trim();
 		}
 	}
 
@@ -355,7 +360,7 @@ class Utils extends CommonUtils {
 	static formatTimestamp(value, fallback = 'n/a') {
 		if (typeof value === 'string') {
 			try {
-				return new Date(value).toLocaleString([], {
+				return new Date(value).toLocaleString(undefined, {
 					timeZone: "UTC",
 					timeZoneName: "short"
 				});
@@ -370,8 +375,9 @@ class Utils extends CommonUtils {
 			return fallback;
 		}
 		let i = value == 0 ? 0 : Math.floor( Math.log(value) / Math.log(1024) );
-        let size = ( value / Math.pow(1024, i) ).toFixed(2) * 1;
-        return `${size} ${units[i]}`;
+        let size = value / Math.pow(1024, i);
+        let sizeStr = size.toLocaleString(undefined, {maximumFractionDigits: 1});
+        return `${sizeStr} ${units[i]}`;
 	}
 
     static formatProcessSignature(process, html = true) {

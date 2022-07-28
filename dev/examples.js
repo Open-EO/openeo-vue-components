@@ -219,7 +219,7 @@ if (a == b) console.log("Hello World");
 			estimate: {
 				costs: 12.98,
 				duration: "P1Y2M10DT2H30M",
-				size: 157286400,
+				size: 15000000,
 				downloads_included: 5,
 				expires: "2020-11-01T00:00:00Z"
 			},
