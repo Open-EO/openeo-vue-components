@@ -84,7 +84,7 @@
 								<Description v-else-if="key == 'description'" :description="val" :compact="true" />
 								<em v-else-if="key == 'default' && val === ''">Empty string</em>
 								<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
-								<code v-else-if="key == 'pattern'">{{ val | regex }}</code>
+								<code v-else-if="key == 'pattern' && typeof val === 'string'">{{ val | regex }}</code>
 								<openeo-json-schema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
 								<span v-else>{{ val }}</span>
 							</td>
@@ -136,7 +136,7 @@ export default {
 	},
 	filters: {
 		regex(value) {
-			return value.replaceAll("\r", "\\r").replaceAll("\n", "\\n").replaceAll("\t", "\\t");
+			return value.replaceAll(/\r/g, "\\r").replaceAll(/\n/g, "\\n").replaceAll(/\t/g, "\\t");
 		}
 	},
 	computed: {
