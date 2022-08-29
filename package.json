@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "2.10.1",
+  "version": "2.10.2",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -58,6 +58,6 @@
   "browserslist": [
     "> 1%",
     "not ie > 0",
-    "chrome > 69"
+    "chrome >= 69"
   ]
 }

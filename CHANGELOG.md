@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.2] - 2022-08-29
+
+### Fixed
+
+- Add Chrome > 69 in browserlist to support at least RStudio IDE > 2022.02.2
+- `JsonSchema`: Use replace instead of replaceAll for better compatibility
+
 ## [2.10.1] - 2022-07-28
 
 ### Changed
@@ -571,7 +578,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.1...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.2...HEAD
+[2.10.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.1...v2.10.2
 [2.10.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.0...v2.10.1
 [2.10.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.9.2...v2.10.0
 [2.9.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.9.1...v2.9.2
