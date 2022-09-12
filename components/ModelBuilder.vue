@@ -582,6 +582,10 @@ export default {
                 }
                 else if (event.ctrlKey || event.metaKey) { // STRG for Win/Linux, meta/cmd from Mac
                     if (event.code === 'KeyV') {
+                        if (!navigator || !navigator.clipboard || typeof navigator.clipboard.readText !== 'function') {
+                            this.$emit('error', 'Pasting is not supported by your browser.');
+                            return;
+                        }
                         if (this.hasSelection && this.clipboard) {
                             return; // ToDo: Implement pasting for selected blocks
                         }
@@ -597,6 +601,10 @@ export default {
                         captured = true;
                     }
                     else if (event.code === 'KeyC') {
+                        if (!navigator || !navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+                            this.$emit('error', 'Copying is not supported by your browser.');
+                            return;
+                        }
                         if (this.hasSelection) {
                             this.clipboard = {
                                 blocks: this.selectedBlocks.slice(0),
