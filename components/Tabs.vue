@@ -206,6 +206,7 @@ export default {
 			}
 			var index = this.tabs.findIndex(t => t.id === tab.id);
 			if (index !== -1) {
+				tab.$emit('close', tab);
 				this.tabs.splice(index, 1);
 				var index2 = this.dynamicTabs.findIndex(t => t.id === tab.id);
 				if (index2 !== -1) {
@@ -214,7 +215,6 @@ export default {
 				if (tab === this.activeTab) {
 					this.activeTab = null;
 				}
-				tab.$emit('close', tab);
 				this.resetActiveTab();
 				this.adjustSizes();
 			}
