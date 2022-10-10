@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.3] - 2022-10-10
+
+### Fixed
+
+- Better error messages for copy/paste
+- Close callbacks get fired for tabs
+
 ## [2.10.2] - 2022-08-29
 
 ### Fixed
@@ -578,7 +585,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.2...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.3...HEAD
+[2.10.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.2...v2.10.3
 [2.10.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.1...v2.10.2
 [2.10.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.0...v2.10.1
 [2.10.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.9.2...v2.10.0
