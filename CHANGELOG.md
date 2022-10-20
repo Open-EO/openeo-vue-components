@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `Logs`: More data types can be searched in
 - `SearchBox`: Improved styling for the search box.
 
+### Fixed
+
+- `ModelBuilder`: Unsaved changes to a description get saved when changing zoom
+
 ## [2.10.3] - 2022-10-10
 
 ### Fixed

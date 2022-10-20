@@ -31,7 +31,7 @@
                 <BlockParameter ref="output" :state="state" :label="outputLabel" v-bind="output" @input="updateResult" />
             </div>
         </div>
-        <textarea ref="descriptionField" v-if="showDescriptionField" :value="description" :readonly="!state.editable" class="editDescription" placeholder="Type description here..." @blur="updateDescription" @mousedown.stop=""></textarea>
+        <textarea ref="descriptionField" v-if="showDescriptionField" :value="description" :readonly="!state.editable" class="editDescription" placeholder="Type description here..." @input="updateDescription" @blur="updateDescription" @mousedown.stop=""></textarea>
     </div>
 </template>
 
@@ -371,7 +371,7 @@ export default {
         updateDescription(event) {
 			let elem = event.composedPath()[0]; // event.target doesn't work in web components
             let value;
-            if (elem && typeof elem.value === 'string' && elem.value.length > 0) {
+            if (elem && typeof elem.value === 'string' && (elem.value.length > 0 || event.type === 'input')) {
                 value = elem.value;
             }
             else {
