@@ -2,6 +2,17 @@ import { Utils as CommonUtils, ProcessSchema } from '@openeo/js-commons';
 import Loading from './components/internal/Loading.vue';
 import Errored from './components/internal/Errored.vue';
 
+const SEARCH_SPLITCHARS = /[\s\.,;:"'!&\(\{\[\)\}\]]+/g;
+const SEARCH_SERIALIZER = (_, value) => {
+	if (value === null) {
+		return "";
+	}
+	else if (typeof value === 'string') {
+		return value.replace(/\s+/g, ' ');
+	}
+	return value;
+};
+
 class Utils extends CommonUtils {
 
 	static kebabToCamelCase(str) {
@@ -435,16 +446,22 @@ class Utils extends CommonUtils {
 			return false;
 		}
 
-		let splitChars = /[\s\.,;!&\(\{\[\)\}\]]+/g;
-
 		// Prepare search terms
-		searchterm = searchterm.toLowerCase().split(splitChars);
+		searchterm = searchterm.toLowerCase().split(SEARCH_SPLITCHARS);
 
 		// Prepare text to search in
 		target = target
-			.filter(s => typeof s === 'string') // Remove non-strings
+			.map(v => {
+				if (typeof v === 'string') {
+					return v;
+				}
+				else {
+					// Convert non-strings to a string (JSON-related chars "': are added to SEARCH_SPLITCHARS)
+					return JSON.stringify(v, SEARCH_SERIALIZER, 0);
+				}
+			})
 			.join(' ') // Merge into a single string
-			.replace(splitChars, ' ') // replace split chars with white spaces
+			.replace(SEARCH_SPLITCHARS, ' ') // replace split chars with white spaces
 			.toLowerCase(); // Lowercase
 
 		// Search with "and" or "or"

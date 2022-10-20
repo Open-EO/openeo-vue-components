@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Logs`: The fields to search in can be selected.
+
+### Changed
+
+- `Logs`: More data types can be searched in
+- `SearchBox`: Improved styling for the search box.
+
 ## [2.10.3] - 2022-10-10
 
 ### Fixed

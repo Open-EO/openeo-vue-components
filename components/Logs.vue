@@ -2,8 +2,18 @@
 	<div class="vue-component logs">
 		<div class="log-container" v-if="hasLogs">
 			<div class="log-header">
-				<SearchBox  v-if="externalSearchTerm === null" v-model="searchTerm" placeholder="Search in Logs" :minLength="2" />
-				<MultiSelect v-model="levelsShown" :multiple="true" :options="levels" :allowEmpty="false" :taggable="true" :closeOnSelect="false" placeholder="Select the log levels shown">
+				<div class="log-search">
+					<SearchBox  v-if="externalSearchTerm === null" v-model="searchTerm" placeholder="Search in Logs" :minLength="2" />
+					<MultiSelect v-model="fields" :options="availableFields" trackBy="id" label="label"
+						:multiple="true" :searchable="false" :allowEmpty="false" :closeOnSelect="false"
+						:limit="3" :limitText="count => `+ ${count}`"
+						selectedLabel="✓" deselectLabel="␡" selectLabel="+"
+						title="Select the log levels shown in the list of logs"></MultiSelect>
+				</div>
+				<MultiSelect class="log-levels" v-model="levelsShown" :options="levels"
+					:multiple="true" :searchable="false" :allowEmpty="false" :closeOnSelect="false"
+					selectedLabel="✓" deselectLabel="␡" selectLabel="+"
+					title="Select the log levels shown in the list of logs">
 					<template slot="tag" slot-scope="props">
 						<span class="multiselect__tag" :class="props.option" :key="props.index">
 							<span v-text="props.option"></span>
@@ -48,10 +58,23 @@ export default {
 			'warning',
 			'error'
 		];
+		let fields = [
+			{id: "id", label: "ID"},
+			{id: "code", label: "Code", default: true},
+			{id: "level", label: "Level"},
+			{id: "message", label: "Message", default: true},
+			{id: "time", label: "Date and Time"},
+			{id: "data", label: "Data", default: true},
+			{id: "path", label: "Path"},
+			{id: "usage", label: "Usage Metrics"},
+			{id: "links", label: "Related Resources"}
+		];
 		return {
 			levels: levels,
 			levelsShown: levels,
-			searchTerm: ''
+			searchTerm: '',
+			availableFields: fields,
+			fields: fields.filter(field => Boolean(field.default))
 		};
 	},
 	computed: {
@@ -61,6 +84,10 @@ export default {
 					return false;
 				}
 				if (this.searchTerm.length >= 2) {
+					if (this.fields.length != this.availableFields.length) {
+						let fields = this.fields.map(field => field.id);
+						log = Utils.pickFromObject(log, fields);
+					}
 					return Utils.search(this.searchTerm, log);
 				}
 				return true;
@@ -115,12 +142,34 @@ export default {
 		background-color: white;
 		z-index: 1;
 
-
-		.search-box {
-			margin-bottom: 0.25em;
+		.log-levels {
+			.multiselect__tag {
+				text-transform: uppercase;
+			}
 		}
-		.multiselect__tag {
-			text-transform: uppercase;
+
+		.log-search {
+			display: flex;
+			align-items: stretch;
+			margin-bottom: 0.25em;
+			gap: 0.25em;
+
+			.multiselect {
+				flex-grow: 1;
+				max-width: 22em;
+			}
+
+			.search-box {
+				width: 100%;
+				flex-grow: 1;
+				margin-bottom: 0;
+
+				input {
+					height: 100%;
+					border: 1px solid #e8e8e8;
+    				border-radius: 5px;
+				}
+			}
 		}
 	}
 	.log-body {
