@@ -495,6 +495,7 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 - `parentSchema` / `parent-schema` (object): The schema for the parent parameter if a Model Builder is shown for a child process (defaults to `null`).
 - `historySize` / `history-size` (integer): The amount of steps for undo/redo (defaults to `30`)
 - `explicitZoom` / `explicit-zoom` (boolean): If set to `true`: The control zooms only if the control has focus or one of the keys `STRG` (Win/*nix) or `Meta` (Mac) has been pressed. Default to `false`, which always scrolls on mouse wheel interaction over the control.
+- `height` (string): Set the height of the component as CSS-compatible value, e.g. `400px` or `10rem`. This is especially useful for web components if you can't set a size for the surrounding elements.
 
 **Events:**
 

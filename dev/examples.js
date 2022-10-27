@@ -249,7 +249,8 @@ if (a == b) console.log("Hello World");
 	},
 	"model-builder": {
 		"empty": {
-			"id": "empty"
+			"id": "empty",
+			"height": "100px"
 		},
 		"external-process": {
 			"id": "namespace-is-url",

@@ -1,5 +1,5 @@
 <template>
-    <div ref="div" :id="id" :class="classes" tabindex="0"
+    <div ref="div" :id="id" :class="classes" tabindex="0" :style="style"
         @mousemove="onMouseMove"
         @mousedown="onMouseDown"
         @wheel="onMouseWheel"
@@ -117,6 +117,10 @@ export default {
         explicitZoom: {
             type: Boolean,
             default: false
+        },
+        height: {
+            type: String,
+            default: null
         }
     },
     data() {
@@ -159,6 +163,13 @@ export default {
         };
     },
     computed: {
+        style() {
+            let style = {};
+            if (typeof this.height === 'string') {
+                style.height = this.height;
+            }
+            return style;
+        },
         classes() {
             let classes = [
                 'vue-component',

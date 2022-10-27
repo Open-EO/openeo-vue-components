@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `Logs`: The fields to search in can be selected.
+- `ModelBuilder`: Allow to set the `height` of the component.
 
 ### Changed
 
