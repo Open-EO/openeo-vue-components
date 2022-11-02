@@ -64,5 +64,20 @@
 				"result": true
 			}
 		}
-	}
+	},
+	"log_level": "warning",
+	"links": [
+	  {
+		"rel": "result",
+		"type": "application/json",
+		"title": "Batch Job Results",
+		"href": "https://www.cool-cloud-corp.com/api/v1.0/jobs/123/logs"
+	  },
+	  {
+		"rel": "result",
+		"type": "application/json",
+		"title": "Batch Job Logs",
+		"href": "https://www.cool-cloud-corp.com/api/v1.0/jobs/123/logs"
+	  }
+	]
 }

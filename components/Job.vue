@@ -38,6 +38,11 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="tabular" v-if="job.log_level">
+				<label>Minimum severity for logs:</label>
+				<span class="value level" :data-value="job.log_level">{{ job.log_level }}</span>
+			</div>
 		</section>
 
 		<slot name="before-description" v-bind="$props"></slot>
@@ -48,6 +53,10 @@
 
 			<FederationMissingNotice v-if="job['federation:missing']" :missing="job['federation:missing']" :federation="federation" />
 		</summary>
+
+		<section v-if="hasLinks" class="links">
+			<LinkList :links="job.links" heading="Additional Resources" headingTag="h3" />
+		</section>
 
 		<section class="billing" v-if="job.plan || costs || budget">
 			<h3>Billing</h3>
@@ -100,6 +109,7 @@ export default {
 	],
 	components: {
 		Description: () => import('./Description.vue'),
+		LinkList: () => import('./LinkList.vue'),
 		Process: () => import('./Process.vue')
 	},
 	props: {
@@ -136,6 +146,9 @@ export default {
 		},
 		usage() {
 			return this.job.usage;
+		},
+		hasLinks() {
+			return Utils.size(this.job.links) > 0;
 		}
 	},
 	beforeCreate() {
