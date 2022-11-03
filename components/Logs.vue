@@ -23,7 +23,7 @@
 				</MultiSelect>
 			</div>
 			<ul class="log-body">
-				<Log v-for="(log, i) in logs" v-show="shown[i]" :log="log" :startTime="startTime" :key="i" />
+				<Log v-for="(log, i) in logs" v-show="shown[i]" :log="log" :startTime="startTime" :key="log.id" />
 			</ul>
 		</div>
 		<div v-else class="log-empty">No logs available.</div>

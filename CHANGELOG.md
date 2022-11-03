@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Job`: Added support for showing links and min. log level.
 
+### Fixed
+
+- `Logs`: Use log id for Vue's `key` property
+
 ## [2.11.0] - 2022-10-27
 
 ### Added
