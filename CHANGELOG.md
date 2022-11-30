@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - `Logs`: Use log id for Vue's `key` property
+- `ModelBuilder`: Explicitly set the text color for blocks to help with dark modes.
 
 ## [2.11.0] - 2022-10-27
 

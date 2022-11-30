@@ -100,6 +100,7 @@ export default {
 	padding: 1em;
 	box-sizing: border-box;
 	background-color: white;
+	color: black;
 
 	> section > .model-builder {
 		height: 400px;

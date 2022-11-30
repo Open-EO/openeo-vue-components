@@ -564,6 +564,7 @@ export default {
         -khtml-user-select:none;
         -webkit-user-select:none;
         -o-user-select:none;
+        color: #000;
 
         .description {
             display:none;

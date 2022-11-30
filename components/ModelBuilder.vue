@@ -1568,6 +1568,7 @@ class BlocksProcess {
         display: inline-block;
         padding: 0.3em;
         background-color: #f9f9f9;
+        color: #000;
         border-radius: 0 0 0 0.3em;
         z-index: 5;
     }
