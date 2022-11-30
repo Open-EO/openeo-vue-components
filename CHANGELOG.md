@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.0] - 2022-11-30
+
 ### Added
 
 - `Job`: Added support for showing links and min. log level.
@@ -610,7 +612,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.11.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.12.0...HEAD
+[2.12.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.11.0...v2.12.0
 [2.11.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.3...v2.11.0
 [2.10.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.2...v2.10.3
 [2.10.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.1...v2.10.2
