@@ -180,7 +180,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `mapOptions` / `map-options` (object): See the corresponding prop in [`Collection`](#collection).
 - `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
-- `offerDetails` / `odder-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Collections`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
@@ -368,7 +368,7 @@ Shows an (expandable) list of STAC-based Items.
 - `mapOptions` / `map-options` (object): See the corresponding prop in [`Item`](#item).
 - `searchTerm` / `search-term` (string|null): See the prop `externalSearchTerm` in [`SearchableList`](#searchablelist). 
 - `sort` (boolean): See the corresponding prop in [`SearchableList`](#searchablelist). 
-- `offerDetails` / `odder-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
+- `offerDetails` / `offer-details` (string): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Items`.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
