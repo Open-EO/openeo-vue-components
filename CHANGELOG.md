@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.13.0] - 2022-12-08
+
 ### Added
 
 - `ModelBuilder`: The `showParameter` event has a new `origin` parameter
@@ -620,7 +622,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.12.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.13.0...HEAD
+[2.13.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.12.0...v2.13.0
 [2.12.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.11.0...v2.12.0
 [2.11.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.3...v2.11.0
 [2.10.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.2...v2.10.3
