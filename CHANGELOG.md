@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ModelBuilder`: The `showParameter` event has a new `origin` parameter
+
+### Fixed
+
+- `ModelBuilder`: Don't show the edit button for non-user parameters
+
 ## [2.12.0] - 2022-11-30
 
 ### Added

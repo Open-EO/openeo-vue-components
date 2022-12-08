@@ -508,8 +508,12 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 	- `namespace` (string): Namespace of the process
 - `showCollection(id)`: Providing this event will enable a button on each collection so that user can click it to get more details. This event is fired when the user has clicked the button. The UI can then show the collection details to the user.
 	- `id` (string): ID of a collection to show
-- `showParameter(parameter)`: Providing this event will enable a button on each parameter so that user can click it to get more details about the parameter and its schema. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
+- `showParameter(parameter, origin)`: Providing this event will enable a button on each parameter so that user can click it to get more details about the parameter and its schema. This event is fired when the user has clicked the button. The UI can then show the parameter details to the user.
 	- `parameter` (object): A process parameter compliant to the openEO API.
+	- `origin` (string): Indicates who made the parameter available:
+		- `user` if the parameter has been added by the user
+		- `schema` if the parameter is coming from the parent process
+		- Might return other values in the future.
 - `editParameter(parameter, title, saveCallback)`: Providing this event will enable a button on each parameter so that user can click it to edit the parameter. This event is fired when the user has clicked the button. The UI can then show the parameter editor to the user.
 	- `parameter` (object): A process parameter compliant to the openEO API.
 - `editArguments(parameters, values, title, isEditable, selectParameterName , saveCallback, parentBlock)`: Providing this event will enable a button on each block so that user can click it to get more details about the parameters and corresponding values. This event is fired when the user has clicked the button. The UI can then show the parameter viewer or editor to the user.

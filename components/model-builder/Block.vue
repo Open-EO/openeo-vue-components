@@ -255,7 +255,7 @@ export default {
         },
         allowsParameterChange() {
             if (this.isParameter) {
-                return this.state.editable && !!this.$parent.supports('editParameter');
+                return this.state.editable && this.origin !== 'schema' && !!this.$parent.supports('editParameter');
             }
             else {
                 return this.parameters.filter(p => p.isEditable()).length > 0;
@@ -444,7 +444,7 @@ export default {
                 this.$parent.$emit('showCollection', this.collectionId);
             }
             else if (this.isParameter) {
-                this.$parent.$emit('showParameter', this.spec);
+                this.$parent.$emit('showParameter', this.spec, this.origin);
             }
             else {
                 this.$parent.$emit('showProcess', this.processId, this.namespace);
