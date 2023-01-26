@@ -12,6 +12,9 @@
                 <span v-show="allowsDescription && !showDescriptionField" class="addDescription" title="Add description" @click.stop.prevent="addDescription()">
                     <i class="fas fa-comment-medical"></i>
                 </span>
+                <span v-show="allowsDuplicate" class="duplicate" title="Duplicate" @click.stop.prevent="duplicate">
+                    <i class="fas fa-clone"></i>
+                </span>
                 <span v-show="allowsDelete" class="delete" title="Remove (DEL)" @click.stop.prevent="remove()">
                     <i class="fas fa-trash"></i>
                 </span>
@@ -261,6 +264,9 @@ export default {
                 return this.parameters.filter(p => p.isEditable()).length > 0;
             }
         },
+        allowsDuplicate() {
+            return (this.state.editable && this.type === 'process' && this.origin !== 'schema');
+        },
         allowsDelete() {
             return (this.state.editable && (!this.spec || (Utils.isObject(this.spec) && this.origin !== 'schema')));
         },
@@ -364,6 +370,15 @@ export default {
             else {
                 this.showArguments();
             }
+        },
+        duplicate() {
+            this.$parent.$emit('duplicate', {
+                position: this.position,
+                process_id: this.process_id,
+                namespace: this.namespace,
+                arguments: this.args,
+                description: this.description
+            });
         },
         hasParameter(name) {
             return this.hasParametersDefined && !!this.spec.parameters.find(p => p.name === name);

@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ModelBuilder`:
+  - Duplicate single blocks via button
+  - Copy&Paste multiple blocks (without edges)
+
 ## [2.13.0] - 2022-12-08
 
 ### Added
@@ -47,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Better error messages for copy/paste
+- Better error messages for copy&paste
 - Close callbacks get fired for tabs
 
 ## [2.10.2] - 2022-08-29

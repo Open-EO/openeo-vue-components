@@ -314,6 +314,7 @@ export default {
         if (!this.supports('editArguments')) {
             this.$on('editArguments', (...args) => this.showParameterViewer(...args));
         }
+        this.$on('duplicate', this.duplicate.bind(this));
     },
     async mounted() {
         Utils.loadFontAwesome(this);
@@ -442,6 +443,9 @@ export default {
                     let refs = PgUtils.getRefs(value, true, true).filter(ref => typeof ref.from_parameter !== 'undefined');
                     for(let ref of refs) {
                         try {
+                            if(!process.$el) {
+                                continue;
+                            }
                             if (process.$el.isParameterScoped(argName, ref.from_parameter)) {
                                 continue; // Skip if the parameter usage is scoped (i.e. defined as process parameetr for the children)
                             }
@@ -598,7 +602,20 @@ export default {
                             return;
                         }
                         if (this.hasSelection && this.clipboard) {
-                            return; // ToDo: Implement pasting for selected blocks
+                            if (this.clipboard.edges.length > 0) {
+                                this.$emit('error', 'Pasting edges is not supported yet.');
+                                return;
+                            }
+                            if (this.clipboard.blocks.length > 0) {
+                                this.clipboard.blocks.forEach(block => {
+                                    if (block.type === 'process' && block.origin !== 'schema') {
+                                        this.duplicate(Utils.pickFromObject(block, ["arguments", "description", "namespace", "position", "process_id"]));
+                                    }
+                                    else {
+                                        this.$emit('error', `Pasting block '${block.id}' is not supported.`);
+                                    }
+                                });
+                            }
                         }
                         else {
                             try {
@@ -874,6 +891,15 @@ export default {
                 y = (y - rect.offsetTop - this.state.center[1]) / this.state.scale;
             }
             return [x, y];
+        },
+
+        duplicate(data) {
+            data = Utils.deepClone(data);
+            if (data.position) {
+                data.position[1] += 100;
+            }
+            let block = this.addBlock(data);
+            this.$nextTick(() => this.createEdgesForArguments(block.id, data.arguments));
         },
 
         addProcess(process_id, args = {}, position = [], namespace = null) {
@@ -1380,41 +1406,51 @@ export default {
 
         async importEdges(pg) {
             var nodes = pg.getNodes();
-            for(var node of Object.values(nodes)) {
-                var args = node.getArgumentNames();
-                for(let i in args) {
-                    var val = node.getRawArgument(args[i]);
-                    switch(node.getArgumentType(args[i])) {
-                        case 'result':
-                            await this.addEdgeByNames('#' + pg.getNode(val.from_node).id, "output", '#' + node.id, args[i], false);
-                            break;
-                        case 'parameter':
-                            await this.addEdgeByNames('$' + val.from_parameter, "output", '#' + node.id, args[i], false);
-                            break;
-                        case 'object':
-                        case 'array':
-                            await this.importEdgeDeep(val, pg, node, args, i);
-                            break;
-                    }
+            return Promise.all(Object.values(nodes).map(node => this.importEdgesForNode(node)));
+        },
+
+        async importEdgesForNode(node) {
+            var args = node.getArgumentNames();
+            for(let i in args) {
+                let arg = args[i];
+                let val = node.getRawArgument(arg);
+                let ref = '#' + node.id;
+                switch(node.getArgumentType(arg)) {
+                    case 'result':
+                        await this.addEdgeByNames('#' + val.from_node, "output", ref, arg, false);
+                        break;
+                    case 'parameter':
+                        await this.addEdgeByNames('$' + val.from_parameter, "output", ref, arg, false);
+                        break;
+                    case 'object':
+                    case 'array':
+                        await this.importEdgeDeep(val, ref, arg);
+                        break;
                 }
             }
         },
 
-        async importEdgeDeep(val, pg, node, args, i) {
+        async importEdgeDeep(val, nodeId, arg) {
             for(let k in val) {
                 // k !== 'process_graph' prevents importing sub process graphs like in load_collection, see #118
                 if(val[k] && typeof val[k] === "object" && k !== 'process_graph') {
-                    await this.importEdgeDeep(val[k], pg, node, args, i);
+                    await this.importEdgeDeep(val[k], nodeId, arg);
                 }
                 else if (!Utils.isRef(val)) {
                     continue;
                 }
                 else if (val.from_node) {
-                    await this.addEdgeByNames('#' + pg.getNode(val.from_node).id, "output", '#' + node.id, args[i], false);
+                    await this.addEdgeByNames('#' + val.from_node, "output", nodeId, arg, false);
                 }
                 else if (val.from_parameter) {
-                    await this.addEdgeByNames('$' + val.from_parameter, "output", '#' + node.id, args[i], false);
+                    await this.addEdgeByNames('$' + val.from_parameter, "output", nodeId, arg, false);
                 }
+            }
+        },
+
+        async createEdgesForArguments(nodeId, args) {
+            for(let arg in args) {
+                await this.importEdgeDeep(args[arg], nodeId, arg);
             }
         },
 
