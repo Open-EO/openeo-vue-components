@@ -75,7 +75,7 @@
 			</div>
 
 			<div class="tabular" v-if="budget">
-				<label>Budget:</label>
+				<label title="The allowed maximum costs, specified by the user.">Budget limit:</label>
 				<span class="value">{{ budget }}</span>
 			</div>
 		</section>
@@ -126,7 +126,7 @@ export default {
 	},
 	computed: {
 		budget() {
-			return Utils.formatBudget(this.service.budget, this.currency);
+			return Utils.formatBudget(this.service.budget, this.currency, "No limit specified");
 		},
 		costs() {
 			return Utils.formatCurrency(this.service.costs, this.currency);
