@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- `Logs`:
+  - Fix description of field selector
+  - Improved look of field badges
+  - Make sure internal state doesn't conflict
+  - Use better delete symbol
+
 ## [2.14.1] - 2023-05-08
 
 ### Fixed

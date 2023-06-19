@@ -4,15 +4,15 @@
 			<div class="log-header">
 				<div class="log-search">
 					<SearchBox  v-if="externalSearchTerm === null" v-model="searchTerm" placeholder="Search in Logs" :minLength="2" />
-					<MultiSelect v-model="fields" :options="availableFields" trackBy="id" label="label"
+					<MultiSelect class="log-fields" v-model="fields" :options="availableFields" trackBy="id" label="label"
 						:multiple="true" :searchable="false" :allowEmpty="false" :closeOnSelect="false"
 						:limit="3" :limitText="count => `+ ${count}`"
-						selectedLabel="✓" deselectLabel="␡" selectLabel="+"
-						title="Select the log levels shown in the list of logs"></MultiSelect>
+						selectedLabel="✓" deselectLabel="✗" selectLabel="+"
+						title="Select the fields to search through"></MultiSelect>
 				</div>
 				<MultiSelect class="log-levels" v-model="levelsShown" :options="levels"
 					:multiple="true" :searchable="false" :allowEmpty="false" :closeOnSelect="false"
-					selectedLabel="✓" deselectLabel="␡" selectLabel="+"
+					selectedLabel="✓" deselectLabel="✗" selectLabel="+"
 					title="Select the log levels shown in the list of logs">
 					<template slot="tag" slot-scope="props">
 						<span class="multiselect__tag" :class="props.option" :key="props.index">
@@ -70,8 +70,8 @@ export default {
 			{id: "links", label: "Related Resources"}
 		];
 		return {
-			levels: levels,
-			levelsShown: levels,
+			levels: levels.slice(0),
+			levelsShown: levels.slice(0),
 			searchTerm: '',
 			availableFields: fields,
 			fields: fields.filter(field => Boolean(field.default))
@@ -236,6 +236,12 @@ export default {
 	}
 	.log-entry.error .log-message {
 		color: #721c24;
+	}
+
+	.log-fields .multiselect__tag {
+		border: 1px solid #b5b5b5;
+		background-color: #e8e8e8;
+		color: #383d41;
 	}
 
 	.multiselect__tag-icon {
