@@ -19,6 +19,10 @@
     "type": "git",
     "url": "https://github.com/open-eo/openeo-vue-components.git"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/m-mohr"
+  },
   "scripts": {
     "build": "vue-cli-service build --report --target wc-async --inline-vue --name openeo \"./components/*.vue\"",
     "build-examples": "vue-cli-service build",
