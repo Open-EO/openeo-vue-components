@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.15.0] - 2024-05-22
+
 ### Added
 
 - Option to hide deprecated elements from lists by default (prop: `hideDeprecatedByDefault`)
@@ -650,7 +652,10 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.13.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.15.0...HEAD
+[2.15.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.14.1...v2.15.0
+[2.14.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.14.0...v2.14.1
+[2.14.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.13.0...v2.14.0
 [2.13.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.12.0...v2.13.0
 [2.12.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.11.0...v2.12.0
 [2.11.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.10.3...v2.11.0
