@@ -11,44 +11,51 @@ Examples: <https://open-eo.github.io/openeo-vue-components/>
 
 **Table of Contents:**
 
-1. [Usage](#usage)
-	* [HTML](#html)
-	* [Vue](#vue)
-2. [Components](#components)
-	* [BillingPlans](#billingplans)
-	* [Capabilities](#capabilities)
-	* [Collection](#collection)
-	* [Collections](#collections)
-	* [DataTable](#datatable)
-	* [DeprecationNotice](#deprecationnotice)
-	* [Description](#description)
-	* [ExperimentalNotice](#experimentalnotice)
-	* [FederationMissingNotice](#federationmissingnotice)
-	* [FileFormat](#fileformat)
-	* [FileFormats](#fileformats)
-	* [Item](#item)
-	* [Items](#items)
-	* [Job](#job)
-	* [JobEstimate](#jobestimate)
-	* [JsonSchema](#jsonschema)
-	* [LinkList](#linklist)
-	* [Logs](#logs)
-	* [ModelBuilder](#modelbuilder)
-	* [ObjectTree](#objecttree)
-	* [Process](#process)
-	* [Processes](#processes)
-	* [SearchableList](#searchablelist)
-	* [SearchBox](#searchbox)
-	* [Service](#service)
-	* [ServiceType](#servicetype)
-	* [ServiceTypes](#servicetypes)
-	* [SupportedFeatures](#supportedfeatures)
-	* [Tabs and Tab](#tabs-and-tab)
-	* [UdfRuntime](#udfruntime)
-	* [UdfRuntimes](#udfruntimes)
-3. [Other Features](#other-features)
-	* [FeatureList](#featurelist)
-	* [Utils](#utils)
+- [Vue Components for openEO](#vue-components-for-openeo)
+	- [Usage](#usage)
+		- [HTML](#html)
+		- [FontAwesome](#fontawesome)
+		- [Vue](#vue)
+	- [Components](#components)
+		- [`BillingPlans`](#billingplans)
+		- [`Capabilities`](#capabilities)
+		- [`Collection`](#collection)
+		- [`Collections`](#collections)
+		- [`DataTable`](#datatable)
+		- [`DeprecationNotice`](#deprecationnotice)
+		- [`FederationMissingNotice`](#federationmissingnotice)
+		- [`Description`](#description)
+		- [`ExperimentalNotice`](#experimentalnotice)
+		- [`FileFormat`](#fileformat)
+		- [`FileFormats`](#fileformats)
+		- [`JsonSchema`](#jsonschema)
+		- [`Item`](#item)
+		- [`Items`](#items)
+		- [`Job`](#job)
+		- [`JobEstimate`](#jobestimate)
+		- [`LinkList`](#linklist)
+		- [`Logs`](#logs)
+		- [`ObjectTree`](#objecttree)
+		- [`Process`](#process)
+		- [`ModelBuilder`](#modelbuilder)
+		- [`Processes`](#processes)
+		- [`SearchableList`](#searchablelist)
+		- [`SearchBox`](#searchbox)
+		- [`Service`](#service)
+		- [`ServiceType`](#servicetype)
+		- [`ServiceTypes`](#servicetypes)
+		- [`SupportedFeatures`](#supportedfeatures)
+		- [`Tabs` and `Tab`](#tabs-and-tab)
+			- [`Tabs`](#tabs)
+			- [`Tab`](#tab)
+			- [Examples](#examples)
+				- [Simple example with three static tabs](#simple-example-with-three-static-tabs)
+				- [Dynamically adding tabs + custom tab names appearance](#dynamically-adding-tabs--custom-tab-names-appearance)
+		- [`UdfRuntime`](#udfruntime)
+		- [`UdfRuntimes`](#udfruntimes)
+	- [Other features](#other-features)
+		- [`FeatureList`](#featurelist)
+		- [`Utils`](#utils)
 
 ## Usage
 
@@ -187,6 +194,7 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `showKeywords` / `show-keywords` (boolean): Adds the keywords to the third line of the summary if set to `true`. Defaults to `false`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of collections due to an issue.
+- `hideDeprecatedByDefault`: Whether to hide deprecated items ny default. Defaults to `false`.
 
 **Slots:**
 
@@ -305,6 +313,7 @@ Visualizes all supported file formats of the back-end.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of file formats due to an issue.
+- `hideDeprecatedByDefault`: Whether to hide deprecated items ny default. Defaults to `false`.
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
@@ -374,6 +383,7 @@ Shows an (expandable) list of STAC-based Items.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of items due to an issue.
+- `hideDeprecatedByDefault`: Whether to hide deprecated items ny default. Defaults to `false`.
 
 **Slots:**
 
@@ -571,6 +581,7 @@ Shows an (expandable) list of all processes available at a back-end.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of processes due to an issue.
+- `hideDeprecatedByDefault`: Whether to hide deprecated items ny default. Defaults to `false`.
 
 **Slots:**
 
@@ -605,6 +616,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `allowCopy` (boolean): If set to `true`, shows a copy button for the identifier when the heading is hovered. May not work if the `summary` slot is used.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `null`.
 - `searchMinLength` / `search-min-length` (integer): The number of characters required to be given until the search starts. Defaults to `2` as it's usually not very meaningful to search for a single character.
+- `hideDeprecatedByDefault`: Whether to hide deprecated items ny default. Defaults to `false`.
 - `loadAdditionalData` / `load-additional-data` (function|null): An asynchronous function that returns newly loaded data and replaces the original data in the viewer. The function has three parameters:
     - `key` (integer): Gives the index (for arrays) or the key (for objects) of the toggled element in the array or object given in the prop `data`.
     - `identifier` (number|string): Gives the identifier of the toggled element (corresponds to the values selected via the prop `identifierKey`).
@@ -613,7 +625,7 @@ A template to implement searchable, sortable and collapsible lists (all optional
 **Slots:**
 
 - `heading`: HTML to display the heading, which by default consists of a title (see property `heading`) and the count of elements available in total. Will also show the count of elements matching the search term, if a search term has been given. The following slot properties are made available:
-	- `filteredCount` (integer|null): The count of elements matching the search term. `null` if no search term has been specified and all elements are shown.
+	- `filteredCount` (integer|null): The count of elements matching the search term. `null` if no filters are applied and all elements are shown.
 	- `totalCount` (integer): The total count of elements.
 - `content-start`: After heading, before searchbox and list.
 - `after-search-box`:
@@ -708,6 +720,7 @@ Visualizes all secondary web service types supported by the back-end.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `hideDeprecatedByDefault`: Whether to hide deprecated items ny default. Defaults to `false`.
 
 **Slots:**
 
@@ -945,6 +958,7 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `hideDeprecatedByDefault`: Whether to hide deprecated items ny default. Defaults to `false`.
 
 **Slots:**
 

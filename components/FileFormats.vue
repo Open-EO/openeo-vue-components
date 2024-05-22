@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component file-formats">
-		<SearchableList :data="fileFormats" summaryKey="title" keywordsKey="gis_data_types" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @detailsToggled="detailsToggled">
+		<SearchableList :data="fileFormats" summaryKey="title" keywordsKey="gis_data_types" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :hideDeprecatedByDefault="hideDeprecatedByDefault" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template v-if="missing" #content-start><FederationMissingNotice :missing="missing" :federation="federation" /></template>
 			<template #summary="slot">
@@ -73,6 +73,10 @@ export default {
 		collapsed: {
 			type: Boolean,
 			default: null
+		},
+		hideDeprecatedByDefault: {
+			type: Boolean,
+			default: false
 		},
 		missing: {
 			type: Array,

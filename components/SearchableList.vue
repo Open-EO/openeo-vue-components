@@ -13,7 +13,13 @@
 				<p>No data available.</p>
 			</template>
 			<template v-else>
-				<SearchBox v-if="externalSearchTerm === null" v-model="searchTerm" :placeholder="searchPlaceholder" :minLength="searchMinLength" />
+				<section class="action-bar">
+					<SearchBox v-if="externalSearchTerm === null" v-model="searchTerm" :placeholder="searchPlaceholder" :minLength="searchMinLength" />
+					<label class="deprecated" title="Show deprecated elements?">
+						<input type="checkbox" v-model="hideDeprecated" :true-value="false" :false-value="true">
+						Show deprecated
+					</label>
+				</section>
 				<slot name="after-search-box" :filteredCount="filteredCount" :summaries="summaries"></slot>
 				<p v-if="filteredCount === 0">No search results found.</p>
 				<ul v-else class="list" :class="{expandable: offerDetails}">
@@ -114,6 +120,10 @@ export default {
 		allowCopy: {
 			type: Boolean,
 			default: false
+		},
+		hideDeprecatedByDefault: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -126,6 +136,7 @@ export default {
 			// This allows with a combination of v-if and v-show to not render by default (=> null), but keep rendered versions in cache (=> false)
 			showDetails: {},
 			showList: this.collapsed ? null : true,
+			hideDeprecated: this.hideDeprecatedByDefault,
 			summaries: [],
 			canCopy: false
 		};
@@ -160,19 +171,11 @@ export default {
 				this.$emit('summaries', this.summaries);
 			}
 		},
-		searchTerm: {
-			immediate: true,
-			handler(value) {
-				if (value.length >= this.searchMinLength) {
-					this.summaries.forEach(item => {
-						this.$set(item, 'show', Utils.search(this.searchTerm, [item.identifier, item.summary].concat(item.keywords)));
-					});
-				}
-				else {
-					this.summaries.forEach(item => this.$set(item, 'show', true));
-				}
-				this.$emit('summaries', this.summaries);
-			}
+		searchTerm() {
+			this.filter();
+		},
+		hideDeprecated() {
+			this.filter();
 		},
 		collapsed(newState) {
 			if (newState === false) {
@@ -189,16 +192,36 @@ export default {
 			return Utils.size(this.data);
 		},
 		filteredCount() {
-			if (this.searchTerm.length >= this.searchMinLength) {
+			if (this.hasActiveFilter()) {
 				return this.summaries.filter(item => item.show === true).length;
 			}
 			return null;
 		}
 	},
+	created() {
+		this.filter();
+	},
 	mounted() {
 		this.canCopy = navigator && navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
 	},
 	methods: {
+		hasActiveFilter() {
+			return this.searchTerm.length >= this.searchMinLength || this.hideDeprecated;
+		},
+		filter() {
+			const doSearch = this.searchTerm.length >= this.searchMinLength;
+			this.summaries.forEach(item => {
+				let show = true;
+				if (this.hideDeprecated && item.deprecated) {
+					show = false;
+				}
+				else if (doSearch) {
+					show = Utils.search(this.searchTerm, [item.identifier, item.summary].concat(item.keywords))
+				}
+				this.$set(item, 'show', show);
+			});
+			this.$emit('summaries', this.summaries);
+		},
 		copyIdentifier(event, summary) {
 			if (this.allowCopy && this.canCopy) {
 				let elem = event.composedPath()[0]; // event.target doesn't work in web components
@@ -308,6 +331,25 @@ export default {
 	}
 	&.expandable.expanded .heading:before {
 		content: "▾";
+	}
+
+	.action-bar {
+		width: 100%;
+		display: flex;
+		margin-bottom: 1em;
+		padding: 1px;
+		gap: 0.5em;
+
+		> .search-box {
+			min-width: 150px;
+			flex: 1;
+			margin: 0;
+		}
+
+		> .deprecated {
+			white-space: nowrap;
+			align-content: center;
+		}
 	}
 
 	.details  {

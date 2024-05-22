@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Option to hide deprecated elements from lists by default (prop: `hideDeprecatedByDefault`)
+
 ### Fixed
 
 - `Logs`:

@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component udf-runtimes">
-		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @detailsToggled="detailsToggled">
+		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :hideDeprecatedByDefault="hideDeprecatedByDefault" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
 				<slot name="summary" v-bind="slot">
@@ -65,6 +65,10 @@ export default {
 		collapsed: {
 			type: Boolean,
 			default: null
+		},
+		hideDeprecatedByDefault: {
+			type: Boolean,
+			default: false
 		},
 		...FederationMixin.props
 	},
