@@ -52,6 +52,7 @@
 <script>
 import Utils from '../utils';
 import Loading from './internal/Loading.vue';
+import CopyMixin from './internal/CopyMixin';
 import Vue from 'vue';
 
 export default {
@@ -60,6 +61,7 @@ export default {
 		Loading,
 		SearchBox: () => import('./SearchBox.vue')
 	},
+	mixins: [CopyMixin],
 	props: {
 		data: {
 			type: [Array, Object],
@@ -137,8 +139,7 @@ export default {
 			showDetails: {},
 			showList: this.collapsed ? null : true,
 			hideDeprecated: this.hideDeprecatedByDefault,
-			summaries: [],
-			canCopy: false
+			summaries: []
 		};
 	},
 	watch: {
@@ -201,9 +202,6 @@ export default {
 	created() {
 		this.filter();
 	},
-	mounted() {
-		this.canCopy = navigator && navigator.clipboard && typeof navigator.clipboard.writeText === 'function';
-	},
 	methods: {
 		hasActiveFilter() {
 			return this.searchTerm.length >= this.searchMinLength || this.hideDeprecated;
@@ -223,18 +221,9 @@ export default {
 			this.$emit('summaries', this.summaries);
 		},
 		copyIdentifier(event, summary) {
-			if (this.allowCopy && this.canCopy) {
-				let elem = event.composedPath()[0]; // event.target doesn't work in web components
-				navigator.clipboard.writeText(summary.identifier)
-					.then(() => this.toggleIcon(elem, '✅'))
-					.catch(() => this.toggleIcon(elem, '❌'))
-			}
-		},
-		toggleIcon(elem, newIcon) {
-			if (elem) {
-				let oldIcon = elem.innerText;
-				elem.innerText = newIcon;
-				setTimeout(() => elem.innerText = oldIcon, 2000);
+      if (this.allowCopy) {
+				const elem = event.composedPath()[0]; // event.target doesn't work in web components
+				this.copyText(summary.identifier, () => this.toggleIcon(elem, '✅'), () => this.toggleIcon(elem, '❌'));
 			}
 		},
 		generateSummaries() {

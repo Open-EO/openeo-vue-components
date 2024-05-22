@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Option to hide deprecated elements from lists by default (prop: `hideDeprecatedByDefault`)
+- Copy Asset URL
 
 ### Fixed
 

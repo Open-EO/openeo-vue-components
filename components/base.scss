@@ -147,20 +147,20 @@
 }
 .vue-component .badges .badge a.badge-fill {
 	margin: -0.35em -0.5em;
-	padding: 0.35em 0.5em 0.25em 0.5em;
+	padding: 0.35em 0.5em;
 	display: block;
 	border-bottom: 0px;
 }
 .vue-component .badges.small .badge a.badge-fill {
 	margin: -0.2em -0.3em;
-	padding: 0.25em 0.35em 0.2em 0.35em;
+	padding: 0.25em 0.35em;
 }
 .vue-component .badges .badge a:hover {
 	color: #fff;
 	border-bottom-style: solid;
 }
 .vue-component .badges .default {
-	background-color: black;
+	background-color: #555;
 }
 .vue-component .badges .green {
 	background-color: green;
@@ -177,6 +177,9 @@
 .vue-component .badges .option3 {
 	background-color: #936;
 }
+.vue-component .badges .option4 {
+	background-color: #963;
+}
 .vue-component .badges .deprecated {
 	background-color: red;
 }
@@ -184,10 +187,24 @@
 	background-color: blueviolet;
 }
 .vue-component .badges .action {
-	background-color: chocolate;
+	border: 1px solid black;
+	background-color: white;
+	color: black;
+	margin: 0.33em;
+	cursor: pointer;
+	text-transform: none;
 
 	&:hover {
 		background-color: black;
+		color: white;
+
+		> a {
+			color: white;
+		}
+	}
+
+	> a {
+		color: black;
 	}
 }
 /* Badges for UDFs */
