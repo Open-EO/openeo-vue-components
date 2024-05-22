@@ -17,7 +17,15 @@
 								<tbody>
 									<tr v-for="(row, r) in prop.formatted" :key="r">
 										<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
-										<td v-for="col in prop.itemOrder" :key="`${col}_${r}`" v-html="row[col]" />
+										<td v-for="col in prop.itemOrder" :key="`${col}_${r}`">
+											<ol class="array" v-if="Array.isArray(row[col])">
+												<li v-for="(v, k) in row[col]" :key="k"><span v-html="v" /></li>
+											</ol>
+											<ul class="object" v-else-if="row[col] && typeof row[col] === 'object'">
+												<li v-for="(v, k) in row[col]" :key="k"><strong>{{ k | key }}</strong>: <span v-html="v" /></li>
+											</ul>
+											<div v-else v-html="row[col]" />
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -35,6 +43,7 @@
 <script>
 import StacFields from '@radiantearth/stac-fields';
 import Utils from '../../utils'
+import ObjectTree from '../ObjectTree.vue';
 
 const CORE_COLLECTION_FIELDS = [
 	// Catalog and Collection fields that are handled directly
@@ -63,7 +72,8 @@ StacFields.Registry.externalRenderer = true;
 export default {
 	name: 'StacFields',
 	components: {
-		Process: () => import('../Process.vue')
+		Process: () => import('../Process.vue'),
+		ObjectTree
 	},
 	props: {
 		metadata: {
@@ -86,6 +96,9 @@ export default {
 			type: Object,
 			default: () => ({})
 		}
+	},
+	filters: {
+		key: Utils.prettifyString
 	},
 	computed: {
 		ignoreFn() {
@@ -145,6 +158,11 @@ export default {
 		td, th {
 			border: 1px solid rgba(0, 0, 0, 0.2);
 			padding: 3px;
+
+			> .object {
+				list-style-type: none;
+				padding-left: 0;
+			}
 		}
 		td {
 			vertical-align: top;

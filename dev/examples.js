@@ -2,6 +2,7 @@ let collectionGee = require('./examples/collection-gee-s2.json');
 let collectionEurac = require('./examples/collection-eurac.json');
 let collections = require('./examples/collections-gee.json');
 let item = require('./examples/item.json');
+let itemCeos = require('./examples/item-ceos.json');
 let items = require('./examples/items-ard-eodc.json');
 let job = require('./examples/job.json');
 let logs = require('./examples/logs.json');
@@ -196,6 +197,9 @@ if (a == b) console.log("Hello World");
 	"item": {
 		"batch-job": {
 			"data": item
+		},
+		"ceos": {
+			"data": itemCeos
 		}
 	},
 	"items": {

@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Improved look of field badges
   - Make sure internal state doesn't conflict
   - Use better delete symbol
+- Complex tabular STAC data gets rendered correctly
 
 ## [2.14.1] - 2023-05-08
 

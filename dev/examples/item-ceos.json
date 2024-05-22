@@ -1,0 +1,83 @@
+{
+  "assets": {
+    "timeseries.json": {
+      "eo:bands": [
+        {
+          "name": "temperature_mean"
+        }
+      ],
+      "file:nodata": [
+        null
+      ],
+      "file:size": 5948642,
+      "href": "https://openeo.vito.be/openeo/1.1/jobs/j-2eefc4cbde81425d8ef8ea614ca8a75f/results/assets/ZGZhNjc4Y2I5YWIxN2Y2NWQ0ZjAyNWUzMGZhYzVlMGQ5MDExNjE3NmU0NGZkMTdkNzAzNDE5MzIyNzQ3Y2JiZEBlZ2kuZXU%3D/4ba18c2fb39f0b05987c5bda8b963bf7/timeseries.json?expires=1682933585",
+      "raster:bands": [
+        {
+          "statistics": {
+            "maximum": 30571.25,
+            "mean": 28275.299176092813,
+            "minimum": 25375.33333333333,
+            "stddev": 872.2911603581424,
+            "valid_percent": 99.58355484671274
+          }
+        }
+      ],
+      "roles": [
+        "data"
+      ],
+      "title": "timeseries.json",
+      "type": "application/json"
+    }
+  },
+  "description": "Results for batch job j-2eefc4cbde81425d8ef8ea614ca8a75f",
+  "extent": {
+    "spatial": {
+      "bbox": [
+        [
+          -10.113295143026754,
+          34.76265766563015,
+          31.96104751317609,
+          70.25714431094598
+        ]
+      ]
+    },
+    "temporal": {
+      "interval": [
+        [
+          "2021-01-01T00:00:00Z",
+          "2021-12-31T00:00:00Z"
+        ]
+      ]
+    }
+  },
+  "id": "j-2eefc4cbde81425d8ef8ea614ca8a75f",
+  "license": "proprietary",
+  "links": [
+    {
+      "href": "/data/MTDA/AgERA5/2021/20211231/AgERA5_dewpoint-temperature_20211231.tif",
+      "rel": "derived_from",
+      "title": "Derived from /data/MTDA/AgERA5/2021/20211231/AgERA5_dewpoint-temperature_20211231.tif"
+    },
+    {
+      "href": "https://openeo.vito.be/openeo/1.1/jobs/j-2eefc4cbde81425d8ef8ea614ca8a75f/results",
+      "rel": "self",
+      "type": "application/json"
+    },
+    {
+      "href": "https://openeo.vito.be/openeo/1.1/jobs/j-2eefc4cbde81425d8ef8ea614ca8a75f/results/ZGZhNjc4Y2I5YWIxN2Y2NWQ0ZjAyNWUzMGZhYzVlMGQ5MDExNjE3NmU0NGZkMTdkNzAzNDE5MzIyNzQ3Y2JiZEBlZ2kuZXU%3D/31b58e8466e22b0f1b7580cfa98b3ef7?expires=1682933585",
+      "rel": "canonical",
+      "type": "application/json"
+    },
+    {
+      "href": "http://ceos.org/ard/files/PFS/SR/v5.0/CARD4L_Product_Family_Specification_Surface_Reflectance-v5.0.pdf",
+      "rel": "card4l-document",
+      "type": "application/pdf"
+    }
+  ],
+  "stac_extensions": [
+    "eo",
+    "file"
+  ],
+  "stac_version": "1.0.0",
+  "type": "Collection"
+}
