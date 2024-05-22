@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.15.1] - 2024-05-22
+
+### Changed
+
+- Prop `hideDeprecatedByDefault` split into to `hideDeprecated` and `deprecatedFilter` (all except `SearchableList`)
+- Prop `hideDeprecatedByDefault` split into to `externalHideDeprecated` and `deprecatedFilter` (only `SearchableList`)
+- Deprecated filter must be enabled explicitly
+
 ## [2.15.0] - 2024-05-22
 
 ### Added
@@ -652,7 +660,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.15.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.15.1...HEAD
+[2.15.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.15.0...v2.15.1
 [2.15.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.14.1...v2.15.0
 [2.14.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.14.0...v2.14.1
 [2.14.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.13.0...v2.14.0

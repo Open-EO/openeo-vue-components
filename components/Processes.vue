@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component processes">
-		<SearchableList :data="processes" keywordsKey="categories" :showKeywords="showCategories" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :hideDeprecatedByDefault="hideDeprecatedByDefault" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled" allowCopy>
+		<SearchableList :data="processes" keywordsKey="categories" :showKeywords="showCategories" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :externalHideDeprecated="hideDeprecated" :deprecatedFilter="deprecatedFilter" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled" allowCopy>
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #content-start v-if="missing"><FederationMissingNotice :missing="missing" :federation="federation" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
@@ -66,7 +66,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		hideDeprecatedByDefault: {
+		hideDeprecated: {
+			type: Boolean,
+			default: false
+		},
+		deprecatedFilter: {
 			type: Boolean,
 			default: false
 		},

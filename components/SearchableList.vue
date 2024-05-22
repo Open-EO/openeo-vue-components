@@ -3,7 +3,7 @@
 		<slot name="heading" :filteredCount="filteredCount" :totalCount="totalCount">
 			<h2 v-if="heading" class="heading" @click="toggleHeading(null)">
 				{{ heading }}
-				<template v-if="filteredCount !== null">({{ filteredCount }}/{{ totalCount }})</template>
+				<template v-if="filteredCount !== null && filteredCount !== totalCount">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
 			</h2>
 		</slot>
@@ -15,7 +15,7 @@
 			<template v-else>
 				<section class="action-bar">
 					<SearchBox v-if="externalSearchTerm === null" v-model="searchTerm" :placeholder="searchPlaceholder" :minLength="searchMinLength" />
-					<label class="deprecated" title="Show deprecated elements?">
+					<label v-if="deprecatedFilter" class="deprecated" title="Show deprecated elements?">
 						<input type="checkbox" v-model="hideDeprecated" :true-value="false" :false-value="true">
 						Show deprecated
 					</label>
@@ -123,7 +123,11 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		hideDeprecatedByDefault: {
+		externalHideDeprecated: {
+			type: Boolean,
+			default: false
+		},
+		deprecatedFilter: {
 			type: Boolean,
 			default: false
 		}
@@ -138,7 +142,7 @@ export default {
 			// This allows with a combination of v-if and v-show to not render by default (=> null), but keep rendered versions in cache (=> false)
 			showDetails: {},
 			showList: this.collapsed ? null : true,
-			hideDeprecated: this.hideDeprecatedByDefault,
+			hideDeprecated: this.externalHideDeprecated,
 			summaries: []
 		};
 	},
@@ -166,6 +170,12 @@ export default {
 				this.searchTerm = typeof value === 'string' ? value : '';
 			}
 		},
+		externalHideDeprecated: {
+			immediate: true,
+			handler(value) {
+				this.hideDeprecated = value;
+			}
+		},
 		summaries: {
 			immediate: true,
 			handler() {
@@ -176,7 +186,9 @@ export default {
 			this.filter();
 		},
 		hideDeprecated() {
-			this.filter();
+			if (this.hideDeprecatedByDefault !== null) {
+				this.filter();
+			}
 		},
 		collapsed(newState) {
 			if (newState === false) {
@@ -204,13 +216,14 @@ export default {
 	},
 	methods: {
 		hasActiveFilter() {
-			return this.searchTerm.length >= this.searchMinLength || this.hideDeprecated;
+			return this.searchTerm.length >= this.searchMinLength
+				|| (this.hideDeprecatedByDefault !== null && this.hideDeprecated);
 		},
 		filter() {
 			const doSearch = this.searchTerm.length >= this.searchMinLength;
 			this.summaries.forEach(item => {
 				let show = true;
-				if (this.hideDeprecated && item.deprecated) {
+				if (this.hideDeprecatedByDefault !== null && this.hideDeprecated && item.deprecated) {
 					show = false;
 				}
 				else if (doSearch) {
@@ -328,6 +341,10 @@ export default {
 		margin-bottom: 1em;
 		padding: 1px;
 		gap: 0.5em;
+
+		&:empty {
+			display: none;
+		}
 
 		> .search-box {
 			min-width: 150px;

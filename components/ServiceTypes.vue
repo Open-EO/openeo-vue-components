@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-component service-types">
-		<SearchableList :data="services" summaryKey="title" :externalSearchTerm="searchTerm" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :hideDeprecatedByDefault="hideDeprecatedByDefault" @detailsToggled="detailsToggled">
+		<SearchableList :data="services" summaryKey="title" :externalSearchTerm="searchTerm" :externalHideDeprecated="hideDeprecated" :deprecatedFilter="deprecatedFilter" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
@@ -52,7 +52,11 @@ export default {
 			type: Boolean,
 			default: null
 		},
-		hideDeprecatedByDefault: {
+		hideDeprecated: {
+			type: Boolean,
+			default: false
+		},
+		deprecatedFilter: {
 			type: Boolean,
 			default: false
 		},

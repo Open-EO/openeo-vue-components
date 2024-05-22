@@ -52,7 +52,9 @@ module.exports = {
 	"collections": {
 		"gee": {
 			"collections": collections,
-			"federation": capabilities.federation
+			"federation": capabilities.federation,
+			"deprecated-filter": true,
+			"hide-deprecated": true
 		},
 		"collapsed": {
 			"collections": collections,
