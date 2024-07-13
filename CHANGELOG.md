@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support to rename dynamic tab titles (enable via prop `allowTabRename`)
+
 ## [2.15.1] - 2024-05-22
 
 ### Changed

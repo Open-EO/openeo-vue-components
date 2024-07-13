@@ -150,7 +150,6 @@ Visualizes fundamental server information of the back-end. Shows the URL, title,
 - `capabilities` (object, required): Capabilities response as defined by the openEO API (`GET /`).
 - `url` (string): URL to the API. If not set, the URL from the link with relation type `self` is shown. If neither is available, no URL is shown.
 
-
 ### `Collection`
 
 Visualizes a single collection following the STAC-based collection description.
@@ -764,6 +763,7 @@ Creates a tab interface.
 - `pills` (boolean, default `false`): Switch between [normal boxed tabs and tabs with pills styling](https://www.w3schools.com/bootstrap/bootstrap_tabs_pills.asp).
 - `pillsMultiline` / `pills-multiline` (boolean, default `false`): If pills are active, the pills in the tabs header can be shown in multiple lines instead of squeezing all pills into a single line.
 - `position` (string, default `top`): Position of the tabs/pills, either `top` or `bottom`.
+- `allowTabRename` (boolean, default: `false`): Enables that dynamic tabs can be renamed by a user
 
 **Methods:**
 

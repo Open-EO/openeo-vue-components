@@ -4,7 +4,14 @@
 		<div class="tabsHeader" ref="tabsHeader">
 			<button v-for="tab in tabs" type="button" v-show="tab.enabled" :class="{tabItem: true, tabActive: tab.active, tabHasIcon: !!tab.icon, [tab.id]: true }" @click.left="selectTab(tab)" @click.middle="closeTab(tab)" :title="tab.name" :key="tab.id">
 				<i v-if="tab.icon" :class="['tabIcon', 'fas', tab.icon]"></i>
-				<span class="tabName"><slot name="tabName" :tab="tab">{{ tab.name }}</slot></span>
+				<span class="tabName" @dblclick="editTabName(tab)">
+					<template v-if="tabEditId == tab.id">
+						<input type="text" v-model="tabEditName" @blur="saveTabName" @keyup.enter="saveTabName" @keyup.esc="resetTabName" />
+					</template>
+					<template v-else>
+						<slot name="tabName" :tab="tab">{{ tab.name }}</slot>
+					</template>
+				</span>
 				<svg v-if="tab.closable" xmlns="http://www.w3.org/2000/svg" class="tabClose" title="Close" @click.prevent.stop="closeTab(tab)" viewBox="0 0 24 24">
 					<circle cx="12" cy="12" r="11" stroke="black" stroke-width="2" fill="none" />
 					<path stroke="black" stroke-width="2" fill="none" d="M7,7,17,17" />
@@ -46,6 +53,10 @@ export default {
 		position: {
 			type: String,
 			default: 'top'
+		},
+		allowTabRename: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -54,7 +65,9 @@ export default {
 			tabs: [],
 			activeTab: null,
 			dynamicTabs: [],
-			spaceLimited: false
+			spaceLimited: false,
+			tabEditName: '',
+			tabEditId: null
 		};
 	},
 	mounted() {
@@ -130,6 +143,26 @@ export default {
 					this.adjustSizes();
 				});
 			}
+		},
+		editTabName(tab) {
+			if (!this.allowTabRename || tab.id !== this.getActiveTabId()) {
+				return;
+			}
+			const tabData = this.dynamicTabs.find(t => t.id === tab.id);
+			if (tabData) {
+				this.tabEditName = tabData.name;
+				this.tabEditId = tab.id;
+			}
+		},
+		saveTabName() {
+			const tabData = this.dynamicTabs.find(t => t.id === this.tabEditId);
+			if (tabData) {
+				this.$set(tabData, 'name', this.tabEditName);
+				this.tabEditId = null;
+			}
+		},
+		resetTabName() {
+			this.tabEditId = null;
 		},
 		onDynamic(tab, evt) {
 			var index = this.tabs.findIndex(t => t.id === tab.id);
