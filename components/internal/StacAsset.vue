@@ -15,6 +15,11 @@
       <li class="badge action copy" @click.prevent.stop="copyURL($event, asset.href)">
         <span class="icon">📋</span> Copy URL
       </li>
+      <template v-for="action in actions">
+        <li v-if="!action.show || action.show(asset)" :key="action.label" class="badge action" @click.prevent.stop="action.click($event, asset)">
+          <span class="icon" v-if="action.icon">{{ action.icon }}</span> {{ action.label }}
+        </li>
+      </template>
     </ul>
     <Description v-if="asset.description" :description="asset.description" :compact="true" />
     <StacFields type="Asset" :metadata="asset" :ignore="ignore" title="" :context="context" headingTag="h5" />
@@ -46,6 +51,15 @@ export default {
     context: {
       type: Object,
       default: () => ({})
+    },
+    actions: {
+      // Array of objects with the following properties:
+      // - label (string)
+      // - icon (optional, string)
+      // - show (optional, function(asset) -> boolean)
+      // - click (function(event, asset) -> void)
+      type: Array,
+      default: () => []
     }
   },
   data() {
