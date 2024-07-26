@@ -6,11 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.16.0] - 2024-07-26
+
 ### Added
 
 - `Tabs`: Support to rename dynamic tab titles (enable via prop `allowTabRename`)
 - `Collections`, `FileFormats`, `Items`, `Processes`, `ServiceTypes` and `UdfRuntimes`: New props `hideDeprecated` and `deprecatedFilter`
 - `SearchableList`: New props `externalHideDeprecated` and `deprecatedFilter`
+- Upgraded stac-fields
 
 ## [2.15.1] - 2024-05-22
 
@@ -666,7 +669,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.15.1...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.16.0...HEAD
+[2.16.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.15.1...v2.16.0
 [2.15.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.15.0...v2.15.1
 [2.15.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.14.1...v2.15.0
 [2.14.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.14.0...v2.14.1
