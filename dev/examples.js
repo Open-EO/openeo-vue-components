@@ -341,7 +341,11 @@ if (a == b) console.log("Hello World");
 	"processes": {
 		"1.1.0": {
 			"processes": processes,
-			"federation": capabilities.federation
+			"federation": capabilities.federation,
+			"deprecated-filter": true,
+			"hide-deprecated": true,
+			"experimental-filter": true,
+			"hide-experimental": true,
 		},
 		"1.1.0-with-categories": {
 			"processes": processes,

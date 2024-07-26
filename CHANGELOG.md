@@ -8,7 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support to rename dynamic tab titles (enable via prop `allowTabRename`)
+- `Tabs`: Support to rename dynamic tab titles (enable via prop `allowTabRename`)
+- `Collections`, `FileFormats`, `Items`, `Processes`, `ServiceTypes` and `UdfRuntimes`: New props `hideDeprecated` and `deprecatedFilter`
+- `SearchableList`: New props `externalHideDeprecated` and `deprecatedFilter`
 
 ## [2.15.1] - 2024-05-22
 

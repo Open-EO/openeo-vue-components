@@ -193,8 +193,10 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 - `showKeywords` / `show-keywords` (boolean): Adds the keywords to the third line of the summary if set to `true`. Defaults to `false`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of collections due to an issue.
-- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist). 
-- `deprecatedFilter` / `deprecated-filter` (boolean): See the prop `deprecatedFilter` in [`SearchableList`](#searchablelist). 
+- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist).
+- `deprecatedFilter` / `deprecated-filter` (boolean): See the prop `deprecatedFilter` in [`SearchableList`](#searchablelist).
+- `hideExperimental` / `hide-experimental` (boolean): See the prop `externalHideExperimental` in [`SearchableList`](#searchablelist).
+- `experimentalFilter` / `experimental-filter` (boolean): See the prop `experimentalFilter` in [`SearchableList`](#searchablelist).
 
 **Slots:**
 
@@ -313,8 +315,10 @@ Visualizes all supported file formats of the back-end.
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `File Formats`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of file formats due to an issue.
-- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist). 
+- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist).
 - `deprecatedFilter` / `deprecated-filter` (boolean): See the prop `deprecatedFilter` in [`SearchableList`](#searchablelist).
+- `hideExperimental` / `hide-experimental` (boolean): See the prop `externalHideExperimental` in [`SearchableList`](#searchablelist).
+- `experimentalFilter` / `experimental-filter` (boolean): See the prop `experimentalFilter` in [`SearchableList`](#searchablelist).
 
 *Note: At least one of `showInput` or `showOutput` must be set to `true`. Otherwise, the list will be empty.*
 
@@ -384,8 +388,10 @@ Shows an (expandable) list of STAC-based Items.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of items due to an issue.
-- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist). 
+- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist).
 - `deprecatedFilter` / `deprecated-filter` (boolean): See the prop `deprecatedFilter` in [`SearchableList`](#searchablelist).
+- `hideExperimental` / `hide-experimental` (boolean): See the prop `externalHideExperimental` in [`SearchableList`](#searchablelist).
+- `experimentalFilter` / `experimental-filter` (boolean): See the prop `experimentalFilter` in [`SearchableList`](#searchablelist).
 
 **Slots:**
 
@@ -583,8 +589,10 @@ Shows an (expandable) list of all processes available at a back-end.
 - `loadAdditionalData` / `load-additional-data` (function|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of processes due to an issue.
-- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist). 
+- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist).
 - `deprecatedFilter` / `deprecated-filter` (boolean): See the prop `deprecatedFilter` in [`SearchableList`](#searchablelist).
+- `hideExperimental` / `hide-experimental` (boolean): See the prop `externalHideExperimental` in [`SearchableList`](#searchablelist).
+- `experimentalFilter` / `experimental-filter` (boolean): See the prop `experimentalFilter` in [`SearchableList`](#searchablelist).
 
 **Slots:**
 
@@ -613,6 +621,8 @@ A template to implement searchable, sortable and collapsible lists (all optional
 - `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Setting to the empty string `""` effectively disables searching. Defaults to `null`, which will show a search box in the component itself so that users can filter the data by identifier and summary.
 - `externalHideDeprecated` / `external-hide-deprecated` (boolean): Whether to hide deprecated items (`true`) or not (`false`).
 - `deprecatedFilter` / `deprecated-filter` (boolean): Whether to show the deprecated filter checkbox (`true`) or not (`false`).
+- `externalHideExperimental` / `external-hide-experimental` (boolean): Whether to hide experimental items (`true`) or not (`false`).
+- `experimentalFilter` / `experimental-filter` (boolean): Whether to show the experimental filter checkbox (`true`) or not (`false`).
 - `searchPlaceholder` / `search-placeholder` (string): A text to show as a placeholder in the search box. Defaults to `Search`.
 - `sort` (boolean): Sort the data by identifier. Defaults to `true`.
 - `offerDetails` / `offer-details` (boolean): If set to `false`, the data can't be expanded and no details will be shown. Defaults to `true`, which will show what has been defined in the `details` slot after a user has expanded the element.
@@ -724,8 +734,10 @@ Visualizes all secondary web service types supported by the back-end.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `Secondary Web Services`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
-- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist). 
+- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist).
 - `deprecatedFilter` / `deprecated-filter` (boolean): See the prop `deprecatedFilter` in [`SearchableList`](#searchablelist).
+- `hideExperimental` / `hide-experimental` (boolean): See the prop `externalHideExperimental` in [`SearchableList`](#searchablelist).
+- `experimentalFilter` / `experimental-filter` (boolean): See the prop `experimentalFilter` in [`SearchableList`](#searchablelist).
 
 **Slots:**
 
@@ -964,8 +976,10 @@ Visualizes all UDF (user-defined function) runtimes supported by the back-end.
 - `collapsed` (boolean|null): See the corresponding prop in [`SearchableList`](#searchablelist).
 - `heading` (string|null): Specifies the title of the component. If set to `null`, the title is hidden. Defaults to `UDF Runtimes`.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
-- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist). 
+- `hideDeprecated` / `hide-deprecated` (boolean): See the prop `externalHideDeprecated` in [`SearchableList`](#searchablelist).
 - `deprecatedFilter` / `deprecated-filter` (boolean): See the prop `deprecatedFilter` in [`SearchableList`](#searchablelist).
+- `hideExperimental` / `hide-experimental` (boolean): See the prop `externalHideExperimental` in [`SearchableList`](#searchablelist).
+- `experimentalFilter` / `experimental-filter` (boolean): See the prop `experimentalFilter` in [`SearchableList`](#searchablelist).
 
 **Slots:**
 

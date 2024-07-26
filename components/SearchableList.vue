@@ -19,6 +19,10 @@
 						<input type="checkbox" v-model="hideDeprecated" :true-value="false" :false-value="true">
 						Show deprecated
 					</label>
+					<label v-if="experimentalFilter" class="experimental" title="Show experimental elements?">
+						<input type="checkbox" v-model="hideExperimental" :true-value="false" :false-value="true">
+						Show experimental
+					</label>
 				</section>
 				<slot name="after-search-box" :filteredCount="filteredCount" :summaries="summaries"></slot>
 				<p v-if="filteredCount === 0">No search results found.</p>
@@ -130,6 +134,14 @@ export default {
 		deprecatedFilter: {
 			type: Boolean,
 			default: false
+		},
+		externalHideExperimental: {
+			type: Boolean,
+			default: false
+		},
+		experimentalFilter: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -143,6 +155,7 @@ export default {
 			showDetails: {},
 			showList: this.collapsed ? null : true,
 			hideDeprecated: this.externalHideDeprecated,
+			hideExperimental: this.externalHideExperimental,
 			summaries: []
 		};
 	},
@@ -176,6 +189,12 @@ export default {
 				this.hideDeprecated = value;
 			}
 		},
+		externalHideExperimental: {
+			immediate: true,
+			handler(value) {
+				this.hideExperimental = value;
+			}
+		},
 		summaries: {
 			immediate: true,
 			handler() {
@@ -187,6 +206,11 @@ export default {
 		},
 		hideDeprecated() {
 			if (this.hideDeprecatedByDefault !== null) {
+				this.filter();
+			}
+		},
+		hideExperimental() {
+			if (this.hideExperimentalByDefault !== null) {
 				this.filter();
 			}
 		},
@@ -217,13 +241,17 @@ export default {
 	methods: {
 		hasActiveFilter() {
 			return this.searchTerm.length >= this.searchMinLength
-				|| (this.hideDeprecatedByDefault !== null && this.hideDeprecated);
+				|| (this.hideDeprecatedByDefault !== null && this.hideDeprecated)
+				|| (this.hideExperimentalByDefault !== null && this.hideExperimental);
 		},
 		filter() {
 			const doSearch = this.searchTerm.length >= this.searchMinLength;
 			this.summaries.forEach(item => {
 				let show = true;
 				if (this.hideDeprecatedByDefault !== null && this.hideDeprecated && item.deprecated) {
+					show = false;
+				}
+				else if (this.hideExperimentalByDefault !== null && this.hideExperimental && item.experimental) {
 					show = false;
 				}
 				else if (doSearch) {
@@ -352,7 +380,8 @@ export default {
 			margin: 0;
 		}
 
-		> .deprecated {
+		> .deprecated,
+		> .experimental {
 			white-space: nowrap;
 			align-content: center;
 		}

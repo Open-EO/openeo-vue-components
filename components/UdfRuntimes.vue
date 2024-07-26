@@ -1,6 +1,19 @@
 <template>
 	<div class="vue-component udf-runtimes">
-		<SearchableList :data="runtimes" summaryKey="title" :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :externalHideDeprecated="hideDeprecated" :deprecatedFilter="deprecatedFilter" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" @detailsToggled="detailsToggled">
+		<SearchableList
+			:data="runtimes"
+			summaryKey="title"
+			:showSummaryOnExpand="false"
+			:externalSearchTerm="searchTerm"
+			:externalHideDeprecated="hideDeprecated"
+			:deprecatedFilter="deprecatedFilter"
+			:externalHideExperimental="hideExperimental"
+			:experimentalFilter="experimentalFilter"
+			:sort="sort"
+			:offerDetails="offerDetails"
+			:heading="heading"
+			:collapsed="collapsed"
+			@detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template #summary="slot">
 				<slot name="summary" v-bind="slot">
@@ -71,6 +84,14 @@ export default {
 			default: false
 		},
 		deprecatedFilter: {
+			type: Boolean,
+			default: false
+		},
+		hideExperimental: {
+			type: Boolean,
+			default: false
+		},
+		experimentalFilter: {
 			type: Boolean,
 			default: false
 		},

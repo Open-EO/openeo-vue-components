@@ -3362,6 +3362,7 @@
     "categories": [
       "cubes"
     ],
+    "deprecated": true,
     "parameters": [],
     "returns": {
       "description": "An empty raster data cube with zero dimensions.",

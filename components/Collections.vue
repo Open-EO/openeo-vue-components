@@ -1,6 +1,24 @@
 <template>
 	<div class="vue-component collections">
-		<SearchableList :data="collections" identifierKey="id" summaryKey="title" keywordsKey="keywords" :showKeywords="showKeywords"  :showSummaryOnExpand="false" :externalSearchTerm="searchTerm" :externalHideDeprecated="hideDeprecated" :deprecatedFilter="deprecatedFilter" :sort="sort" :offerDetails="offerDetails" :heading="heading" :collapsed="collapsed" :loadAdditionalData="loadAdditionalData" @detailsToggled="detailsToggled" allowCopy>
+		<SearchableList
+			:data="collections"
+			identifierKey="id"
+			summaryKey="title"
+			keywordsKey="keywords"
+			:showKeywords="showKeywords"
+			:showSummaryOnExpand="false"
+			:externalSearchTerm="searchTerm"
+			:externalHideDeprecated="hideDeprecated"
+			:deprecatedFilter="deprecatedFilter"
+			:externalHideExperimental="hideExperimental"
+			:experimentalFilter="experimentalFilter"
+			:sort="sort"
+			:offerDetails="offerDetails"
+			:heading="heading"
+			:collapsed="collapsed"
+			:loadAdditionalData="loadAdditionalData"
+			@detailsToggled="detailsToggled"
+			allowCopy>
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
 			<template v-if="missing" #content-start><FederationMissingNotice :missing="missing" :federation="federation" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
@@ -72,6 +90,14 @@ export default {
 			default: false
 		},
 		deprecatedFilter: {
+			type: Boolean,
+			default: false
+		},
+		hideExperimental: {
+			type: Boolean,
+			default: false
+		},
+		experimentalFilter: {
 			type: Boolean,
 			default: false
 		},
