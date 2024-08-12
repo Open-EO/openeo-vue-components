@@ -40,8 +40,8 @@
   ],
   "dependencies": {
     "@musement/iso-duration": "^1.0.0",
-    "@openeo/js-commons": "^1.4.1",
-    "@openeo/js-processgraphs": "^1.4.0",
+    "@openeo/js-commons": "^1.5.0",
+    "@openeo/js-processgraphs": "^1.4.1",
     "@radiantearth/stac-fields": "^1.5.0-beta.2",
     "@radiantearth/stac-migrate": "^2.0.0-beta.1",
     "commonmark": "^0.31.0",
