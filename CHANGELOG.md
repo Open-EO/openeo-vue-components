@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Upgraded dependencies to solve various issues
+- Upgraded dependencies to solve various issues (e.g. datacube subtype support)
 
 ## [2.16.0] - 2024-07-26
 
