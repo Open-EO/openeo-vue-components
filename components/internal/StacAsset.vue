@@ -86,7 +86,7 @@ export default {
 
 <style lang="scss">
 .vue-component.asset {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.5em !important;
 
   > * {
     margin: 0.25em 0;
@@ -98,7 +98,6 @@ export default {
 
   h4  {
     font-size: 1.1em;
-    font-weight: normal;
 
     > .roles {
       font-size: 0.95em;
