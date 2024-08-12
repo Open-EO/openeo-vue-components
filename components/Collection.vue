@@ -89,7 +89,7 @@
 			<ul>
 				<li v-for="(dim, name) in stac['cube:dimensions']" :key="name" class="dimension">
 					<h4>
-						<a v-if="dim.type === 'bands'" @click="scrollToBands" class="name" href="#summary_eo:bands">{{ name }}</a>
+						<a v-if="dim.type === 'bands'" @click="scrollToBands" class="name" href="#summary_bands">{{ name }}</a>
 						<span v-else class="name">{{ name }}</span>
 						<ul class="type badges small inline"><li class="badge">{{ dim.type }}</li></ul>
 					</h4>
@@ -253,7 +253,7 @@ export default {
 			return features;
 		},
 		scrollToBands(evt) {
-			let elem = this.$el.querySelector('#field_eo\\:bands');
+			let elem = this.$el.querySelector('#field_bands');
 			if (elem) {
 				elem.scrollIntoView();
 				elem.classList.add('highlight-box');
