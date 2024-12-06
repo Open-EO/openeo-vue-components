@@ -223,11 +223,16 @@ A relatively simple table component to show a list of data.
 
 - `columns` (object, required): The columns to show in the table.
 - `data` (array, required): An array of objects containing the data to show.
+- `hasMore` (boolean): Indicates whether more data is available to be loaded/shown. Shows a button that emits the `next` event. Defaults to `false`.
 
 **Slots:**
 
 - `toolbar`: A place on the top left to show a toolbar, e.g. for "Add" buttons.
 - *column-id*: A slot for the column with the name being the column identifer. Can be used to better visualize the values in the column. Passes the slot properties `row`, `col` and `id`.
+
+**Events:**
+
+- `next()`: Indicates that more data should be loaded, which will then be passed in via the `data` property.
 
 
 ### `DeprecationNotice`

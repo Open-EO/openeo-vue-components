@@ -37,6 +37,7 @@
 			</tbody>
 		</table>
 		<div class="no-data" v-else>{{ noDataMessage }}</div>
+		<button class="has-more-button" v-if="hasMore" @click="$emit('next')">Load more...</button>
 	</div>
 </template>
 
@@ -57,6 +58,10 @@ export default {
 		data: {
 			type: Array,
 			default: () => ([])
+		},
+		hasMore: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
