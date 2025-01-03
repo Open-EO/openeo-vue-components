@@ -5,18 +5,18 @@
 				<slot name="toolbar"></slot>
 			</div>
 			<div class="filter" v-if="hasData">
-				<SearchBox v-model="filterValue" :compact="true" />
+				<SearchBox v-model="filterValue" :placeholder="searchPlaceholder" :compact="true" />
 			</div>
 		</div>
 		<table v-if="hasData">
 			<thead>
 				<tr>
-					<th v-for="(col, id) in columns" v-show="!col.hide" :key="col.name" :class="thClasses(id)" @click="enableSort(id)" :title="thTitle(id)">{{ col.name }}</th>
+					<th v-for="(col, id) in columns" v-show="!col.hide" :key="col.name" :width="col.width" :class="thClasses(id)" @click="enableSort(id)" :title="thTitle(id)">{{ col.name }}</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr v-for="(row, i) in view" :key="i">
-					<td v-for="(col, id) in columns" v-show="!col.hide" :key="`${col.name}_${i}`" 
+					<td v-for="(col, id) in columns" v-show="!col.hide" :key="`${col.name}_${id}`" 
 						:class="[id, {'edit': canEdit(col)}]"
 						:title="canEdit(col) ? 'Double-click to change the value' : false"
 						@dblclick="onDblClick($event, row, col, id)"
@@ -37,7 +37,7 @@
 			</tbody>
 		</table>
 		<div class="no-data" v-else>{{ noDataMessage }}</div>
-		<button class="has-more-button" v-if="hasMore" @click="$emit('next')">Load more...</button>
+		<AsyncButton v-if="hasMore" :fa="fa" icon="fas fa-sync" class="has-more-button" :fn="next">Load more...</AsyncButton>
 	</div>
 </template>
 
@@ -48,6 +48,7 @@ import { DataTypes, Formatters } from '@radiantearth/stac-fields';
 export default {
 	name: 'DataTable',
 	components: {
+		AsyncButton: () => import('./internal/AsyncButton.vue'),
 		SearchBox: () => import('./SearchBox.vue')
 	},
 	props: {
@@ -59,7 +60,12 @@ export default {
 			type: Array,
 			default: () => ([])
 		},
-		hasMore: {
+		next: {
+			type: Function,
+			default: null
+		},
+		fa: {
+			// Whether to use Font Awesome icons or not
 			type: Boolean,
 			default: false
 		}
@@ -90,6 +96,9 @@ export default {
 		columns: {
 			immediate: true,
 			handler() {
+				if (this.hasMore) {
+					return;
+				}
 				for(let id in this.columns) {
 					let direction = this.columns[id].sort;
 					if (['asc', 'desc'].includes(direction)) {
@@ -101,6 +110,9 @@ export default {
 		}
 	},
 	computed: {
+		hasMore() {
+			return typeof this.next === 'function';
+		},
 		columnCount() {
 			return Object.keys(this.columns).length;
 		},
@@ -109,6 +121,9 @@ export default {
 		},
 		hasFilter() {
 			return (typeof this.filterValue === 'string' && this.filterValue.length > 0) ? true : false;
+		},
+		searchPlaceholder() {
+			return this.hasMore ? `Search through subset of loaded data...` : `Search...`;
 		}
 	},
 	beforeCreate() {
@@ -201,7 +216,7 @@ export default {
 		thClasses(id) {
 			let col = this.columns[id];
 			let classes = [id];
-			if (col.sort !== false) {
+			if (!this.hasMore && col.sort !== false) {
 				classes.push('sortable');
 				if (this.sortState.id === id) {
 					classes.push('sort-' + this.sortState.direction);
@@ -211,7 +226,7 @@ export default {
 		},
 		thTitle(id) {
 			let col = this.columns[id];
-			if (col.sort !== false) {
+			if (!this.hasMore && col.sort !== false) {
 				if (this.sortState.id === id && this.sortState.direction === 'asc') {
 					return "Click to sort column in descending order";
 				}
@@ -222,7 +237,7 @@ export default {
 			return null;
 		},
 		enableSort(id, direction = null) {
-			if (this.columns[id].sort === false) {
+			if (this.hasMore || this.columns[id].sort === false) {
 				return;
 			}
 			if (direction === null) {
@@ -363,7 +378,7 @@ export default {
 		text-align: right;
 		padding-left: 1em;
 		min-width: 4em;
-		max-width: 20em;
+		max-width: 30em;
 		.edit {
 			cursor: pointer;
 		}

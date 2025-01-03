@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- `DataTable`: Property `hasMore` and event `next()`
+- `DataTable`: Props `next` and `fa`
 
 ## [2.17.0] - 2024-08-12
 

@@ -1,8 +1,6 @@
 <template>
 	<section v-if="services" class="vue-component message-block federation federation-backends">
-		<button v-if="retry" type="button" class="retry" @click="retry">
-			<slot name="button-text">Retry</slot>
-		</button>
+		<AsyncButton v-if="retry" confirm class="retry" :fn="retry">Retry</AsyncButton>
 		<strong class="header">Incomplete</strong>
 		<p>
 			The following list is incomplete as at least one of the services in the federation is currently not available.
@@ -17,6 +15,9 @@ import Utils from '../utils';
 
 export default {
 	name: 'FederationMissingNotice',
+	components: {
+		AsyncButton: () => import('./internal/AsyncButton.vue')
+	},
 	mixins: [
 		FederationMixin
 	],
