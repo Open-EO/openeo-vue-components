@@ -24,6 +24,11 @@ let ardSR = require('./examples/model-builder/ard_surface_reflectance.json');
 let slow = require('./examples/model-builder/slow.json');
 let externalProc = require('./examples/model-builder/external_process.json');
 
+let asyncFn = () => new Promise(resolve => setTimeout(() => {
+	alert("Async action executed");
+	resolve();
+}, 3000))
+
 module.exports = {
 	"billing-plans": {
 		"api": {
@@ -159,7 +164,7 @@ if (a == b) console.log("Hello World");
 		"example": {
 			"missing": ["wwu", "eodc"],
 			"federation": capabilities.federation,
-			"retry": () => alert("Clicked refresh button")
+			"retry": asyncFn
 		}
 	},
 	"file-format": {
@@ -354,7 +359,13 @@ if (a == b) console.log("Hello World");
 	},
 	// ToDo: SearchableList - see other implementing components for examples, e.g. Collections or Processes
 	"searchable-list": {
-		"empty": {}
+		"empty": {},
+		"async": {
+			"data": [
+				{id: "test", summary: "Test"},
+			],
+			"load-additional-data": asyncFn
+		}
 	},
 	"service": {
 		"empty": {

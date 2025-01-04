@@ -223,6 +223,8 @@ A relatively simple table component to show a list of data.
 
 - `columns` (object, required): The columns to show in the table.
 - `data` (array, required): An array of objects containing the data to show.
+- `next` (function): Indicates whether more data is available to be loaded/shown and how. Shows a button to load more data into the table and executes the given (async) function. Defaults to `null` (i.e. no more data available).
+- `fa` (boolean): Whether to use Font Awesome icons or not. Defaults to `false`.
 
 **Slots:**
 
