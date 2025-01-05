@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is [**2.18.0**](CHANGELOG.md) and supports **openEO API versions 1.x.x**.
+This library's version is [**2.18.1**](CHANGELOG.md) and supports **openEO API versions 1.x.x**.
 Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
 
 npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-components)
@@ -202,6 +202,8 @@ Shows an (expandable) list of all STAC-based collections available at a back-end
 
 - `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
 - `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `content-start`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `after-search-box`: See the corresponding slot in [`SearchableList`](#searchablelist).
 - `collection-before-description`: See the corresponding slot `before-description` in [`Collection`](#collection).
 - `collection-end`: See the corresponding slot `end` in [`Collection`](#collection).
 - `collection-spatial-extents`: See the corresponding slot `spatial-extents` in [`Collection`](#collection).
@@ -399,6 +401,8 @@ Shows an (expandable) list of STAC-based Items.
 
 - `heading`: See the corresponding slot in [`SearchableList`](#searchablelist).
 - `summary`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `content-start`: See the corresponding slot in [`SearchableList`](#searchablelist).
+- `after-search-box`: See the corresponding slot in [`SearchableList`](#searchablelist).
 - `item-before-description`: See the corresponding slot `before-description` in [`Item`](#item).
 - `item-end`: See the corresponding slot `end` in [`Item`](#item).
 - `item-location`: See the corresponding slot `location` in [`Item`](#item).

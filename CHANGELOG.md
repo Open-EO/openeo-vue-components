@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.18.1] - 2025-01-05
+
+### Added
+
+- `Collections` and `Items`: Add slots `content-start` and `after-search-box`
+
 ## [2.18.0] - 2025-01-04
 
 ### Added

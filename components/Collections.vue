@@ -20,7 +20,11 @@
 			@detailsToggled="detailsToggled"
 			allowCopy>
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
-			<template v-if="missing" #content-start><FederationMissingNotice :missing="missing" :federation="federation" /></template>
+			<template #content-start="scope">
+				<slot name="content-start" v-bind="scope"></slot>
+				<FederationMissingNotice v-if="missing" :missing="missing" :federation="federation" />
+			</template>
+			<template #after-search-box="scope"><slot name="after-search-box" v-bind="scope"></slot></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
 				<Collection :data="slot.item" :mapOptions="mapOptions" :federation="federation">

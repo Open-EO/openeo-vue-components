@@ -18,10 +18,12 @@
 			@detailsToggled="detailsToggled"
 			ref="list">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
-			<template #after-search-box>
+			<template #content-start="scope"><slot name="content-start" v-bind="scope"></slot></template>
+			<template #after-search-box="scope">
 				<slot v-if="showMap" name="map" :geojson="geojson" :mapOptions="mapOptions">
 					<div class="map overview" ref="mapContainer"></div>
 				</slot>
+				<slot name="after-search-box" v-bind="scope"></slot>
 			</template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
