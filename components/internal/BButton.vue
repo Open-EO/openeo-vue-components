@@ -48,7 +48,7 @@ export default {
 		};
 	},
   mounted() {
-    this.container = document.getElementsByName('body')[0];
+    this.container = document.getElementsByTagName('body')[0];
     if (!this.container) {
       this.container = this.$refs.button.parentNode;
       if (!this.container) {
@@ -78,11 +78,19 @@ export default {
       else {
         this.removeTooltip();
       }
+    },
+    title() {
+      if (this.title) {
+        this.updateTooltip();
+      }
+      else {
+        this.showTooltip = false;
+      }
     }
   },
 	methods: {
     createTooltip() {
-      if (!this.container) {
+      if (!this.container || !this.title) {
         return;
       }
       if (this.element) {
@@ -90,7 +98,7 @@ export default {
       }
       this.element = document.createElement('div');
       this.element.className = 'openeo-vue-tooltip';
-      this.element.innerText = this.title;
+      this.element.addEventListener('mouseover', () => this.showTooltip = false);
       this.container.appendChild(this.element);
       this.updateTooltip();
     },
@@ -98,6 +106,7 @@ export default {
       if (!this.element) {
         return;
       }
+      this.element.innerText = this.title;
       const el = this.$refs.button;
       const pos = el.getBoundingClientRect();
       this.element.style.top = Math.max(0, (pos.top + el.offsetHeight)) + 1 + 'px';
@@ -107,10 +116,10 @@ export default {
       if (!this.container || !this.element) {
         return;
       }
-      document.removeEventListener('scroll', this.removeTooltip);
       if (this.container.contains(this.element)) {
         this.container.removeChild(this.element);
       }
+      this.element = null;
     },
     click(event) {
       this.$emit('click', event);
@@ -147,9 +156,10 @@ export default {
   color: white;
   padding: 5px;
   border-radius: 5px;
-  z-index: 1000;
+  z-index: 9999;
   font-size: 0.9em;
   border: 1px solid #000;
   text-align: center;
+  max-width: 250px;
 }
 </style>

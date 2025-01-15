@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.18.3] - 2025-01-15
+
+### Fixed
+
+- `BButton`:
+  - Update buttons when the title changes
+  - Don't show tooltip when empty
+  - Fixed positioning
+
 ## [2.18.2] - 2025-01-15
 
 ### Added
@@ -699,6 +708,7 @@ Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/relea
 
 
 [Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.2...HEAD
+[2.18.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.2...v2.18.3
 [2.18.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.1...v2.18.2
 [2.18.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.0...v2.18.1
 [2.18.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.17.1...v2.18.0
