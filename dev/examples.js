@@ -30,6 +30,12 @@ let asyncFn = () => new Promise(resolve => setTimeout(() => {
 }, 3000))
 
 module.exports = {
+	"b-button": {
+		"example": {
+			"title": "This is a test tooltip!",
+			"text": "i"
+		}
+	},
 	"billing-plans": {
 		"api": {
 			"billing": capabilities.billing

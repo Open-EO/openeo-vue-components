@@ -1,5 +1,5 @@
 <template>
-	<button type="button" v-show="fn" :title="title" :disabled="disabled" class="async-button" :class="{awesome: fa}" @click="update">
+	<BButton type="button" v-show="fn" :title="title" :disabled="disabled" class="async-button" :class="{awesome: fa}" @click="update">
 		<span class="button-content">
 			<span v-if="loading" class="icon loading">
 				<i v-if="fa" :class="loadingClasses"></i>
@@ -20,13 +20,17 @@
 			</span>
 			<span class="text"><slot></slot></span>
 		</span>
-	</button>
+	</BButton>
 </template>
 
 <script>
 import LoadingIcon from './LoadingIcon.vue';
+import BButton from './BButton.vue';
 export default {
-  components: { LoadingIcon },
+  components: {
+		BButton,
+		LoadingIcon
+	},
 	name: "AsyncButton",
 	props: {
 		fn: {
@@ -62,6 +66,11 @@ export default {
 		},
 		consistent: {
 			// Whether the button should show the same icon for the loading animation
+			type: Boolean,
+			default: false
+		},
+		nativeTooltip: {
+			// Whether to use the native browser tooltip
 			type: Boolean,
 			default: false
 		}

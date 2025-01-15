@@ -22,6 +22,7 @@
 <script>
 import EXAMPLES from './examples';
 
+import BButton from '../components/internal/BButton.vue';
 import BillingPlans from '../components/BillingPlans.vue';
 import Capabilities from '../components/Capabilities.vue';
 import Collection from '../components/Collection.vue';
@@ -57,6 +58,7 @@ import UdfRuntimes from '../components/UdfRuntimes.vue';
 export default {
 	name: 'Examples',
 	components: {
+		BButton,
 		BillingPlans,
 		Capabilities,
 		Collection,
