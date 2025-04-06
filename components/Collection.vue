@@ -22,7 +22,7 @@
 			<Description :description="stac.description"></Description>
 			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
 			<FederationNotice v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />
-			<FederationMissingNotice v-if="missing" :missing="missing" :federation="federation" />
+			<FederationMissingNotice v-if="affectedByMissing" :missing="missing" :federation="federation" />
 		</section>
 
 		<section class="license">
@@ -197,6 +197,13 @@ export default {
 			}
 			else {
 				return undefined;
+			}
+		},
+		affectedByMissing() {
+			if (!Array.isArray(this.supportedBy)) {   // in case supportedBy is weird (not an array as expected)
+				return true;   // default to display the notice (don't hold back information when we can't be sure)
+			} else {   // otherwise: check if any of the missing backends is actually in the list of backends that are relevant here
+				return this.missing && Array.isArray(this.missing) && this.missing.some(backend => this.supportedBy.includes(backend));
 			}
 		},
 		showMap() {
