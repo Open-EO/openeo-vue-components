@@ -22,7 +22,7 @@
 			<Description :description="stac.description"></Description>
 			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
 			<FederationNotice v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />
-			<FederationMissing v-if="stac['federation:missing']" :missing="stac['federation:missing']" :federation="federation" />
+			<FederationMissingNotice v-if="stac['federation:missing']" :missing="stac['federation:missing']" :federation="federation" />
 		</section>
 
 		<section class="license">
@@ -178,8 +178,8 @@ export default {
 	},
 	computed: {
 		supportedBy() {
-			if (Utils.isObject(this.stac.summary) && Array.isArray(this.stac.summary['federation:backends'])) {
-				return this.stac.summary['federation:backends'];
+			if (Utils.isObject(this.stac.summaries) && Array.isArray(this.stac.summaries['federation:backends'])) {
+				return this.stac.summaries['federation:backends'];
 			}
 			else if (Array.isArray(this.stac['federation:backends'])) {
 				return this.stac['federation:backends'];
