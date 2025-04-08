@@ -18,7 +18,7 @@
 			@detailsToggled="detailsToggled"
 			allowCopy>
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
-			<template #content-start v-if="missing"><FederationMissingNotice :missing="missing" :federation="federation" /></template>
+			<template #content-start v-if="missing && Array.isArray(missing) && missing.length>0"><FederationMissingNotice :missing="missing" :federation="federation" /></template>
 			<template #summary="scope"><slot name="summary" v-bind="scope" /></template>
 			<template #details="slot">
 				<Process :process="slot.item" :provideDownload="provideDownload" :processUrl="processUrl" :showGraph="showGraph" :federation="federation">
