@@ -16,7 +16,7 @@
 			:collapsed="collapsed"
 			@detailsToggled="detailsToggled">
 			<template #heading="scope"><slot name="heading" v-bind="scope" /></template>
-			<template v-if="missing && Array.isArray(missing) && missing.length>0" #content-start><FederationMissingNotice :missing="missing" :federation="federation" /></template>
+			<template v-if="Array.isArray(missing) && missing.length > 0" #content-start><FederationMissingNotice :missing="missing" :federation="federation" /></template>
 			<template #summary="slot">
 				<slot name="summary" v-bind="slot">
 					<strong class="inline">{{ slot.item.name }}</strong>

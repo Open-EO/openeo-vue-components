@@ -203,7 +203,7 @@ export default {
 			if (this.missing && !Array.isArray(this.supportedBy)) {   // in case missing is set but supportedBy is unexpectedly not an array...
 				return true;   // default to display the notice (don't hold back information when we can't be sure)
 			} else {   // otherwise: check if any of the missing backends is actually in the list of backends that are relevant here
-				return this.missing && Array.isArray(this.missing) && this.missing.some(backend => this.supportedBy.includes(backend));
+				return Array.isArray(this.missing) && this.missing.some(backend => this.supportedBy.includes(backend));
 			}
 		},
 		showMap() {

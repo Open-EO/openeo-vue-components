@@ -4,7 +4,7 @@
 		<strong class="header">Incomplete</strong>
 		<p>
 			The following list is incomplete as at least one of the services in the federation is currently not available.
-			The data for the following service{{services.length>1 ? 's' : ''}} is missing:
+			The data for the following service{{services.length > 1 ? 's' : ''}} is missing:
 		</p>
 		<ul>
 			<li v-for="service in services">
