@@ -1,7 +1,7 @@
 <template>
 	<section v-if="unsupported.length > 0" class="vue-component message-block federation federation-backends">
 		<strong class="header">Federation</strong>
-		<p>This {{ entity }} is only available through the following services in the federation:</p>
+		<p>This {{ entity }} is only available through the following service{{ services.length > 1 ? 's' : '' }} in the federation:</p>
 		<ul>
 			<li v-for="service in services" :key="service.url">
 				<div class="fed-header">

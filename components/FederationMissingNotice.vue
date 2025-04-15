@@ -3,9 +3,18 @@
 		<AsyncButton v-if="retry" confirm class="retry" :fn="retry">Retry</AsyncButton>
 		<strong class="header">Incomplete</strong>
 		<p>
-			The following list is incomplete as at least one of the services in the federation is currently not available.
-			The data for the following services is missing: {{ services.join(', ') }}
+			This data is incomplete as the following service{{services.length > 1 ? 's' : ''}} in the federation {{services.length > 1 ? 'are' : 'is'}} currently unavailable:
 		</p>
+		<ul>
+			<li v-for="service in services">
+				<div class="fed-header">
+					<strong class="fed-title">{{ service }}</strong>
+					<ul class="badges small inline">
+						<li class="badge red">offline</li>
+					</ul>
+				</div>
+			</li>
+		</ul>
 	</section>
 </template>
 
