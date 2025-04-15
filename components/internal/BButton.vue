@@ -1,5 +1,5 @@
 <template>
-	<button ref="button" type="button" :title="nativeTitle" :disabled="disabled" :name="name" :value="value"
+	<button ref="button" :type="type" :title="nativeTitle" :disabled="disabled" :name="name" :value="value"
   @click="click" @mouseover="mouseover" @mouseleave="mouseleave" @focus="focus" @blur="blur">
 		<slot>{{ text }}</slot>
 	</button>
