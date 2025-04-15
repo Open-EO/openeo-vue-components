@@ -52,6 +52,7 @@ import ServiceTypes from '../components/ServiceTypes.vue';
 import SupportedFeatures from '../components/SupportedFeatures.vue';
 import Tab from '../components/Tab.vue';
 import Tabs from '../components/Tabs.vue';
+import TooltipIcon from '../components/internal/TooltipIcon.vue';
 import UdfRuntime from '../components/UdfRuntime.vue';
 import UdfRuntimes from '../components/UdfRuntimes.vue';
 
@@ -89,7 +90,8 @@ export default {
 		Tab,
 		Tabs,
 		UdfRuntime,
-		UdfRuntimes
+		UdfRuntimes,
+		TooltipIcon
 	},
 	data() {
 		return {

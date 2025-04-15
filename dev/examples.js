@@ -405,6 +405,11 @@ if (a == b) console.log("Hello World");
 			"endpoints": capabilities.endpoints
 		}
 	},
+	"tooltip-icon": {
+		"example": {
+			"text": "This message should explain the warning!"
+		}
+	},
 	// ToDo: Tab, Tabs - see UdfRuntime component for an example
 	"udf-runtime": {
 		"api": {
