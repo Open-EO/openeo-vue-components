@@ -8,8 +8,8 @@
 
 		<slot name="before-description" v-bind="$props"></slot>
 
-		<summary class="description" v-if="properties.description">
-			<Description :description="properties.description"></Description>
+		<summary class="description" v-if="properties.description || properties.deprecated || stac['federation:missing']">
+			<Description v-if="properties.description" :description="properties.description"></Description>
 
 			<DeprecationNotice v-if="properties.deprecated" entity="item" />
 			<FederationMissingNotice v-if="stac['federation:missing']" :missing="stac['federation:missing']" :federation="federation" />

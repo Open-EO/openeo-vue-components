@@ -21,8 +21,8 @@
 
 		<slot name="before-description" v-bind="$props"></slot>
 
-		<section class="description" v-if="runtime.description">
-			<Description :description="runtime.description"></Description>
+		<section class="description" v-if="runtime.description || runtime.deprecated || runtime.experimental || runtime['federation:backends']">
+			<Description v-if="runtime.description" :description="runtime.description"></Description>
 			<DeprecationNotice v-if="runtime.deprecated" entity="UDF runtime" />
 			<ExperimentalNotice v-if="runtime.experimental" entity="UDF runtime" />
 			<FederationNotice v-if="runtime['federation:backends']" :backends="runtime['federation:backends']" :federation="federation" entity="UDF runtime" />
