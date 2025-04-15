@@ -47,9 +47,9 @@
 
 		<slot name="before-description" v-bind="$props"></slot>
 
-		<summary class="description" v-if="job.description">
+		<summary class="description" v-if="job.description || job['federation:missing']">
 			<h3>Description</h3>
-			<Description :description="job.description" />
+			<Description v-if="job.description" :description="job.description" />
 
 			<FederationMissingNotice v-if="job['federation:missing']" :missing="job['federation:missing']" :federation="federation" />
 		</summary>

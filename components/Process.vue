@@ -33,10 +33,10 @@
 
 		<slot name="before-description" :v-bind="$props"></slot>
 
-		<section class="description" v-if="process.description">
+		<section class="description" v-if="process.description || process.deprecated || process.experimental || process['federation:backends']">
 			<h3>Description</h3>
 			<code class="signature" v-html="signature"></code>
-			<Description :description="process.description" :processUrl="processUrl" />
+			<Description v-if="process.description" :description="process.description" :processUrl="processUrl" />
 			<DeprecationNotice v-if="process.deprecated" entity="process" />
 			<ExperimentalNotice v-if="process.experimental" entity="process" />
 			<FederationNotice v-if="process['federation:backends']" :backends="process['federation:backends']" :federation="federation" entity="process" />
