@@ -70,21 +70,21 @@ To use the components in HTML (as so-called 'Web Components'), simply include th
 <script src="https://cdn.jsdelivr.net/npm/@openeo/vue-components@2/assets/openeo.min.js"></script>
 ```
 
-All components can be used as HTML tags in kebab-case. Also, ALL parameters must be converted to kebab-case!
-For example, the component [`BillingPlans`](#billingplans) can be used as `<billing-plans></billing-plans>`.
+All components can be used as HTML tags in kebab-case, prefixed with `openeo-`. Also, ALL parameters must be converted to kebab-case too!
+For example, the component [`BillingPlans`](#billingplans) can be used as `<openeo-billing-plans></openeo-billing-plans>`.
 Props can be passed as HTML attributes if the value is a scalar.
 For arrays and objects, you have to specify them as child `script` tags with the attributes `prop="..."` and `type="application/json"`.
 
 For example, the [`Capabilities`](#capabilities) component can be used as follows:
 ```html
-<capabilities url="https://example.com/api">
+<openeo-capabilities url="https://example.com/api">
 	<script prop="capabilities" type="application/json">
 		{
 			"api_version": "1.0.0",
 			...
 		}
 	</script>
-</capabilities>
+</openeo-capabilities>
 ```
 
 The components are async web components, which means only the components you are actually using are requested. This keeps page loading times at a minimum.
