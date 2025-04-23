@@ -252,6 +252,7 @@ Show a message that a response is incomplete due to missing data from an inacces
 - `missing` (array, required): The identifiers of the federated back-ends that are not providing data for the list of processes due to an issue.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `retry` (function): Displays a "retry" button which executes the given function. 
+- `compact` (boolean): Renders the notice more compact if set to `true`. Defaults to `false`.
 
 **Slots:**
 
