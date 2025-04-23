@@ -3,11 +3,20 @@ const examples = require('./examples');
 
 const FOLDER = './examples';
 
-if (!fs.existsSync(FOLDER)){
-    fs.mkdirSync(FOLDER);
+if (fs.existsSync(FOLDER)) {
+	fs.rmdirSync(FOLDER, { recursive: true });
 }
+fs.mkdirSync(FOLDER);
+
+const ignored = [
+	'b-button',
+	'tooltip-icon'
+];
 
 for(let component in examples) {
+	if (ignored.includes(component)) {
+		continue;
+	}
 	for(let id in examples[component]) {
 		createExampleFile(component, id, examples[component][id]);
 	}
@@ -41,7 +50,7 @@ function createExampleFile(component, id, props) {
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
 			<title>openEO ${component}</title>
-			<link href="../dev/examples.css" rel="stylesheet"></script>
+			<link href="../dev/examples.css" rel="stylesheet" />
 			<script src="../assets/openeo.js"></script>
 			<link rel="preload" as="font" type="font/woff2" crossorigin href="https://use.fontawesome.com/releases/v5.13.0/webfonts/fa-solid-900.woff2" />
 			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" type="text/css" media="all" />

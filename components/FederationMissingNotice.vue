@@ -6,7 +6,7 @@
 			This data is incomplete as the following service{{services.length > 1 ? 's' : ''}} in the federation {{services.length > 1 ? 'are' : 'is'}} currently unavailable:
 		</p>
 		<ul>
-			<li v-for="service in services">
+			<li v-for="service in services" :key="service.url">
 				<div class="fed-header">
 					<strong class="fed-title">{{ service }}</strong>
 					<ul class="badges small inline">
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import FederationMixin from './internal/FederationMixin.js';
 import Utils from '../utils';
 
 export default {
@@ -27,9 +26,6 @@ export default {
 	components: {
 		AsyncButton: () => import('./internal/AsyncButton.vue')
 	},
-	mixins: [
-		FederationMixin
-	],
 	props: {
 		missing: {
 			type: Array,
@@ -39,9 +35,13 @@ export default {
 			type: Function,
 			default: null
 		},
-		// Mixins don't work properly in web components,
-		// see https://github.com/vuejs/vue-web-component-wrapper/issues/30,
-		...FederationMixin.props
+		federation: {
+			type: Object,
+			default: () => ({})
+		}
+	},
+	beforeCreate() {
+		Utils.enableHtmlProps(this);
 	},
 	computed: {
 		services() {

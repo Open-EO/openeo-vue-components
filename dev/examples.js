@@ -27,7 +27,7 @@ let externalProc = require('./examples/model-builder/external_process.json');
 let asyncFn = () => new Promise(resolve => setTimeout(() => {
 	alert("Async action executed");
 	resolve();
-}, 3000))
+}, 3000));
 
 module.exports = {
 	"b-button": {

@@ -17,14 +17,10 @@
 </template>
 
 <script>
-import FederationMixin from './FederationMixin.js';
 import Utils from '../../utils';
 
 export default {
 	name: 'FederationNotice',
-	mixins: [
-		FederationMixin
-	],
 	props: {
 		entity: {
 			type: String,
@@ -34,9 +30,10 @@ export default {
 			type: Array,
 			default: []
 		},
-		// Mixins don't work properly in web components,
-		// see https://github.com/vuejs/vue-web-component-wrapper/issues/30,
-		...FederationMixin.props
+		federation: {
+			type: Object,
+			default: () => ({})
+		}
 	},
 	computed: {
 		unsupported() {
