@@ -83,5 +83,5 @@ export default {
 
 
 <style lang="scss">
-@import './base.scss';
+@use './base.scss';
 </style>

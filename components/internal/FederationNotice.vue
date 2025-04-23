@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../base.scss';
+@use '../base.scss';
 
 .vue-component.federation-backends {
 	background-color: rgba(184, 134, 11, 0.1);

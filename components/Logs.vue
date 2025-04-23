@@ -123,7 +123,7 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style lang="scss">
-@import './base.scss';
+@use './base.scss';
 
 .vue-component.logs {
 

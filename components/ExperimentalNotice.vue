@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './base.scss';
+@use './base.scss';
 
 .vue-component.experimental-notice {
 	background-color: rgb(138,43,226,0.1);

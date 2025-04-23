@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './base.scss';
+@use './base.scss';
 
 .vue-component.search-box {
     margin: 0 1px 1em 0;

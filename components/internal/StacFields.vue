@@ -141,7 +141,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../base.scss';
+@use '../base.scss';
 .vue-component.stac-fields {
 	> .group {
 		margin-left: 1em;

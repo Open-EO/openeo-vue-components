@@ -260,7 +260,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './base.scss';
+@use './base.scss';
 
 .vue-component .json-schema {
 	border-left: 5px solid #ccc;

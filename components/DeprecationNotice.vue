@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './base.scss';
+@use './base.scss';
 
 .vue-component.deprecation-notice {
 	background-color: rgb(255,0,0,0.1);

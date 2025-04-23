@@ -158,7 +158,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import './base.scss';
+@use './base.scss';
 
 .vue-component.job {
 	.progressBar {
