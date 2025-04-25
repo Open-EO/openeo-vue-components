@@ -17,8 +17,7 @@
 		<slot name="before-description" v-bind="$props"></slot>
 
 		<section class="description" v-if="stac.description || stac.deprecated || supportedBy || affectedByMissing">
-			<h3>Description</h3>
-
+			<h3 v-if="stac.description">Description</h3>
 			<Description v-if="stac.description" :description="stac.description"></Description>
 			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
 			<FederationNotice v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />

@@ -25,7 +25,7 @@
 		<slot name="before-description" v-bind="$props"></slot>
 
 		<section class="description" v-if="format.description || format.deprecated || format.experimental || format['federation:backends']">
-			<h3>Description</h3>
+			<h3 v-if="format.description">Description</h3>
 			<Description v-if="format.description" :description="format.description" />
 			<DeprecationNotice v-if="format.deprecated" entity="file format" />
 			<ExperimentalNotice v-if="format.experimental" entity="file format" />
