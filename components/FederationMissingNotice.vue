@@ -1,5 +1,5 @@
 <template>
-	<section v-if="services" class="vue-component message-block federation federation-backends" :class="{compact: compact}">
+	<section v-if="services" class="vue-component message-block federation federation-backends federation-missing-notice" :class="{compact: compact}">
 		<AsyncButton v-if="retry" confirm class="retry" :fn="retry">Retry</AsyncButton>
 		<strong class="header">Incomplete</strong>
 		<p>
@@ -66,7 +66,7 @@ export default {
 <style lang="scss">
 @use './base.scss';
 
-.vue-component.federation-backends {
+.vue-component.federation-missing-notice {
 	background-color: rgba(255, 69, 0, 0.1);
 	border: 1px solid orangered;
 
@@ -83,7 +83,7 @@ export default {
 	}
 }
 
-.vue-component.federation-backends.compact {
+.vue-component.federation-missing-notice.compact {
 	margin: 0;
 	padding: 0.25em;
 
