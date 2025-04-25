@@ -1,5 +1,5 @@
 <template>
-	<section v-if="unsupported.length > 0" class="vue-component message-block federation federation-backends">
+	<section v-if="unsupported.length > 0" class="vue-component message-block federation federation-backends federation-notice">
 		<strong class="header">Federation</strong>
 		<p>This {{ entity }} is only available through the following service{{ services.length > 1 ? 's' : '' }} in the federation:</p>
 		<ul>
@@ -64,7 +64,7 @@ export default {
 <style lang="scss">
 @use '../base.scss';
 
-.vue-component.federation-backends {
+.vue-component.federation-notice {
 	background-color: rgba(184, 134, 11, 0.1);
 	border: 1px solid darkgoldenrod;
 

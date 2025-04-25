@@ -14,9 +14,11 @@
 
 		<slot name="before-description" v-bind="$props"></slot>
 
-		<section class="description" v-if="service.description">
-			<h3>Description</h3>
-			<Description :description="service.description" />
+		<section class="description" v-if="service.description || service.deprecated || service.experimental || service['federation:backends']">
+			<template v-if="service.description">
+				<h3>Description</h3>
+				<Description :description="service.description" />
+			</template>
 			<DeprecationNotice v-if="service.deprecated" entity="type of secondary web service" />
 			<ExperimentalNotice v-if="service.experimental" entity="type of secondary web service" />
 			<FederationNotice v-if="service['federation:backends']" :backends="service['federation:backends']" :federation="federation" entity="type of secondary web service" />

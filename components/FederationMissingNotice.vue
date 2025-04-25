@@ -1,5 +1,5 @@
 <template>
-	<section v-if="services" class="vue-component message-block federation federation-backends">
+	<section v-if="services" class="vue-component message-block federation federation-backends federation-missing-notice" :class="{compact: compact}">
 		<AsyncButton v-if="retry" confirm class="retry" :fn="retry">Retry</AsyncButton>
 		<strong class="header">Incomplete</strong>
 		<p>
@@ -9,7 +9,7 @@
 			<li v-for="service in services" :key="service.url">
 				<div class="fed-header">
 					<strong class="fed-title">{{ service }}</strong>
-					<ul class="badges small inline">
+					<ul v-if="!compact" class="badges small inline">
 						<li class="badge red">offline</li>
 					</ul>
 				</div>
@@ -34,6 +34,10 @@ export default {
 		retry: {
 			type: Function,
 			default: null
+		},
+		compact: {
+			type: Boolean,
+			default: false
 		},
 		federation: {
 			type: Object,
@@ -62,7 +66,7 @@ export default {
 <style lang="scss">
 @use './base.scss';
 
-.vue-component.federation-backends {
+.vue-component.federation-missing-notice {
 	background-color: rgba(255, 69, 0, 0.1);
 	border: 1px solid orangered;
 
@@ -76,6 +80,27 @@ export default {
 
 	.retry {
 		float: right;
+	}
+}
+
+.vue-component.federation-missing-notice.compact {
+	margin: 0;
+	padding: 0.25em;
+
+	strong, p, ul, ul li, ul li div {
+		display: inline;
+	}
+	
+	strong.header, p {
+		margin-right: 5px;
+	}
+	
+	ul {
+		padding-left: 0;
+	}
+
+	li:not(:last-child)::after {
+		content: ", "
 	}
 }
 </style>
