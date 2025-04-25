@@ -4,7 +4,7 @@ const examples = require('./examples');
 const FOLDER = './examples';
 
 if (fs.existsSync(FOLDER)) {
-	fs.rmdirSync(FOLDER, { recursive: true });
+	fs.rmSync(FOLDER, { recursive: true });
 }
 fs.mkdirSync(FOLDER);
 
