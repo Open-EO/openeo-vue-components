@@ -171,6 +171,11 @@ if (a == b) console.log("Hello World");
 			"missing": ["wwu", "eodc"],
 			"federation": capabilities.federation,
 			"retry": asyncFn
+		},
+		"compact": {
+			"missing": ["wwu", "eodc"],
+			"federation": capabilities.federation,
+			"compact": true
 		}
 	},
 	"file-format": {
