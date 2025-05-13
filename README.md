@@ -34,9 +34,9 @@ Examples: <https://open-eo.github.io/openeo-vue-components/>
 	- [`JobEstimate`](#jobestimate)
 	- [`LinkList`](#linklist)
 	- [`Logs`](#logs)
+	- [`ModelBuilder`](#modelbuilder)
 	- [`ObjectTree`](#objecttree)
 	- [`Process`](#process)
-	- [`ModelBuilder`](#modelbuilder)
 	- [`Processes`](#processes)
 	- [`SearchableList`](#searchablelist)
 	- [`SearchBox`](#searchbox)
@@ -471,39 +471,6 @@ Show log messages.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of collections due to an issue.
 
 
-### `ObjectTree`
-
-Renders JavaScript objects in a more human-readable form.
-Often used as a fallback if no other form of presentation is known by the client.
-
-**Properties:**
-
-- `data` (object): Any object (i.e. object, array or null)
-- `collapseAfter` / `collapse-after` (integer|null): The number of elements to display for each object or array until a "show all" button is shown. Set to `null` to show all elements. Defaults to `10`.
-
-
-### `Process`
-
-Visualizes a single process following the openEO process description.
-
-**Properties:**
-
-- `process` (object, required): Process specification as defined by the openEO API (Either one of the array elements in the property `processes` returned by `GET /process` or the response from `GET /process_graphs/{process_graph_id}`).
-- `provideDownload` / `provide-download` (boolean): Provide a link to download the JSON file (defaults to `true`).
-- `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
-- `showGraph` / `show-graph` (boolean): Show and visualize the process graph (defaults to `false`).
-- `federation` (object): The data of the `federation` property obtained from the capabilities.
-
-**Slots:**
-
-- `title`: HTML to display the main heading.
-- `before-description`: HTML to display before the description.
-- `process-graph`: HTML to visualize the process graph.
-- `end`: HTML to display after the component.
-
-For all slots, the component properties are passed through as slot properties with the same names. In the slot `title`, you can additionally access `displayableNamespace`.
-
-
 ### `ModelBuilder`
 
 Show a process (graph) nicely visualized, includes support for basic editing.
@@ -579,6 +546,39 @@ Show a process (graph) nicely visualized, includes support for basic editing.
 	- `args` (object): The arguments for the process. The keys are the parameter names and the objects are the values for the corresponding parameter. Defaults to no arguments (empty object).
 	- `position` (array|null): The position to show the newly created block. Use `getPositionForPageXY` to get the position from a Browser event. Set to `null` to place it automatically.
 	- `namespace` (string|null): The namespace of the process to add, defaults to `null`.
+
+
+### `ObjectTree`
+
+Renders JavaScript objects in a more human-readable form.
+Often used as a fallback if no other form of presentation is known by the client.
+
+**Properties:**
+
+- `data` (object): Any object (i.e. object, array or null)
+- `collapseAfter` / `collapse-after` (integer|null): The number of elements to display for each object or array until a "show all" button is shown. Set to `null` to show all elements. Defaults to `10`.
+
+
+### `Process`
+
+Visualizes a single process following the openEO process description.
+
+**Properties:**
+
+- `process` (object, required): Process specification as defined by the openEO API (Either one of the array elements in the property `processes` returned by `GET /process` or the response from `GET /process_graphs/{process_graph_id}`).
+- `provideDownload` / `provide-download` (boolean): Provide a link to download the JSON file (defaults to `true`).
+- `processUrl` / `process-url` (string): See the corresponding prop in [`Description`](#description).
+- `showGraph` / `show-graph` (boolean): Show and visualize the process graph (defaults to `false`).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
+
+**Slots:**
+
+- `title`: HTML to display the main heading.
+- `before-description`: HTML to display before the description.
+- `process-graph`: HTML to visualize the process graph.
+- `end`: HTML to display after the component.
+
+For all slots, the component properties are passed through as slot properties with the same names. In the slot `title`, you can additionally access `displayableNamespace`.
 
 ### `Processes`
 
@@ -699,6 +699,7 @@ Visualizes a single secondary web service.
 
 - `service` (object, required): Service details as defined by the openEO API (Either one of the array elements in the property `services` returned by `GET /services` or the response from `GET /services/{service_id}`).
 - `currency` (string|null): The currency of the service (see openEO API endpoint `GET /`).
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
 
