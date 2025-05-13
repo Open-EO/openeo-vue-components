@@ -7,6 +7,8 @@
 		</slot>
 
 		<section class="basedata">
+			<FederationNotice v-if="service['federation:backends']" entity="service" :backends="service['federation:backends']" :federation="federation" />
+
 			<div class="tabular">
 				<label>ID:</label>
 				<code class="value">{{ service.id }}</code>
@@ -102,11 +104,13 @@
 
 <script>
 import Utils from '../utils';
+import FederationMixin from './internal/FederationMixin';
 import UsageMixin from './internal/UsageMixin.js';
 
 export default {
 	name: 'Service',
 	mixins: [
+		FederationMixin,
 		UsageMixin
 	],
 	components: {
@@ -122,7 +126,8 @@ export default {
 		currency: {
 			type: String,
 			default: null
-		}
+		},
+		...FederationMixin.props
 	},
 	computed: {
 		budget() {
@@ -150,6 +155,9 @@ export default {
 		},
 		usage() {
 			return this.service.usage;
+		},
+		federated() {
+			return Utils.size(this.federation) > 0;
 		}
 	},
 	beforeCreate() {

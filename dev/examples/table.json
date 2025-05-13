@@ -1,0 +1,28 @@
+{
+  "data": [
+    {"id":"mrzFnnApHC0rwxJu","title":"Another Job","description":null,"status":"finished","created":"2020-11-17T12:42:54Z","updated":"2020-11-17T14:22:24Z","plan":"free","costs":0,"budget":null},
+    {"id":"1324657890","title":"Second Job","description":"A test!","status":"submitted","created":"2020-11-18T14:00:12+01:00","updated":"2020-11-18T14:00:12+01:00"}
+  ],
+  "columns": {
+    "id": {
+      "name": "ID",
+      "primaryKey": true
+    },
+    "title": {
+      "name": "Title"
+    },
+    "status": {
+      "name": "Status",
+      "stylable": true
+    },
+    "created": {
+      "name": "Submitted",
+      "format": "Timestamp",
+      "sort": "desc"
+    },
+    "updated": {
+      "name": "Last update",
+      "format": "Timestamp"
+    }
+  }
+}

@@ -50,6 +50,7 @@
 					</ul>
 					<DeprecationNotice v-if="env.deprecated" entity="UDF runtime version" />
 					<ExperimentalNotice v-if="env.experimental" entity="UDF runtime version" />
+					<FederationNotice v-if="env['federation:backends']" :backends="env['federation:backends']" :federation="federation" entity="UDF runtime version" />
 					<p>This runtime includes support for:</p>
 					<ul>
 						<li class="library" v-for="(library, name) in env.libraries" :key="name">

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.20.0] - 2025-05-13
+
+### Added
+
+- `DataTable` and `Logs`: Add federation support (new props `federation` and `missing`)
+- `Service`: Add federation support (new prop `federation`)
+- `UdfRuntime`: Add federation support per runtime version
+
 ## [2.19.0] - 2025-04-25
 
 ### Added
@@ -713,7 +721,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.19.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.20.0...HEAD
+[2.20.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.19.0...v2.20.0
 [2.19.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.3...v2.19.0
 [2.18.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.2...v2.18.3
 [2.18.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.1...v2.18.2

@@ -23,6 +23,7 @@
 				</MultiSelect>
 			</div>
 			<ul class="log-body">
+				<FederationMissingNotice v-if="Array.isArray(missing) && missing.length > 0" compact :missing="missing" :federation="federation" />
 				<Log v-for="(log, i) in logs" v-show="shown[i]" :log="log" :startTime="startTime" :key="log.id" />
 			</ul>
 		</div>
@@ -33,6 +34,7 @@
 <script>
 import Utils from '../utils';
 import Log from './internal/Log.vue';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'Logs',
@@ -41,6 +43,9 @@ export default {
 		MultiSelect: () => import('vue-multiselect'),
 		SearchBox: () => import('./SearchBox.vue')
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		logs: {
 			type: Array,
@@ -49,7 +54,12 @@ export default {
 		externalSearchTerm: {
 			type: String,
 			default: null
-		}
+		},
+		missing: {
+			type: Array,
+			default: null
+		},
+		...FederationMixin.props
 	},
 	data() {
 		let levels = [
@@ -126,6 +136,11 @@ export default {
 @use './base.scss';
 
 .vue-component.logs {
+
+	.federation-missing-notice.compact {
+		margin: 5px 0;
+		border-radius: 5px;
+	}
 
 	.log-viewer,
 	.log-container {

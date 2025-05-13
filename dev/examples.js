@@ -15,6 +15,7 @@ let fileFormatsVito = require('./examples/file-formats-vito.json');
 let serviceTypes = require('./examples/service-types-api.json');
 let service = require('./examples/service.json');
 let reduceApi = require('./examples/reduce-api-new.json');
+let table = require('./examples/table.json');
 let longArray = [...Array(1000).keys()];
 
 let mbSample = require('./examples/model-builder/sample.json');
@@ -81,32 +82,14 @@ module.exports = {
 	},
 	"data-table": {
 		"jobs": {
-			"data": [
-				{"id":"mrzFnnApHC0rwxJu","title":"Another Job","description":null,"status":"finished","created":"2020-11-17T12:42:54Z","updated":"2020-11-17T14:22:24Z","plan":"free","costs":0,"budget":null},
-				{"id":"1324657890","title":"Second Job","description":"A test!","status":"submitted","created":"2020-11-18T14:00:12+01:00","updated":"2020-11-18T14:00:12+01:00"}
-			],
-			"columns": {
-				id: {
-					name: 'ID',
-					primaryKey: true
-				},
-				title: {
-					name: 'Title'
-				},
-				status: {
-					name: 'Status',
-					stylable: true
-				},
-				created: {
-					name: 'Submitted',
-					format: 'Timestamp',
-					sort: 'desc'
-				},
-				updated: {
-					name: 'Last update',
-					format: 'Timestamp'
-				}
-			}
+			"data": table.data,
+			"columns": table.columns
+		},
+		"jobs-fed": {
+			"data": table.data,
+			"columns": table.columns,
+			"missing": ["wwu"],
+			"federation": capabilities.federation
 		}
 	},
 	"deprecation-notice": {
@@ -267,6 +250,11 @@ if (a == b) console.log("Hello World");
 		},
 		"example": {
 			"logs": logs.logs
+		},
+		"example-fed": {
+			"logs": logs.logs,
+			"missing": ["wwu"],
+			"federation": capabilities.federation
 		}
 	},
 	"model-builder": {
@@ -386,6 +374,14 @@ if (a == b) console.log("Hello World");
 		"example": {
 			"service": service,
 			"currency": "EUR"
+		},
+		"example-fed": {
+			"service": {
+				...service,
+				"federation:backends": ["vito", "eodc"]
+			},
+			"currency": "EUR",
+			"federation": capabilities.federation
 		}
 	},
 	"service-type": {

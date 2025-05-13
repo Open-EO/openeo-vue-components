@@ -2,7 +2,7 @@
 
 A set of [Vue](https://vuejs.org) components for [openEO](http://openeo.org).
 
-This library's version is [**2.19.0**](CHANGELOG.md) and supports **openEO API versions 1.x.x**.
+This library's version is [**2.20.0**](CHANGELOG.md) and supports **openEO API versions 1.x.x**.
 Legacy versions supporting API version 0.x are available as [releases](https://github.com/Open-EO/openeo-vue-components/releases).
 
 npm: [@openeo/vue-components](https://www.npmjs.com/package/@openeo/vue-components)
@@ -226,6 +226,8 @@ A relatively simple table component to show a list of data.
 - `data` (array, required): An array of objects containing the data to show.
 - `next` (function): Indicates whether more data is available to be loaded/shown and how. Shows a button to load more data into the table and executes the given (async) function. Defaults to `null` (i.e. no more data available).
 - `fa` (boolean): Whether to use Font Awesome icons or not. Defaults to `false`.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `missing` (array): The identifiers of the federated back-ends that are not providing data for the table due to an issue.
 
 **Slots:**
 
@@ -465,6 +467,8 @@ Show log messages.
 
 - `logs` (array\<object>): A list of logs as defined by the openEO API (e.g. response from `GET /jobs/{job_id}/logs`, property `logs`).
 - `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Defaults to `null`, which will show a search box in the component itself so that users can filter the logs.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of collections due to an issue.
 
 
 ### `ObjectTree`

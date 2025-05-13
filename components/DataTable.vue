@@ -8,6 +8,7 @@
 				<SearchBox v-model="filterValue" :placeholder="searchPlaceholder" :compact="true" />
 			</div>
 		</div>
+		<FederationMissingNotice v-if="Array.isArray(missing) && missing.length > 0" compact :missing="missing" :federation="federation" />
 		<table v-if="hasData">
 			<thead>
 				<tr>
@@ -44,6 +45,7 @@
 <script>
 import Utils from '../utils.js';
 import { DataTypes, Formatters } from '@radiantearth/stac-fields';
+import FederationMixin from './internal/FederationMixin.js';
 
 export default {
 	name: 'DataTable',
@@ -51,6 +53,9 @@ export default {
 		AsyncButton: () => import('./internal/AsyncButton.vue'),
 		SearchBox: () => import('./SearchBox.vue')
 	},
+	mixins: [
+		FederationMixin
+	],
 	props: {
 		columns: {
 			type: Object,
@@ -68,7 +73,12 @@ export default {
 			// Whether to use Font Awesome icons or not
 			type: Boolean,
 			default: false
-		}
+		},
+		missing: {
+			type: Array,
+			default: null
+		},
+		...FederationMixin.props
 	},
 	data() {
 		return {
@@ -319,6 +329,9 @@ export default {
 
 <style lang="scss">
 .vue-component.data-table {
+	.federation-missing-notice.compact {
+		margin-bottom: 5px;
+	}
 	table {
 		width: 100%;
 		border-collapse: collapse;
