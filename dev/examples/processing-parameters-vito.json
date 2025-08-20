@@ -1,0 +1,116 @@
+{
+  "create_job_parameters": [
+    {
+      "default": "8G",
+      "description": "Memory allocated to the Spark \u2018driver\u2019 JVM, which manages the execution and metadata of the batch job.",
+      "name": "driver-memory",
+      "optional": true,
+      "schema": { "type": "string" }
+    },
+    {
+      "default": "2G",
+      "description": "Memory assigned to the Spark \u2018driver\u2019 on top of JVM memory for Python processes.",
+      "name": "driver-memoryOverhead",
+      "optional": true,
+      "schema": { "type": "string" }
+    },
+    {
+      "default": 5,
+      "description": "Number of CPUs per driver, normally not needed.",
+      "name": "driver-cores",
+      "optional": true,
+      "schema": { "type": "integer" }
+    },
+    {
+      "default": "2G",
+      "description": "Memory allocated to the workers for the JVM that executes most predefined processes.",
+      "name": "executor-memory",
+      "optional": true,
+      "schema": { "type": "string" }
+    },
+    {
+      "default": "3G",
+      "description": "Memory allocated to the workers in addition to the JVM, for example, to run UDFs. The total available memory of an executor is equal to executor-memory + executor-memoryOverhead [+ python-memory].",
+      "name": "executor-memoryOverhead",
+      "optional": true,
+      "schema": { "type": "string" }
+    },
+    {
+      "default": null,
+      "description": "Setting to specifically limit the memory used by python on a worker. Typical processes that use python-memory are UDF's, sar_backscatter or Sentinel 3 data loading. Leaving this setting empty will allow Python to use almost all of the executor-memoryOverhead, but may lead to unclear error messages when the memory limit is reached.",
+      "name": "python-memory",
+      "optional": true,
+      "schema": { "type": "string" }
+    },
+    {
+      "default": 2,
+      "description": "Number of CPUs per worker (executor). The number of parallel tasks is calculated as executor-cores / task-cpus. Setting this value equal to task-cpus is recommended to avoid potential GDAL reading errors.",
+      "name": "executor-cores",
+      "optional": true,
+      "schema": { "type": "integer" }
+    },
+    {
+      "default": 1,
+      "description": "CPUs assigned to a single task. UDFs using libraries like Tensorflow can benefit from further parallelization at the individual task level.",
+      "name": "task-cpus",
+      "optional": true,
+      "schema": { "type": "integer" }
+    },
+    {
+      "default": 0.1,
+      "description": "Ratio of soft-errors to allow in load_collection/load_stac and sar_backscatter. Reading errors can occur due to corrupted files or intermittent cloud issues.",
+      "name": "soft-errors",
+      "optional": true,
+      "schema": { "type": "string" }
+    },
+    {
+      "default": 80,
+      "description": "The maximum number of workers assigned to the job. The maximum number of parallel tasks is max-executors*executor-cores/task-cpus. Increasing this can inflate costs, while not necessarily improving performance! Decreasing this can increase cost efficiency but will make your job slower.",
+      "name": "max-executors",
+      "optional": true,
+      "schema": { "type": "integer" }
+    },
+    {
+      "default": 8,
+      "description": "Number of threads to allocate for the default jvm worker. Certain openEO processes can benefit of additional local parallelism on top of the distributed processing performed by Spark.",
+      "name": "executor-threads-jvm",
+      "optional": true,
+      "schema": { "type": "integer" }
+    },
+    {
+      "default": 16,
+      "description": "The default number of datasets that will be cached in batch jobs. A large cache will increase memory usage.",
+      "name": "gdal-dataset-cache-size",
+      "optional": true,
+      "schema": { "type": "integer" }
+    },
+    {
+      "default": [],
+      "description": "An array of URLs pointing to zip files with extra dependencies to be used in UDF's.",
+      "name": "udf-dependency-archives",
+      "optional": true,
+      "schema": { "items": { "type": "string" }, "type": "array" }
+    },
+    {
+      "default": [],
+      "description": "An array of URLs pointing to files to be used in UDF's.",
+      "name": "udf-dependency-files",
+      "optional": true,
+      "schema": { "items": { "type": "string" }, "type": "array" }
+    },
+    {
+      "default": null,
+      "description": "Custom jar path.",
+      "name": "openeo-jar-path",
+      "optional": true,
+      "schema": { "type": "string" }
+    },
+    {
+      "default": false,
+      "description": "Whether to omit 'derived_from' links in the batch job results to reduce the batch job result metadata size.",
+      "name": "omit-derived-from-links",
+      "optional": true,
+      "schema": { "type": "boolean" }
+    }
+  ]
+}

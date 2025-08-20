@@ -45,6 +45,7 @@ import ModelBuilder from '../components/ModelBuilder.vue';
 import ObjectTree from '../components/ObjectTree.vue';
 import Process from '../components/Process.vue';
 import Processes from '../components/Processes.vue';
+import ProcessingParameters from '../components/ProcessingParameters.vue';
 import SearchableList from '../components/SearchableList.vue';
 import Service from '../components/Service.vue';
 import ServiceType from '../components/ServiceType.vue';
@@ -81,6 +82,7 @@ export default {
 		ObjectTree,
 		Process,
 		Processes,
+		ProcessingParameters,
 		SearchableList,
 		Service,
 		ServiceType,

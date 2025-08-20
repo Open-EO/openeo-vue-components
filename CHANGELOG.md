@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ProcessingParameters`: New component
+
 ### Changed
 
 - JSON Schemas have their properties ordered in a more natural way

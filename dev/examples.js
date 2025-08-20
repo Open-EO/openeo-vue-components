@@ -16,6 +16,8 @@ let serviceTypes = require('./examples/service-types-api.json');
 let service = require('./examples/service.json');
 let reduceApi = require('./examples/reduce-api-new.json');
 let table = require('./examples/table.json');
+let ppVito = require('./examples/processing-parameters-vito.json');
+let ppApi = require('./examples/processing-parameters-api.json');
 let longArray = [...Array(1000).keys()];
 
 let mbSample = require('./examples/model-builder/sample.json');
@@ -354,6 +356,18 @@ if (a == b) console.log("Hello World");
 		"1.1.0-with-categories": {
 			"processes": processes,
 			"show-categories": true
+		}
+	},
+	"processing-parameters": {
+		"empty": {
+			"parameters": []
+		},
+		"vito": {
+			"title": "VITO Batch Job Processing Parameters",
+			"parameters": ppVito.create_job_parameters
+		},
+		"api": {
+			"parameters": ppApi.create_job_parameters
 		}
 	},
 	// ToDo: SearchableList - see other implementing components for examples, e.g. Collections or Processes

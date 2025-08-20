@@ -38,6 +38,7 @@ Examples: <https://open-eo.github.io/openeo-vue-components/>
 	- [`ObjectTree`](#objecttree)
 	- [`Process`](#process)
 	- [`Processes`](#processes)
+	- [`ProcessingParameters`](#processingparameters)
 	- [`SearchableList`](#searchablelist)
 	- [`SearchBox`](#searchbox)
 	- [`Service`](#service)
@@ -615,6 +616,22 @@ Shows an (expandable) list of all processes available at a back-end.
 
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
 - `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
+
+
+### `ProcessingParameters`
+
+Shows a list of processing parameters, e.g. for batch jobs, synchronous processing, or secondary web services.
+
+**Properties:**
+
+- `parameters` (array, required): An array of processing parameters as defined by the openEO API (`GET /processing_parameters`). From the response of the endpoint, you have to pass either the value of the property `create_job_parameters`, `create_service_parameters`, or `create_synchronous_parameters` (i.e. an array of parameters).
+- `title` (string): Title for the component. An empty string hides a header. Defaults to 'Additional Processing Parameters'.
+- `federation` (object): The data of the `federation` property obtained from the capabilities.
+- `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of processes due to an issue.
+
+**Slots:**
+
+- `title`: HTML to display as the main heading.
 
 
 ### `SearchableList`
