@@ -63,33 +63,30 @@
 						</td>
 					</tr>
 				</template>
-				<template v-if="!Array.isArray(this.schema)">
-					<template v-for="(val, key) in schema">
-						<tr :key="key" v-if="typeof val !== 'undefined' && showRow(key)">
-							<td class="key">{{ formatKey(key) }}:</td>
-							<td class="value">
-								<span v-if="key == 'type'" class="data-type">{{ formatType() }}</span>
-								<div v-else-if="key == 'allOf' && Array.isArray(val)" class="schema-container">
-									<openeo-json-schema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
-								</div>
-								<span v-else-if="key != 'const' && key != 'default' && key != 'examples' && val === true" title="true">✓ Yes</span>
-								<span v-else-if="key != 'const' && key != 'default' && key != 'examples' && val === false" title="false">✕ No</span>
-								<ul v-else-if="key != 'examples' && Array.isArray(val)" class="comma-separated-list">
-									<li v-for="(v, k) in val" :key="k">{{ v }}</li>
-								</ul>
-								<ul v-else-if="key == 'examples' && Array.isArray(val) && val.length > 1">
-									<li v-for="(v, k) in val" :key="k"><code>{{ v }}</code></li>
-								</ul>
-								<code v-else-if="key == 'examples' && Array.isArray(val) && val.length === 1">{{ val[0] }}</code>
-								<Description v-else-if="key == 'description'" :description="val" :compact="true" />
-								<em v-else-if="key == 'default' && val === ''">Empty string</em>
-								<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
-								<code v-else-if="key == 'pattern' && typeof val === 'string'">{{ val | regex }}</code>
-								<openeo-json-schema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
-								<span v-else>{{ val }}</span>
-							</td>
-						</tr>
-					</template>
+				<template v-if="sortedSchema">
+					<tr v-for="[key, val] in sortedSchema" :key="key">
+						<td class="key">{{ formatKey(key) }}:</td>
+						<td class="value">
+							<span v-if="key == 'type'" class="data-type">{{ formatType() }}</span>
+							<div v-else-if="key == 'allOf' && Array.isArray(val)" class="schema-container">
+								<openeo-json-schema v-for="(v, k) in val" :key="k" :schema="v" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
+							</div>
+							<span v-else-if="key != 'const' && key != 'default' && key != 'examples' && val === true" title="true">✓ Yes</span>
+							<span v-else-if="key != 'const' && key != 'default' && key != 'examples' && val === false" title="false">✕ No</span>
+							<ul v-else-if="key != 'examples' && Array.isArray(val)" class="comma-separated-list">
+								<li v-for="(v, k) in val" :key="k">{{ v }}</li>
+							</ul>
+							<ul v-else-if="key == 'examples' && Array.isArray(val) && val.length > 1">
+								<li v-for="(v, k) in val" :key="k"><code>{{ v }}</code></li>
+							</ul>
+							<code v-else-if="key == 'examples' && Array.isArray(val) && val.length === 1">{{ val[0] }}</code>
+							<em v-else-if="key == 'default' && val === ''">Empty string</em>
+							<code v-else-if="key == 'default' && (typeof val === 'object' || typeof val === 'boolean')">{{ JSON.stringify(val) }}</code>
+							<code v-else-if="key == 'pattern' && typeof val === 'string'">{{ val | regex }}</code>
+							<openeo-json-schema v-else-if="typeof val === 'object'" :schema="val" :initShown="nestingLevel < 3" :nestingLevel="nestingLevel+1" :processUrl="processUrl" />
+							<span v-else>{{ val }}</span>
+						</td>
+					</tr>
 				</template>
 			</table>
 		</template>
@@ -99,6 +96,21 @@
 
 <script>
 import Utils from '../utils.js';
+
+const schemaSortPrio = {
+	'type': -100,
+	'minimum': -12,
+	'exclusiveMinimum': -12,
+	'minItems': -12,
+	"minLength": -12,
+	'maximum': -11,
+	'exclusiveMaximum': -11,
+	'maxItems': -11,
+	'maxLength': -11,
+	'not': 10,
+	'allOf': 20,
+	'examples': 30
+};
 
 export default {
 	name: 'JsonSchema',
@@ -140,6 +152,21 @@ export default {
 		}
 	},
 	computed: {
+		sortedSchema() {
+			if (Array.isArray(this.schema)) {
+				return [];
+			}
+			const schema = [];
+			for (const entry of Object.entries(this.schema)) {
+				const [key, val] = entry;
+				if (!this.showRow(key) || typeof val === 'undefined') {
+					continue;
+				}
+				schema.push(entry);
+			}
+			schema.sort((a, b) => (schemaSortPrio[a[0]] || 0) - (schemaSortPrio[b[0]] || 0));
+			return schema;
+		},
 		showSchema() {
 			return typeof this.schema === 'object' && this.schema !== null && this.nestingLevel < 20;
 		},
