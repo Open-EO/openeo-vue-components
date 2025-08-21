@@ -1,27 +1,23 @@
 <template>
-	<div class="vue-component object-tree" :class="{inline: size === 0}">
-		<em v-if="size === 0">{{ format(data) }}</em>
-		<template v-else-if="Array.isArray(data)">
+	<div class="vue-component object-tree" :class="{inline: !isComplex}">
+		<openeo-object-tree v-if="type === 'array' && data.length === 1" :data="data[0]" />
+		<template v-else-if="type === 'array' && isComplex">
 			<ol>
 				<li v-for="i in indicesShown" :key="i">
-					<openeo-object-tree v-if="isStructured(data[i])" :data="data[i]"></openeo-object-tree>
-					<a v-else-if="isUrl(data[i])" :href="data[i]" target="_blank">{{ data[i] }}</a>
-					<em v-else-if="format(data[i])">{{ format(data[i]) }}</em>
-					<template v-else>{{ data[i] }}</template>
+					<openeo-object-tree :data="data[i]" />
 				</li>
 			</ol>
 			<button type="button" @click="show" v-if="size !== indicesShown.length">Show all {{ data.length }} entries</button>
 		</template>
-		<ul v-else-if="typeof data === 'object'">
+		<ul v-else-if="type === 'object' && isComplex">
 			<li v-for="(value, key) in data" :key="key">
-				<strong>{{ prettifyKey(key) }}</strong>: 
-				<openeo-object-tree v-if="isStructured(value)" :data="value"></openeo-object-tree>
-				<a v-else-if="isUrl(value)" :href="value" target="_blank">{{ value }}</a>
-				<em v-else-if="format(value)">{{ format(value) }}</em>
-				<template v-else>{{ value }}</template>
+				<strong>{{ prettifyKey(key) }}</strong>: <openeo-object-tree :data="value" />
 			</li>
 		</ul>
-		<template v-else>{{ data }}</template>
+		<a v-else-if="type === 'url'" :href="data" target="_blank">{{ data }}</a>
+		<template v-else-if="type === 'number' || type === 'string'">{{ data }}</template>
+		<template v-else-if="type === 'boolean'">{{ format(data) }}</template>
+		<em v-else>{{ format(data) }}</em>
 	</div>
 </template>
 
@@ -51,15 +47,40 @@ export default {
 		};
 	},
 	computed: {
-		isSingleValue() {
-			return (Array.isArray(this.data) && this.data.length === 1 && Utils.size(this.data[0]) === 0);
-		},
-		size() {
-            if (typeof this.data === 'object') {
-				return Utils.size(this.data);
+		type() {
+			if (Array.isArray(this.data)) {
+				return 'array';
+			}
+			else if (this.data === null) {
+				return 'null';
+			}
+			else if (Utils.isUrl(this.data, false)) {
+				return 'url';
 			}
 			else {
-				return 1; // One scalar value
+				return typeof this.data;
+			}
+		},
+		isComplex() {
+			if (this.type === 'array') {
+				return this.data.length > 1;
+			}
+			else if (this.type === 'object') {
+				return Utils.size(this.data) > 0;
+			}
+			else {
+				return false;
+			}
+		},
+		size() {
+			if (typeof this.data === 'object') {
+				return Utils.size(this.data);
+			}
+			else if (typeof this.data === 'string' || typeof this.data === 'number') {
+				return 1; // A number or string
+			}
+			else {
+				return 0; // A scalar value
 			}
 		},
 		indicesShown() {
@@ -67,7 +88,7 @@ export default {
 				return [];
 			}
 			let arr = this.data;
-			if (!this.expand && this.collapseAfter !== null && this.size > this.collapseAfter) {
+			if (!this.expand && this.collapseAfter !== null && Utils.size(arr) > this.collapseAfter) {
 				arr = Array(this.collapseAfter);
 			}
 			return [...arr.keys()];
@@ -76,15 +97,12 @@ export default {
 	beforeCreate() {
 		Utils.enableHtmlProps(this);
 	},
-    methods: {
+	methods: {
 		prettifyKey(key) {
 			return Utils.prettifyString(key);
 		},
 		show() {
 			this.expand = true;
-		},
-		isStructured(value) {
-			return Utils.size(value) > 0;
 		},
 		format(value) {
 			if (value === null) {
@@ -106,12 +124,9 @@ export default {
 				return 'JavaScript Symbol';
 			}
 
-			return null;
-		},
-		isUrl(url) {
-			return Utils.isUrl(url, false);
+			return value;
 		}
-    }
+	}
 }
 </script>
 
