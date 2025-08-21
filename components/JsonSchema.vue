@@ -63,7 +63,7 @@
 						</td>
 					</tr>
 				</template>
-				<template v-if="sortedSchema">
+				<template v-if="sortedSchema.length > 0">
 					<tr v-for="[key, val] in sortedSchema" :key="key">
 						<td class="key">{{ formatKey(key) }}:</td>
 						<td class="value">
