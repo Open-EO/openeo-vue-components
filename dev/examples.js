@@ -215,6 +215,10 @@ if (a == b) console.log("Hello World");
 		"example": {
 			"job": job,
 			"currency": "EUR"
+		},
+		"advanced-params": {
+			"job": job,
+			"processing-parameters": ppVito.create_job_parameters
 		}
 	},
 	"job-estimate": {
@@ -387,7 +391,8 @@ if (a == b) console.log("Hello World");
 		},
 		"example": {
 			"service": service,
-			"currency": "EUR"
+			"currency": "EUR",
+			"processing-parameters": ppApi.create_service_parameters
 		},
 		"example-fed": {
 			"service": {

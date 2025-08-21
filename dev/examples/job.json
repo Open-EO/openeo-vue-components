@@ -79,5 +79,8 @@
 		"title": "Batch Job Logs",
 		"href": "https://www.cool-cloud-corp.com/api/v1.0/jobs/123/logs"
 	  }
-	]
+	],
+	"driver-memory": "16G",
+	"udf-dependency-archives": ["xarray", "dask"],
+	"omit-derived-from-links": true
 }

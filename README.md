@@ -424,6 +424,7 @@ Visualizes a single batch job.
 
 - `job` (object, required): Batch Job details as defined by the openEO API (Either one of the array elements in the property `jobs` returned by `GET /jobs` or the response from `GET /jobs/{job_id}`).
 - `currency` (string|null): The currency of the service (see openEO API endpoint `GET /`).
+- `parameters` (array): An array of processing parameters as defined by the openEO API (`GET /processing_parameters`). From the response of the endpoint, you have to pass  the value of the property `create_job_parameters` (i.e. an array of parameters).
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**
@@ -716,6 +717,7 @@ Visualizes a single secondary web service.
 
 - `service` (object, required): Service details as defined by the openEO API (Either one of the array elements in the property `services` returned by `GET /services` or the response from `GET /services/{service_id}`).
 - `currency` (string|null): The currency of the service (see openEO API endpoint `GET /`).
+- `parameters` (array): An array of processing parameters as defined by the openEO API (`GET /processing_parameters`). From the response of the endpoint, you have to pass  the value of the property `create_service_parameters` (i.e. an array of parameters).
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 
 **Slots:**

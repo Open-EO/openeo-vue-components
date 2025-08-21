@@ -92,6 +92,8 @@
 			</Process>
 		</section>
 
+		<ProcessingParameters :parameters="processingParameters" :data="job" />
+
 		<slot name="end" v-bind="$props"></slot>
 
 	</article>
@@ -111,7 +113,8 @@ export default {
 	components: {
 		Description: () => import('./Description.vue'),
 		LinkList: () => import('./LinkList.vue'),
-		Process: () => import('./Process.vue')
+		Process: () => import('./Process.vue'),
+		ProcessingParameters: () => import('./internal/ProcessingParameters.vue')
 	},
 	props: {
 		job: {
@@ -121,6 +124,10 @@ export default {
 		currency: {
 			type: String,
 			default: null
+		},
+		processingParameters: {
+			type: Array,
+			default: () => ([])
 		},
 		...FederationMixin.props
 	},

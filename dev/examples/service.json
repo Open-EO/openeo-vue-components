@@ -5,6 +5,7 @@
   "url": "https://example.openeo.org/wms/wms-a3cca9",
   "type": "wms",
   "enabled": true,
+  "memory": 128,
   "usage": {
     "cpu": {
       "value": 40668,
