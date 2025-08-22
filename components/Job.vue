@@ -12,16 +12,6 @@
 				<code class="value">{{ job.id }}</code>
 			</div>
 
-			<div class="tabular">
-				<label>Submitted:</label>
-				<span class="value" v-html="created" />
-			</div>
-
-			<div class="tabular" v-if="updated">
-				<label>Updated:</label>
-				<span class="value" v-html="updated" />
-			</div>
-
 			<div class="tabular" v-if="job.status">
 				<label>Status:</label>
 				<span class="value status" :data-value="job.status">{{ job.status }}</span>
@@ -37,6 +27,11 @@
 						<span class="number" v-if="job.progress <= 50">{{ progress }}</span>
 					</div>
 				</div>
+			</div>
+
+			<div class="tabular" v-for="(time, key) in times" :key="key">
+				<label>{{ time.label }}:</label>
+				<span class="value" v-html="time.formatted" />
 			</div>
 
 			<div class="tabular" v-if="job.log_level">
@@ -131,6 +126,17 @@ export default {
 		},
 		...FederationMixin.props
 	},
+	data() {
+		return {
+			timeMap: {
+				created: 'Submitted',
+				updated: 'Last Updated',
+				queued: 'Queued for Processing',
+				started: 'Processing Started',
+				unpublished: 'Removal of Data',
+			}
+		};
+	},
 	computed: {
 		budget() {
 			return Utils.formatBudget(this.job.budget, this.currency, "No limit specified");
@@ -138,11 +144,23 @@ export default {
 		costs() {
 			return Utils.formatCurrency(this.job.costs, this.currency);
 		},
-		created() {
-			return Utils.formatTimestamp(this.job.created, 'n/a');
-		},
-		updated() {
-			return Utils.formatTimestamp(this.job.updated, '');
+		times() {
+			const times = {};
+			for (const key in this.timeMap) {
+				if (!this.job[key]) {
+					continue;
+				}
+				const defaultValue = key === 'created' ? 'n/a' : '';
+				const formatted = Utils.formatTimestamp(this.job[key], defaultValue);
+				if (!formatted) {
+					continue;
+				}
+				times[key] = {
+					label: this.timeMap[key],
+					formatted
+				};
+			}
+			return times;
 		},
 		progress() {
 			if (typeof this.job.progress === 'number') {
