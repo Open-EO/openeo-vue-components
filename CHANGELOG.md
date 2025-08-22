@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.21.0] - 2025-08-22
+
 ### Added
 
 - `ProcessingParameters`: New component
 - `Job` and `Service`: Processing parameters can be visualized via the `processingParameters` prop
+- `Job`: Support for visualizing more timestamps
 
 ### Changed
 
