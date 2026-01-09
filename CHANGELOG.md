@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New `Stac` component for browsing STAC
+- `LinkList`:
+  - New prop `action` to override normal HTML link behavior
+  - New way to generate link titles when a title is missing
+- `Collection` and `Item`: New prop `onStacNavigation` to override opening STAC JSON files in a new tab
+
+### Changed
+
+- `Collection`: Show title and ID as header by default
+- `Item`: Show `related` and `derived_from` links separately
+
 ## [2.21.0] - 2025-08-22
 
 ### Added

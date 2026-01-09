@@ -420,6 +420,17 @@ if (a == b) console.log("Hello World");
 			"federation": capabilities.federation
 		}
 	},
+	"stac": {
+		"planet": {
+			"url": "https://www.planet.com/data/stac/catalog.json"
+		},
+		"source-coop": {
+			"url": "https://data.source.coop/fiboa/ai4sf/stac/collection.json"
+		},
+		"error": {
+			"url": "https://nonsense.example"
+		}
+	},
 	"supported-features": {
 		"api": {
 			"endpoints": capabilities.endpoints
