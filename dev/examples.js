@@ -33,6 +33,17 @@ let asyncFn = () => new Promise(resolve => setTimeout(() => {
 }, 3000));
 
 module.exports = {
+	"stac": {
+		"planet": {
+			"url": "https://www.planet.com/data/stac/catalog.json"
+		},
+		"source-coop": {
+			"url": "https://data.source.coop/fiboa/ai4sf/stac/collection.json"
+		},
+		"error": {
+			"url": "https://nonsense.example"
+		}
+	},
 	"b-button": {
 		"example": {
 			"title": "This is a test tooltip!",

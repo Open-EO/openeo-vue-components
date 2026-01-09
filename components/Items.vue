@@ -40,7 +40,7 @@
 
 <script>
 import Utils from '../utils';
-import StacMixin from './internal/StacMixin';
+import MapMixin from './internal/MapMixin';
 import FederationMixin from './internal/FederationMixin';
 
 const geoJsonStyle = {
@@ -50,13 +50,14 @@ const geoJsonStyle = {
 
 export default {
 	name: 'Items',
+	mixins: [
+		FederationMixin,
+		MapMixin
+	],
 	components: {
 		Item: () => Utils.loadAsyncComponent(import('./Item.vue')),
 		SearchableList: () => Utils.loadAsyncComponent(import('./SearchableList.vue'))
 	},
-	mixins: [
-		FederationMixin
-	],
 	props: {
 		items: {
 			type: [Array, Object], // Either a GeoJSON FeatureCollection or an array of Items
@@ -66,7 +67,6 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		mapOptions: StacMixin.props.mapOptions,
 		searchTerm: {
 			type: String,
 			default: null
@@ -111,15 +111,15 @@ export default {
 			type: Array,
 			default: null
 		},
-		...FederationMixin.props
+		...FederationMixin.props,
+		...MapMixin.props,
 	},
 	data() {
-		return Object.assign(StacMixin.data(), {
+		return {
 			summaries: []
-		});
+		};
 	},
 	computed: {
-		leafletOptions: StacMixin.computed.leafletOptions,
 		data() {
 			if (Array.isArray(this.items)) {
 				return this.items;
@@ -146,7 +146,6 @@ export default {
 		}
 	},
 	watch: {
-		showMap: StacMixin.watch.showMap,
 		geojson() {
 			if (!this.map) {
 				this.initMap();
@@ -156,11 +155,7 @@ export default {
 			}
 		}
 	},
-	beforeCreate: StacMixin.beforeCreate,
-	mounted: StacMixin.mounted,
 	methods: {
-		initMap: StacMixin.methods.initMap,
-		updateMapView: StacMixin.methods.updateMapView,
 		updateFeatures(summaries) {
 			this.summaries = summaries;
 		},
