@@ -427,6 +427,9 @@ if (a == b) console.log("Hello World");
 		"source-coop": {
 			"url": "https://data.source.coop/fiboa/ai4sf/stac/collection.json"
 		},
+		"osc": {
+			"url": "https://esa-earthcode.github.io/open-science-catalog-metadata/catalog.json"
+		},
 		"error": {
 			"url": "https://nonsense.example"
 		}

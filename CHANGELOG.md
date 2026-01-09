@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.22.0] - 2026-01-09
+
 ### Added
 
 - New `Stac` component for browsing STAC
@@ -750,7 +752,9 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.20.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.22.0...HEAD
+[2.22.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.21.0...v2.22.0
+[2.21.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.20.0...v2.21.0
 [2.20.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.19.0...v2.20.0
 [2.19.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.3...v2.19.0
 [2.18.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.18.2...v2.18.3
