@@ -50,6 +50,7 @@ import SearchableList from '../components/SearchableList.vue';
 import Service from '../components/Service.vue';
 import ServiceType from '../components/ServiceType.vue';
 import ServiceTypes from '../components/ServiceTypes.vue';
+import Stac from '../components/Stac.vue';
 import SupportedFeatures from '../components/SupportedFeatures.vue';
 import Tab from '../components/Tab.vue';
 import Tabs from '../components/Tabs.vue';
@@ -87,6 +88,7 @@ export default {
 		Service,
 		ServiceType,
 		ServiceTypes,
+		Stac,
 		SupportedFeatures,
 		Tab,
 		Tabs,

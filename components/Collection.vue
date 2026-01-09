@@ -3,10 +3,15 @@
 
 		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="stac.id"></a>
-			<h2>{{ stac.id }}</h2>
+			<h2>
+				<template v-if="stac.title">
+					{{ stac.title }} (<code>{{ stac.id }}</code>)
+				</template>
+				<template v-else>
+					{{ stac.id }}
+				</template>
+			</h2>
 		</slot>
-
-		<summary v-if="stac.title">{{ stac.title }}</summary>
 
 		<section class="keywords" v-if="hasElements(stac.keywords)">
 			<ul class="badges">
@@ -26,7 +31,7 @@
 			<FederationMissingNotice v-if="affectedByMissing" :missing="missing" :federation="federation" />
 		</section>
 
-		<section class="license">
+		<section v-if="license" class="license">
 			<h3>License</h3>
 			<span v-html="license" />
 		</section>
@@ -85,6 +90,22 @@
 			</ol>
 		</section>
 
+		<section class="children" v-if="childLinks.length > 0">
+			<LinkList :links="childLinks" :baseUrl="selfUrl" heading="Catalogs / Collections" headingTag="h3" :action="onStacNavigation" />
+		</section>
+
+		<section class="items" v-if="itemLinks.length > 0">
+			<LinkList :links="itemLinks" :baseUrl="selfUrl" heading="Items" headingTag="h3" :action="onStacNavigation" />
+		</section>
+
+		<section class="related" v-if="relatedLinks.length > 0">
+			<LinkList :links="relatedLinks" :baseUrl="selfUrl" heading="Related STAC entities" headingTag="h3" :action="onStacNavigation" />
+		</section>
+
+		<section class="derived-from" v-if="derivedFromLinks.length > 0">
+			<LinkList :links="derivedFromLinks" :baseUrl="selfUrl" heading="Derived From" headingTag="h3" :action="onStacNavigation" />
+		</section>
+
 		<section class="dimensions" v-if="hasDimensions">
 			<h3>Data Cube Dimensions</h3>
 			<ul>
@@ -141,7 +162,7 @@
 		</section>
 
 		<section class="links">
-			<LinkList :links="stac.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
+			<LinkList :links="stac.links" :baseUrl="selfUrl" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as', 'item', 'child']" />
 		</section>
 
 		<slot name="end" v-bind="$props"></slot>
@@ -243,6 +264,12 @@ export default {
 			}
 			
 			return Formatters.formatLicense(this.stac.license, null, null, this.stac);
+		},
+		childLinks() {
+			return this.getStacLinksByRels(this.stac.links, ['child']);
+		},
+		itemLinks() {
+			return this.getStacLinksByRels(this.stac.links, ['item']);
 		}
 	},
 	methods: {

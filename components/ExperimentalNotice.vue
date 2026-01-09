@@ -23,7 +23,7 @@ export default {
 @use './base.scss';
 
 .vue-component.experimental-notice {
-	background-color: rgb(138,43,226,0.1);
+	background-color: rgba(138,43,226,0.1);
 	border: 1px solid blueviolet;
 
 	strong {

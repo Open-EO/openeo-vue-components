@@ -3,7 +3,14 @@
 
 		<slot name="title" v-bind="$props">
 			<a class="anchor" :name="stac.id"></a>
-			<h2>{{ title }}</h2>
+			<h2>
+				<template v-if="properties.title">
+					{{ properties.title }} (<code>{{ stac.id }}</code>)
+				</template>
+				<template v-else>
+					{{ stac.id }}
+				</template>
+			</h2>
 		</slot>
 
 		<slot name="before-description" v-bind="$props"></slot>
@@ -48,8 +55,16 @@
 			</ul>
 		</section>
 
+		<section class="related" v-if="relatedLinks.length > 0">
+			<LinkList :links="relatedLinks" :baseUrl="selfUrl" heading="Related STAC entities" headingTag="h3" :action="onStacNavigation" />
+		</section>
+
+		<section class="derived-from" v-if="derivedFromLinks.length > 0">
+			<LinkList :links="derivedFromLinks" :baseUrl="selfUrl" heading="Derived From" headingTag="h3" :action="onStacNavigation" />
+		</section>
+
 		<section class="links">
-			<LinkList :links="stac.links" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as']" />
+			<LinkList :links="stac.links" :baseUrl="selfUrl" heading="See Also" headingTag="h3" :ignoreRel="['self', 'parent', 'root', 'license', 'cite-as', 'collection']" />
 		</section>
 
 		<slot name="end" v-bind="$props"></slot>

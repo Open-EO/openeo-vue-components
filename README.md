@@ -44,6 +44,7 @@ Examples: <https://open-eo.github.io/openeo-vue-components/>
 	- [`Service`](#service)
 	- [`ServiceType`](#servicetype)
 	- [`ServiceTypes`](#servicetypes)
+	- [`Stac`](#stac)
 	- [`SupportedFeatures`](#supportedfeatures)
 	- [`Tabs` and `Tab`](#tabs-and-tab)
 		- [`Tabs`](#tabs)
@@ -157,6 +158,7 @@ Visualizes a single collection following the STAC-based collection description.
 **Properties:**
 
 - `data` (object, required): A single STAC-based collection object as defined by the openEO API (`GET /collections/{collection_id}`).
+- `onStacNavigation` / `on-stac-navigation` (function|null): A function to override opening STAC JSON files in a new tab. Defaults to `null` (opens in a new tab).
 - `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the collection's spatial extent. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `250px`.
   - `width` (string): Width of the map container div. Defaults to `auto`.
@@ -360,6 +362,7 @@ Visualizes a single STAC Item, e.g. a batch job result.
 **Properties:**
 
 - `data` (object, required): A single STAC-based Item object as defined by the openEO API (`GET /jobs/{job_id}/results`).
+- `onStacNavigation` / `on-stac-navigation` (function|null): A function to override opening STAC JSON files in a new tab. Defaults to `null` (opens in a new tab).
 - `mapOptions` / `map-options` (object): For fine-tuning the behavior of the map that displays the item's geometry. Entirely optional. Possible keys:
   - `height` (string): Height of the map container div. Defaults to `"250px"`.
   - `width` (string): Width of the map container div. Defaults to `"auto"`.
@@ -459,6 +462,7 @@ A simple list of links.
 - `headingTag` / `heading-tag` (string): HTML Tag to use for the heading. Defaults to `strong`.
 - `ignoreRel` / `ignore-rel`: (array\<string>): List of `rel` types to hide. Defaults to `['self']`.
 - `showRel` / `show-rel`: (boolean): If set to `true`, shows the `rel` types. Defaults to `false`.
+- `action` (function|null): A function to override normal HTML link behavior. Defaults to `null` (normal link behavior).
 
 
 ### `Logs`
@@ -781,6 +785,22 @@ Visualizes all secondary web service types supported by the back-end.
 - `headingToggled(expanded)`: See the corresponding event in [`SearchableList`](#searchablelist).
 - `detailsToggled(expanded, key, identifier, data)`: See the corresponding event in [`SearchableList`](#searchablelist).
 
+
+### `Stac`
+
+Simple component to browse STAC catalogs, collections, and items.
+
+This is a very simple interface to be embedded in other pages.
+If you need a full fledged solution for browsing STAC, please check out
+[STAC Browser](https://github.com/radiantearth/stac-browser).
+
+**Warning:** This component is experimental and may change in future releases!
+
+**Properties:**
+
+- `url` (string): The URL to the STAC catalog or collection to browse.
+- `data` (object): The STAC object to show by default.
+- `mapOptions` (object): Map configuration options, identical to the `mapOptions` property of the `Collection` and `Item` components.
 
 ### `SupportedFeatures`
 

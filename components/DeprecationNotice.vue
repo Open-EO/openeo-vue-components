@@ -23,7 +23,7 @@ export default {
 @use './base.scss';
 
 .vue-component.deprecation-notice {
-	background-color: rgb(255,0,0,0.1);
+	background-color: rgba(255,0,0,0.1);
 	border: 1px solid red;
 
 	strong {
