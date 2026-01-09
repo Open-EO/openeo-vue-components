@@ -115,7 +115,7 @@ export default {
 				this.updateMapView();
 
 				if (typeof this.mapOptions.onAfterMapInit === 'function') {
-					typeof this.mapOptions.onAfterMapInit(map, this.map.geometries);
+					this.mapOptions.onAfterMapInit(map, this.map.geometries);
 				}
 				// Leaflet no conflict fix: Release L global variable again
 				window.L = oldL;

@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import { friendlyLinks } from '@openeo/js-commons/src/utils';
 import Utils from '../utils';
 
 export default {
@@ -93,13 +92,18 @@ export default {
 				// Add a human-readable title if needed
 				if (typeof link.title !== 'string' || link.title.length === 0) {
 					// Make URL relative if possible and remove file extension
-					const linkUrl = new URL(link.href, baseUrl || undefined);
-					linkUrl.hash = '';
-					linkUrl.search = '';
-					linkUrl.pathname = linkUrl.pathname.split('/').slice(0, -1).join('/') + '/';
-					let title = link.href
-						.replace(linkUrl.href, '')
-						.split('.').slice(0, -1).join('.');
+					let title = link.href;
+					try {
+						const linkUrl = new URL(link.href, baseUrl || undefined);
+						linkUrl.hash = '';
+						linkUrl.search = '';
+						linkUrl.pathname = linkUrl.pathname.split('/').slice(0, -1).join('/') + '/';
+						title = title
+							.replace(linkUrl.href, '')
+							.split('.').slice(0, -1).join('.');
+					} catch (error) {
+						// Ignore invalid URLs
+					}
 					// Prefix the relation type
 					if (typeof link.rel === 'string' && link.rel.length > 1 && rels.length > 1 && ignoreRels) {
 						title = Utils.prettifyString(link.rel) + ': ' + title;
@@ -108,8 +112,12 @@ export default {
 				}
 				// Make href absolute if needed
 				if (baseUrl) {
-					const url = new URL(link.href, baseUrl);
-					link.href = url.href;
+					try {
+						const url = new URL(link.href, baseUrl);
+						link.href = url.href;
+					} catch (error) {
+						// Ignore invalid URLs
+					}
 				}
 				links.push(link);
 			}

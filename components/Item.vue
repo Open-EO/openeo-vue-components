@@ -55,11 +55,11 @@
 			</ul>
 		</section>
 
-		<section class="related" v-if="relatedLinks">
+		<section class="related" v-if="relatedLinks.length > 0">
 			<LinkList :links="relatedLinks" :baseUrl="selfUrl" heading="Related STAC entities" headingTag="h3" :action="onStacNavigation" />
 		</section>
 
-		<section class="derived-from" v-if="derivedFromLinks">
+		<section class="derived-from" v-if="derivedFromLinks.length > 0">
 			<LinkList :links="derivedFromLinks" :baseUrl="selfUrl" heading="Derived From" headingTag="h3" :action="onStacNavigation" />
 		</section>
 

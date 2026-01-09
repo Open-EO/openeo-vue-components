@@ -90,19 +90,19 @@
 			</ol>
 		</section>
 
-		<section class="childs" v-if="childLinks">
+		<section class="children" v-if="childLinks.length > 0">
 			<LinkList :links="childLinks" :baseUrl="selfUrl" heading="Catalogs / Collections" headingTag="h3" :action="onStacNavigation" />
 		</section>
 
-		<section class="items" v-if="itemLinks">
+		<section class="items" v-if="itemLinks.length > 0">
 			<LinkList :links="itemLinks" :baseUrl="selfUrl" heading="Items" headingTag="h3" :action="onStacNavigation" />
 		</section>
 
-		<section class="related" v-if="relatedLinks">
+		<section class="related" v-if="relatedLinks.length > 0">
 			<LinkList :links="relatedLinks" :baseUrl="selfUrl" heading="Related STAC entities" headingTag="h3" :action="onStacNavigation" />
 		</section>
 
-		<section class="derived-from" v-if="derivedFromLinks">
+		<section class="derived-from" v-if="derivedFromLinks.length > 0">
 			<LinkList :links="derivedFromLinks" :baseUrl="selfUrl" heading="Derived From" headingTag="h3" :action="onStacNavigation" />
 		</section>
 

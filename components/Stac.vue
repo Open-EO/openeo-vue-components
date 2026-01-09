@@ -2,7 +2,7 @@
   <div class="stac-component">
     <Loading v-if="isLoading" />
     <Error v-else-if="error" :message="error" />
-    <Item v-else-if="isItem" :data="stac" :url="url">
+    <Item v-else-if="isItem" :data="stac" :url="url" :mapOptions="mapOptions" :onStacNavigation="onStacNavigation">
       <template #before-description>
         <p>
           <template v-if="rootLink">
@@ -23,7 +23,7 @@
         </p>
       </template>
     </Item>
-    <Collection v-else-if="isCollectionLike" :data="stac" :url="url" :onStacNavigation="onStacNavigation">
+    <Collection v-else-if="isCollectionLike" :data="stac" :url="url" :mapOptions="mapOptions" :onStacNavigation="onStacNavigation">
       <template #before-description>
         <p>
           <template v-if="rootLink">
@@ -62,8 +62,9 @@ export default {
   components: {
     Error,
     Loading,
-		Item: () => import('./Item.vue'),
-    Collection: () => import('./Collection.vue')
+    Item: () => import('./Item.vue'),
+    Collection: () => import('./Collection.vue'),
+    ObjectTree: () => import('./ObjectTree.vue')
   },
   props: {
     data: {
@@ -84,9 +85,20 @@ export default {
       stacUrl: null,
     }
   },
-	beforeCreate() {
-		Utils.enableHtmlProps(this);
-	},
+  beforeCreate() {
+    Utils.enableHtmlProps(this);
+  },
+  watch: {
+    url(newUrl) {
+      this.stacUrl = newUrl;
+      if (newUrl) {
+        this.load(newUrl);
+      }
+    },
+    data(newData) {
+      this.stac = newData;
+    }
+  },
   created() {
     if (this.data) {
       this.stac = this.data;
@@ -125,12 +137,16 @@ export default {
       }
     },
     makeLinkAbsolute(link) {
-      if (!link || !link.href) {
+      if (!link?.href) {
         return link;
       }
-      return Object.assign({}, link, {
-        href: (new URL(link.href, this.stacUrl)).href
-      });
+      try {
+        return Object.assign({}, link, {
+          href: (new URL(link.href, this.stacUrl)).href
+        });
+      } catch (error) {
+        return link;
+      }
     },
     async load(url) {
       if (this.stacUrl === url) {
@@ -141,7 +157,13 @@ export default {
       this.stacUrl = url;
       try {
         const response = await fetch(url);
-        this.stac = await response.json();
+        if (response.ok) {
+          this.stac = await response.json();
+        }
+        else {
+          const statusText = response.statusText || 'Unknown error';
+          this.error = `Error ${response.status} - ${statusText}`;
+        }
       } catch (error) {
         this.error = `Failed to load STAC from ${url}: ${error.message}`;
       } finally {

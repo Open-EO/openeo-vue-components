@@ -23,7 +23,7 @@ export default {
 @use '../base.scss';
 
 .vue-component.error {
-	background-color: rgb(128,0,0,0.1);
+	background-color: rgba(128,0,0,0.1);
 	border: 1px solid maroon;
 
 	strong {

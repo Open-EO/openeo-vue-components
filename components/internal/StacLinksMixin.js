@@ -1,4 +1,4 @@
-const STAC_MEDIA_TYPES = ['application/geo+json', 'application/json']
+const STAC_MEDIA_TYPES = ['application/geo+json', 'application/json'];
 
 export default {
 	methods: {
@@ -20,5 +20,5 @@ export default {
 			}
 			return links.filter(link => (this.isStacLinkType(link, strict) && typeof link.rel === 'string' && rels.includes(link.rel.toLowerCase())));
 		}
-  }
+	}
 };

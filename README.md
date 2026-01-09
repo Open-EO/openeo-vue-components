@@ -790,7 +790,7 @@ Visualizes all secondary web service types supported by the back-end.
 
 Simple component to browse STAC catalogs, collections, and items.
 
-This is a very simple interface to be embdedded in other pages.
+This is a very simple interface to be embedded in other pages.
 If you need a full fledged solution for browsing STAC, please check out
 [STAC Browser](https://github.com/radiantearth/stac-browser).
 
@@ -800,7 +800,7 @@ If you need a full fledged solution for browsing STAC, please check out
 
 - `url` (string): The URL to the STAC catalog or collection to browse.
 - `data` (object): The STAC object to show by default.
-
+- `mapOptions` (object): Map configuration options, identical to the `mapOptions` property of the `Collection` and `Item` components.
 
 ### `SupportedFeatures`
 
