@@ -146,7 +146,7 @@ export default {
 	.log-container {
 		width: 100%;
 		height: 100%;
-		max-height: 100vh;
+		max-height: 150vh;
 	}
 	.log-header {
 		position: -webkit-sticky;

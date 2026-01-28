@@ -41,6 +41,8 @@
 				Related Resources:
 				<LinkList :links="log.links" />
 			</li>
+			<li>Stack Trace:</li>
+			<textarea class="stacktrace" readonly variant="outlined">{{ log.stacktrace }}</textarea>
 		</ul>
 	</li>
 </template>
@@ -156,6 +158,13 @@ export default {
 		> li {
 			margin: 0.5em 0;
 		}
+	}
+	.stacktrace {
+		display: block;
+		height: 25em;
+		width: calc(100% - 1em);
+		margin-right: 1em;
+		resize: none;
 	}
 	summary {
 		display: flex;
