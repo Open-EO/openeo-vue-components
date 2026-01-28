@@ -13,6 +13,7 @@
 			:sort="sort"
 			:offerDetails="offerDetails"
 			:heading="heading"
+			:version="version"
 			:collapsed="collapsed"
 			:loadAdditionalData="loadAdditionalData"
 			@detailsToggled="detailsToggled"
@@ -104,6 +105,10 @@ export default {
 		},
 		missing: {
 			type: Array,
+			default: null
+		},
+		version: {
+			type: String,
 			default: null
 		},
 		...FederationMixin.props

@@ -5,6 +5,7 @@
 				{{ heading }}
 				<template v-if="filteredCount !== null && filteredCount !== totalCount">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
+				<span v-if="version !== null" class="badge version-badge green" title="Version">version: {{ version }}</span>
 			</h2>
 		</slot>
 		<div class="body" v-if="showList !== null" v-show="showList === true">
@@ -108,6 +109,10 @@ export default {
 			default: true
 		},
 		heading: {
+			type: String,
+			default: null
+		},
+		version: {
 			type: String,
 			default: null
 		},
@@ -384,6 +389,27 @@ export default {
 		> .experimental {
 			white-space: nowrap;
 			align-content: center;
+		}
+	}
+
+	.heading {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5em;
+		/* ensure the heading text and badge align nicely */
+		strong, span, .badge {
+			vertical-align: middle;
+		}
+		.version-badge {
+			font-size: 0.75em;
+			padding: 0.35em 0.6em;
+			line-height: 1;
+			text-transform: none;
+			display: inline-block;
+			color: green;
+			border: green;
+			border-style: solid;
+			border-radius: 0.6em;
 		}
 	}
 
