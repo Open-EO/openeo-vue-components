@@ -69,13 +69,11 @@ const CORE_COLLECTION_FIELDS = [
 StacFields.Registry.externalRenderer = true;
 StacFields.Registry.addMetadataField('queued', {
 	label: "Queued",
-	format: "Timestamp",
-	summary: "r"
+	format: "Timestamp"
 });
 StacFields.Registry.addMetadataField('started', {
 	label: "Started",
-	format: "Timestamp",
-	summary: "r"
+	format: "Timestamp"
 });
 
 export default {
