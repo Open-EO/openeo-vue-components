@@ -112,10 +112,6 @@ export default {
 			type: String,
 			default: null
 		},
-		version: {
-			type: String,
-			default: null
-		},
 		collapsed: {
 			type: Boolean,
 			default: null
