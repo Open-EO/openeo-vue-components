@@ -13,7 +13,7 @@
 			:sort="sort"
 			:offerDetails="offerDetails"
 			:heading="heading"
-			:version="version"
+			:badges="badges"
 			:collapsed="collapsed"
 			:loadAdditionalData="loadAdditionalData"
 			@detailsToggled="detailsToggled"
@@ -112,6 +112,18 @@ export default {
 			default: null
 		},
 		...FederationMixin.props
+	},
+	computed: {
+		badges() {
+			const badges = []
+			if (this.version != null){
+				badges.push({
+					title: "Process specification version", 
+					content: 'ver.: ' + this.version
+				})
+			}
+			return badges
+		}
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);

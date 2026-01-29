@@ -5,7 +5,7 @@
 				{{ heading }}
 				<template v-if="filteredCount !== null && filteredCount !== totalCount">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
-				<span v-if="version !== null" class="badge version-badge green" title="Version">{{ version }}</span>
+				<ul v-if="badges.length !== 0" class="badges category"><li v-for="badge in badges" class="badge action download" :title="badge.title">{{ badge.content }}</li></ul>
 			</h2>
 		</slot>
 		<div class="body" v-if="showList !== null" v-show="showList === true">
@@ -147,6 +147,10 @@ export default {
 		experimentalFilter: {
 			type: Boolean,
 			default: false
+		},
+		badges: {
+			type: Array,
+			default: () => ([])
 		}
 	},
 	data() {
@@ -395,21 +399,8 @@ export default {
 	.heading {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.5em;
+		gap: 1em;
 		/* ensure the heading text and badge align nicely */
-		strong, span, .badge {
-			vertical-align: middle;
-		}
-		.version-badge {
-			font-size: 0.75em;
-			padding: 0.35em 0.6em;
-			line-height: 1;
-			text-transform: none;
-			display: inline-block;
-			color: green;
-			border-style: solid;
-			border-radius: 0.6em;
-		}
 	}
 
 	.details  {
