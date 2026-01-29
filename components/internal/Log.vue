@@ -41,8 +41,10 @@
 				Related Resources:
 				<LinkList :links="log.links" />
 			</li>
-			<li>Stack Trace:</li>
-			<textarea class="stacktrace" readonly variant="outlined">{{ log.stacktrace }}</textarea>
+			<div v-if="log.stacktrace != null && log.stacktrace != ''">
+				<li>Stack Trace:</li>
+				<textarea class="stacktrace" readonly variant="outlined">{{ log.stacktrace }}</textarea>
+			</div>
 		</ul>
 	</li>
 </template>
