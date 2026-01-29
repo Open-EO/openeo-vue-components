@@ -1,3 +1,4 @@
+let collectionCdse = require('./examples/collection-cdse-s2.json');
 let collectionGee = require('./examples/collection-gee-s2.json');
 let collectionEurac = require('./examples/collection-eurac.json');
 let collections = require('./examples/collections-gee.json');
@@ -53,6 +54,9 @@ module.exports = {
 	"collection": {
 		"gee": {
 			"data": collectionGee
+		},
+		"cdse": {
+			"data": collectionCdse
 		},
 		"eurac-mapbox": {
 			"data": collectionEurac,

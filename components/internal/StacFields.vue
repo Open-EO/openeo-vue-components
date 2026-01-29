@@ -123,7 +123,12 @@ export default {
 				for(let key in data) {
 					// Copy all custom top-level fields to summaries for easier visualization
 					if (!CORE_COLLECTION_FIELDS.includes(key)) {
-						data.summaries[key] = [data[key]];
+						if (Array.isArray(data[key])) {
+							data.summaries[key] = data[key];
+						}
+						else {
+							data.summaries[key] = [data[key]];
+						}
 					}
 				}
 				return StacFields.formatSummaries(data, this.ignoreFn);
