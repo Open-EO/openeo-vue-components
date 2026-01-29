@@ -13,6 +13,7 @@
 			:sort="sort"
 			:offerDetails="offerDetails"
 			:heading="heading"
+			:badges="badges"
 			:collapsed="collapsed"
 			:loadAdditionalData="loadAdditionalData"
 			@detailsToggled="detailsToggled"
@@ -106,7 +107,20 @@ export default {
 			type: Array,
 			default: null
 		},
+		version: {
+			type: String,
+			default: null
+		},
 		...FederationMixin.props
+	},
+	computed: {
+		badges() {
+			const badges = []
+			if (this.version){
+				badges.push( "Version: " + this.version )
+			}
+			return badges
+		}
 	},
 	beforeCreate() {
 		Utils.enableHtmlProps(this);

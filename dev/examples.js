@@ -355,6 +355,7 @@ if (a == b) console.log("Hello World");
 	"processes": {
 		"1.1.0": {
 			"processes": processes,
+			"version": "2.0.0-rc.1",
 			"federation": capabilities.federation,
 			"deprecated-filter": true,
 			"hide-deprecated": true,

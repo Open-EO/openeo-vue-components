@@ -5,6 +5,7 @@
 				{{ heading }}
 				<template v-if="filteredCount !== null && filteredCount !== totalCount">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
+				<ul v-if="badges.length > 0" class="badges category"><li v-for="badge in badges" class="badge text" >{{ badge }}</li></ul>
 			</h2>
 		</slot>
 		<div class="body" v-if="showList !== null" v-show="showList === true">
@@ -142,6 +143,10 @@ export default {
 		experimentalFilter: {
 			type: Boolean,
 			default: false
+		},
+		badges: {
+			type: Array,
+			default: () => ([])
 		}
 	},
 	data() {
@@ -385,6 +390,13 @@ export default {
 			white-space: nowrap;
 			align-content: center;
 		}
+	}
+
+	.heading {
+		display: inline-flex;
+		align-items: center;
+		gap: 1em;
+		/* ensure the heading text and badge align nicely */
 	}
 
 	.details  {

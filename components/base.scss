@@ -186,6 +186,13 @@
 .vue-component .badges .experimental {
 	background-color: blueviolet;
 }
+
+.vue-component .badges .text {
+	text-transform: none;
+	font-size: 1rem;
+	font-weight: 500;
+}
+
 .vue-component .badges .action {
 	border: 1px solid black;
 	background-color: white;
