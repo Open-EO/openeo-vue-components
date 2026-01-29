@@ -117,10 +117,7 @@ export default {
 		badges() {
 			const badges = []
 			if (this.version != null){
-				badges.push({
-					title: "Process specification version", 
-					content: 'ver.: ' + this.version
-				})
+				badges.push( "Version: " + this.version )
 			}
 			return badges
 		}

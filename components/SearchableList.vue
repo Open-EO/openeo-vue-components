@@ -5,7 +5,7 @@
 				{{ heading }}
 				<template v-if="filteredCount !== null && filteredCount !== totalCount">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
-				<ul v-if="badges.length !== 0" class="badges category"><li v-for="badge in badges" class="badge action download" :title="badge.title">{{ badge.content }}</li></ul>
+				<ul v-if="badges.length !== 0" class="badges category"><li v-for="badge in badges" class="badge action" >{{ badge }}</li></ul>
 			</h2>
 		</slot>
 		<div class="body" v-if="showList !== null" v-show="showList === true">
