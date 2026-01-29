@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `SearchableList`: Can show badges alongside the header via the `badges` prop
+- `Processes`: Can show the version number alongside the header via the `version` prop
+- Support for Queued and Started timestamps in metadata
+- `Logs`: Support to show stacktraces
+
+### Fixed
+
+- Fix visualization of top-level arrays in collection metadata (e.g. bands)
+
 ## [2.22.0] - 2026-01-09
 
 ### Added
