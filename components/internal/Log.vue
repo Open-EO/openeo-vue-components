@@ -153,7 +153,7 @@ export default {
 	padding: 0.25em 0;
 
 	.details {
-		margin: 0.5em 0 1em 1.6em;
+		margin: 0.5em 1em 1em 1.6em;
 		padding-left: 2em;
 		font-size: 0.9em;
 
@@ -162,10 +162,8 @@ export default {
 		}
 	}
 	.stacktrace {
-		display: block;
 		height: 25em;
-		width: calc(100% - 1em);
-		margin-right: 1em;
+		width: 100%;
 		resize: none;
 	}
 	summary {
