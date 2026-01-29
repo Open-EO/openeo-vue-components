@@ -5,7 +5,7 @@
 				{{ heading }}
 				<template v-if="filteredCount !== null && filteredCount !== totalCount">({{ filteredCount }}/{{ totalCount }})</template>
 				<template v-else>({{ totalCount }})</template>
-				<span v-if="version !== null" class="badge version-badge green" title="Version">version: {{ version }}</span>
+				<span v-if="version !== null" class="badge version-badge green" title="Version">{{ version }}</span>
 			</h2>
 		</slot>
 		<div class="body" v-if="showList !== null" v-show="showList === true">
@@ -407,7 +407,6 @@ export default {
 			text-transform: none;
 			display: inline-block;
 			color: green;
-			border: green;
 			border-style: solid;
 			border-radius: 0.6em;
 		}
