@@ -116,7 +116,7 @@ export default {
 	computed: {
 		badges() {
 			const badges = []
-			if (!(!this.version)){
+			if (this.version){
 				badges.push( "Version: " + this.version )
 			}
 			return badges
