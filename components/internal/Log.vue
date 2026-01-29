@@ -41,6 +41,12 @@
 				Related Resources:
 				<LinkList :links="log.links" />
 			</li>
+			<template v-if="log.stacktrace">
+				<li>
+					Stack Trace:
+					<pre class="stacktrace" readonly>{{ log.stacktrace }}</pre>
+				</li>
+			</template>
 		</ul>
 	</li>
 </template>
@@ -156,6 +162,11 @@ export default {
 		> li {
 			margin: 0.5em 0;
 		}
+	}
+	.stacktrace {
+		width: 100%;
+		max-height: 20rem;
+		overflow: auto;
 	}
 	summary {
 		display: flex;
