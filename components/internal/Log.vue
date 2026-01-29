@@ -41,10 +41,12 @@
 				Related Resources:
 				<LinkList :links="log.links" />
 			</li>
-			<div v-if="log.stacktrace != null && log.stacktrace != ''">
-				<li>Stack Trace:</li>
-				<textarea class="stacktrace" readonly variant="outlined">{{ log.stacktrace }}</textarea>
-			</div>
+			<template v-if="log.stacktrace">
+				<li>
+					Stack Trace:
+					<pre class="stacktrace" readonly>{{ log.stacktrace }}</pre>
+				</li>
+			</template>
 		</ul>
 	</li>
 </template>
@@ -153,7 +155,7 @@ export default {
 	padding: 0.25em 0;
 
 	.details {
-		margin: 0.5em 1em 1em 1.6em;
+		margin: 0.5em 0 1em 1.6em;
 		padding-left: 2em;
 		font-size: 0.9em;
 
@@ -162,9 +164,9 @@ export default {
 		}
 	}
 	.stacktrace {
-		height: 25em;
 		width: 100%;
-		resize: none;
+		max-height: 20rem;
+		overflow: auto;
 	}
 	summary {
 		display: flex;

@@ -98,9 +98,12 @@ export default {
 						linkUrl.hash = '';
 						linkUrl.search = '';
 						linkUrl.pathname = linkUrl.pathname.split('/').slice(0, -1).join('/') + '/';
-						title = title
-							.replace(linkUrl.href, '')
-							.split('.').slice(0, -1).join('.');
+						title = title.replace(linkUrl.href, '');
+						const parts = title.split('.');
+						if (parts.length > 1) {
+							parts.pop();
+						}
+						title = parts.join('.');
 					} catch (error) {
 						// Ignore invalid URLs
 					}
