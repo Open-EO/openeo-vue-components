@@ -475,6 +475,7 @@ Show log messages.
 - `externalSearchTerm` / `external-search-term` (string|null): Pass a string if a search term is injected from an external source and no search box should be shown. Defaults to `null`, which will show a search box in the component itself so that users can filter the logs.
 - `federation` (object): The data of the `federation` property obtained from the capabilities.
 - `missing` (array): The identifiers of the federated back-ends that are not providing data for the list of collections due to an issue.
+- `hideHeader` (boolean): Hides the header controls for search and level selection. Defaults to `false`.
 
 
 ### `ModelBuilder`

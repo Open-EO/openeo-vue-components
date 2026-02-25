@@ -1,7 +1,7 @@
 <template>
 	<div class="vue-component logs">
 		<div class="log-container" v-if="hasLogs">
-			<div class="log-header">
+			<div class="log-header" v-if="!hideHeader">
 				<div class="log-search">
 					<SearchBox  v-if="externalSearchTerm === null" v-model="searchTerm" placeholder="Search in Logs" :minLength="2" />
 					<MultiSelect class="log-fields" v-model="fields" :options="availableFields" trackBy="id" label="label"
@@ -58,6 +58,10 @@ export default {
 		missing: {
 			type: Array,
 			default: null
+		},
+		hideHeader: {
+			type: Boolean,
+			default: false
 		},
 		...FederationMixin.props
 	},

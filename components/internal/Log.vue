@@ -36,7 +36,7 @@
 					</li>
 				</ul>
 			</li>
-			<li>ID: {{ log.id }}</li>
+			<li v-if="log.id">ID: {{ log.id }}</li>
 			<li v-if="Array.isArray(log.links) && log.links.length">
 				Related Resources:
 				<LinkList :links="log.links" />
@@ -188,6 +188,10 @@ export default {
 		}
 	}
 	&.expanded {
+		> .details:empty:after {
+			content: "No additional information available.";
+			font-style: italic;
+		}
 		summary {
 			.log-message {
 				white-space: normal;

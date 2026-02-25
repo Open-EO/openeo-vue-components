@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.23.1] - 2026-02-25
+
+### Added
+
+- `Logs`: Add prop `hideHeader` to hide the header controls.
+
+### Fixed
+
+- `Logs`: Don't show ID label if no ID is present.
+
 ## [2.23.0] - 2026-02-25
 
 ### Added
