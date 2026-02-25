@@ -1,6 +1,6 @@
 {
   "name": "@openeo/vue-components",
-  "version": "2.22.0",
+  "version": "2.23.0",
   "author": "openEO Consortium",
   "contributors": [
     {
@@ -13,11 +13,11 @@
   "description": "Common Vue components for openEO.",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/open-eo/openeo-vue-components/issues"
+    "url": "https://github.com/Open-EO/openeo-vue-components/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/open-eo/openeo-vue-components.git"
+    "url": "https://github.com/Open-EO/openeo-vue-components"
   },
   "funding": {
     "type": "github",

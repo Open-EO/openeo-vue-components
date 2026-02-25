@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.23.0] - 2026-02-25
+
 ### Added
 
 - `SearchableList`: Can show badges alongside the header via the `badges` prop
@@ -763,7 +765,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.22.0...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.23.0...HEAD
+[2.23.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.22.0...v2.23.0
 [2.22.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.21.0...v2.22.0
 [2.21.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.20.0...v2.21.0
 [2.20.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.19.0...v2.20.0
