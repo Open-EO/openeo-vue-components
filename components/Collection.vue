@@ -13,27 +13,35 @@
 			</h2>
 		</slot>
 
-		<section class="keywords" v-if="hasElements(stac.keywords)">
-			<ul class="badges">
-				<li class="badge" v-for="keyword in stac.keywords" :key="keyword">{{ keyword }}</li>
-			</ul>
-		</section>
-
 		<slot name="before-description" v-bind="$props"></slot>
 
-		<section class="description" v-if="stac.description || stac.deprecated || supportedBy || affectedByMissing">
-			<template v-if="stac.description">
-				<h3>Description</h3>
-				<Description :description="stac.description"></Description>
-			</template>
+		<section class="intro">
+			<ul v-if="hasElements(stac.keywords)" class="keywords badges">
+				<li class="badge" v-for="keyword in stac.keywords" :key="keyword">{{ keyword }}</li>
+			</ul>
+			<Description v-if="stac.description" :description="stac.description"></Description>
+			<div class="license tabular">
+				<label>License</label>
+				<div class="value" v-html="license"></div>
+			</div>
+			<div class="providers tabular" v-if="hasProviders">
+				<label>Provider{{ stac.providers.length > 1 ? 's' : '' }}</label>
+				<ol class="value">
+					<li v-for="provider in stac.providers" :key="provider.name">
+						<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
+						<template v-else>{{ provider.name }}</template>
+						<template v-if="hasElements(provider.roles)">
+							<ul class="badges small inline">
+								<li v-for="role in provider.roles" :key="role" class="badge provider-role">{{ role }}</li>
+							</ul>
+						</template>
+						<Description v-if="provider.description" :description="provider.description" :compact="true" />
+					</li>
+				</ol>
+			</div>
 			<DeprecationNotice v-if="stac.deprecated" entity="collection" />
 			<FederationNotice v-if="supportedBy" :backends="supportedBy" :federation="federation" entity="collection" />
 			<FederationMissingNotice v-if="affectedByMissing" :missing="missing" :federation="federation" />
-		</section>
-
-		<section v-if="license" class="license">
-			<h3>License</h3>
-			<span v-html="license" />
 		</section>
 
 		<!-- v-show to prevent issue with thumbnails and Leaflet map, see https://github.com/Open-EO/openeo-vue-components/issues/44 -->
@@ -46,7 +54,7 @@
 			</div>
 		</section>
 
-		<section class="extent" v-if="temporalIntervals.length || boundingBoxes.length">
+		<section class="columns" v-if="temporalIntervals.length || boundingBoxes.length">
 			<div v-if="boundingBoxes.length">
 				<h3>Spatial Extent</h3>
 				<slot name="spatial-extents" :extents="boundingBoxes" :mapOptions="mapOptions" :worldwide="worldwide">
@@ -72,22 +80,6 @@
 					<span v-else v-html="formatters.formatTemporalExtent(temporalIntervals[0])" />
 				</slot>
 			</div>
-		</section>
-
-		<section class="providers" v-if="hasProviders">
-			<h3>Providers</h3>
-			<ol>
-				<li v-for="provider in stac.providers" :key="provider.name">
-					<a v-if="provider.url" :href="provider.url" target="_blank">{{ provider.name }}</a>
-					<template v-else>{{ provider.name }}</template>
-					<template v-if="hasElements(provider.roles)">
-						<ul class="badges small inline">
-							<li v-for="role in provider.roles" :key="role" class="badge provider-role">{{ role }}</li>
-						</ul>
-					</template>
-					<Description v-if="provider.description" :description="provider.description" :compact="true" />
-				</li>
-			</ol>
 		</section>
 
 		<section class="children" v-if="childLinks.length > 0">
@@ -332,9 +324,6 @@ export default {
 @use './base.scss';
 
 .vue-component.collection {
-	.keywords {
-		margin-top: 1em;
-	}
 	.dimensions > ul .dimension {
 		h4 {
 			margin: 0;
@@ -374,7 +363,7 @@ export default {
 				}
 			}
 		}
-		.extent {
+		.columns {
 			display: flex;
 
 			> div {
