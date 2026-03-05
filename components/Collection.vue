@@ -103,8 +103,7 @@
 			<ul>
 				<li v-for="(dim, name) in stac['cube:dimensions']" :key="name" class="dimension">
 					<h4>
-						<a v-if="dim.type === 'bands'" @click="scrollToBands" class="name" href="#summary_bands">{{ name }}</a>
-						<span v-else class="name">{{ name }}</span>
+						<span class="name">{{ name }}</span>
 						<ul class="type badges small inline"><li class="badge">{{ dim.type }}</li></ul>
 					</h4>
 					<Description v-if="dim.description" :description="dim.description" />
@@ -142,6 +141,10 @@
 					</div>
 				</li>
 			</ul>
+		</section>
+
+		<section class="bands" v-if="bands.length > 0">
+			<StacFields class="summaries" type="Collection" :metadata="{bands}" defaultGroupLabel="Bands" />
 		</section>
 
 		<StacFields class="summaries" type="Collection" :metadata="stac" :ignore="ignoredFields" />
@@ -186,7 +189,7 @@ export default {
 	},
 	data() {
 		return {
-			ignoredFields: ['federation:backends'],
+			ignoredFields: ['federation:backends', 'bands'],
 			formatters: Formatters
 		};
 	},
@@ -257,6 +260,17 @@ export default {
 			
 			return Formatters.formatLicense(this.stac.license, null, null, this.stac);
 		},
+		bands() {
+			if (Utils.isObject(this.stac.summaries) && Array.isArray(this.stac.summaries['bands'])) {
+				return this.stac.summaries['bands'];
+			}
+			else if (Array.isArray(this.stac['bands'])) {
+				return this.stac['bands'];
+			}
+			else {
+				return [];
+			}
+		},
 		childLinks() {
 			return this.getStacLinksByRels(this.stac.links, ['child']);
 		},
@@ -290,17 +304,6 @@ export default {
 			}
 			return features;
 		},
-		scrollToBands(evt) {
-			let elem = this.$el.querySelector('#field_bands');
-			if (elem) {
-				elem.scrollIntoView();
-				elem.classList.add('highlight-box');
-				setTimeout(() => {
-					elem.classList.remove('highlight-box');
-				}, 5000);
-			}
-			evt.preventDefault();
-		},
 		hasElements(data) {
 			return (typeof data === 'object' && data !== null && Object.keys(data).length > 0);
 		},
@@ -331,6 +334,15 @@ export default {
 		}
 		.type {
 			font-weight: normal;
+		}
+	}
+
+	.bands .group .tabular.wrap {
+		> label {
+			display: none;
+		}
+		> .value {
+			margin: 0;
 		}
 	}
 

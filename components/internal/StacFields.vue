@@ -1,7 +1,7 @@
 <template>
 	<section class="vue-component stac stac-fields metadata">
 		<template v-for="group in fields">
-			<component :is="headingTag" v-html="group.label || 'General'" :key="group.extension" />
+			<component :is="headingTag" v-html="group.label || defaultGroupLabel" :key="group.extension" />
 			<section class="group" :key="`section_${group.extension}`">
 				<div v-for="(prop, field) in group.properties" :key="group.extension + field" :id="'field_' + field" class="tabular" :class="{wrap: Boolean(prop.custom || prop.items)}">
 					<label :title="field" v-html="prop.label" />
@@ -102,6 +102,10 @@ export default {
 		context: {
 			type: Object,
 			default: () => ({})
+		},
+		defaultGroupLabel: {
+			type: String,
+			default: 'General Metadata'
 		}
 	},
 	filters: {
