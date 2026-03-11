@@ -195,10 +195,49 @@ export default {
 		}
 		td {
 			vertical-align: top;
+
+			ul, ol {
+				margin: 0;
+			}
+			&:has(dl) {
+				ul, ol {
+					list-style-type: none;
+					padding-left: 0;
+
+					> li {
+						margin-bottom: 1em;
+					}
+				}
+			}
 		}
 		tbody tr:hover,
 		tbody tr:hover th {
 			background-color: rgba(0, 0, 0, 0.1);
+		}
+	}
+	dl {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0 0.75em;
+
+		dt {
+			font-weight: bold;
+			grid-column: 1;
+		}
+		dd {
+			margin: 0;
+			grid-column: 2;
+
+			> ul, > ol {
+				margin: 0;
+			}
+		}
+		dt:has(+ dd > dl) {
+			grid-column: 1 / -1;
+		}
+		dd:has(> dl) {
+			grid-column: 1 / -1;
+			padding-left: 1em;
 		}
 	}
 	.description {

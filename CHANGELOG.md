@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Rendering of definition lists take less space
+
 ### Fixed
 
 - Fix JSON shown in Metadata tables
