@@ -19,10 +19,10 @@
 										<th v-if="!Array.isArray(prop.formatted)">{{ r }}</th>
 										<td v-for="col in prop.itemOrder" :key="`${col}_${r}`">
 											<ol class="array" v-if="Array.isArray(row[col])">
-												<li v-for="(v, k) in row[col]" :key="k"><span v-html="v" /></li>
+												<li v-for="(v, k) in row[col]" :key="k"><span v-html="formatCellValue(v)" /></li>
 											</ol>
 											<ul class="object" v-else-if="row[col] && typeof row[col] === 'object'">
-												<li v-for="(v, k) in row[col]" :key="k"><strong>{{ k | key }}</strong>: <span v-html="v" /></li>
+												<li v-for="(v, k) in row[col]" :key="k"><strong>{{ k | key }}</strong>: <span v-html="formatCellValue(v)" /></li>
 											</ul>
 											<div v-else v-html="row[col]" />
 										</td>
@@ -42,6 +42,7 @@
 
 <script>
 import StacFields from '@radiantearth/stac-fields';
+import { DataTypes, Helper } from '@radiantearth/stac-fields';
 import Utils from '../../utils'
 import ObjectTree from '../ObjectTree.vue';
 
@@ -151,6 +152,18 @@ export default {
 	methods: {
 		label(key, specs = {}) {
 			return StacFields.label(key, specs);
+		},
+		formatCellValue(value) {
+			if (typeof value === 'string') {
+				return value;
+			}
+			if (Array.isArray(value)) {
+				return Helper.toList(value, false, v => this.formatCellValue(v));
+			}
+			if (value !== null && typeof value === 'object') {
+				return Helper.toObject(value, v => this.formatCellValue(v));
+			}
+			return DataTypes.format(value);
 		}
 	}
 }

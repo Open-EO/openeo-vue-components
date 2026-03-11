@@ -1,0 +1,232 @@
+{
+  "assets": {
+    "thumbnail": {
+      "href": "https://services.terrascope.be/collectioncatalogue/images/quicklooks/ESA_WORLDCEREAL_MAIZE_QL.png",
+      "roles": ["thumbnail"],
+      "title": "esa-worldcereal-maize-10m-2021-v1",
+      "type": "image/jpeg"
+    }
+  },
+  "auth:schemes": {
+    "oidc": {
+      "description": "Authenticate with Terrascope OpenID Connect",
+      "openIdConnectUrl": "https://sso.terrascope.be/auth/realms/terrascope/.well-known/openid-configuration",
+      "type": "openIdConnect"
+    }
+  },
+  "cube:dimensions": {
+    "bands": { "type": "bands", "values": ["CLASSIFICATION", "CONFIDENCE"] },
+    "t": {
+      "extent": ["2020-09-12T00:00:00Z", "2021-12-20T00:00:00Z"],
+      "type": "temporal"
+    },
+    "x": {
+      "axis": "x",
+      "extent": [-180.00446428571428, 179.9955357],
+      "reference_system": 4326,
+      "step": 8.3333333333e-5,
+      "type": "spatial"
+    },
+    "y": {
+      "axis": "y",
+      "extent": [-59.9955357, 80.0044643],
+      "reference_system": 4326,
+      "step": 8.3333333333e-5,
+      "type": "spatial"
+    }
+  },
+  "description": "WorldCereal maize, globally, at 10m resolution in specific seasons throughout the year. \n\n ##Seasons\n\n The date of observations in this collection is the end date of the season. This start date varies depending on the agro-ecological zone. WorldCereal defines these seasons:\n * wintercereals\n* maize main \n* maize second\n ",
+  "extent": {
+    "spatial": {
+      "bbox": [[-180.00446428571428, -59.9955357, 179.9955357, 80.0044643]]
+    },
+    "temporal": {
+      "interval": [["2020-09-12T00:00:00Z", "2021-12-20T00:00:00Z"]]
+    }
+  },
+  "id": "ESA_WORLDCEREAL_MAIZE",
+  "item_assets": {
+    "classification": {
+      "auth:refs": ["oidc"],
+      "classification:classes": [
+        {
+          "color_hint": "757575",
+          "name": "inactive",
+          "title": "Inactive",
+          "value": 0
+        },
+        {
+          "color_hint": "fccf05",
+          "name": "active",
+          "title": "Active",
+          "value": 100
+        }
+      ],
+      "data_type": "int8",
+      "description": "Classification",
+      "eo:bands": [
+        { "description": "classification band", "name": "classification" },
+        { "description": "confidence band", "name": "confidence" }
+      ],
+      "gsd": 10,
+      "name": "CLASSIFICATION",
+      "nodata": 255,
+      "proj:epsg": 4326,
+      "raster:bands": [
+        {
+          "classification:classes": [
+            {
+              "description": "pixel not marked as maize",
+              "name": "not cropland",
+              "value": 0
+            },
+            {
+              "description": "classified as maize in the respective season",
+              "name": "cropland",
+              "value": 100
+            }
+          ]
+        },
+        {}
+      ],
+      "raster:offset": 0.0,
+      "raster:sampling": "area",
+      "raster:scale": 1.0,
+      "roles": ["data"],
+      "title": "classification tiff",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized"
+    },
+    "confidence": {
+      "auth:refs": ["oidc"],
+      "data_type": "int8",
+      "description": "Classification confidence",
+      "name": "CONFIDENCE",
+      "nodata": 255,
+      "raster:offset": 0.0,
+      "raster:sampling": "area",
+      "raster:scale": 1.0,
+      "roles": ["data"],
+      "title": "Confidence",
+      "type": "image/tiff; application=geotiff; profile=cloud-optimized"
+    },
+    "preview": {
+      "description": "Preview image",
+      "roles": ["thumbnail", "overview"],
+      "title": "Preview",
+      "type": "image/png"
+    }
+  },
+  "keywords": [
+    "vito",
+    "copernicus",
+    "esa",
+    "land cover",
+    "environment",
+    "worldcereal",
+    "agriculture",
+    "sentinel-1",
+    "sentinel-2",
+    "maize"
+  ],
+  "license": "CC-BY-4.0",
+  "links": [
+    {
+      "href": "https://esa-worldcereal.org",
+      "rel": "alternate",
+      "title": "Product web page."
+    },
+    {
+      "href": "https://openeocloud.vito.be/openeo/1.0.0/collections",
+      "rel": "root"
+    },
+    {
+      "href": "https://openeocloud.vito.be/openeo/1.0.0/collections",
+      "rel": "parent"
+    },
+    {
+      "href": "https://openeocloud.vito.be/openeo/1.0.0/collections/ESA_WORLDCEREAL_MAIZE",
+      "rel": "self"
+    }
+  ],
+  "providers": [
+    {
+      "name": "ESA",
+      "roles": ["licensor"],
+      "url": "https://esa-worldcereal.org"
+    },
+    {
+      "description": "VITO remote sensing lead the consortium that produced the WorldCereal product on behalf of ESA. VITO also hosts the resulting archive.",
+      "name": "VITO",
+      "processing:level": "L4",
+      "processing:software": { "WorldCereal": "1.0" },
+      "roles": ["producer", "host"]
+    }
+  ],
+  "renders": {
+    "classification": {
+      "aggregation": {
+        "name": "datetime_frequency",
+        "params": { "datetime_frequency_interval": "year" }
+      },
+      "assets": ["classification"],
+      "colormap": { "0": "#757575", "100": "#fccf05" },
+      "name": "classification",
+      "nodata": 255,
+      "tilematrixsets": { "EPSG:3857": [3, 14] }
+    }
+  },
+  "sci:citation": "ESA WorldCereals products are available on a free basis for the general public under the terms and conditions of the Licence found at https://creativecommons.org/licenses/by/4.0/. The products contain modified Copernicus Sentinel data see https://sentinel.esa.int/documents/247904/690755/Sentinel_Data_Legal_Notice",
+  "sci:doi": "10.5281/zenodo.7875105",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/classification/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/raster/v2.0.0/schema.json",
+    "https://stac-extensions.github.io/render/v1.0.0/schema.json",
+    "https://stac-extensions.github.io/version/v1.2.0/schema.json",
+    "https://stac-extensions.github.io/authentication/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
+  ],
+  "stac_version": "1.1.0",
+  "summaries": {
+    "bands": [
+      {
+        "classification:classes": [
+          {
+            "color_hint": "757575",
+            "name": "inactive",
+            "title": "Inactive",
+            "value": 0
+          },
+          {
+            "color_hint": "fccf05",
+            "name": "active",
+            "title": "Active",
+            "value": 100
+          }
+        ],
+        "data_type": "int8",
+        "description": "Classified pixels",
+        "name": "CLASSIFICATION",
+        "nodata": 255,
+        "raster:offset": 0.0,
+        "raster:sampling": "area",
+        "raster:scale": 1.0
+      },
+      {
+        "data_type": "int8",
+        "description": "Confidence of the classification",
+        "name": "CONFIDENCE",
+        "nodata": 255,
+        "raster:offset": 0.0,
+        "raster:sampling": "area",
+        "raster:scale": 1.0
+      }
+    ],
+    "constellation": ["sentinel-1", "sentinel-2"],
+    "federation:backends": ["vito"],
+    "gsd": [10],
+    "instruments": ["c-sar", "msi"]
+  },
+  "title": "ESA WorldCereal maize",
+  "type": "Collection",
+  "version": "1"
+}

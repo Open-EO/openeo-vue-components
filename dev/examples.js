@@ -1,6 +1,7 @@
 let collectionCdse = require('./examples/collection-cdse-s2.json');
 let collectionGee = require('./examples/collection-gee-s2.json');
 let collectionEurac = require('./examples/collection-eurac.json');
+let collectionWorldcereal = require('./examples/collection-worldcereal.json');
 let collections = require('./examples/collections-gee.json');
 let item = require('./examples/item.json');
 let itemCeos = require('./examples/item-ceos.json');
@@ -65,6 +66,9 @@ module.exports = {
 				"attribution": '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'
 			},
 			"federation": capabilities.federation
+		},
+		"worldcereal": {
+			"data": collectionWorldcereal
 		}
 	},
 	"collections": {
