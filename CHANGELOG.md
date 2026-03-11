@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.23.3] - 2026-03-12
+
 ### Changed
 
 - Rendering of definition lists take less space
@@ -789,7 +791,8 @@ First stable release.
 Please see the [Releases](https://github.com/Open-EO/openeo-vue-components/releases) for changelogs prior to v1.0.0.
 
 
-[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.23.2...HEAD
+[Unreleased]: https://github.com/Open-EO/openeo-vue-components/compare/v2.23.3...HEAD
+[2.23.3]: https://github.com/Open-EO/openeo-vue-components/compare/v2.23.2...v2.23.3
 [2.23.2]: https://github.com/Open-EO/openeo-vue-components/compare/v2.23.1...v2.23.2
 [2.23.1]: https://github.com/Open-EO/openeo-vue-components/compare/v2.23.0...v2.23.1
 [2.23.0]: https://github.com/Open-EO/openeo-vue-components/compare/v2.22.0...v2.23.0
