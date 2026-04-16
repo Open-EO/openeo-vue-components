@@ -2,7 +2,7 @@
   <div class="stac-component">
     <Loading v-if="isLoading" />
     <Error v-else-if="error" :message="error" />
-    <Item v-else-if="isItem" :data="stac" :url="url" :mapOptions="mapOptions" :onStacNavigation="onStacNavigation">
+    <Item v-else-if="isItem" :data="stac" :url="stacUrl" :mapOptions="mapOptions" :onStacNavigation="onStacNavigation">
       <template #before-description>
         <p>
           <template v-if="rootLink">
@@ -23,7 +23,7 @@
         </p>
       </template>
     </Item>
-    <Collection v-else-if="isCollectionLike" :data="stac" :url="url" :mapOptions="mapOptions" :onStacNavigation="onStacNavigation">
+    <Collection v-else-if="isCollectionLike" :data="stac" :url="stacUrl" :mapOptions="mapOptions" :onStacNavigation="onStacNavigation">
       <template #before-description>
         <p>
           <template v-if="rootLink">
@@ -130,6 +130,7 @@ export default {
   methods: {
     onStacNavigation(link) {
       if (link && link.href) {
+        link = this.makeLinkAbsolute(link);
         this.load(link.href);
       }
       else {

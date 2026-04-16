@@ -441,7 +441,10 @@ if (a == b) console.log("Hello World");
 		},
 		"error": {
 			"url": "https://nonsense.example"
-		}
+		},
+		"overture": {
+			"url": "https://data.source.coop/cholmes/overture/catalog.json"
+		},
 	},
 	"supported-features": {
 		"api": {

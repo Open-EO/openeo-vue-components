@@ -23,6 +23,10 @@ export default {
 			type: Object,
 			default: () => ({})
 		},
+		url: {
+			type: String,
+			default: null
+		},
 		onStacNavigation: {
 			type: Function,
 			default: null
@@ -43,7 +47,7 @@ export default {
 			return Utils.size(this.stac.assets) > 0;
 		},
 		selfUrl() {
-			return this.getStacLinkByRel(this.stac.links, 'self')?.href || null;
+			return this.getStacLinkByRel(this.stac.links, 'self')?.href || this.url || null;
 		},
 		derivedFromLinks() {
 			return this.getStacLinksByRels(this.stac.links, ['derived_from'], true);
